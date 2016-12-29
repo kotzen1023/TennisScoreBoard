@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -43,13 +44,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if(checkAndRequestPermissions()) {
-            // carry on the normal flow, as the case of  permissions  granted.
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            init_folder_and_files();
+        } else {
+            if(checkAndRequestPermissions()) {
+                // carry on the normal flow, as the case of  permissions  granted.
 
-
+                init_folder_and_files();
+            }
         }
 
-        init_folder_and_files();
+
+
+
 
         Button btnNewGame = (Button) findViewById(R.id.btnNewGame);
         Button btnContinue = (Button) findViewById(R.id.btnContinue);
@@ -299,7 +306,7 @@ public class MainActivity extends AppCompatActivity {
                                 ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                                         //|| ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.CAMERA)
                                 ) {
-                            showDialogOK("Write Permission required for this app",
+                            showDialogOK(getResources().getString(R.string.permission_descript),
                                     new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {

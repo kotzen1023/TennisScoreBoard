@@ -36,4 +36,5 @@
     <string name="input_vesus">對</string>
     <string name="menu_setup_men">選手</string>
     <string name="setup_first_serve">先發球</string>
+    <string name="permission_descript">如果想將比數存擋, 需允許寫入權限</string>
 </resources>

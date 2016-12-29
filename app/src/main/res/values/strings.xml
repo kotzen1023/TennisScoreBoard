@@ -35,5 +35,6 @@
     <string name="input_vesus">vs.</string>
     <string name="menu_setup_men">Player</string>
     <string name="setup_first_serve">Serve</string>
+    <string name="permission_descript">Write Permission required if you want to save result as files.</string>
 </resources>
 
