@@ -170,11 +170,11 @@ public class MainActivity extends AppCompatActivity {
 
                                 Intent intent = new Intent(MainActivity.this, SetupMain.class);
                                 intent.putExtra("FILE_NAME", editFileName.getText().toString());
-                                if (!editPlayerUp.getText().equals(""))
+                                if (!editPlayerUp.getText().toString().equals(""))
                                     intent.putExtra("PLAYER_UP", editPlayerUp.getText().toString());
                                 else
                                     intent.putExtra("PLAYER_UP", "");
-                                if (!editPlayerDown.getText().equals(""))
+                                if (!editPlayerDown.getText().toString().equals(""))
                                     intent.putExtra("PLAYER_DOWN", editPlayerDown.getText().toString());
                                 else
                                     intent.putExtra("PLAYER_DOWN", "");
@@ -198,11 +198,11 @@ public class MainActivity extends AppCompatActivity {
 
                         Intent intent = new Intent(MainActivity.this, SetupMain.class);
                         intent.putExtra("FILE_NAME", editFileName.getText().toString());
-                        if (!editPlayerUp.getText().equals(""))
+                        if (!editPlayerUp.getText().toString().equals(""))
                             intent.putExtra("PLAYER_UP", editPlayerUp.getText().toString());
                         else
                             intent.putExtra("PLAYER_UP", "Player1");
-                        if (!editPlayerDown.getText().equals(""))
+                        if (!editPlayerDown.getText().toString().equals(""))
                             intent.putExtra("PLAYER_DOWN", editPlayerDown.getText().toString());
                         else
                             intent.putExtra("PLAYER_DOWN", "Player2");

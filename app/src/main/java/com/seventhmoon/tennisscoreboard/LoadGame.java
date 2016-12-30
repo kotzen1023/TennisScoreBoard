@@ -104,38 +104,40 @@ public class LoadGame extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final FileChooseItem o = fileChooseArrayAdapter.getItem(position);
-                Log.d(TAG, "select file "+ o.getFileName());
 
-                AlertDialog.Builder confirmdialog = new AlertDialog.Builder(LoadGame.this);
-                confirmdialog.setTitle(getResources().getString(R.string.game_load_or_delete, o.getFileName()));
-                confirmdialog.setIcon(R.drawable.ball_icon);
-                confirmdialog.setCancelable(false);
-                confirmdialog.setPositiveButton(getResources().getString(R.string.game_load), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(LoadGame.this, GameActivity.class);
-                        intent.putExtra("FILE_NAME", o.getFileName());
-                        startActivity(intent);
-                        finish();
+                if (o != null) {
+                    Log.d(TAG, "select file " + o.getFileName());
 
-                    }
-                });
-                confirmdialog.setNegativeButton(getResources().getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
+                    AlertDialog.Builder confirmdialog = new AlertDialog.Builder(LoadGame.this);
+                    confirmdialog.setTitle(getResources().getString(R.string.game_load_or_delete, o.getFileName()));
+                    confirmdialog.setIcon(R.drawable.ball_icon);
+                    confirmdialog.setCancelable(false);
+                    confirmdialog.setPositiveButton(getResources().getString(R.string.game_load), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(LoadGame.this, GameActivity.class);
+                            intent.putExtra("FILE_NAME", o.getFileName());
+                            startActivity(intent);
+                            finish();
+
+                        }
+                    });
+                    confirmdialog.setNegativeButton(getResources().getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
 
 
-                    }
-                });
-                confirmdialog.setNeutralButton(getResources().getString(R.string.game_delete), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        remove_file(o.getFileName());
-                        //send broadcast
-                        Intent intent = new Intent(Constants.ACTION.GAME_DELETE_COMPLETE);
-                        intent.putExtra("REMOVE_FILE", o.getFileName());
-                        sendBroadcast(intent);
-                    }
-                });
-                confirmdialog.show();
-
+                        }
+                    });
+                    confirmdialog.setNeutralButton(getResources().getString(R.string.game_delete), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            remove_file(o.getFileName());
+                            //send broadcast
+                            Intent intent = new Intent(Constants.ACTION.GAME_DELETE_COMPLETE);
+                            intent.putExtra("REMOVE_FILE", o.getFileName());
+                            sendBroadcast(intent);
+                        }
+                    });
+                    confirmdialog.show();
+                }
 
 
             }

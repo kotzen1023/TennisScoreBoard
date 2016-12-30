@@ -7,33 +7,26 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
+
 import android.os.Handler;
 
-import android.os.Parcelable;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.seventhmoon.tennisscoreboard.Data.State;
 
-import java.io.File;
-import java.nio.charset.Charset;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Deque;
@@ -60,7 +53,7 @@ public class GameActivity extends AppCompatActivity{
     private ImageView imgServeUp;
     private ImageView imgServeDown;
     private LinearLayout setLayout;
-    private LinearLayout nameLayout;
+    //private LinearLayout nameLayout;
     private TextView setUp;
     private TextView setDown;
     private ImageView imgWinCheckUp;
@@ -85,13 +78,13 @@ public class GameActivity extends AppCompatActivity{
     private static String playerUp;
     private static String playerDown;
 
-    private static long startTime;
+    //private static long startTime;
     private static Handler handler;
     private static long time_use = 0;
 
     private static Deque<State> stack = new ArrayDeque<>();
 
-    public static File RootDirectory = new File("/");
+    //public static File RootDirectory = new File("/");
 
     private static boolean is_pause = false;
 
@@ -109,9 +102,11 @@ public class GameActivity extends AppCompatActivity{
         Button btnSave;
         Button btnLoad;
 
+        LinearLayout nameLayout;
+
         handler = new Handler();
 
-        startTime = System.currentTimeMillis();
+        //startTime = System.currentTimeMillis();
 
         handler.removeCallbacks(updateTimer);
         handler.postDelayed(updateTimer, 1000);
@@ -268,7 +263,57 @@ public class GameActivity extends AppCompatActivity{
                 String stat[] = msg[1].split("&");
 
 
-                for (int i = 0; i < stat.length; i++) {
+                for (String s : stat) {
+                    String data[] = s.split(";");
+                    State new_state = new State();
+
+                    new_state.setCurrent_set(Byte.valueOf(data[0]));
+                    new_state.setServe(Boolean.valueOf(data[1]));
+                    new_state.setInTiebreak(Boolean.valueOf(data[2]));
+                    new_state.setFinish(Boolean.valueOf(data[3]));
+                    new_state.setSetsUp(Byte.valueOf(data[4]));
+                    new_state.setSetsDown(Byte.valueOf(data[5]));
+                    new_state.setDuration(Long.valueOf(data[6]));
+
+                    new_state.setSet_game_up((byte) 0x1, Byte.valueOf(data[7]));
+                    new_state.setSet_game_down((byte) 0x1, Byte.valueOf(data[8]));
+                    new_state.setSet_point_up((byte) 0x1, Byte.valueOf(data[9]));
+                    new_state.setSet_point_down((byte) 0x1, Byte.valueOf(data[10]));
+                    new_state.setSet_tiebreak_point_up((byte) 0x1, Byte.valueOf(data[11]));
+                    new_state.setSet_tiebreak_point_down((byte) 0x1, Byte.valueOf(data[12]));
+
+                    new_state.setSet_game_up((byte) 0x2, Byte.valueOf(data[13]));
+                    new_state.setSet_game_down((byte) 0x2, Byte.valueOf(data[14]));
+                    new_state.setSet_point_up((byte) 0x2, Byte.valueOf(data[15]));
+                    new_state.setSet_point_down((byte) 0x2, Byte.valueOf(data[16]));
+                    new_state.setSet_tiebreak_point_up((byte) 0x2, Byte.valueOf(data[17]));
+                    new_state.setSet_tiebreak_point_down((byte) 0x2, Byte.valueOf(data[18]));
+
+                    new_state.setSet_game_up((byte) 0x3, Byte.valueOf(data[19]));
+                    new_state.setSet_game_down((byte) 0x3, Byte.valueOf(data[20]));
+                    new_state.setSet_point_up((byte) 0x3, Byte.valueOf(data[21]));
+                    new_state.setSet_point_down((byte) 0x3, Byte.valueOf(data[22]));
+                    new_state.setSet_tiebreak_point_up((byte) 0x3, Byte.valueOf(data[23]));
+                    new_state.setSet_tiebreak_point_down((byte) 0x3, Byte.valueOf(data[24]));
+
+                    new_state.setSet_game_up((byte) 0x4, Byte.valueOf(data[25]));
+                    new_state.setSet_game_down((byte) 0x4, Byte.valueOf(data[26]));
+                    new_state.setSet_point_up((byte) 0x4, Byte.valueOf(data[27]));
+                    new_state.setSet_point_down((byte) 0x4, Byte.valueOf(data[28]));
+                    new_state.setSet_tiebreak_point_up((byte) 0x4, Byte.valueOf(data[29]));
+                    new_state.setSet_tiebreak_point_down((byte) 0x4, Byte.valueOf(data[30]));
+
+                    new_state.setSet_game_up((byte) 0x5, Byte.valueOf(data[31]));
+                    new_state.setSet_game_down((byte) 0x5, Byte.valueOf(data[32]));
+                    new_state.setSet_point_up((byte) 0x5, Byte.valueOf(data[33]));
+                    new_state.setSet_point_down((byte) 0x5, Byte.valueOf(data[34]));
+                    new_state.setSet_tiebreak_point_up((byte) 0x5, Byte.valueOf(data[35]));
+                    new_state.setSet_tiebreak_point_down((byte) 0x5, Byte.valueOf(data[36]));
+
+                    stack.addLast(new_state);
+                }
+
+                /*for (int i = 0; i < stat.length; i++) {
                     String data[] = stat[i].split(";");
                     State new_state = new State();
                     new_state.setCurrent_set(Byte.valueOf(data[0]));
@@ -319,7 +364,7 @@ public class GameActivity extends AppCompatActivity{
 
                     stack.addLast(new_state);
 
-                }
+                }*/
 
                 //get top
 
@@ -630,6 +675,8 @@ public class GameActivity extends AppCompatActivity{
                                 imgServeDown.setVisibility(View.INVISIBLE);
                             }
                         }
+                    } else {
+                        Log.d(TAG, "popState null");
                     }
                 }
             }
@@ -680,23 +727,50 @@ public class GameActivity extends AppCompatActivity{
                 boolean is_deuce;
                 boolean is_firstserve;
 
-                if (tiebreak.equals("0")) {
+                switch (tiebreak) {
+                    case "0":
+                        is_tiebreak = true;
+                        break;
+                    default:
+                        is_tiebreak = false;
+                        break;
+                }
+
+                /*if (tiebreak.equals("0")) {
                     is_tiebreak = true;
                 } else {
                     is_tiebreak = false;
+                }*/
+
+                switch (deuce) {
+                    case "0":
+                        is_deuce = true;
+                        break;
+                    default:
+                        is_deuce = false;
+                        break;
                 }
 
-                if (deuce.equals("0")) {
+                /*if (deuce.equals("0")) {
                     is_deuce = true;
                 } else {
                     is_deuce = false;
+                }*/
+
+                switch (serve) {
+                    case "0":
+                        is_firstserve = true;
+                        break;
+                    default:
+                        is_firstserve = false;
+                        break;
                 }
 
-                if (serve.equals("0")) {
+                /*if (serve.equals("0")) {
                     is_firstserve = true;
                 } else {
                     is_firstserve = false;
-                }
+                }*/
 
                 String msg = playerUp + ";" + playerDown + ";" + is_tiebreak + ";" + is_deuce + ";" +is_firstserve+ ";" +set+ "|";
                 append_record(msg, filename);
@@ -800,7 +874,7 @@ public class GameActivity extends AppCompatActivity{
     }
 
     private void calculateScore(boolean you_score) {
-        byte current_set = 0;
+        byte current_set;
         State new_state=null;
         //load top state first
         final State current_state = stack.peek();
@@ -1684,7 +1758,7 @@ public class GameActivity extends AppCompatActivity{
         public void run() {
             //final TextView time = (TextView) findViewById(R.id.currentTime);
             NumberFormat f = new DecimalFormat("00");
-            Long spentTime = System.currentTimeMillis() - startTime;
+            //Long spentTime = System.currentTimeMillis() - startTime;
             //計算目前已過分鐘數
 
             //計算目前已過秒數
@@ -1712,11 +1786,11 @@ public class GameActivity extends AppCompatActivity{
         }
     };
 
-    public void toast(String message) {
+    /*public void toast(String message) {
         Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL, 0, 0);
         toast.show();
-    }
+    }*/
 
     @Override
     public void onBackPressed() {
@@ -1725,27 +1799,51 @@ public class GameActivity extends AppCompatActivity{
 
         boolean is_tiebreak;
         boolean is_deuce;
-        boolean is_firstserve;
+        boolean is_firstServe;
 
-        if (tiebreak.equals("0")) {
+        switch (tiebreak) {
+            case "0":
+                is_tiebreak = true;
+                break;
+            default:
+                is_tiebreak = false;
+        }
+
+        /*if (tiebreak.equals("0")) {
             is_tiebreak = true;
         } else {
             is_tiebreak = false;
+        }*/
+
+        switch (deuce) {
+            case "0":
+                is_deuce = true;
+                break;
+            default:
+                is_deuce = false;
         }
 
-        if (deuce.equals("0")) {
+        /*if (deuce.equals("0")) {
             is_deuce = true;
         } else {
             is_deuce = false;
+        }*/
+
+        switch (serve) {
+            case "0":
+                is_firstServe = true;
+                break;
+            default:
+                is_firstServe = false;
         }
 
-        if (serve.equals("0")) {
+        /*if (serve.equals("0")) {
             is_firstserve = true;
         } else {
             is_firstserve = false;
-        }
+        }*/
 
-        String msg = playerUp + ";" + playerDown + ";" + is_tiebreak + ";" + is_deuce + ";" +is_firstserve+ ";" +set+ "|";
+        String msg = playerUp + ";" + playerDown + ";" + is_tiebreak + ";" + is_deuce + ";" +is_firstServe+ ";" +set+ "|";
         append_record(msg, filename);
 
         State top = stack.peek();

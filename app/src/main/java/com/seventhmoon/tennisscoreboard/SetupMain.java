@@ -43,7 +43,7 @@ public class SetupMain extends AppCompatActivity{
     private String playerDown;
     private String serve;
 
-    private MenuItem item_edit;
+    //private MenuItem item_edit;
     private static ArrayList<String> serveList = new ArrayList<>();
 
     @Override
@@ -146,23 +146,52 @@ public class SetupMain extends AppCompatActivity{
 
                 //int is_setLimit;
 
-                if (tiebreakSpinner.getSelectedItemPosition() == 0) {
+                switch (tiebreakSpinner.getSelectedItemPosition()) {
+                    case 0:
+                        is_tiebreak = true;
+                        break;
+                    default:
+                        is_tiebreak = false;
+                        break;
+                }
+
+                /*if (tiebreakSpinner.getSelectedItemPosition() == 0) {
                     is_tiebreak = true;
                 } else {
                     is_tiebreak = false;
+                }*/
+
+                switch (deuceSpinner.getSelectedItemPosition()) {
+                    case 0:
+                        is_deuce = true;
+                        break;
+                    default:
+                        is_deuce = false;
+                        break;
                 }
 
+                /*
                 if (deuceSpinner.getSelectedItemPosition() == 0) {
                     is_deuce = true;
                 } else {
                     is_deuce = false;
+                }*/
+
+                switch (serveSpinner.getSelectedItemPosition()) {
+                    case 0:
+                        is_firstServe = true;
+                        break;
+                    default:
+                        is_firstServe = false;
+                        break;
                 }
 
+                /*
                 if (serveSpinner.getSelectedItemPosition() == 0) {
                     is_firstServe = true;
                 } else {
                     is_firstServe = false;
-                }
+                }*/
 
 
 
@@ -199,7 +228,7 @@ public class SetupMain extends AppCompatActivity{
 
         getMenuInflater().inflate(R.menu.setup_menu, menu);
 
-        item_edit = menu.findItem(R.id.action_edit_group);
+        //item_edit = menu.findItem(R.id.action_edit_group);
 
         return true;
     }
