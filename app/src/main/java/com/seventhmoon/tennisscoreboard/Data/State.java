@@ -5,12 +5,30 @@ public class State {
     private boolean isServe;
     private boolean isInTiebreak;
     private boolean isFinish;
-    //private boolean isDeuce;
-    //private boolean isFirstServe;
-    //private byte setLimit;
     private byte setsUp;
     private byte setsDown;
     private long duration;
+
+    private byte aceCountUp;
+    private byte aceCountDown;
+    private short firstServeUp;
+    private short firstServeDown;
+    private short secondServeUp;
+    private short secondServeDown;
+    private byte doubleFaultUp;
+    private byte doubleFaultDown;
+    private short unforcedErrorUp;
+    private short unforcedErrorDown;
+    private short forehandWinnerUp;
+    private short forehandWinnerDown;
+    private short backhandWinnerUp;
+    private short backhandWinnerDown;
+    private short forehandVolleyUp;
+    private short forehandVolleyDown;
+    private short backhandVolleyUp;
+    private short backhandVolleyDown;
+    private byte foulToLoseUp;
+    private byte foulToLoseDown;
 
     private byte set_1_game_up;
     private byte set_1_game_down;
@@ -84,30 +102,6 @@ public class State {
         this.isFinish = isFinish;
     }
 
-    /*public boolean isDeuce() {
-        return isDeuce;
-    }
-
-    public void setDeuce(boolean isDeuce) {
-        this.isDeuce = isDeuce;
-    }
-
-    public boolean isFirstServe() {
-        return isFirstServe;
-    }
-
-    public void setFirstServe(boolean isFirstServe) {
-        this.isFirstServe = isFirstServe;
-    }
-
-    public byte getSetLimit() {
-        return setLimit;
-    }
-
-    public void setSetLimit(byte setLimit) {
-        this.setLimit = setLimit;
-    }*/
-
     public byte getSetsUp() {
         return setsUp;
     }
@@ -130,6 +124,166 @@ public class State {
 
     public void setDuration(long duration) {
         this.duration = duration;
+    }
+
+    public byte getAceCountUp() {
+        return  aceCountUp;
+    }
+
+    public void setAceCountUp(byte aceCountUp) {
+        this.aceCountUp = aceCountUp;
+    }
+
+    public byte getAceCountDown() {
+        return  aceCountDown;
+    }
+
+    public void setAceCountDown(byte aceCountDown) {
+        this.aceCountDown = aceCountDown;
+    }
+
+    public long getFirstServeUp() {
+        return firstServeUp;
+    }
+
+    public void setFirstServeUp(short firstServeUp) {
+        this.firstServeUp = firstServeUp;
+    }
+
+    public long getFirstServeDown() {
+        return firstServeDown;
+    }
+
+    public void setFirstServeDown(short firstServeDown) {
+        this.firstServeDown = firstServeDown;
+    }
+
+    public long getSecondServeUp() {
+        return secondServeUp;
+    }
+
+    public void setSecondServeUp(short secondServeUp) {
+        this.secondServeUp = secondServeUp;
+    }
+
+    public long getSecondServeDown() {
+        return secondServeDown;
+    }
+
+    public void setSecondServeDown(short secondServeDown) {
+        this.secondServeDown = secondServeDown;
+    }
+
+    public byte getDoubleFaultUp() {
+        return doubleFaultUp;
+    }
+
+    public void setDoubleFaultUp(byte doubleFaultUp) {
+        this.doubleFaultUp = doubleFaultUp;
+    }
+
+    public byte getDoubleFaultDown() {
+        return doubleFaultDown;
+    }
+
+    public void setDoubleFaultDown(byte doubleFaultDown) {
+        this.doubleFaultDown = doubleFaultDown;
+    }
+
+    public short getUnforceErrorUp() {
+        return unforcedErrorUp;
+    }
+
+    public void setUnforceErrorUp(short unforcedErrorUp) {
+        this.unforcedErrorUp = unforcedErrorUp;
+    }
+
+    public short getUnforceErrorDown() {
+        return unforcedErrorDown;
+    }
+
+    public void setUnforceErrorDown(short unforcedErrorDown) {
+        this.unforcedErrorDown = unforcedErrorDown;
+    }
+
+    public short getForehandWinnerUp() {
+        return forehandWinnerUp;
+    }
+
+    public void setForehandWinnerUp(short forehandWinnerUp) {
+        this.forehandWinnerUp = forehandWinnerUp;
+    }
+
+    public short getForehandWinnerDown() {
+        return forehandWinnerDown;
+    }
+
+    public void setForehandWinnerDown(short forehandWinnerDown) {
+        this.forehandWinnerDown = forehandWinnerDown;
+    }
+
+    public short getBackhandWinnerUp() {
+        return backhandWinnerUp;
+    }
+
+    public void setBackhandWinnerUp(short backhandWinnerUp) {
+        this.backhandWinnerUp = backhandWinnerUp;
+    }
+
+    public short getBackhandWinnerDown() {
+        return backhandWinnerDown;
+    }
+
+    public void setBackhandWinnerDown(short backhandWinnerDown) {
+        this.backhandWinnerDown = backhandWinnerDown;
+    }
+
+    public short getForehandVolleyUp() {
+        return forehandVolleyUp;
+    }
+
+    public void setForehandVolleyUp(short forehandVolleyUp) {
+        this.forehandVolleyUp = forehandVolleyUp;
+    }
+
+    public short getForehandVolleyDown() {
+        return forehandVolleyDown;
+    }
+
+    public void setForehandVolleyDown(short forehandVolleyDown) {
+        this.forehandVolleyDown = forehandVolleyDown;
+    }
+
+    public short getBackhandVolleyUp() {
+        return backhandVolleyUp;
+    }
+
+    public void setBackhandVolleyUp(short backhandVolleyUp) {
+        this.backhandVolleyUp = backhandVolleyUp;
+    }
+
+    public short getBackhandVolleyDown() {
+        return backhandVolleyDown;
+    }
+
+    public void setBackhandVolleyDown(short backhandVolleyDown) {
+        this.backhandVolleyDown = backhandVolleyDown;
+    }
+
+    public byte getFoulToLoseUp() {
+        return foulToLoseUp;
+    }
+
+    public void setFoulToLoseUp(byte foulToLoseUp) {
+        this.foulToLoseUp = foulToLoseUp;
+    }
+
+    public byte getFoulToLoseDown() {
+        return foulToLoseDown;
+    }
+
+    public void setFoulToLoseDown(byte foulToLoseDown) {
+        this.foulToLoseDown = foulToLoseDown;
     }
 
     public byte getSet_game_up(byte set) {
