@@ -6,13 +6,17 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.os.Handler;
 
+import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 
 import android.widget.ImageView;
@@ -22,11 +26,13 @@ import android.widget.TextView;
 
 import com.seventhmoon.tennisscoreboard.Data.State;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Deque;
@@ -89,6 +95,15 @@ public class GameActivity extends AppCompatActivity{
     private static boolean is_pause = false;
 
     ProgressDialog loadDialog = null;
+
+    //for state
+    private static boolean is_ace = false;
+    private static boolean is_double_fault = false;
+    private static boolean is_unforced_error = false;
+    private static boolean is_forehand_winner = false;
+    private static boolean is_backhand_winner = false;
+    private static boolean is_forehand_volley = false;
+    private static boolean is_backhand_volley = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -685,14 +700,171 @@ public class GameActivity extends AppCompatActivity{
         btnYouScore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                calculateScore(true);
+                //calculateScore(true);
+                ArrayList<String> items = new ArrayList<>();
+
+
+                if (imgServeDown.getVisibility() == View.VISIBLE) { //serve
+                    items.add("Ace");
+                    items.add("Second Serve");
+                    items.add("Double Fault");
+                    items.add("Unforced Error");
+                    items.add("Forehand Winner");
+                    items.add("Backhand Winner");
+                    items.add("Forehand Volley");
+                    items.add("Backhand Volley");
+                    items.add("Foul to lose");
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<> (GameActivity.this, android.R.layout.select_dialog_item,items);
+
+                    AlertDialog.Builder builder  = new AlertDialog.Builder(GameActivity.this);
+
+                    builder.setTitle(playerDown +" select action:");
+                    builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
+                        public void onClick( DialogInterface dialog, int item ) { //pick from camer
+                            if (item == 0) { //ace
+                                calculateScore(true);
+                                is_ace = true;
+                            } else if (item == 1){
+                                Log.d(TAG, "second serve");
+                            } else if (item == 2){ //double fault
+                                calculateScore(false);
+                            } else if (item == 3) { //unforced error
+                                calculateScore(false);
+                            } else if (item == 4) { //forehand winner
+                                calculateScore(true);
+                            } else if (item == 5) { //backhand winner
+                                calculateScore(true);
+                            } else if (item == 6) { //forehand volley
+                                calculateScore(true);
+                            } else if (item == 7) { //backhand volley
+                                calculateScore(true);
+                            } else if (item == 8) { //Foul to lose
+                                calculateScore(false);
+                            }
+                        }
+                    } );
+                    builder.show();
+                } else {
+                    items.add("Unforced Error");
+                    items.add("Forehand Winner");
+                    items.add("Backhand Winner");
+                    items.add("Forehand Volley");
+                    items.add("Backhand Volley");
+                    items.add("Foul to lose");
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<> (GameActivity.this, android.R.layout.select_dialog_item,items);
+
+                    AlertDialog.Builder builder  = new AlertDialog.Builder(GameActivity.this);
+
+                    builder.setTitle(playerDown +" select action:");
+                    builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
+                        public void onClick( DialogInterface dialog, int item ) { //pick from camer
+                            if (item == 0) { //unforced error
+                                calculateScore(false);
+                            } else if (item == 1) { //forehand winner
+                                calculateScore(true);
+                            } else if (item == 2) { //backhand winner
+                                calculateScore(true);
+                            } else if (item == 3) { //forehand volley
+                                calculateScore(true);
+                            } else if (item == 4) { //backhand volley
+                                calculateScore(true);
+                            } else if (item == 5) { //Foul to lose
+                                calculateScore(false);
+                            }
+                        }
+                    } );
+                    builder.show();
+                }
+
+
+
             }
         });
 
         btnOpptScore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                calculateScore(false);
+                //calculateScore(false);
+
+                ArrayList<String> items = new ArrayList<>();
+
+                if (imgServeUp.getVisibility() == View.VISIBLE) { //serve
+                    items.add("Ace");
+                    items.add("Second Serve");
+                    items.add("Double Fault");
+                    items.add("Unforced Error");
+                    items.add("Forehand Winner");
+                    items.add("Backhand Winner");
+                    items.add("Forehand Volley");
+                    items.add("Backhand Volley");
+                    items.add("Foul to lose");
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<> (GameActivity.this, android.R.layout.select_dialog_item,items);
+
+                    AlertDialog.Builder builder  = new AlertDialog.Builder(GameActivity.this);
+
+                    builder.setTitle(playerUp + " select action:");
+                    builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
+                        public void onClick( DialogInterface dialog, int item ) { //pick from camer
+                            if (item == 0) { //ace
+                                calculateScore(false);
+                                is_ace = true;
+                            } else if (item == 1){
+                                Log.d(TAG, "second serve");
+                            } else if (item == 2){ //double fault
+                                calculateScore(true);
+                            } else if (item == 3) { //unforced error
+                                calculateScore(true);
+                            } else if (item == 4) { //forehand winner
+                                calculateScore(false);
+                            } else if (item == 5) { //backhand winner
+                                calculateScore(false);
+                            } else if (item == 6) { //forehand volley
+                                calculateScore(false);
+                            } else if (item == 7) { //backhand volley
+                                calculateScore(false);
+                            } else if (item == 8) { //Foul to lose
+                                calculateScore(true);
+                            }
+                        }
+                    } );
+                    builder.show();
+                } else {
+                    items.add("Unforced Error");
+                    items.add("Forehand Winner");
+                    items.add("Backhand Winner");
+                    items.add("Forehand Volley");
+                    items.add("Backhand Volley");
+                    items.add("Foul to lose");
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<> (GameActivity.this, android.R.layout.select_dialog_item,items);
+
+                    AlertDialog.Builder builder  = new AlertDialog.Builder(GameActivity.this);
+
+                    builder.setTitle(playerUp + " select action:");
+                    builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
+                        public void onClick( DialogInterface dialog, int item ) { //pick from camer
+                            if (item == 0) { //unforced error
+                                calculateScore(true);
+                            } else if (item == 1) { //forehand winner
+                                calculateScore(false);
+                            } else if (item == 2) { //backhand winner
+                                calculateScore(false);
+                            } else if (item == 3) { //forehand volley
+                                calculateScore(false);
+                            } else if (item == 4) { //backhand volley
+                                calculateScore(false);
+                            } else if (item == 5) { //Foul to lose
+                                calculateScore(true);
+                            }
+                        }
+                    } );
+                    builder.show();
+                }
+
+
             }
         });
 
@@ -1265,6 +1437,7 @@ public class GameActivity extends AppCompatActivity{
                 handler.postDelayed(updateTimer, 1000);
             }
             Log.d(TAG, "*** Game is running ***");
+
             if (you_score) {
                 Log.d(TAG, "=== I score start ===");
 
@@ -1280,17 +1453,41 @@ public class GameActivity extends AppCompatActivity{
                 new_state.setCurrent_set((byte) 0x01);
 
                 new_state.setSet_point_down((byte) 0x01, (byte) 0x01);
-                //new_state.setSet_1_point_down((byte)0x01);
-                /*new_state.setSetLimit(Byte.valueOf(set));
 
-                if (deuce.equals("0")) {
-                    new_state.setDeuce(true);
-                } else {
-                    new_state.setDeuce(false);
-                }*/
+                if (is_ace) {
+                    new_state.setAceCountDown((byte) 0x01);
+                    is_ace = false;
+                }
 
-                //Log.e(TAG, "get_set_1_point_down = "+new_state.getSet_1_point_down()+", isServe ? "+ (new_state.isServe() ? "YES" : "NO"));
-                //}
+                if (is_double_fault) {
+                    new_state.setDoubleFaultDown((byte) 0x01);
+                    is_double_fault = false;
+                }
+
+                if (is_unforced_error) {
+                    new_state.setUnforceErrorDown((byte) 0x01);
+                    is_unforced_error = false;
+                }
+
+                if (is_forehand_winner) {
+                    new_state.setForehandWinnerDown((short)1);
+                    is_forehand_winner = false;
+                }
+
+                if (is_backhand_winner) {
+                    new_state.setBackhandWinnerDown((short)1);
+                    is_backhand_winner = false;
+                }
+
+                if (is_forehand_volley) {
+                    new_state.setForehandVolleyDown((short)1);
+                    is_forehand_volley = false;
+                }
+
+                if (is_backhand_volley) {
+                    new_state.setBackhandVolleyDown((short)1);
+                    is_backhand_volley = false;
+                }
 
                 Log.d(TAG, "=== I score end ===");
             } else {
@@ -1308,15 +1505,41 @@ public class GameActivity extends AppCompatActivity{
 
                 new_state.setSet_point_up((byte) 0x01, (byte) 0x01);
 
-                /*new_state.setSetLimit(Byte.valueOf(set));
-                //Log.e(TAG, "get_set_1_point_up = "+new_state.getSet_1_point_up()+", isServe ? "+ (new_state.isServe() ? "YES" : "NO"));
+                if (is_ace) {
+                    new_state.setAceCountUp((byte) 0x01);
+                    is_ace = false;
+                }
 
-                if (deuce.equals("0")) {
-                    new_state.setDeuce(true);
-                } else {
-                    new_state.setDeuce(false);
-                }*/
-                //}
+                if (is_double_fault) {
+                    new_state.setDoubleFaultUp((byte) 0x01);
+                    is_double_fault = false;
+                }
+
+                if (is_unforced_error) {
+                    new_state.setUnforceErrorUp((byte) 0x01);
+                    is_unforced_error = false;
+                }
+
+                if (is_forehand_winner) {
+                    new_state.setForehandWinnerUp((short)1);
+                    is_forehand_winner = false;
+                }
+
+                if (is_backhand_winner) {
+                    new_state.setBackhandWinnerUp((short)1);
+                    is_backhand_winner = false;
+                }
+
+                if (is_forehand_volley) {
+                    new_state.setForehandVolleyUp((short)1);
+                    is_forehand_volley = false;
+                }
+
+                if (is_backhand_volley) {
+                    new_state.setBackhandVolleyDown((short)1);
+                    is_backhand_volley = false;
+                }
+
                 Log.d(TAG, "=== Oppt score end ===");
             }
 

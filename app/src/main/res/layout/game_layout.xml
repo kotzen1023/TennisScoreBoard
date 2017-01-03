@@ -273,7 +273,7 @@
                 android:layout_weight="1">
 
                 <Button
-                    android:text="@string/score_text"
+                    android:text="@string/score_action"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/btnOpptScore"
@@ -299,7 +299,7 @@
 
 
                 <Button
-                    android:text="@string/score_text"
+                    android:text="@string/score_action"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/btnYouScore"
