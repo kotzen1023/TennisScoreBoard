@@ -37,4 +37,17 @@
     <string name="menu_setup_men">選手</string>
     <string name="setup_first_serve">先發球</string>
     <string name="permission_descript">如果想將比數存擋, 需允許寫入權限</string>
+    <string name="game_select_action">選擇動作:</string>
+    <string name="game_ace">Ace</string>
+    <string name="game_second_serve">第二發</string>
+    <string name="game_double_faults">雙發失誤</string>
+    <string name="game_unforced_error">非受迫性失誤</string>
+    <string name="game_forehand_winner">正拍致勝球</string>
+    <string name="game_backhand_winner">反拍致勝球</string>
+    <string name="game_forehand_volley">正拍截擊致勝球</string>
+    <string name="game_backhand_volley">反拍截擊致勝球</string>
+    <string name="game_foul_to_lose">違規失分</string>
+    <string name="game_other_winner">其他致勝球</string>
+    <string name="game_serve_net">發球觸網進</string>
+    <string name="menu_setup_stat">統計</string>
 </resources>

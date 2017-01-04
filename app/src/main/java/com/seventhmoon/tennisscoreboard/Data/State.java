@@ -5,6 +5,7 @@ public class State {
     private boolean isServe;
     private boolean isInTiebreak;
     private boolean isFinish;
+    private boolean isSecondServe;
     private byte setsUp;
     private byte setsDown;
     private long duration;
@@ -13,8 +14,11 @@ public class State {
     private byte aceCountDown;
     private short firstServeUp;
     private short firstServeDown;
+    private short firstServeMissUp;
+    private short firstServeMissDown;
     private short secondServeUp;
     private short secondServeDown;
+
     private byte doubleFaultUp;
     private byte doubleFaultDown;
     private short unforcedErrorUp;
@@ -102,6 +106,14 @@ public class State {
         this.isFinish = isFinish;
     }
 
+    public boolean isSecondServe() {
+        return isSecondServe;
+    }
+
+    public void setSecondServe(boolean isSecondServe) {
+        this.isSecondServe = isSecondServe;
+    }
+
     public byte getSetsUp() {
         return setsUp;
     }
@@ -142,7 +154,7 @@ public class State {
         this.aceCountDown = aceCountDown;
     }
 
-    public long getFirstServeUp() {
+    public short getFirstServeUp() {
         return firstServeUp;
     }
 
@@ -150,12 +162,28 @@ public class State {
         this.firstServeUp = firstServeUp;
     }
 
-    public long getFirstServeDown() {
+    public short getFirstServeDown() {
         return firstServeDown;
     }
 
     public void setFirstServeDown(short firstServeDown) {
         this.firstServeDown = firstServeDown;
+    }
+
+    public short getFirstServeMissUp() {
+        return firstServeMissUp;
+    }
+
+    public void setFirstServeMissUp(short firstServeMissUp) {
+        this.firstServeMissUp = firstServeMissUp;
+    }
+
+    public short getFirstServeMissDown() {
+        return firstServeMissDown;
+    }
+
+    public void setFirstServeMissDown(short firstServeMissDown) {
+        this.firstServeMissDown = firstServeMissDown;
     }
 
     public long getSecondServeUp() {

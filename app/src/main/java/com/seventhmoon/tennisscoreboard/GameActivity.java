@@ -6,15 +6,15 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
+
 import android.os.Bundle;
 
 import android.os.Handler;
 
-import android.os.Parcelable;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -25,8 +25,8 @@ import android.widget.TextView;
 
 
 import com.seventhmoon.tennisscoreboard.Data.State;
+import com.seventhmoon.tennisscoreboard.Data.StateAction;
 
-import java.io.File;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -42,6 +42,10 @@ import static com.seventhmoon.tennisscoreboard.Data.FileOperation.append_record;
 import static com.seventhmoon.tennisscoreboard.Data.FileOperation.check_file_exist;
 import static com.seventhmoon.tennisscoreboard.Data.FileOperation.clear_record;
 import static com.seventhmoon.tennisscoreboard.Data.FileOperation.read_record;
+import static com.seventhmoon.tennisscoreboard.Data.StateAction.OPPT_SCORE;
+import static com.seventhmoon.tennisscoreboard.Data.StateAction.OPPT_SERVE;
+import static com.seventhmoon.tennisscoreboard.Data.StateAction.YOU_SCORE;
+import static com.seventhmoon.tennisscoreboard.Data.StateAction.YOU_SERVE;
 
 
 public class GameActivity extends AppCompatActivity{
@@ -88,7 +92,7 @@ public class GameActivity extends AppCompatActivity{
     private static Handler handler;
     private static long time_use = 0;
 
-    private static Deque<State> stack = new ArrayDeque<>();
+    public static Deque<State> stack = new ArrayDeque<>();
 
     //public static File RootDirectory = new File("/");
 
@@ -99,16 +103,33 @@ public class GameActivity extends AppCompatActivity{
     //for state
     private static boolean is_ace = false;
     private static boolean is_double_fault = false;
+    private static boolean is_second_serve = false;
     private static boolean is_unforced_error = false;
     private static boolean is_forehand_winner = false;
     private static boolean is_backhand_winner = false;
     private static boolean is_forehand_volley = false;
     private static boolean is_backhand_volley = false;
+    private static short first_serve_count = 0;
+    private static short first_serve_miss = 0;
+    private static short second_serve_count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_layout);
+
+
+        is_ace = false;
+        is_double_fault = false;
+        is_second_serve = false;
+        is_unforced_error = false;
+        is_forehand_winner = false;
+        is_backhand_winner = false;
+        is_forehand_volley = false;
+        is_backhand_volley = false;
+        first_serve_count = 0;
+        first_serve_miss = 0;
+        second_serve_count = 0;
 
         Button btnYouScore;
         Button btnBack;
@@ -286,44 +307,76 @@ public class GameActivity extends AppCompatActivity{
                     new_state.setServe(Boolean.valueOf(data[1]));
                     new_state.setInTiebreak(Boolean.valueOf(data[2]));
                     new_state.setFinish(Boolean.valueOf(data[3]));
-                    new_state.setSetsUp(Byte.valueOf(data[4]));
-                    new_state.setSetsDown(Byte.valueOf(data[5]));
-                    new_state.setDuration(Long.valueOf(data[6]));
+                    new_state.setSecondServe(Boolean.valueOf(data[4]));
+                    new_state.setSetsUp(Byte.valueOf(data[5]));
+                    new_state.setSetsDown(Byte.valueOf(data[6]));
+                    new_state.setDuration(Long.valueOf(data[7]));
 
-                    new_state.setSet_game_up((byte) 0x1, Byte.valueOf(data[7]));
-                    new_state.setSet_game_down((byte) 0x1, Byte.valueOf(data[8]));
-                    new_state.setSet_point_up((byte) 0x1, Byte.valueOf(data[9]));
-                    new_state.setSet_point_down((byte) 0x1, Byte.valueOf(data[10]));
-                    new_state.setSet_tiebreak_point_up((byte) 0x1, Byte.valueOf(data[11]));
-                    new_state.setSet_tiebreak_point_down((byte) 0x1, Byte.valueOf(data[12]));
+                    //ace
+                    new_state.setAceCountUp(Byte.valueOf(data[8]));
+                    new_state.setAceCountDown(Byte.valueOf(data[9]));
+                    //first serve
+                    new_state.setFirstServeUp(Short.valueOf(data[10]));
+                    new_state.setFirstServeDown(Short.valueOf(data[11]));
+                    //first serve miss
+                    new_state.setFirstServeMissUp(Short.valueOf(data[12]));
+                    new_state.setFirstServeMissDown(Short.valueOf(data[13]));
+                    //second serve
+                    new_state.setSecondServeUp(Short.valueOf(data[14]));
+                    new_state.setSecondServeDown(Short.valueOf(data[15]));
+                    //double faults
+                    new_state.setDoubleFaultUp(Byte.valueOf(data[16]));
+                    new_state.setDoubleFaultDown(Byte.valueOf(data[17]));
+                    //unforced error
+                    new_state.setUnforceErrorUp(Byte.valueOf(data[18]));
+                    new_state.setUnforceErrorDown(Byte.valueOf(data[19]));
+                    //forehand winner
+                    new_state.setForehandWinnerUp(Byte.valueOf(data[20]));
+                    new_state.setForehandWinnerDown(Byte.valueOf(data[21]));
+                    //backhand winner
+                    new_state.setBackhandWinnerUp(Byte.valueOf(data[22]));
+                    new_state.setBackhandWinnerDown(Byte.valueOf(data[23]));
+                    //forehand volley
+                    new_state.setForehandVolleyUp(Byte.valueOf(data[24]));
+                    new_state.setForehandVolleyDown(Byte.valueOf(data[25]));
+                    //foul to lose
+                    new_state.setFoulToLoseUp(Byte.valueOf(data[26]));
+                    new_state.setFoulToLoseDown(Byte.valueOf(data[27]));
 
-                    new_state.setSet_game_up((byte) 0x2, Byte.valueOf(data[13]));
-                    new_state.setSet_game_down((byte) 0x2, Byte.valueOf(data[14]));
-                    new_state.setSet_point_up((byte) 0x2, Byte.valueOf(data[15]));
-                    new_state.setSet_point_down((byte) 0x2, Byte.valueOf(data[16]));
-                    new_state.setSet_tiebreak_point_up((byte) 0x2, Byte.valueOf(data[17]));
-                    new_state.setSet_tiebreak_point_down((byte) 0x2, Byte.valueOf(data[18]));
+                    new_state.setSet_game_up((byte) 0x1, Byte.valueOf(data[28]));
+                    new_state.setSet_game_down((byte) 0x1, Byte.valueOf(data[29]));
+                    new_state.setSet_point_up((byte) 0x1, Byte.valueOf(data[30]));
+                    new_state.setSet_point_down((byte) 0x1, Byte.valueOf(data[31]));
+                    new_state.setSet_tiebreak_point_up((byte) 0x1, Byte.valueOf(data[32]));
+                    new_state.setSet_tiebreak_point_down((byte) 0x1, Byte.valueOf(data[33]));
 
-                    new_state.setSet_game_up((byte) 0x3, Byte.valueOf(data[19]));
-                    new_state.setSet_game_down((byte) 0x3, Byte.valueOf(data[20]));
-                    new_state.setSet_point_up((byte) 0x3, Byte.valueOf(data[21]));
-                    new_state.setSet_point_down((byte) 0x3, Byte.valueOf(data[22]));
-                    new_state.setSet_tiebreak_point_up((byte) 0x3, Byte.valueOf(data[23]));
-                    new_state.setSet_tiebreak_point_down((byte) 0x3, Byte.valueOf(data[24]));
+                    new_state.setSet_game_up((byte) 0x2, Byte.valueOf(data[34]));
+                    new_state.setSet_game_down((byte) 0x2, Byte.valueOf(data[35]));
+                    new_state.setSet_point_up((byte) 0x2, Byte.valueOf(data[36]));
+                    new_state.setSet_point_down((byte) 0x2, Byte.valueOf(data[37]));
+                    new_state.setSet_tiebreak_point_up((byte) 0x2, Byte.valueOf(data[38]));
+                    new_state.setSet_tiebreak_point_down((byte) 0x2, Byte.valueOf(data[39]));
 
-                    new_state.setSet_game_up((byte) 0x4, Byte.valueOf(data[25]));
-                    new_state.setSet_game_down((byte) 0x4, Byte.valueOf(data[26]));
-                    new_state.setSet_point_up((byte) 0x4, Byte.valueOf(data[27]));
-                    new_state.setSet_point_down((byte) 0x4, Byte.valueOf(data[28]));
-                    new_state.setSet_tiebreak_point_up((byte) 0x4, Byte.valueOf(data[29]));
-                    new_state.setSet_tiebreak_point_down((byte) 0x4, Byte.valueOf(data[30]));
+                    new_state.setSet_game_up((byte) 0x3, Byte.valueOf(data[40]));
+                    new_state.setSet_game_down((byte) 0x3, Byte.valueOf(data[41]));
+                    new_state.setSet_point_up((byte) 0x3, Byte.valueOf(data[42]));
+                    new_state.setSet_point_down((byte) 0x3, Byte.valueOf(data[43]));
+                    new_state.setSet_tiebreak_point_up((byte) 0x3, Byte.valueOf(data[44]));
+                    new_state.setSet_tiebreak_point_down((byte) 0x3, Byte.valueOf(data[45]));
 
-                    new_state.setSet_game_up((byte) 0x5, Byte.valueOf(data[31]));
-                    new_state.setSet_game_down((byte) 0x5, Byte.valueOf(data[32]));
-                    new_state.setSet_point_up((byte) 0x5, Byte.valueOf(data[33]));
-                    new_state.setSet_point_down((byte) 0x5, Byte.valueOf(data[34]));
-                    new_state.setSet_tiebreak_point_up((byte) 0x5, Byte.valueOf(data[35]));
-                    new_state.setSet_tiebreak_point_down((byte) 0x5, Byte.valueOf(data[36]));
+                    new_state.setSet_game_up((byte) 0x4, Byte.valueOf(data[46]));
+                    new_state.setSet_game_down((byte) 0x4, Byte.valueOf(data[47]));
+                    new_state.setSet_point_up((byte) 0x4, Byte.valueOf(data[48]));
+                    new_state.setSet_point_down((byte) 0x4, Byte.valueOf(data[49]));
+                    new_state.setSet_tiebreak_point_up((byte) 0x4, Byte.valueOf(data[50]));
+                    new_state.setSet_tiebreak_point_down((byte) 0x4, Byte.valueOf(data[51]));
+
+                    new_state.setSet_game_up((byte) 0x5, Byte.valueOf(data[52]));
+                    new_state.setSet_game_down((byte) 0x5, Byte.valueOf(data[53]));
+                    new_state.setSet_point_up((byte) 0x5, Byte.valueOf(data[54]));
+                    new_state.setSet_point_down((byte) 0x5, Byte.valueOf(data[55]));
+                    new_state.setSet_tiebreak_point_up((byte) 0x5, Byte.valueOf(data[56]));
+                    new_state.setSet_tiebreak_point_down((byte) 0x5, Byte.valueOf(data[57]));
 
                     stack.addLast(new_state);
                 }
@@ -423,6 +476,11 @@ public class GameActivity extends AppCompatActivity{
                             imgServeDown.setVisibility(View.INVISIBLE);
                         }
                     }
+
+                    if (top.isSecondServe())
+                        is_second_serve = true;
+                    else
+                        is_second_serve = false;
 
                     /*if (top.isServe()) {
                         imgServeUp.setVisibility(View.INVISIBLE);
@@ -547,7 +605,7 @@ public class GameActivity extends AppCompatActivity{
         btnLoad = (Button) findViewById(R.id.btnLoad);
 
         TextView textViewPlayerUp = (TextView) findViewById(R.id.textViewPlayerUp);
-        TextView textViewPlayerDown = (TextView) findViewById(R.id.textViewPlayerDown);
+        final TextView textViewPlayerDown = (TextView) findViewById(R.id.textViewPlayerDown);
 
         textViewPlayerUp.setText(playerUp);
         textViewPlayerDown.setText(playerDown);
@@ -705,73 +763,154 @@ public class GameActivity extends AppCompatActivity{
 
 
                 if (imgServeDown.getVisibility() == View.VISIBLE) { //serve
-                    items.add("Ace");
-                    items.add("Second Serve");
-                    items.add("Double Fault");
-                    items.add("Unforced Error");
-                    items.add("Forehand Winner");
-                    items.add("Backhand Winner");
-                    items.add("Forehand Volley");
-                    items.add("Backhand Volley");
-                    items.add("Foul to lose");
+                    if (is_second_serve) {
+                        items.add(getResources().getString(R.string.game_ace));
+                        items.add(getResources().getString(R.string.game_double_faults));
+                        items.add(getResources().getString(R.string.game_unforced_error));
+                        items.add(getResources().getString(R.string.game_forehand_winner));
+                        items.add(getResources().getString(R.string.game_backhand_winner));
+                        items.add(getResources().getString(R.string.game_forehand_volley));
+                        items.add(getResources().getString(R.string.game_backhand_volley));
+                        items.add(getResources().getString(R.string.game_foul_to_lose));
+                        items.add(getResources().getString(R.string.game_other_winner));
+                        items.add(getResources().getString(R.string.game_serve_net));
+                    } else {
+                        items.add(getResources().getString(R.string.game_ace));
+                        items.add(getResources().getString(R.string.game_second_serve));
+                        items.add(getResources().getString(R.string.game_unforced_error));
+                        items.add(getResources().getString(R.string.game_forehand_winner));
+                        items.add(getResources().getString(R.string.game_backhand_winner));
+                        items.add(getResources().getString(R.string.game_forehand_volley));
+                        items.add(getResources().getString(R.string.game_backhand_volley));
+                        items.add(getResources().getString(R.string.game_foul_to_lose));
+                        items.add(getResources().getString(R.string.game_other_winner));
+                        items.add(getResources().getString(R.string.game_serve_net));
+                    }
+
 
                     ArrayAdapter<String> adapter = new ArrayAdapter<> (GameActivity.this, android.R.layout.select_dialog_item,items);
 
                     AlertDialog.Builder builder  = new AlertDialog.Builder(GameActivity.this);
 
-                    builder.setTitle(playerDown +" select action:");
+                    builder.setTitle(playerDown + " "+getResources().getString(R.string.game_select_action));
                     builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
-                        public void onClick( DialogInterface dialog, int item ) { //pick from camer
-                            if (item == 0) { //ace
-                                calculateScore(true);
-                                is_ace = true;
-                            } else if (item == 1){
-                                Log.d(TAG, "second serve");
-                            } else if (item == 2){ //double fault
-                                calculateScore(false);
-                            } else if (item == 3) { //unforced error
-                                calculateScore(false);
-                            } else if (item == 4) { //forehand winner
-                                calculateScore(true);
-                            } else if (item == 5) { //backhand winner
-                                calculateScore(true);
-                            } else if (item == 6) { //forehand volley
-                                calculateScore(true);
-                            } else if (item == 7) { //backhand volley
-                                calculateScore(true);
-                            } else if (item == 8) { //Foul to lose
-                                calculateScore(false);
+                        public void onClick( DialogInterface dialog, int item ) { //pick from gamer
+                            if (is_second_serve) { //in second serve
+                                if (item == 0) { //ace
+                                    is_ace = true;
+                                    second_serve_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                    is_second_serve = false;
+                                } else if (item == 1){ //double fault
+                                    is_double_fault = true;
+                                    second_serve_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                    is_second_serve = false;
+                                } else if (item == 2) { //unforced error
+                                    second_serve_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                    is_second_serve = false;
+                                } else if (item == 3) { //forehand winner
+                                    second_serve_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                    is_second_serve = false;
+                                } else if (item == 4) { //backhand winner
+                                    second_serve_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                    is_second_serve = false;
+                                } else if (item == 5) { //forehand volley
+                                    second_serve_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                    is_second_serve = false;
+                                } else if (item == 6) { //backhand volley
+                                    second_serve_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                    is_second_serve = false;
+                                } else if (item == 7) { //Foul to lose
+                                    second_serve_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                    is_second_serve = false;
+                                } else if (item == 8) { //other winner
+                                    second_serve_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                    is_second_serve = false;
+                                } else if (item == 9) { //net in
+                                    second_serve_count = 1;
+                                    calculateScore(YOU_SERVE);
+                                }
+                                Log.d(TAG, "first: "+first_serve_count+" f_miss: "+first_serve_miss+" second: "+second_serve_count);
+                            } else { //first serve
+                                if (item == 0) { //ace
+                                    is_ace = true;
+                                    first_serve_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                } else if (item == 1){
+                                    Log.d(TAG, "second serve");
+                                    first_serve_count = 1;
+                                    first_serve_miss = 1;
+                                    is_second_serve = true;
+                                    calculateScore(YOU_SERVE);
+
+                                } else if (item == 2) { //unforced error
+                                    first_serve_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                } else if (item == 3) { //forehand winner
+                                    first_serve_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                } else if (item == 4) { //backhand winner
+                                    first_serve_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                } else if (item == 5) { //forehand volley
+                                    first_serve_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                } else if (item == 6) { //backhand volley
+                                    first_serve_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                } else if (item == 7) { //Foul to lose
+                                    first_serve_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                } else if (item == 8) { //other winner
+                                    first_serve_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                } else if (item == 9) { //net in
+                                    first_serve_count = 1;
+                                    calculateScore(YOU_SERVE);
+                                }
+                                Log.d(TAG, "first: "+first_serve_count+" f_miss: "+first_serve_miss+" second: "+second_serve_count);
                             }
                         }
                     } );
                     builder.show();
                 } else {
-                    items.add("Unforced Error");
-                    items.add("Forehand Winner");
-                    items.add("Backhand Winner");
-                    items.add("Forehand Volley");
-                    items.add("Backhand Volley");
-                    items.add("Foul to lose");
+                    items.add(getResources().getString(R.string.game_unforced_error));
+                    items.add(getResources().getString(R.string.game_forehand_winner));
+                    items.add(getResources().getString(R.string.game_backhand_winner));
+                    items.add(getResources().getString(R.string.game_forehand_volley));
+                    items.add(getResources().getString(R.string.game_backhand_volley));
+                    items.add(getResources().getString(R.string.game_foul_to_lose));
+                    items.add(getResources().getString(R.string.game_other_winner));
 
                     ArrayAdapter<String> adapter = new ArrayAdapter<> (GameActivity.this, android.R.layout.select_dialog_item,items);
 
                     AlertDialog.Builder builder  = new AlertDialog.Builder(GameActivity.this);
 
-                    builder.setTitle(playerDown +" select action:");
+                    builder.setTitle(playerDown +" "+getResources().getString(R.string.game_select_action));
                     builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
                         public void onClick( DialogInterface dialog, int item ) { //pick from camer
                             if (item == 0) { //unforced error
-                                calculateScore(false);
+                                calculateScore(OPPT_SCORE);
                             } else if (item == 1) { //forehand winner
-                                calculateScore(true);
+                                calculateScore(YOU_SCORE);
                             } else if (item == 2) { //backhand winner
-                                calculateScore(true);
+                                calculateScore(YOU_SCORE);
                             } else if (item == 3) { //forehand volley
-                                calculateScore(true);
+                                calculateScore(YOU_SCORE);
                             } else if (item == 4) { //backhand volley
-                                calculateScore(true);
+                                calculateScore(YOU_SCORE);
                             } else if (item == 5) { //Foul to lose
-                                calculateScore(false);
+                                calculateScore(OPPT_SCORE);
+                            } else if (item == 6) { //other winner
+                                calculateScore(YOU_SCORE);
                             }
                         }
                     } );
@@ -791,73 +930,156 @@ public class GameActivity extends AppCompatActivity{
                 ArrayList<String> items = new ArrayList<>();
 
                 if (imgServeUp.getVisibility() == View.VISIBLE) { //serve
-                    items.add("Ace");
-                    items.add("Second Serve");
-                    items.add("Double Fault");
-                    items.add("Unforced Error");
-                    items.add("Forehand Winner");
-                    items.add("Backhand Winner");
-                    items.add("Forehand Volley");
-                    items.add("Backhand Volley");
-                    items.add("Foul to lose");
+                    if (is_second_serve) { //second serve
+                        items.add(getResources().getString(R.string.game_ace));
+                        items.add(getResources().getString(R.string.game_double_faults));
+                        items.add(getResources().getString(R.string.game_unforced_error));
+                        items.add(getResources().getString(R.string.game_forehand_winner));
+                        items.add(getResources().getString(R.string.game_backhand_winner));
+                        items.add(getResources().getString(R.string.game_forehand_volley));
+                        items.add(getResources().getString(R.string.game_backhand_volley));
+                        items.add(getResources().getString(R.string.game_foul_to_lose));
+                        items.add(getResources().getString(R.string.game_other_winner));
+                        items.add(getResources().getString(R.string.game_serve_net));
+                    } else { //first serve
+                        items.add(getResources().getString(R.string.game_ace));
+                        items.add(getResources().getString(R.string.game_second_serve));
+                        items.add(getResources().getString(R.string.game_unforced_error));
+                        items.add(getResources().getString(R.string.game_forehand_winner));
+                        items.add(getResources().getString(R.string.game_backhand_winner));
+                        items.add(getResources().getString(R.string.game_forehand_volley));
+                        items.add(getResources().getString(R.string.game_backhand_volley));
+                        items.add(getResources().getString(R.string.game_foul_to_lose));
+                        items.add(getResources().getString(R.string.game_other_winner));
+                        items.add(getResources().getString(R.string.game_serve_net));
+                    }
+
 
                     ArrayAdapter<String> adapter = new ArrayAdapter<> (GameActivity.this, android.R.layout.select_dialog_item,items);
 
                     AlertDialog.Builder builder  = new AlertDialog.Builder(GameActivity.this);
 
-                    builder.setTitle(playerUp + " select action:");
+                    builder.setTitle(playerUp + " "+getResources().getString(R.string.game_select_action));
                     builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
-                        public void onClick( DialogInterface dialog, int item ) { //pick from camer
-                            if (item == 0) { //ace
-                                calculateScore(false);
-                                is_ace = true;
-                            } else if (item == 1){
-                                Log.d(TAG, "second serve");
-                            } else if (item == 2){ //double fault
-                                calculateScore(true);
-                            } else if (item == 3) { //unforced error
-                                calculateScore(true);
-                            } else if (item == 4) { //forehand winner
-                                calculateScore(false);
-                            } else if (item == 5) { //backhand winner
-                                calculateScore(false);
-                            } else if (item == 6) { //forehand volley
-                                calculateScore(false);
-                            } else if (item == 7) { //backhand volley
-                                calculateScore(false);
-                            } else if (item == 8) { //Foul to lose
-                                calculateScore(true);
+                        public void onClick( DialogInterface dialog, int item ) { //pick from gamer
+
+                            if (is_second_serve) { //in second serve
+                                if (item == 0) { //ace
+                                    is_ace = true;
+                                    second_serve_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                    is_second_serve = false;
+                                } else if (item == 1){ //double fault
+                                    is_double_fault = true;
+                                    second_serve_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                    is_second_serve = false;
+                                } else if (item == 2) { //unforced error
+                                    second_serve_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                    is_second_serve = false;
+                                } else if (item == 3) { //forehand winner
+                                    second_serve_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                    is_second_serve = false;
+                                } else if (item == 4) { //backhand winner
+                                    second_serve_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                    is_second_serve = false;
+                                } else if (item == 5) { //forehand volley
+                                    second_serve_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                    is_second_serve = false;
+                                } else if (item == 6) { //backhand volley
+                                    second_serve_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                    is_second_serve = false;
+                                } else if (item == 7) { //Foul to lose
+                                    second_serve_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                    is_second_serve = false;
+                                } else if (item == 8) { //other winner
+                                    second_serve_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                    is_second_serve = false;
+                                } else if (item == 9) { //net in
+                                    second_serve_count = 1;
+                                    calculateScore(OPPT_SERVE);
+                                }
+                                Log.d(TAG, "first: "+first_serve_count+" f_miss: "+first_serve_miss+" second: "+second_serve_count);
+                            } else { //first serve
+                                if (item == 0) { //ace
+                                    is_ace = true;
+                                    first_serve_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                } else if (item == 1){
+                                    Log.d(TAG, "second serve");
+                                    first_serve_count = 1;
+                                    first_serve_miss = 1;
+                                    is_second_serve = true;
+                                    calculateScore(OPPT_SERVE);
+
+
+                                } else if (item == 2) { //unforced error
+                                    first_serve_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                } else if (item == 3) { //forehand winner
+                                    first_serve_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                } else if (item == 4) { //backhand winner
+                                    first_serve_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                } else if (item == 5) { //forehand volley
+                                    first_serve_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                } else if (item == 6) { //backhand volley
+                                    first_serve_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                } else if (item == 7) { //Foul to lose
+                                    first_serve_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                } else if (item == 8) { //other winner
+                                    first_serve_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                } else if (item == 9) { //net in
+                                    first_serve_count = 1;
+                                    calculateScore(OPPT_SERVE);
+                                }
+                                Log.d(TAG, "first: "+first_serve_count+" f_miss: "+first_serve_miss+" second: "+second_serve_count);
                             }
                         }
                     } );
                     builder.show();
                 } else {
-                    items.add("Unforced Error");
-                    items.add("Forehand Winner");
-                    items.add("Backhand Winner");
-                    items.add("Forehand Volley");
-                    items.add("Backhand Volley");
-                    items.add("Foul to lose");
+                    items.add(getResources().getString(R.string.game_unforced_error));
+                    items.add(getResources().getString(R.string.game_forehand_winner));
+                    items.add(getResources().getString(R.string.game_backhand_winner));
+                    items.add(getResources().getString(R.string.game_forehand_volley));
+                    items.add(getResources().getString(R.string.game_backhand_volley));
+                    items.add(getResources().getString(R.string.game_foul_to_lose));
+                    items.add(getResources().getString(R.string.game_other_winner));
 
                     ArrayAdapter<String> adapter = new ArrayAdapter<> (GameActivity.this, android.R.layout.select_dialog_item,items);
 
                     AlertDialog.Builder builder  = new AlertDialog.Builder(GameActivity.this);
 
-                    builder.setTitle(playerUp + " select action:");
+                    builder.setTitle(playerUp + " "+getResources().getString(R.string.game_select_action));
                     builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
                         public void onClick( DialogInterface dialog, int item ) { //pick from camer
                             if (item == 0) { //unforced error
-                                calculateScore(true);
+                                calculateScore(YOU_SCORE);
                             } else if (item == 1) { //forehand winner
-                                calculateScore(false);
+                                calculateScore(OPPT_SCORE);
                             } else if (item == 2) { //backhand winner
-                                calculateScore(false);
+                                calculateScore(OPPT_SCORE);
                             } else if (item == 3) { //forehand volley
-                                calculateScore(false);
+                                calculateScore(OPPT_SCORE);
                             } else if (item == 4) { //backhand volley
-                                calculateScore(false);
+                                calculateScore(OPPT_SCORE);
                             } else if (item == 5) { //Foul to lose
-                                calculateScore(true);
+                                calculateScore(YOU_SCORE);
+                            } else if (item == 6) { //other winner
+                                calculateScore(OPPT_SCORE);
                             }
                         }
                     } );
@@ -963,11 +1185,32 @@ public class GameActivity extends AppCompatActivity{
                             +s.isServe()+";"
                             +s.isInTiebreak()+";"
                             +s.isFinish()+";"
-                            //+s.isDeuce()+";"
-                            //+s.getSetLimit()+";"
+                            +s.isSecondServe()+";"
                             +s.getSetsUp()+";"
                             +s.getSetsDown()+";"
                             +s.getDuration()+";"
+                            +s.getAceCountUp()+";"
+                            +s.getAceCountDown()+";"
+                            +s.getFirstServeUp()+";"
+                            +s.getFirstServeDown()+";"
+                            +s.getFirstServeMissUp()+";"
+                            +s.getFirstServeMissDown()+";"
+                            +s.getSecondServeUp()+";"
+                            +s.getSecondServeDown()+";"
+                            +s.getDoubleFaultUp()+";"
+                            +s.getDoubleFaultDown()+";"
+                            +s.getUnforceErrorUp()+";"
+                            +s.getUnforceErrorDown()+";"
+                            +s.getForehandWinnerUp()+";"
+                            +s.getForehandWinnerDown()+";"
+                            +s.getBackhandWinnerUp()+";"
+                            +s.getBackhandWinnerDown()+";"
+                            +s.getForehandVolleyUp()+";"
+                            +s.getForehandVolleyDown()+";"
+                            +s.getBackhandVolleyUp()+";"
+                            +s.getBackhandVolleyDown()+";"
+                            +s.getFoulToLoseUp()+";"
+                            +s.getFoulToLoseDown()+";"
                             +s.getSet_game_up((byte)0x1)+";"
                             +s.getSet_game_down((byte)0x1)+";"
                             +s.getSet_point_up((byte)0x1)+";"
@@ -1045,7 +1288,7 @@ public class GameActivity extends AppCompatActivity{
 
     }
 
-    private void calculateScore(boolean you_score) {
+    private void calculateScore(StateAction action) {
         byte current_set;
         State new_state=null;
         //load top state first
@@ -1077,7 +1320,20 @@ public class GameActivity extends AppCompatActivity{
             Log.d(TAG, "tiebreak = " + tiebreak);
             Log.d(TAG, "deuce = " + deuce);
             Log.d(TAG, "serve = " + serve);
+            Log.d(TAG, "second serve = "+ is_second_serve);
+
+            Log.d(TAG, "Ace : up = "+current_state.getAceCountUp()+" down = "+current_state.getAceCountDown());
+            Log.d(TAG, "First serve miss/count : up = "+current_state.getFirstServeMissUp()+"/"+current_state.getFirstServeUp()+
+                    " down = "+current_state.getFirstServeMissDown()+"/"+current_state.getFirstServeDown());
+            Log.d(TAG, "Second serve miss/count : up = "+current_state.getDoubleFaultUp()+"/"+current_state.getSecondServeUp()+
+                    " down = "+current_state.getDoubleFaultDown()+"/"+current_state.getSecondServeDown());
             Log.d(TAG, "======================");
+            Log.d(TAG, "Unforced Error : up = "+current_state.getUnforceErrorUp()+ " down = "+current_state.getUnforceErrorDown());
+            Log.d(TAG, "Forehand winner : up = "+current_state.getForehandWinnerUp()+ " down = "+current_state.getForehandWinnerDown());
+            Log.d(TAG, "Backhand winner : up = "+current_state.getBackhandWinnerUp()+ " down = "+current_state.getBackhandWinnerDown());
+            Log.d(TAG, "Forehand Volley : up = "+current_state.getForehandVolleyUp()+ " down = "+current_state.getForehandVolleyDown());
+            Log.d(TAG, "Backhand Volley : up = "+current_state.getBackhandVolleyUp()+ " down = "+current_state.getBackhandVolleyDown());
+            Log.d(TAG, "Foul to lose : up = "+current_state.getFoulToLoseUp()+ " down = "+current_state.getFoulToLoseDown());
 
             Log.d(TAG, "current set : " + current_state.getCurrent_set());
             Log.d(TAG, "Serve : " + current_state.isServe());
@@ -1156,56 +1412,113 @@ public class GameActivity extends AppCompatActivity{
                     handler.postDelayed(updateTimer, 1000);
                 }
 
-
                 Log.d(TAG, "*** Game is running ***");
-                if (you_score) {
-                    Log.d(TAG, "=== I score start ===");
+                new_state = new State();
 
-                    if (stack.isEmpty()) { //the state stack is empty
-                        new_state = new State();
-                        Log.d(TAG, "==>[Stack empty]");
-                        if (serve.equals("0"))
-                            new_state.setServe(true);
-                        else
-                            new_state.setServe(false);
 
-                        //set current set = 1
-                        new_state.setCurrent_set((byte) 0x01);
 
-                        new_state.setSet_point_down((byte) 0x01, (byte) 0x01);
+                switch (action) {
+                    case YOU_SERVE: //you serve
+                        Log.d(TAG, "=== I serve start ===");
+                        if (stack.isEmpty()) { //the state stack is empty
+                            Log.d(TAG, "==>[Stack empty]");
 
-                        new_state.setDuration(time_use);
-                        //new_state.setSet_1_point_down((byte)0x01);
-                        /*new_state.setSetLimit(Byte.valueOf(set));
+                            if (serve.equals("0"))
+                                new_state.setServe(true);
+                            else
+                                new_state.setServe(false);
 
-                        if (deuce.equals("0")) {
-                            new_state.setDeuce(true);
+                            //set current set = 1
+                            new_state.setCurrent_set((byte) 0x01);
+
+                            new_state.setDuration(time_use);
+
+                            new_state.setFirstServeDown(first_serve_count);
+                            new_state.setFirstServeMissDown(first_serve_miss);
                         } else {
-                            new_state.setDeuce(false);
-                        }*/
+                            Log.d(TAG, "==>[Stack not empty]");
+                            new_state.setFirstServeDown((short) (current_state.getFirstServeDown() + first_serve_count));
+                            new_state.setFirstServeMissDown((short) (current_state.getFirstServeMissDown() + first_serve_miss));
+                            new_state.setSecondServeDown((short) (current_state.getSecondServeDown() + second_serve_count));
 
-                        //Log.e(TAG, "get_set_1_point_down = "+new_state.getSet_1_point_down()+", isServe ? "+ (new_state.isServe() ? "YES" : "NO"));
-                    } else {
-                        Log.d(TAG, "==>[Stack not empty]");
+                            new_state.setCurrent_set(current_state.getCurrent_set());
+                            new_state.setServe(current_state.isServe());
+                            new_state.setInTiebreak(current_state.isInTiebreak());
+                            new_state.setFinish(current_state.isFinish());
+                            new_state.setSecondServe(current_state.isSecondServe());
 
-                        if (current_state.isFinish()) {
-                            Log.d(TAG, "**** Game Finish ****");
+                            if (imgServeDown.getVisibility() == View.VISIBLE) { //I serve
+                                if (is_second_serve) { //second serve
+                                    new_state.setSecondServeDown((short)(current_state.getSecondServeDown()+1));
+                                } else { //first serve
+                                    new_state.setFirstServeDown((short)(current_state.getFirstServeDown()+1));
+                                }
+                            }
+
+                            new_state.setSetsUp(current_state.getSetsUp());
+                            new_state.setSetsDown(current_state.getSetsDown());
+
+                            new_state.setDuration(time_use);
+
+                            new_state.setAceCountUp(current_state.getAceCountUp());
+                            new_state.setAceCountDown(current_state.getAceCountDown());
+                            new_state.setFirstServeUp(current_state.getFirstServeUp());
+                            new_state.setFirstServeDown(current_state.getFirstServeDown());
+                            new_state.setFirstServeMissUp(current_state.getFirstServeMissUp());
+                            new_state.setFirstServeMissDown(current_state.getFirstServeMissDown());
+                            //new_state.setSecondServeUp(current_state.getSecondServeUp());
+
+                            for (byte i=1; i<=set_limit; i++) {
+                                new_state.setSet_game_up(i, current_state.getSet_game_up(i));
+                                new_state.setSet_game_down(i, current_state.getSet_game_down(i));
+                                new_state.setSet_point_up(i, current_state.getSet_point_up(i));
+                                new_state.setSet_point_down(i, current_state.getSet_point_down(i));
+                                new_state.setSet_tiebreak_point_up(i, current_state.getSet_tiebreak_point_up(i));
+                                new_state.setSet_tiebreak_point_down(i, current_state.getSet_tiebreak_point_down(i));
+                            }
+                        }
+
+                        first_serve_count = 0;
+                        first_serve_miss = 0;
+                        second_serve_count = 0;
+                        Log.d(TAG, "=== I serve end ===");
+                        break;
+                    case OPPT_SERVE: //oppt serve
+                        Log.d(TAG, "=== oppt serve start ===");
+                        if (stack.isEmpty()) { //the state stack is empty
+                            Log.d(TAG, "==>[Stack empty]");
+
+                            if (serve.equals("0"))
+                                new_state.setServe(true);
+                            else
+                                new_state.setServe(false);
+
+                            //set current set = 1
+                            new_state.setCurrent_set((byte) 0x01);
+
+                            new_state.setDuration(time_use);
+
+                            new_state.setFirstServeUp(first_serve_count);
+                            new_state.setFirstServeMissUp(first_serve_miss);
                         } else {
-                            new_state = new State();
-                            //new_state = stack.peek();
-                            // copy previous state;
+                            Log.d(TAG, "==>[Stack not empty]");
+                            new_state.setFirstServeUp((short) (current_state.getFirstServeUp() + first_serve_count));
+                            new_state.setFirstServeMissUp((short) (current_state.getFirstServeMissUp() + first_serve_miss));
+                            new_state.setSecondServeUp((short) (current_state.getSecondServeUp() + second_serve_count));
+
                             new_state.setCurrent_set(current_state.getCurrent_set());
                             new_state.setServe(current_state.isServe());
                             new_state.setInTiebreak(current_state.isInTiebreak());
                             new_state.setFinish(current_state.isFinish());
 
-                            /*if (deuce.equals("0")) {
-                                new_state.setDeuce(true);
-                            } else {
-                                new_state.setDeuce(false);
+                            if (imgServeDown.getVisibility() == View.VISIBLE) { //I serve
+                                if (is_second_serve) { //second serve
+                                    new_state.setSecondServeDown((short)(current_state.getSecondServeDown()+1));
+                                } else { //first serve
+                                    new_state.setFirstServeDown((short)(current_state.getFirstServeDown()+1));
+                                }
                             }
 
-                            new_state.setSetLimit(current_state.getSetLimit());*/
                             new_state.setSetsUp(current_state.getSetsUp());
                             new_state.setSetsDown(current_state.getSetsDown());
 
@@ -1219,56 +1532,52 @@ public class GameActivity extends AppCompatActivity{
                                 new_state.setSet_tiebreak_point_up(i, current_state.getSet_tiebreak_point_up(i));
                                 new_state.setSet_tiebreak_point_down(i, current_state.getSet_tiebreak_point_down(i));
                             }
-
-
-                            //you score!
-                            byte point = current_state.getSet_point_down(current_set);
-                            Log.d(TAG, "Your point " + point + " change to " + (++point));
-                            new_state.setSet_point_down(current_set, point);
-
-                            checkPoint(new_state);
-
-                            checkGames(new_state);
                         }
-                    }
 
-                    Log.d(TAG, "=== I score end ===");
-                } else {
-                    Log.d(TAG, "=== Oppt score start ===");
-                    if (stack.isEmpty()) { //the state stack is empty
-                        new_state = new State();
-                        Log.d(TAG, "==>[Stack empty]");
-                        if (serve.equals("0"))
-                            new_state.setServe(true);
-                        else
-                            new_state.setServe(false);
+                        first_serve_count = 0;
+                        first_serve_miss = 0;
+                        second_serve_count = 0;
+                        Log.d(TAG, "=== oppt serve end ===");
+                        break;
+                    case YOU_SCORE: //you score
+                        Log.d(TAG, "=== I score start ===");
 
-                        //set current set = 1
-                        new_state.setCurrent_set((byte) 0x01);
+                        if (stack.isEmpty()) { //the state stack is empty
 
-                        new_state.setSet_point_up((byte) 0x01, (byte) 0x01);
+                            Log.d(TAG, "==>[Stack empty]");
+                            if (serve.equals("0"))
+                                new_state.setServe(true);
+                            else
+                                new_state.setServe(false);
 
-                        new_state.setDuration(time_use);
-                        //Log.e(TAG, "get_set_1_point_up = "+new_state.getSet_1_point_up()+", isServe ? "+ (new_state.isServe() ? "YES" : "NO"));
-                        /*new_state.setSetLimit(Byte.valueOf(set));
+                            //set current set = 1
+                            new_state.setCurrent_set((byte) 0x01);
 
-                        if (deuce.equals("0")) {
-                            new_state.setDeuce(true);
+                            new_state.setSet_point_down((byte) 0x01, (byte) 0x01);
+
+                            new_state.setDuration(time_use);
+
                         } else {
-                            new_state.setDeuce(false);
-                        }*/
-                    } else {
-                        Log.d(TAG, "==>[Stack not empty]");
-                        if (current_state.isFinish()) {
-                            Log.d(TAG, "**** Game Finish ****");
-                        } else {
-                            new_state = new State();
-                            //new_state = stack.peek();
-                            // copy previous state;
-                            new_state.setCurrent_set(current_state.getCurrent_set());
-                            new_state.setServe(current_state.isServe());
-                            new_state.setInTiebreak(current_state.isInTiebreak());
-                            new_state.setFinish(current_state.isFinish());
+                            Log.d(TAG, "==>[Stack not empty]");
+
+                            if (current_state.isFinish()) {
+                                Log.d(TAG, "**** Game Finish ****");
+                            } else {
+                                //new_state = new State();
+                                //new_state = stack.peek();
+                                // copy previous state;
+                                new_state.setCurrent_set(current_state.getCurrent_set());
+                                new_state.setServe(current_state.isServe());
+                                new_state.setInTiebreak(current_state.isInTiebreak());
+                                new_state.setFinish(current_state.isFinish());
+
+                                if (imgServeDown.getVisibility() == View.VISIBLE) { //I serve
+                                    if (is_second_serve) { //second serve
+                                        new_state.setSecondServeDown((short)(current_state.getSecondServeDown()+1));
+                                    } else { //first serve
+                                        new_state.setFirstServeDown((short)(current_state.getFirstServeDown()+1));
+                                    }
+                                }
 
                             /*if (deuce.equals("0")) {
                                 new_state.setDeuce(true);
@@ -1277,31 +1586,111 @@ public class GameActivity extends AppCompatActivity{
                             }
 
                             new_state.setSetLimit(current_state.getSetLimit());*/
-                            new_state.setSetsUp(current_state.getSetsUp());
-                            new_state.setSetsDown(current_state.getSetsDown());
+                                new_state.setSetsUp(current_state.getSetsUp());
+                                new_state.setSetsDown(current_state.getSetsDown());
+
+                                new_state.setDuration(time_use);
+
+                                for (byte i=1; i<=set_limit; i++) {
+                                    new_state.setSet_game_up(i, current_state.getSet_game_up(i));
+                                    new_state.setSet_game_down(i, current_state.getSet_game_down(i));
+                                    new_state.setSet_point_up(i, current_state.getSet_point_up(i));
+                                    new_state.setSet_point_down(i, current_state.getSet_point_down(i));
+                                    new_state.setSet_tiebreak_point_up(i, current_state.getSet_tiebreak_point_up(i));
+                                    new_state.setSet_tiebreak_point_down(i, current_state.getSet_tiebreak_point_down(i));
+                                }
+
+
+                                //you score!
+                                byte point = current_state.getSet_point_down(current_set);
+                                Log.d(TAG, "Your point " + point + " change to " + (++point));
+                                new_state.setSet_point_down(current_set, point);
+
+                                checkPoint(new_state);
+
+                                checkGames(new_state);
+                            }
+                        }
+
+                        Log.d(TAG, "=== I score end ===");
+                        break;
+                    case OPPT_SCORE: //oppt score
+                        Log.d(TAG, "=== Oppt score start ===");
+                        if (stack.isEmpty()) { //the state stack is empty
+                            //new_state = new State();
+                            Log.d(TAG, "==>[Stack empty]");
+                            if (serve.equals("0"))
+                                new_state.setServe(true);
+                            else
+                                new_state.setServe(false);
+
+                            //set current set = 1
+                            new_state.setCurrent_set((byte) 0x01);
+
+                            new_state.setSet_point_up((byte) 0x01, (byte) 0x01);
 
                             new_state.setDuration(time_use);
+                            //Log.e(TAG, "get_set_1_point_up = "+new_state.getSet_1_point_up()+", isServe ? "+ (new_state.isServe() ? "YES" : "NO"));
+                        /*new_state.setSetLimit(Byte.valueOf(set));
 
-                            for (byte i=1; i<=set_limit; i++) {
-                                new_state.setSet_game_up(i, current_state.getSet_game_up(i));
-                                new_state.setSet_game_down(i, current_state.getSet_game_down(i));
-                                new_state.setSet_point_up(i, current_state.getSet_point_up(i));
-                                new_state.setSet_point_down(i, current_state.getSet_point_down(i));
-                                new_state.setSet_tiebreak_point_up(i, current_state.getSet_tiebreak_point_up(i));
-                                new_state.setSet_tiebreak_point_down(i, current_state.getSet_tiebreak_point_down(i));
+                        if (deuce.equals("0")) {
+                            new_state.setDeuce(true);
+                        } else {
+                            new_state.setDeuce(false);
+                        }*/
+                        } else {
+                            Log.d(TAG, "==>[Stack not empty]");
+                            if (current_state.isFinish()) {
+                                Log.d(TAG, "**** Game Finish ****");
+                            } else {
+                                //new_state = new State();
+                                //new_state = stack.peek();
+                                // copy previous state;
+                                new_state.setCurrent_set(current_state.getCurrent_set());
+                                new_state.setServe(current_state.isServe());
+                                new_state.setInTiebreak(current_state.isInTiebreak());
+                                new_state.setFinish(current_state.isFinish());
+
+                                if (imgServeUp.getVisibility() == View.VISIBLE) { //I serve
+                                    if (is_second_serve) { //second serve
+                                        new_state.setSecondServeUp((short)(current_state.getSecondServeUp()+1));
+                                    } else { //first serve
+                                        new_state.setFirstServeUp((short)(current_state.getFirstServeUp()+1));
+                                    }
+                                }
+                            /*if (deuce.equals("0")) {
+                                new_state.setDeuce(true);
+                            } else {
+                                new_state.setDeuce(false);
                             }
 
-                            //oppt score!
-                            byte point = current_state.getSet_point_up(current_set);
-                            Log.d(TAG, "Opponent point " + point + " change to " + (++point));
-                            new_state.setSet_point_up(current_set, point);
+                            new_state.setSetLimit(current_state.getSetLimit());*/
+                                new_state.setSetsUp(current_state.getSetsUp());
+                                new_state.setSetsDown(current_state.getSetsDown());
 
-                            checkPoint(new_state);
+                                new_state.setDuration(time_use);
 
-                            checkGames(new_state);
+                                for (byte i=1; i<=set_limit; i++) {
+                                    new_state.setSet_game_up(i, current_state.getSet_game_up(i));
+                                    new_state.setSet_game_down(i, current_state.getSet_game_down(i));
+                                    new_state.setSet_point_up(i, current_state.getSet_point_up(i));
+                                    new_state.setSet_point_down(i, current_state.getSet_point_down(i));
+                                    new_state.setSet_tiebreak_point_up(i, current_state.getSet_tiebreak_point_up(i));
+                                    new_state.setSet_tiebreak_point_down(i, current_state.getSet_tiebreak_point_down(i));
+                                }
+
+                                //oppt score!
+                                byte point = current_state.getSet_point_up(current_set);
+                                Log.d(TAG, "Opponent point " + point + " change to " + (++point));
+                                new_state.setSet_point_up(current_set, point);
+
+                                checkPoint(new_state);
+
+                                checkGames(new_state);
+                            }
                         }
-                    }
-                    Log.d(TAG, "=== Oppt score end ===");
+                        Log.d(TAG, "=== Oppt score end ===");
+                        break;
                 }
 
                 if (new_state != null) {
@@ -1311,6 +1700,18 @@ public class GameActivity extends AppCompatActivity{
                     Log.d(TAG, "Serve : " + new_state.isServe());
                     Log.d(TAG, "In tiebreak : " + new_state.isInTiebreak());
                     Log.d(TAG, "Finish : " + new_state.isFinish());
+                    Log.d(TAG, "Ace : up = "+new_state.getAceCountUp()+" down = "+new_state.getAceCountDown());
+                    Log.d(TAG, "First serve miss/count : up = "+new_state.getFirstServeMissUp()+"/"+new_state.getFirstServeUp()+
+                            " down = "+new_state.getFirstServeMissDown()+"/"+new_state.getFirstServeDown());
+                    Log.d(TAG, "Second serve miss/count : up = "+new_state.getDoubleFaultUp()+"/"+new_state.getSecondServeUp()+
+                            " down = "+new_state.getDoubleFaultDown()+"/"+new_state.getSecondServeDown());
+                    Log.d(TAG, "======================");
+                    Log.d(TAG, "Unforced Error : up = "+new_state.getUnforceErrorUp()+ " down = "+new_state.getUnforceErrorDown());
+                    Log.d(TAG, "Forehand winner : up = "+new_state.getForehandWinnerUp()+ " down = "+new_state.getForehandWinnerDown());
+                    Log.d(TAG, "Backhand winner : up = "+new_state.getBackhandWinnerUp()+ " down = "+new_state.getBackhandWinnerDown());
+                    Log.d(TAG, "Forehand Volley : up = "+new_state.getForehandVolleyUp()+ " down = "+new_state.getForehandVolleyDown());
+                    Log.d(TAG, "Backhand Volley : up = "+new_state.getBackhandVolleyUp()+ " down = "+new_state.getBackhandVolleyDown());
+                    Log.d(TAG, "Foul to lose : up = "+new_state.getFoulToLoseUp()+ " down = "+new_state.getFoulToLoseDown());
                     //Log.d(TAG, "deuce : " + new_state.isDeuce());
                     //Log.d(TAG, "set Limit : " + new_state.getSetLimit());
                     Log.d(TAG, "Set up : " + new_state.getSetsUp());
@@ -1421,15 +1822,9 @@ public class GameActivity extends AppCompatActivity{
             }
             Log.d(TAG, "@@@@@@ stack @@@@@@");*/
                 }
-
-
-
-
-
-
             }
-        } else {
-            Log.d(TAG, "Stack is empty!");
+        } else { //current_state null
+            Log.d(TAG, "current_state not null ==>[Stack empty]");
             if (is_pause) { //
                 is_pause = false;
                 imgPlayOrPause.setImageResource(R.drawable.ic_pause_white_48dp);
@@ -1438,109 +1833,121 @@ public class GameActivity extends AppCompatActivity{
             }
             Log.d(TAG, "*** Game is running ***");
 
-            if (you_score) {
-                Log.d(TAG, "=== I score start ===");
+            new_state = new State();
 
-                //if (stack.isEmpty()) { //the state stack is empty
-                new_state = new State();
-                Log.d(TAG, "==>[Stack empty]");
-                if (serve.equals("0"))
-                    new_state.setServe(true);
-                else
-                    new_state.setServe(false);
+            if (serve.equals("0"))
+                new_state.setServe(true);
+            else
+                new_state.setServe(false);
 
-                //set current set = 1
-                new_state.setCurrent_set((byte) 0x01);
+            //set current set = 1
+            new_state.setCurrent_set((byte) 0x01);
 
-                new_state.setSet_point_down((byte) 0x01, (byte) 0x01);
+            new_state.setDuration(time_use);
 
-                if (is_ace) {
-                    new_state.setAceCountDown((byte) 0x01);
-                    is_ace = false;
-                }
+            switch (action) {
+                case YOU_SERVE: //you serve
+                    Log.d(TAG, "=== I serve start ===");
+                    new_state.setFirstServeDown(first_serve_count);
+                    new_state.setFirstServeMissDown(first_serve_miss);
+                    first_serve_count = 0;
+                    first_serve_miss = 0;
+                    //new_state.setSecondServeDown(second_serve_count);
+                    Log.d(TAG, "=== I serve end ===");
+                    break;
+                case OPPT_SERVE: //oppt serve
+                    Log.d(TAG, "=== oppt serve start ===");
+                    new_state.setFirstServeUp(first_serve_count);
+                    new_state.setFirstServeMissUp(first_serve_miss);
+                    first_serve_count = 0;
+                    first_serve_miss = 0;
+                    //new_state.setSecondServeUp(second_serve_count);
+                    Log.d(TAG, "=== oppt serve end ===");
+                    break;
+                case YOU_SCORE: //you serve
+                    Log.d(TAG, "=== I score start ===");
 
-                if (is_double_fault) {
-                    new_state.setDoubleFaultDown((byte) 0x01);
-                    is_double_fault = false;
-                }
+                    new_state.setSet_point_down((byte) 0x01, (byte) 0x01);
 
-                if (is_unforced_error) {
-                    new_state.setUnforceErrorDown((byte) 0x01);
-                    is_unforced_error = false;
-                }
+                    if (is_ace) {
+                        new_state.setAceCountDown((byte) 0x01);
+                        is_ace = false;
+                    }
 
-                if (is_forehand_winner) {
-                    new_state.setForehandWinnerDown((short)1);
-                    is_forehand_winner = false;
-                }
+                    if (is_double_fault) {
+                        new_state.setDoubleFaultDown((byte) 0x01);
+                        is_double_fault = false;
+                    }
 
-                if (is_backhand_winner) {
-                    new_state.setBackhandWinnerDown((short)1);
-                    is_backhand_winner = false;
-                }
+                    if (is_unforced_error) {
+                        new_state.setUnforceErrorDown((byte) 0x01);
+                        is_unforced_error = false;
+                    }
 
-                if (is_forehand_volley) {
-                    new_state.setForehandVolleyDown((short)1);
-                    is_forehand_volley = false;
-                }
+                    if (is_forehand_winner) {
+                        new_state.setForehandWinnerDown((short)1);
+                        is_forehand_winner = false;
+                    }
 
-                if (is_backhand_volley) {
-                    new_state.setBackhandVolleyDown((short)1);
-                    is_backhand_volley = false;
-                }
+                    if (is_backhand_winner) {
+                        new_state.setBackhandWinnerDown((short)1);
+                        is_backhand_winner = false;
+                    }
 
-                Log.d(TAG, "=== I score end ===");
-            } else {
-                Log.d(TAG, "=== Oppt score start ===");
-                //if (stack.isEmpty()) { //the state stack is empty
-                new_state = new State();
-                Log.d(TAG, "==>[Stack empty]");
-                if (serve.equals("0"))
-                    new_state.setServe(true);
-                else
-                    new_state.setServe(false);
+                    if (is_forehand_volley) {
+                        new_state.setForehandVolleyDown((short)1);
+                        is_forehand_volley = false;
+                    }
 
-                //set current set = 1
-                new_state.setCurrent_set((byte) 0x01);
+                    if (is_backhand_volley) {
+                        new_state.setBackhandVolleyDown((short)1);
+                        is_backhand_volley = false;
+                    }
 
-                new_state.setSet_point_up((byte) 0x01, (byte) 0x01);
+                    Log.d(TAG, "=== I score end ===");
+                    break;
+                case OPPT_SCORE: //oppt score
+                    Log.d(TAG, "=== Oppt score start ===");
 
-                if (is_ace) {
-                    new_state.setAceCountUp((byte) 0x01);
-                    is_ace = false;
-                }
+                    new_state.setSet_point_up((byte) 0x01, (byte) 0x01);
 
-                if (is_double_fault) {
-                    new_state.setDoubleFaultUp((byte) 0x01);
-                    is_double_fault = false;
-                }
+                    if (is_ace) {
+                        new_state.setAceCountUp((byte) 0x01);
+                        is_ace = false;
+                    }
 
-                if (is_unforced_error) {
-                    new_state.setUnforceErrorUp((byte) 0x01);
-                    is_unforced_error = false;
-                }
+                    if (is_double_fault) {
+                        new_state.setDoubleFaultUp((byte) 0x01);
+                        is_double_fault = false;
+                    }
 
-                if (is_forehand_winner) {
-                    new_state.setForehandWinnerUp((short)1);
-                    is_forehand_winner = false;
-                }
+                    if (is_unforced_error) {
+                        new_state.setUnforceErrorUp((byte) 0x01);
+                        is_unforced_error = false;
+                    }
 
-                if (is_backhand_winner) {
-                    new_state.setBackhandWinnerUp((short)1);
-                    is_backhand_winner = false;
-                }
+                    if (is_forehand_winner) {
+                        new_state.setForehandWinnerUp((short)1);
+                        is_forehand_winner = false;
+                    }
 
-                if (is_forehand_volley) {
-                    new_state.setForehandVolleyUp((short)1);
-                    is_forehand_volley = false;
-                }
+                    if (is_backhand_winner) {
+                        new_state.setBackhandWinnerUp((short)1);
+                        is_backhand_winner = false;
+                    }
 
-                if (is_backhand_volley) {
-                    new_state.setBackhandVolleyDown((short)1);
-                    is_backhand_volley = false;
-                }
+                    if (is_forehand_volley) {
+                        new_state.setForehandVolleyUp((short)1);
+                        is_forehand_volley = false;
+                    }
 
-                Log.d(TAG, "=== Oppt score end ===");
+                    if (is_backhand_volley) {
+                        new_state.setBackhandVolleyUp((short)1);
+                        is_backhand_volley = false;
+                    }
+
+                    Log.d(TAG, "=== Oppt score end ===");
+                    break;
             }
 
             if (new_state != null) {
@@ -1550,8 +1957,21 @@ public class GameActivity extends AppCompatActivity{
                 Log.d(TAG, "Serve : " + new_state.isServe());
                 Log.d(TAG, "In tiebreak : " + new_state.isInTiebreak());
                 Log.d(TAG, "Finish : " + new_state.isFinish());
+                Log.d(TAG, "Second Serve : " + new_state.isSecondServe());
                 //Log.d(TAG, "deuce : " + new_state.isDeuce());
                 //Log.d(TAG, "Set Limit : "+ new_state.getSetLimit());
+                Log.d(TAG, "Ace : up = "+new_state.getAceCountUp()+" down = "+new_state.getAceCountDown());
+                Log.d(TAG, "First serve miss/count : up = "+new_state.getFirstServeMissUp()+"/"+new_state.getFirstServeUp()+
+                        " down = "+new_state.getFirstServeMissDown()+"/"+new_state.getFirstServeDown());
+                Log.d(TAG, "Second serve miss/count : up = "+new_state.getDoubleFaultUp()+"/"+new_state.getSecondServeUp()+
+                        " down = "+new_state.getDoubleFaultDown()+"/"+new_state.getSecondServeDown());
+                Log.d(TAG, "======================");
+                Log.d(TAG, "Unforced Error : up = "+new_state.getUnforceErrorUp()+ " down = "+new_state.getUnforceErrorDown());
+                Log.d(TAG, "Forehand winner : up = "+new_state.getForehandWinnerUp()+ " down = "+new_state.getForehandWinnerDown());
+                Log.d(TAG, "Backhand winner : up = "+new_state.getBackhandWinnerUp()+ " down = "+new_state.getBackhandWinnerDown());
+                Log.d(TAG, "Forehand Volley : up = "+new_state.getForehandVolleyUp()+ " down = "+new_state.getForehandVolleyDown());
+                Log.d(TAG, "Backhand Volley : up = "+new_state.getBackhandVolleyUp()+ " down = "+new_state.getBackhandVolleyDown());
+                Log.d(TAG, "Foul to lose : up = "+new_state.getFoulToLoseUp()+ " down = "+new_state.getFoulToLoseDown());
 
                 Log.d(TAG, "Set up : " + new_state.getSetsUp());
                 Log.d(TAG, "set down : " + new_state.getSetsDown());
@@ -1991,7 +2411,7 @@ public class GameActivity extends AppCompatActivity{
             handler.postDelayed(this, 1000);
             time_use++;
 
-            Log.d(TAG, "time_use = "+time_use);
+            //Log.d(TAG, "time_use = "+time_use);
 
             Calendar cal = Calendar.getInstance();
             TimeZone tz = cal.getTimeZone();
@@ -2070,60 +2490,88 @@ public class GameActivity extends AppCompatActivity{
         append_record(msg, filename);
 
         State top = stack.peek();
-        top.setDuration(time_use);
+        if (top != null) {
+            top.setDuration(time_use);
 
-        int i = 0;
-        //load stack
-        for (State s : stack) {
+            int i = 0;
+            //load stack
+            for (State s : stack) {
 
-            if (i >= 1) {
-                append_record("&", filename);
+                if (i >= 1) {
+                    append_record("&", filename);
+                }
+
+
+                String append_msg = s.getCurrent_set() + ";"
+                        + s.isServe() + ";"
+                        + s.isInTiebreak() + ";"
+                        + s.isFinish() + ";"
+                        //+s.isDeuce()+";"
+                        //+s.getSetLimit()+";"
+                        + s.getSetsUp() + ";"
+                        + s.getSetsDown() + ";"
+                        + s.getDuration() + ";"
+                        + s.getSet_game_up((byte) 0x1) + ";"
+                        + s.getSet_game_down((byte) 0x1) + ";"
+                        + s.getSet_point_up((byte) 0x1) + ";"
+                        + s.getSet_point_down((byte) 0x1) + ";"
+                        + s.getSet_tiebreak_point_up((byte) 0x1) + ";"
+                        + s.getSet_tiebreak_point_down((byte) 0x1) + ";"
+                        + s.getSet_game_up((byte) 0x2) + ";"
+                        + s.getSet_game_down((byte) 0x2) + ";"
+                        + s.getSet_point_up((byte) 0x2) + ";"
+                        + s.getSet_point_down((byte) 0x2) + ";"
+                        + s.getSet_tiebreak_point_up((byte) 0x2) + ";"
+                        + s.getSet_tiebreak_point_down((byte) 0x2) + ";"
+                        + s.getSet_game_up((byte) 0x3) + ";"
+                        + s.getSet_game_down((byte) 0x3) + ";"
+                        + s.getSet_point_up((byte) 0x3) + ";"
+                        + s.getSet_point_down((byte) 0x3) + ";"
+                        + s.getSet_tiebreak_point_up((byte) 0x3) + ";"
+                        + s.getSet_tiebreak_point_down((byte) 0x3) + ";"
+                        + s.getSet_game_up((byte) 0x4) + ";"
+                        + s.getSet_game_down((byte) 0x4) + ";"
+                        + s.getSet_point_up((byte) 0x4) + ";"
+                        + s.getSet_point_down((byte) 0x4) + ";"
+                        + s.getSet_tiebreak_point_up((byte) 0x4) + ";"
+                        + s.getSet_tiebreak_point_down((byte) 0x4) + ";"
+                        + s.getSet_game_up((byte) 0x5) + ";"
+                        + s.getSet_game_down((byte) 0x5) + ";"
+                        + s.getSet_point_up((byte) 0x5) + ";"
+                        + s.getSet_point_down((byte) 0x5) + ";"
+                        + s.getSet_tiebreak_point_up((byte) 0x5) + ";"
+                        + s.getSet_tiebreak_point_down((byte) 0x5);
+                append_record(append_msg, filename);
+                i++;
             }
-
-
-            String append_msg = s.getCurrent_set()+";"
-                    +s.isServe()+";"
-                    +s.isInTiebreak()+";"
-                    +s.isFinish()+";"
-                    //+s.isDeuce()+";"
-                    //+s.getSetLimit()+";"
-                    +s.getSetsUp()+";"
-                    +s.getSetsDown()+";"
-                    +s.getDuration()+";"
-                    +s.getSet_game_up((byte)0x1)+";"
-                    +s.getSet_game_down((byte)0x1)+";"
-                    +s.getSet_point_up((byte)0x1)+";"
-                    +s.getSet_point_down((byte)0x1)+";"
-                    +s.getSet_tiebreak_point_up((byte)0x1)+";"
-                    +s.getSet_tiebreak_point_down((byte)0x1)+";"
-                    +s.getSet_game_up((byte)0x2)+";"
-                    +s.getSet_game_down((byte)0x2)+";"
-                    +s.getSet_point_up((byte)0x2)+";"
-                    +s.getSet_point_down((byte)0x2)+";"
-                    +s.getSet_tiebreak_point_up((byte)0x2)+";"
-                    +s.getSet_tiebreak_point_down((byte)0x2)+";"
-                    +s.getSet_game_up((byte)0x3)+";"
-                    +s.getSet_game_down((byte)0x3)+";"
-                    +s.getSet_point_up((byte)0x3)+";"
-                    +s.getSet_point_down((byte)0x3)+";"
-                    +s.getSet_tiebreak_point_up((byte)0x3)+";"
-                    +s.getSet_tiebreak_point_down((byte)0x3)+";"
-                    +s.getSet_game_up((byte)0x4)+";"
-                    +s.getSet_game_down((byte)0x4)+";"
-                    +s.getSet_point_up((byte)0x4)+";"
-                    +s.getSet_point_down((byte)0x4)+";"
-                    +s.getSet_tiebreak_point_up((byte)0x4)+";"
-                    +s.getSet_tiebreak_point_down((byte)0x4)+";"
-                    +s.getSet_game_up((byte)0x5)+";"
-                    +s.getSet_game_down((byte)0x5)+";"
-                    +s.getSet_point_up((byte)0x5)+";"
-                    +s.getSet_point_down((byte)0x5)+";"
-                    +s.getSet_tiebreak_point_up((byte)0x5)+";"
-                    +s.getSet_tiebreak_point_down((byte)0x5);
-            append_record(append_msg, filename);
-            i++;
         }
 
         finish();
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.game_activity_menu, menu);
+
+        //item_edit = menu.findItem(R.id.action_edit_group);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.action_show_stat:
+                intent = new Intent(GameActivity.this, CurrentStatActivity.class);
+                intent.putExtra("PLAYER_UP", playerUp);
+                intent.putExtra("PLAYER_DOWN", playerDown);
+                startActivity(intent);
+                break;
+
+            default:
+                break;
+        }
+        return true;
     }
 }
