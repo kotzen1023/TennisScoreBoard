@@ -186,7 +186,7 @@ public class State {
         this.firstServeMissDown = firstServeMissDown;
     }
 
-    public long getSecondServeUp() {
+    public short getSecondServeUp() {
         return secondServeUp;
     }
 
@@ -194,7 +194,7 @@ public class State {
         this.secondServeUp = secondServeUp;
     }
 
-    public long getSecondServeDown() {
+    public short getSecondServeDown() {
         return secondServeDown;
     }
 

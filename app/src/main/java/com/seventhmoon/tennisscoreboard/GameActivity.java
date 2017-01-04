@@ -1466,7 +1466,22 @@ public class GameActivity extends AppCompatActivity{
                             new_state.setFirstServeDown(current_state.getFirstServeDown());
                             new_state.setFirstServeMissUp(current_state.getFirstServeMissUp());
                             new_state.setFirstServeMissDown(current_state.getFirstServeMissDown());
-                            //new_state.setSecondServeUp(current_state.getSecondServeUp());
+                            new_state.setSecondServeUp(current_state.getSecondServeUp());
+                            new_state.setSecondServeDown(current_state.getSecondServeDown());
+                            new_state.setDoubleFaultUp(current_state.getDoubleFaultUp());
+                            new_state.setDoubleFaultDown(current_state.getDoubleFaultDown());
+                            new_state.setUnforceErrorUp(current_state.getUnforceErrorUp());
+                            new_state.setUnforceErrorDown(current_state.getUnforceErrorDown());
+                            new_state.setForehandWinnerUp(current_state.getForehandWinnerUp());
+                            new_state.setForehandWinnerDown(current_state.getForehandWinnerDown());
+                            new_state.setBackhandWinnerUp(current_state.getBackhandWinnerUp());
+                            new_state.setBackhandWinnerDown(current_state.getBackhandWinnerDown());
+                            new_state.setForehandVolleyUp(current_state.getForehandVolleyUp());
+                            new_state.setForehandVolleyDown(current_state.getForehandVolleyDown());
+                            new_state.setBackhandVolleyUp(current_state.getBackhandVolleyUp());
+                            new_state.setBackhandVolleyDown(current_state.getBackhandVolleyDown());
+                            new_state.setFoulToLoseUp(current_state.getFoulToLoseUp());
+                            new_state.setFoulToLoseDown(current_state.getFoulToLoseDown());
 
                             for (byte i=1; i<=set_limit; i++) {
                                 new_state.setSet_game_up(i, current_state.getSet_game_up(i));
@@ -1524,6 +1539,29 @@ public class GameActivity extends AppCompatActivity{
 
                             new_state.setDuration(time_use);
 
+                            new_state.setAceCountUp(current_state.getAceCountUp());
+                            new_state.setAceCountDown(current_state.getAceCountDown());
+                            new_state.setFirstServeUp(current_state.getFirstServeUp());
+                            new_state.setFirstServeDown(current_state.getFirstServeDown());
+                            new_state.setFirstServeMissUp(current_state.getFirstServeMissUp());
+                            new_state.setFirstServeMissDown(current_state.getFirstServeMissDown());
+                            new_state.setSecondServeUp(current_state.getSecondServeUp());
+                            new_state.setSecondServeDown(current_state.getSecondServeDown());
+                            new_state.setDoubleFaultUp(current_state.getDoubleFaultUp());
+                            new_state.setDoubleFaultDown(current_state.getDoubleFaultDown());
+                            new_state.setUnforceErrorUp(current_state.getUnforceErrorUp());
+                            new_state.setUnforceErrorDown(current_state.getUnforceErrorDown());
+                            new_state.setForehandWinnerUp(current_state.getForehandWinnerUp());
+                            new_state.setForehandWinnerDown(current_state.getForehandWinnerDown());
+                            new_state.setBackhandWinnerUp(current_state.getBackhandWinnerUp());
+                            new_state.setBackhandWinnerDown(current_state.getBackhandWinnerDown());
+                            new_state.setForehandVolleyUp(current_state.getForehandVolleyUp());
+                            new_state.setForehandVolleyDown(current_state.getForehandVolleyDown());
+                            new_state.setBackhandVolleyUp(current_state.getBackhandVolleyUp());
+                            new_state.setBackhandVolleyDown(current_state.getBackhandVolleyDown());
+                            new_state.setFoulToLoseUp(current_state.getFoulToLoseUp());
+                            new_state.setFoulToLoseDown(current_state.getFoulToLoseDown());
+
                             for (byte i=1; i<=set_limit; i++) {
                                 new_state.setSet_game_up(i, current_state.getSet_game_up(i));
                                 new_state.setSet_game_down(i, current_state.getSet_game_down(i));
@@ -1571,6 +1609,10 @@ public class GameActivity extends AppCompatActivity{
                                 new_state.setInTiebreak(current_state.isInTiebreak());
                                 new_state.setFinish(current_state.isFinish());
 
+                                new_state.setFirstServeDown((short) (current_state.getFirstServeDown() + first_serve_count));
+                                new_state.setFirstServeMissDown((short) (current_state.getFirstServeMissDown() + first_serve_miss));
+                                new_state.setSecondServeDown((short) (current_state.getSecondServeDown() + second_serve_count));
+
                                 if (imgServeDown.getVisibility() == View.VISIBLE) { //I serve
                                     if (is_second_serve) { //second serve
                                         new_state.setSecondServeDown((short)(current_state.getSecondServeDown()+1));
@@ -1590,6 +1632,29 @@ public class GameActivity extends AppCompatActivity{
                                 new_state.setSetsDown(current_state.getSetsDown());
 
                                 new_state.setDuration(time_use);
+
+                                new_state.setAceCountUp(current_state.getAceCountUp());
+                                new_state.setAceCountDown(current_state.getAceCountDown());
+                                new_state.setFirstServeUp(current_state.getFirstServeUp());
+                                new_state.setFirstServeDown(current_state.getFirstServeDown());
+                                new_state.setFirstServeMissUp(current_state.getFirstServeMissUp());
+                                new_state.setFirstServeMissDown(current_state.getFirstServeMissDown());
+                                new_state.setSecondServeUp(current_state.getSecondServeUp());
+                                new_state.setSecondServeDown(current_state.getSecondServeDown());
+                                new_state.setDoubleFaultUp(current_state.getDoubleFaultUp());
+                                new_state.setDoubleFaultDown(current_state.getDoubleFaultDown());
+                                new_state.setUnforceErrorUp(current_state.getUnforceErrorUp());
+                                new_state.setUnforceErrorDown(current_state.getUnforceErrorDown());
+                                new_state.setForehandWinnerUp(current_state.getForehandWinnerUp());
+                                new_state.setForehandWinnerDown(current_state.getForehandWinnerDown());
+                                new_state.setBackhandWinnerUp(current_state.getBackhandWinnerUp());
+                                new_state.setBackhandWinnerDown(current_state.getBackhandWinnerDown());
+                                new_state.setForehandVolleyUp(current_state.getForehandVolleyUp());
+                                new_state.setForehandVolleyDown(current_state.getForehandVolleyDown());
+                                new_state.setBackhandVolleyUp(current_state.getBackhandVolleyUp());
+                                new_state.setBackhandVolleyDown(current_state.getBackhandVolleyDown());
+                                new_state.setFoulToLoseUp(current_state.getFoulToLoseUp());
+                                new_state.setFoulToLoseDown(current_state.getFoulToLoseDown());
 
                                 for (byte i=1; i<=set_limit; i++) {
                                     new_state.setSet_game_up(i, current_state.getSet_game_up(i));
@@ -1646,10 +1711,15 @@ public class GameActivity extends AppCompatActivity{
                                 //new_state = new State();
                                 //new_state = stack.peek();
                                 // copy previous state;
+
                                 new_state.setCurrent_set(current_state.getCurrent_set());
                                 new_state.setServe(current_state.isServe());
                                 new_state.setInTiebreak(current_state.isInTiebreak());
                                 new_state.setFinish(current_state.isFinish());
+
+                                new_state.setFirstServeUp((short) (current_state.getFirstServeUp() + first_serve_count));
+                                new_state.setFirstServeMissUp((short) (current_state.getFirstServeMissUp() + first_serve_miss));
+                                new_state.setSecondServeUp((short) (current_state.getSecondServeUp() + second_serve_count));
 
                                 if (imgServeUp.getVisibility() == View.VISIBLE) { //I serve
                                     if (is_second_serve) { //second serve
@@ -1669,6 +1739,29 @@ public class GameActivity extends AppCompatActivity{
                                 new_state.setSetsDown(current_state.getSetsDown());
 
                                 new_state.setDuration(time_use);
+
+                                new_state.setAceCountUp(current_state.getAceCountUp());
+                                new_state.setAceCountDown(current_state.getAceCountDown());
+                                new_state.setFirstServeUp(current_state.getFirstServeUp());
+                                new_state.setFirstServeDown(current_state.getFirstServeDown());
+                                new_state.setFirstServeMissUp(current_state.getFirstServeMissUp());
+                                new_state.setFirstServeMissDown(current_state.getFirstServeMissDown());
+                                new_state.setSecondServeUp(current_state.getSecondServeUp());
+                                new_state.setSecondServeDown(current_state.getSecondServeDown());
+                                new_state.setDoubleFaultUp(current_state.getDoubleFaultUp());
+                                new_state.setDoubleFaultDown(current_state.getDoubleFaultDown());
+                                new_state.setUnforceErrorUp(current_state.getUnforceErrorUp());
+                                new_state.setUnforceErrorDown(current_state.getUnforceErrorDown());
+                                new_state.setForehandWinnerUp(current_state.getForehandWinnerUp());
+                                new_state.setForehandWinnerDown(current_state.getForehandWinnerDown());
+                                new_state.setBackhandWinnerUp(current_state.getBackhandWinnerUp());
+                                new_state.setBackhandWinnerDown(current_state.getBackhandWinnerDown());
+                                new_state.setForehandVolleyUp(current_state.getForehandVolleyUp());
+                                new_state.setForehandVolleyDown(current_state.getForehandVolleyDown());
+                                new_state.setBackhandVolleyUp(current_state.getBackhandVolleyUp());
+                                new_state.setBackhandVolleyDown(current_state.getBackhandVolleyDown());
+                                new_state.setFoulToLoseUp(current_state.getFoulToLoseUp());
+                                new_state.setFoulToLoseDown(current_state.getFoulToLoseDown());
 
                                 for (byte i=1; i<=set_limit; i++) {
                                     new_state.setSet_game_up(i, current_state.getSet_game_up(i));
@@ -1701,6 +1794,7 @@ public class GameActivity extends AppCompatActivity{
                     Log.d(TAG, "In tiebreak : " + new_state.isInTiebreak());
                     Log.d(TAG, "Finish : " + new_state.isFinish());
                     Log.d(TAG, "Ace : up = "+new_state.getAceCountUp()+" down = "+new_state.getAceCountDown());
+                    Log.d(TAG, "Double Faults : up  = "+new_state.getDoubleFaultUp()+ " down = "+new_state.getDoubleFaultDown());
                     Log.d(TAG, "First serve miss/count : up = "+new_state.getFirstServeMissUp()+"/"+new_state.getFirstServeUp()+
                             " down = "+new_state.getFirstServeMissDown()+"/"+new_state.getFirstServeDown());
                     Log.d(TAG, "Second serve miss/count : up = "+new_state.getDoubleFaultUp()+"/"+new_state.getSecondServeUp()+
