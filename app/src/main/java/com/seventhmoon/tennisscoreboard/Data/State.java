@@ -6,6 +6,7 @@ public class State {
     private boolean isInTiebreak;
     private boolean isFinish;
     private boolean isSecondServe;
+    private boolean isInBreakPoint;
     private byte setsUp;
     private byte setsDown;
     private long duration;
@@ -18,6 +19,10 @@ public class State {
     private short firstServeMissDown;
     private short secondServeUp;
     private short secondServeDown;
+    private byte breakPointUp;
+    private byte breakPointDown;
+    private byte breakPointMissUp;
+    private byte breakPointMissDown;
 
     private byte doubleFaultUp;
     private byte doubleFaultDown;
@@ -114,6 +119,14 @@ public class State {
         this.isSecondServe = isSecondServe;
     }
 
+    public boolean isInBreakPoint() {
+        return isInBreakPoint;
+    }
+
+    public void setInBreakPoint(boolean isInBreakPoint) {
+        this.isInBreakPoint = isInBreakPoint;
+    }
+
     public byte getSetsUp() {
         return setsUp;
     }
@@ -200,6 +213,38 @@ public class State {
 
     public void setSecondServeDown(short secondServeDown) {
         this.secondServeDown = secondServeDown;
+    }
+
+    public byte getBreakPointUp() {
+        return breakPointUp;
+    }
+
+    public void setBreakPointUp(byte breakPointUp) {
+        this.breakPointUp = breakPointUp;
+    }
+
+    public byte getBreakPointDown() {
+        return breakPointDown;
+    }
+
+    public void setBreakPointDown(byte breakPointDown) {
+        this.breakPointDown = breakPointDown;
+    }
+
+    public byte getBreakPointMissUp() {
+        return breakPointMissUp;
+    }
+
+    public void setBreakPointMissUp(byte breakPointMissUp) {
+        this.breakPointMissUp = breakPointMissUp;
+    }
+
+    public byte getBreakPointMissDown() {
+        return breakPointMissDown;
+    }
+
+    public void setBreakPointMissDown(byte breakPointMissDown) {
+        this.breakPointMissDown = breakPointMissDown;
     }
 
     public byte getDoubleFaultUp() {

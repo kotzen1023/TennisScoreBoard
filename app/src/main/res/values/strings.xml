@@ -16,7 +16,7 @@
     <string name="game_reset">Reset</string>
     <string name="score_up">Score Top</string>
     <string name="score_down">Score Bottom</string>
-    <string name="score_action">Action</string>
+    <string name="score_action">Act</string>
     <string name="main_standalone">Standalone</string>
     <string name="main_wear_mode">Wear Mode</string>
     <string name="game_duration">Duration</string>
@@ -49,5 +49,9 @@
     <string name="game_other_winner">Other Winner</string>
     <string name="game_serve_net">Serve Net In</string>
     <string name="menu_setup_stat">Stat</string>
+    <string name="stat_first_serve">1st Serve</string>
+    <string name="stat_second_serve">2nd Serve</string>
+    <string name="stat_winner">Winner</string>
+    <string name="stat_unforced_error">Unforced Error</string>
 </resources>
 

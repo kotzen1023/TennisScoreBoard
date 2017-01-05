@@ -101,17 +101,29 @@ public class GameActivity extends AppCompatActivity{
     ProgressDialog loadDialog = null;
 
     //for state
-    private static boolean is_ace = false;
-    private static boolean is_double_fault = false;
+    //private static boolean is_ace = false;
+    //private static boolean is_double_fault = false;
     private static boolean is_second_serve = false;
-    private static boolean is_unforced_error = false;
-    private static boolean is_forehand_winner = false;
-    private static boolean is_backhand_winner = false;
-    private static boolean is_forehand_volley = false;
-    private static boolean is_backhand_volley = false;
+    private static boolean is_break_point = false;
+    //private static boolean is_unforced_error = false;
+    //private static boolean is_forehand_winner = false;
+    //private static boolean is_backhand_winner = false;
+    //private static boolean is_forehand_volley = false;
+    //private static boolean is_backhand_volley = false;
+    private static byte ace_count = 0;
+    private static byte double_faults_count = 0;
+    private static short unforced_errors_count = 0;
+    private static short forehand_winner_count = 0;
+    private static short backhand_winner_count = 0;
+    private static short forehand_volley_count = 0;
+    private static short backhand_volley_count = 0;
+    private static byte foul_to_lose_count = 0;
     private static short first_serve_count = 0;
     private static short first_serve_miss = 0;
     private static short second_serve_count = 0;
+
+    private static byte break_point_count = 0;
+    private static byte break_point_count_miss = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,14 +131,15 @@ public class GameActivity extends AppCompatActivity{
         setContentView(R.layout.game_layout);
 
 
-        is_ace = false;
-        is_double_fault = false;
+        //is_ace = false;
+        //is_double_fault = false;
         is_second_serve = false;
-        is_unforced_error = false;
-        is_forehand_winner = false;
-        is_backhand_winner = false;
-        is_forehand_volley = false;
-        is_backhand_volley = false;
+        is_break_point = false;
+        //is_unforced_error = false;
+        //is_forehand_winner = false;
+        //is_backhand_winner = false;
+        //is_forehand_volley = false;
+        //is_backhand_volley = false;
         first_serve_count = 0;
         first_serve_miss = 0;
         second_serve_count = 0;
@@ -477,18 +490,18 @@ public class GameActivity extends AppCompatActivity{
                         }
                     }
 
-                    if (top.isSecondServe())
+                    if (top.isSecondServe()) {
                         is_second_serve = true;
-                    else
+                        imgServeUp.setImageResource(R.drawable.ball_icon_red);
+                        imgServeDown.setImageResource(R.drawable.ball_icon_red);
+                    }
+                    else {
                         is_second_serve = false;
+                        imgServeUp.setImageResource(R.drawable.ball_icon);
+                        imgServeDown.setImageResource(R.drawable.ball_icon);
+                    }
 
-                    /*if (top.isServe()) {
-                        imgServeUp.setVisibility(View.INVISIBLE);
-                        imgServeDown.setVisibility(View.VISIBLE);
-                    } else {
-                        imgServeUp.setVisibility(View.VISIBLE);
-                        imgServeDown.setVisibility(View.INVISIBLE);
-                    }*/
+
 
                     if (!top.isInTiebreak()) { //not in tiebreak
                         if (top.getSet_point_up(current_set) == 1) {
@@ -540,6 +553,7 @@ public class GameActivity extends AppCompatActivity{
                     Log.d(TAG, "Serve : " + top.isServe());
                     Log.d(TAG, "In tiebreak : " + top.isInTiebreak());
                     Log.d(TAG, "Finish : " + top.isFinish());
+                    Log.d(TAG, "second serve : " + top.isSecondServe());
                     //Log.d(TAG, "deuce : " + top.isDeuce());
                     //Log.d(TAG, "First serve : "+ top.isFirstServe());
                     Log.d(TAG, "duration : " + top.getDuration());
@@ -695,11 +709,22 @@ public class GameActivity extends AppCompatActivity{
                                 pointDown.setText(String.valueOf(back_state.getSet_point_down(current_set)));
                             }
 
+                            if (back_state.isSecondServe()) {
+                                is_second_serve = true;
+                                imgServeUp.setImageResource(R.drawable.ball_icon_red);
+                                imgServeDown.setImageResource(R.drawable.ball_icon_red);
+                            } else {
+                                is_second_serve = false;
+                                imgServeUp.setImageResource(R.drawable.ball_icon);
+                                imgServeDown.setImageResource(R.drawable.ball_icon);
+                            }
+
                             Log.d(TAG, "########## back state start ##########");
                             Log.d(TAG, "current set : " + back_state.getCurrent_set());
                             Log.d(TAG, "Serve : " + back_state.isServe());
                             Log.d(TAG, "In tiebreak : " + back_state.isInTiebreak());
                             Log.d(TAG, "Finish : " + back_state.isFinish());
+                            Log.d(TAG, "Second Serve : " + back_state.isSecondServe());
 
                             int set_limit;
                             switch (set)
@@ -796,92 +821,86 @@ public class GameActivity extends AppCompatActivity{
                     builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
                         public void onClick( DialogInterface dialog, int item ) { //pick from gamer
                             if (is_second_serve) { //in second serve
+                                second_serve_count = 1;
                                 if (item == 0) { //ace
-                                    is_ace = true;
-                                    second_serve_count = 1;
+                                    //is_ace = true;
+                                    ace_count = 1;
                                     calculateScore(YOU_SCORE);
                                     is_second_serve = false;
                                 } else if (item == 1){ //double fault
-                                    is_double_fault = true;
-                                    second_serve_count = 1;
+                                    //is_double_fault = true;
+                                    double_faults_count = 1;
                                     calculateScore(OPPT_SCORE);
                                     is_second_serve = false;
                                 } else if (item == 2) { //unforced error
-                                    second_serve_count = 1;
+                                    unforced_errors_count = 1;
                                     calculateScore(OPPT_SCORE);
                                     is_second_serve = false;
                                 } else if (item == 3) { //forehand winner
-                                    second_serve_count = 1;
+                                    forehand_winner_count = 1;
                                     calculateScore(YOU_SCORE);
                                     is_second_serve = false;
                                 } else if (item == 4) { //backhand winner
-                                    second_serve_count = 1;
+                                    backhand_winner_count = 1;
                                     calculateScore(YOU_SCORE);
                                     is_second_serve = false;
                                 } else if (item == 5) { //forehand volley
-                                    second_serve_count = 1;
+                                    forehand_volley_count = 1;
                                     calculateScore(YOU_SCORE);
                                     is_second_serve = false;
                                 } else if (item == 6) { //backhand volley
-                                    second_serve_count = 1;
+                                    backhand_volley_count = 1;
                                     calculateScore(YOU_SCORE);
                                     is_second_serve = false;
                                 } else if (item == 7) { //Foul to lose
-                                    second_serve_count = 1;
+                                    foul_to_lose_count = 1;
                                     calculateScore(OPPT_SCORE);
                                     is_second_serve = false;
                                 } else if (item == 8) { //other winner
-                                    second_serve_count = 1;
                                     calculateScore(YOU_SCORE);
                                     is_second_serve = false;
                                 } else if (item == 9) { //net in
-                                    second_serve_count = 1;
                                     calculateScore(YOU_SERVE);
                                 }
-                                Log.d(TAG, "first: "+first_serve_count+" f_miss: "+first_serve_miss+" second: "+second_serve_count);
                             } else { //first serve
+                                first_serve_count = 1;
                                 if (item == 0) { //ace
-                                    is_ace = true;
-                                    first_serve_count = 1;
+                                    //is_ace = true;
+                                    ace_count = 1;
                                     calculateScore(YOU_SCORE);
                                 } else if (item == 1){
                                     Log.d(TAG, "second serve");
-                                    first_serve_count = 1;
                                     first_serve_miss = 1;
                                     is_second_serve = true;
                                     calculateScore(YOU_SERVE);
-
                                 } else if (item == 2) { //unforced error
-                                    first_serve_count = 1;
+                                    unforced_errors_count = 1;
                                     calculateScore(OPPT_SCORE);
                                 } else if (item == 3) { //forehand winner
-                                    first_serve_count = 1;
+                                    forehand_winner_count = 1;
                                     calculateScore(YOU_SCORE);
                                 } else if (item == 4) { //backhand winner
-                                    first_serve_count = 1;
+                                    backhand_winner_count = 1;
                                     calculateScore(YOU_SCORE);
                                 } else if (item == 5) { //forehand volley
-                                    first_serve_count = 1;
+                                    forehand_volley_count = 1;
                                     calculateScore(YOU_SCORE);
                                 } else if (item == 6) { //backhand volley
-                                    first_serve_count = 1;
+                                    backhand_volley_count = 1;
                                     calculateScore(YOU_SCORE);
                                 } else if (item == 7) { //Foul to lose
-                                    first_serve_count = 1;
+                                    foul_to_lose_count = 1;
                                     calculateScore(OPPT_SCORE);
                                 } else if (item == 8) { //other winner
-                                    first_serve_count = 1;
                                     calculateScore(YOU_SCORE);
                                 } else if (item == 9) { //net in
-                                    first_serve_count = 1;
                                     calculateScore(YOU_SERVE);
                                 }
-                                Log.d(TAG, "first: "+first_serve_count+" f_miss: "+first_serve_miss+" second: "+second_serve_count);
                             }
                         }
                     } );
                     builder.show();
-                } else {
+                } else { //oppt serve
                     items.add(getResources().getString(R.string.game_unforced_error));
                     items.add(getResources().getString(R.string.game_forehand_winner));
                     items.add(getResources().getString(R.string.game_backhand_winner));
@@ -896,21 +915,53 @@ public class GameActivity extends AppCompatActivity{
 
                     builder.setTitle(playerDown +" "+getResources().getString(R.string.game_select_action));
                     builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
-                        public void onClick( DialogInterface dialog, int item ) { //pick from camer
-                            if (item == 0) { //unforced error
-                                calculateScore(OPPT_SCORE);
-                            } else if (item == 1) { //forehand winner
-                                calculateScore(YOU_SCORE);
-                            } else if (item == 2) { //backhand winner
-                                calculateScore(YOU_SCORE);
-                            } else if (item == 3) { //forehand volley
-                                calculateScore(YOU_SCORE);
-                            } else if (item == 4) { //backhand volley
-                                calculateScore(YOU_SCORE);
-                            } else if (item == 5) { //Foul to lose
-                                calculateScore(OPPT_SCORE);
-                            } else if (item == 6) { //other winner
-                                calculateScore(YOU_SCORE);
+                        public void onClick( DialogInterface dialog, int item ) {
+                            if (is_second_serve) {
+                                second_serve_count = 1;
+                                if (item == 0) { //unforced error
+                                    unforced_errors_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                } else if (item == 1) { //forehand winner
+                                    forehand_winner_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                } else if (item == 2) { //backhand winner
+                                    backhand_winner_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                } else if (item == 3) { //forehand volley
+                                    forehand_volley_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                } else if (item == 4) { //backhand volley
+                                    backhand_volley_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                } else if (item == 5) { //Foul to lose
+                                    foul_to_lose_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                } else if (item == 6) { //other winner
+                                    calculateScore(YOU_SCORE);
+                                }
+                            } else { //first serve
+                                first_serve_count = 1;
+                                if (item == 0) { //unforced error
+                                    unforced_errors_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                } else if (item == 1) { //forehand winner
+                                    forehand_winner_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                } else if (item == 2) { //backhand winner
+                                    backhand_winner_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                } else if (item == 3) { //forehand volley
+                                    forehand_volley_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                } else if (item == 4) { //backhand volley
+                                    backhand_volley_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                } else if (item == 5) { //Foul to lose
+                                    foul_to_lose_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                } else if (item == 6) { //other winner
+                                    calculateScore(YOU_SCORE);
+                                }
                             }
                         }
                     } );
@@ -929,7 +980,7 @@ public class GameActivity extends AppCompatActivity{
 
                 ArrayList<String> items = new ArrayList<>();
 
-                if (imgServeUp.getVisibility() == View.VISIBLE) { //serve
+                if (imgServeUp.getVisibility() == View.VISIBLE) { //oppt serve
                     if (is_second_serve) { //second serve
                         items.add(getResources().getString(R.string.game_ace));
                         items.add(getResources().getString(R.string.game_double_faults));
@@ -964,93 +1015,85 @@ public class GameActivity extends AppCompatActivity{
                         public void onClick( DialogInterface dialog, int item ) { //pick from gamer
 
                             if (is_second_serve) { //in second serve
+                                second_serve_count = 1;
                                 if (item == 0) { //ace
-                                    is_ace = true;
-                                    second_serve_count = 1;
+                                    ace_count = 1;
                                     calculateScore(OPPT_SCORE);
                                     is_second_serve = false;
                                 } else if (item == 1){ //double fault
-                                    is_double_fault = true;
-                                    second_serve_count = 1;
+                                    //is_double_fault = true;
+                                    double_faults_count = 1;
                                     calculateScore(YOU_SCORE);
                                     is_second_serve = false;
                                 } else if (item == 2) { //unforced error
-                                    second_serve_count = 1;
+                                    unforced_errors_count = 1;
                                     calculateScore(YOU_SCORE);
                                     is_second_serve = false;
                                 } else if (item == 3) { //forehand winner
-                                    second_serve_count = 1;
+                                    forehand_winner_count = 1;
                                     calculateScore(OPPT_SCORE);
                                     is_second_serve = false;
                                 } else if (item == 4) { //backhand winner
-                                    second_serve_count = 1;
+                                    backhand_winner_count = 1;
                                     calculateScore(OPPT_SCORE);
                                     is_second_serve = false;
                                 } else if (item == 5) { //forehand volley
-                                    second_serve_count = 1;
+                                    forehand_volley_count = 1;
                                     calculateScore(OPPT_SCORE);
                                     is_second_serve = false;
                                 } else if (item == 6) { //backhand volley
-                                    second_serve_count = 1;
+                                    backhand_volley_count = 1;
                                     calculateScore(OPPT_SCORE);
                                     is_second_serve = false;
                                 } else if (item == 7) { //Foul to lose
-                                    second_serve_count = 1;
+                                    foul_to_lose_count = 1;
                                     calculateScore(YOU_SCORE);
                                     is_second_serve = false;
                                 } else if (item == 8) { //other winner
-                                    second_serve_count = 1;
                                     calculateScore(OPPT_SCORE);
                                     is_second_serve = false;
                                 } else if (item == 9) { //net in
-                                    second_serve_count = 1;
                                     calculateScore(OPPT_SERVE);
                                 }
-                                Log.d(TAG, "first: "+first_serve_count+" f_miss: "+first_serve_miss+" second: "+second_serve_count);
                             } else { //first serve
+                                first_serve_count = 1;
                                 if (item == 0) { //ace
-                                    is_ace = true;
-                                    first_serve_count = 1;
+                                    //is_ace = true;
+                                    ace_count = 1;
                                     calculateScore(OPPT_SCORE);
                                 } else if (item == 1){
                                     Log.d(TAG, "second serve");
-                                    first_serve_count = 1;
                                     first_serve_miss = 1;
                                     is_second_serve = true;
                                     calculateScore(OPPT_SERVE);
-
-
                                 } else if (item == 2) { //unforced error
-                                    first_serve_count = 1;
+                                    unforced_errors_count = 1;
                                     calculateScore(YOU_SCORE);
                                 } else if (item == 3) { //forehand winner
-                                    first_serve_count = 1;
+                                    forehand_winner_count = 1;
                                     calculateScore(OPPT_SCORE);
                                 } else if (item == 4) { //backhand winner
-                                    first_serve_count = 1;
+                                    backhand_winner_count = 1;
                                     calculateScore(OPPT_SCORE);
                                 } else if (item == 5) { //forehand volley
-                                    first_serve_count = 1;
+                                    forehand_volley_count = 1;
                                     calculateScore(OPPT_SCORE);
                                 } else if (item == 6) { //backhand volley
-                                    first_serve_count = 1;
+                                    backhand_volley_count = 1;
                                     calculateScore(OPPT_SCORE);
                                 } else if (item == 7) { //Foul to lose
-                                    first_serve_count = 1;
+                                    foul_to_lose_count = 1;
                                     calculateScore(YOU_SCORE);
                                 } else if (item == 8) { //other winner
-                                    first_serve_count = 1;
                                     calculateScore(OPPT_SCORE);
                                 } else if (item == 9) { //net in
-                                    first_serve_count = 1;
                                     calculateScore(OPPT_SERVE);
                                 }
-                                Log.d(TAG, "first: "+first_serve_count+" f_miss: "+first_serve_miss+" second: "+second_serve_count);
                             }
                         }
                     } );
                     builder.show();
-                } else {
+                } else { //you serve
                     items.add(getResources().getString(R.string.game_unforced_error));
                     items.add(getResources().getString(R.string.game_forehand_winner));
                     items.add(getResources().getString(R.string.game_backhand_winner));
@@ -1065,22 +1108,55 @@ public class GameActivity extends AppCompatActivity{
 
                     builder.setTitle(playerUp + " "+getResources().getString(R.string.game_select_action));
                     builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
-                        public void onClick( DialogInterface dialog, int item ) { //pick from camer
-                            if (item == 0) { //unforced error
-                                calculateScore(YOU_SCORE);
-                            } else if (item == 1) { //forehand winner
-                                calculateScore(OPPT_SCORE);
-                            } else if (item == 2) { //backhand winner
-                                calculateScore(OPPT_SCORE);
-                            } else if (item == 3) { //forehand volley
-                                calculateScore(OPPT_SCORE);
-                            } else if (item == 4) { //backhand volley
-                                calculateScore(OPPT_SCORE);
-                            } else if (item == 5) { //Foul to lose
-                                calculateScore(YOU_SCORE);
-                            } else if (item == 6) { //other winner
-                                calculateScore(OPPT_SCORE);
+                        public void onClick( DialogInterface dialog, int item ) {
+                            if (is_second_serve) {
+                                second_serve_count = 1;
+                                if (item == 0) { //unforced error
+                                    unforced_errors_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                } else if (item == 1) { //forehand winner
+                                    forehand_winner_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                } else if (item == 2) { //backhand winner
+                                    backhand_winner_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                } else if (item == 3) { //forehand volley
+                                    forehand_volley_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                } else if (item == 4) { //backhand volley
+                                    backhand_volley_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                } else if (item == 5) { //Foul to lose
+                                    foul_to_lose_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                } else if (item == 6) { //other winner
+                                    calculateScore(OPPT_SCORE);
+                                }
+                            } else {
+                                first_serve_count = 1;
+                                if (item == 0) { //unforced error
+                                    unforced_errors_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                } else if (item == 1) { //forehand winner
+                                    forehand_winner_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                } else if (item == 2) { //backhand winner
+                                    backhand_winner_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                } else if (item == 3) { //forehand volley
+                                    forehand_volley_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                } else if (item == 4) { //backhand volley
+                                    backhand_volley_count = 1;
+                                    calculateScore(OPPT_SCORE);
+                                } else if (item == 5) { //Foul to lose
+                                    foul_to_lose_count = 1;
+                                    calculateScore(YOU_SCORE);
+                                } else if (item == 6) { //other winner
+                                    calculateScore(OPPT_SCORE);
+                                }
                             }
+
                         }
                     } );
                     builder.show();
@@ -1415,18 +1491,46 @@ public class GameActivity extends AppCompatActivity{
                 Log.d(TAG, "*** Game is running ***");
                 new_state = new State();
 
-
+                int first, first_miss, second;
+                Log.d(TAG, "==>[Stack empty]");
+                Log.d(TAG, "first_serve_count = "+first_serve_count);
+                Log.d(TAG, "first_serve_miss = "+first_serve_miss);
+                Log.d(TAG, "second_serve_count = "+second_serve_count);
+                Log.d(TAG, "ace_count = "+ace_count);
+                Log.d(TAG, "unforced_errors_count = "+unforced_errors_count);
+                Log.d(TAG, "foul_to_lose_count = "+foul_to_lose_count);
+                Log.d(TAG, "double_faults_count = "+double_faults_count);
+                Log.d(TAG, "forehand_winner_count = "+forehand_winner_count);
+                Log.d(TAG, "backhand_winner_count = "+backhand_winner_count);
+                Log.d(TAG, "forehand_volley_count = "+forehand_volley_count);
+                Log.d(TAG, "backhand_volley_count = "+backhand_volley_count);
 
                 switch (action) {
                     case YOU_SERVE: //you serve
                         Log.d(TAG, "=== I serve start ===");
                         if (stack.isEmpty()) { //the state stack is empty
-                            Log.d(TAG, "==>[Stack empty]");
+                            first = first_serve_count;
+                            first_miss = first_serve_miss;
+                            second = second_serve_count;
+
+                            new_state.setFirstServeDown((short) first);
+                            new_state.setFirstServeMissDown((short) first_miss);
+                            new_state.setSecondServeDown((short) second);
 
                             if (serve.equals("0"))
                                 new_state.setServe(true);
                             else
                                 new_state.setServe(false);
+
+                            if (is_second_serve) {
+                                imgServeUp.setImageResource(R.drawable.ball_icon_red);
+                                imgServeDown.setImageResource(R.drawable.ball_icon_red);
+                                new_state.setSecondServe(true);
+                            } else {
+                                imgServeUp.setImageResource(R.drawable.ball_icon);
+                                imgServeDown.setImageResource(R.drawable.ball_icon);
+                                new_state.setSecondServe(false);
+                            }
 
                             //set current set = 1
                             new_state.setCurrent_set((byte) 0x01);
@@ -1437,23 +1541,29 @@ public class GameActivity extends AppCompatActivity{
                             new_state.setFirstServeMissDown(first_serve_miss);
                         } else {
                             Log.d(TAG, "==>[Stack not empty]");
-                            new_state.setFirstServeDown((short) (current_state.getFirstServeDown() + first_serve_count));
-                            new_state.setFirstServeMissDown((short) (current_state.getFirstServeMissDown() + first_serve_miss));
-                            new_state.setSecondServeDown((short) (current_state.getSecondServeDown() + second_serve_count));
+                            first = current_state.getFirstServeDown()+first_serve_count;
+                            first_miss = current_state.getFirstServeMissDown()+first_serve_miss;
+                            second = current_state.getSecondServeDown()+second_serve_count;
+
+
+                            new_state.setFirstServeDown((short) first);
+                            new_state.setFirstServeMissDown((short) first_miss);
+                            new_state.setSecondServeDown((short) second);
 
                             new_state.setCurrent_set(current_state.getCurrent_set());
                             new_state.setServe(current_state.isServe());
                             new_state.setInTiebreak(current_state.isInTiebreak());
                             new_state.setFinish(current_state.isFinish());
-                            new_state.setSecondServe(current_state.isSecondServe());
-
-                            if (imgServeDown.getVisibility() == View.VISIBLE) { //I serve
-                                if (is_second_serve) { //second serve
-                                    new_state.setSecondServeDown((short)(current_state.getSecondServeDown()+1));
-                                } else { //first serve
-                                    new_state.setFirstServeDown((short)(current_state.getFirstServeDown()+1));
-                                }
+                            if (is_second_serve) {
+                                imgServeUp.setImageResource(R.drawable.ball_icon_red);
+                                imgServeDown.setImageResource(R.drawable.ball_icon_red);
+                                new_state.setSecondServe(true);
+                            } else {
+                                imgServeUp.setImageResource(R.drawable.ball_icon);
+                                imgServeDown.setImageResource(R.drawable.ball_icon);
+                                new_state.setSecondServe(false);
                             }
+
 
                             new_state.setSetsUp(current_state.getSetsUp());
                             new_state.setSetsDown(current_state.getSetsDown());
@@ -1463,11 +1573,11 @@ public class GameActivity extends AppCompatActivity{
                             new_state.setAceCountUp(current_state.getAceCountUp());
                             new_state.setAceCountDown(current_state.getAceCountDown());
                             new_state.setFirstServeUp(current_state.getFirstServeUp());
-                            new_state.setFirstServeDown(current_state.getFirstServeDown());
+                            //new_state.setFirstServeDown(current_state.getFirstServeDown());
                             new_state.setFirstServeMissUp(current_state.getFirstServeMissUp());
-                            new_state.setFirstServeMissDown(current_state.getFirstServeMissDown());
+                            //new_state.setFirstServeMissDown(current_state.getFirstServeMissDown());
                             new_state.setSecondServeUp(current_state.getSecondServeUp());
-                            new_state.setSecondServeDown(current_state.getSecondServeDown());
+                            //new_state.setSecondServeDown(current_state.getSecondServeDown());
                             new_state.setDoubleFaultUp(current_state.getDoubleFaultUp());
                             new_state.setDoubleFaultDown(current_state.getDoubleFaultDown());
                             new_state.setUnforceErrorUp(current_state.getUnforceErrorUp());
@@ -1491,22 +1601,38 @@ public class GameActivity extends AppCompatActivity{
                                 new_state.setSet_tiebreak_point_up(i, current_state.getSet_tiebreak_point_up(i));
                                 new_state.setSet_tiebreak_point_down(i, current_state.getSet_tiebreak_point_down(i));
                             }
+
+                            Log.d(TAG, "your first serve : miss/count = "+new_state.getFirstServeMissDown()+"/"+new_state.getFirstServeDown());
+                            Log.d(TAG, "your second serve : miss/count = "+new_state.getDoubleFaultDown()+"/"+new_state.getSecondServeDown());
                         }
 
-                        first_serve_count = 0;
-                        first_serve_miss = 0;
-                        second_serve_count = 0;
                         Log.d(TAG, "=== I serve end ===");
                         break;
                     case OPPT_SERVE: //oppt serve
                         Log.d(TAG, "=== oppt serve start ===");
                         if (stack.isEmpty()) { //the state stack is empty
                             Log.d(TAG, "==>[Stack empty]");
+                            first = first_serve_count;
+                            first_miss = first_serve_miss;
+                            second = second_serve_count;
+
+                            new_state.setFirstServeUp((short) first);
+                            new_state.setFirstServeMissUp((short) first_miss);
+                            new_state.setSecondServeUp((short) second);
 
                             if (serve.equals("0"))
                                 new_state.setServe(true);
                             else
                                 new_state.setServe(false);
+                            if (is_second_serve) {
+                                imgServeUp.setImageResource(R.drawable.ball_icon_red);
+                                imgServeDown.setImageResource(R.drawable.ball_icon_red);
+                                new_state.setSecondServe(true);
+                            } else {
+                                imgServeUp.setImageResource(R.drawable.ball_icon);
+                                imgServeDown.setImageResource(R.drawable.ball_icon);
+                                new_state.setSecondServe(false);
+                            }
 
                             //set current set = 1
                             new_state.setCurrent_set((byte) 0x01);
@@ -1517,21 +1643,26 @@ public class GameActivity extends AppCompatActivity{
                             new_state.setFirstServeMissUp(first_serve_miss);
                         } else {
                             Log.d(TAG, "==>[Stack not empty]");
-                            new_state.setFirstServeUp((short) (current_state.getFirstServeUp() + first_serve_count));
-                            new_state.setFirstServeMissUp((short) (current_state.getFirstServeMissUp() + first_serve_miss));
-                            new_state.setSecondServeUp((short) (current_state.getSecondServeUp() + second_serve_count));
+                            first = current_state.getFirstServeUp()+first_serve_count;
+                            first_miss = current_state.getFirstServeMissUp()+first_serve_miss;
+                            second = current_state.getSecondServeUp()+second_serve_count;
+
+                            new_state.setFirstServeUp((short) first);
+                            new_state.setFirstServeMissUp((short) first_miss);
+                            new_state.setSecondServeUp((short) second);
 
                             new_state.setCurrent_set(current_state.getCurrent_set());
                             new_state.setServe(current_state.isServe());
                             new_state.setInTiebreak(current_state.isInTiebreak());
                             new_state.setFinish(current_state.isFinish());
-
-                            if (imgServeDown.getVisibility() == View.VISIBLE) { //I serve
-                                if (is_second_serve) { //second serve
-                                    new_state.setSecondServeDown((short)(current_state.getSecondServeDown()+1));
-                                } else { //first serve
-                                    new_state.setFirstServeDown((short)(current_state.getFirstServeDown()+1));
-                                }
+                            if (is_second_serve) {
+                                imgServeUp.setImageResource(R.drawable.ball_icon_red);
+                                imgServeDown.setImageResource(R.drawable.ball_icon_red);
+                                new_state.setSecondServe(true);
+                            } else {
+                                imgServeUp.setImageResource(R.drawable.ball_icon);
+                                imgServeDown.setImageResource(R.drawable.ball_icon);
+                                new_state.setSecondServe(false);
                             }
 
                             new_state.setSetsUp(current_state.getSetsUp());
@@ -1541,11 +1672,11 @@ public class GameActivity extends AppCompatActivity{
 
                             new_state.setAceCountUp(current_state.getAceCountUp());
                             new_state.setAceCountDown(current_state.getAceCountDown());
-                            new_state.setFirstServeUp(current_state.getFirstServeUp());
+                            //new_state.setFirstServeUp(current_state.getFirstServeUp());
                             new_state.setFirstServeDown(current_state.getFirstServeDown());
-                            new_state.setFirstServeMissUp(current_state.getFirstServeMissUp());
+                            //new_state.setFirstServeMissUp(current_state.getFirstServeMissUp());
                             new_state.setFirstServeMissDown(current_state.getFirstServeMissDown());
-                            new_state.setSecondServeUp(current_state.getSecondServeUp());
+                            //new_state.setSecondServeUp(current_state.getSecondServeUp());
                             new_state.setSecondServeDown(current_state.getSecondServeDown());
                             new_state.setDoubleFaultUp(current_state.getDoubleFaultUp());
                             new_state.setDoubleFaultDown(current_state.getDoubleFaultDown());
@@ -1570,23 +1701,38 @@ public class GameActivity extends AppCompatActivity{
                                 new_state.setSet_tiebreak_point_up(i, current_state.getSet_tiebreak_point_up(i));
                                 new_state.setSet_tiebreak_point_down(i, current_state.getSet_tiebreak_point_down(i));
                             }
+
+                            Log.d(TAG, "oppt first serve : miss/count = "+new_state.getFirstServeMissUp()+"/"+new_state.getFirstServeUp());
+                            Log.d(TAG, "oppt second serve : miss/count = "+new_state.getDoubleFaultUp()+"/"+new_state.getSecondServeUp());
                         }
 
-                        first_serve_count = 0;
-                        first_serve_miss = 0;
-                        second_serve_count = 0;
                         Log.d(TAG, "=== oppt serve end ===");
                         break;
                     case YOU_SCORE: //you score
                         Log.d(TAG, "=== I score start ===");
 
                         if (stack.isEmpty()) { //the state stack is empty
-
                             Log.d(TAG, "==>[Stack empty]");
+
                             if (serve.equals("0"))
                                 new_state.setServe(true);
                             else
                                 new_state.setServe(false);
+                            if (is_second_serve)
+                                new_state.setSecondServe(true);
+                            else
+                                new_state.setSecondServe(false);
+
+                            first = first_serve_count;
+                            if (new_state.isServe()) { //you serve
+                                Log.d(TAG, "you serve");
+                                new_state.setFirstServeDown((short) first);
+                            } else {
+                                Log.d(TAG, "oppt serve");
+                                new_state.setFirstServeUp((short) first);
+                            }
+
+
 
                             //set current set = 1
                             new_state.setCurrent_set((byte) 0x01);
@@ -1595,52 +1741,46 @@ public class GameActivity extends AppCompatActivity{
 
                             new_state.setDuration(time_use);
 
+                            //win by your self
+                            new_state.setAceCountDown(ace_count);
+                            new_state.setForehandWinnerDown(forehand_winner_count);
+                            new_state.setBackhandWinnerDown(backhand_winner_count);
+                            new_state.setForehandVolleyDown(forehand_volley_count);
+                            new_state.setBackhandVolleyDown(backhand_volley_count);
+                            //oppt lose
+                            new_state.setDoubleFaultUp(double_faults_count);
+                            new_state.setUnforceErrorUp(unforced_errors_count);
+                            new_state.setFoulToLoseUp(foul_to_lose_count);
+
                         } else {
                             Log.d(TAG, "==>[Stack not empty]");
 
                             if (current_state.isFinish()) {
                                 Log.d(TAG, "**** Game Finish ****");
                             } else {
-                                //new_state = new State();
-                                //new_state = stack.peek();
-                                // copy previous state;
                                 new_state.setCurrent_set(current_state.getCurrent_set());
                                 new_state.setServe(current_state.isServe());
                                 new_state.setInTiebreak(current_state.isInTiebreak());
                                 new_state.setFinish(current_state.isFinish());
+                                if (is_second_serve)
+                                    new_state.setSecondServe(true);
+                                else
+                                    new_state.setSecondServe(false);
 
-                                new_state.setFirstServeDown((short) (current_state.getFirstServeDown() + first_serve_count));
-                                new_state.setFirstServeMissDown((short) (current_state.getFirstServeMissDown() + first_serve_miss));
-                                new_state.setSecondServeDown((short) (current_state.getSecondServeDown() + second_serve_count));
-
-                                if (imgServeDown.getVisibility() == View.VISIBLE) { //I serve
-                                    if (is_second_serve) { //second serve
-                                        new_state.setSecondServeDown((short)(current_state.getSecondServeDown()+1));
-                                    } else { //first serve
-                                        new_state.setFirstServeDown((short)(current_state.getFirstServeDown()+1));
-                                    }
-                                }
-
-                            /*if (deuce.equals("0")) {
-                                new_state.setDeuce(true);
-                            } else {
-                                new_state.setDeuce(false);
-                            }
-
-                            new_state.setSetLimit(current_state.getSetLimit());*/
                                 new_state.setSetsUp(current_state.getSetsUp());
                                 new_state.setSetsDown(current_state.getSetsDown());
 
                                 new_state.setDuration(time_use);
 
-                                new_state.setAceCountUp(current_state.getAceCountUp());
-                                new_state.setAceCountDown(current_state.getAceCountDown());
                                 new_state.setFirstServeUp(current_state.getFirstServeUp());
                                 new_state.setFirstServeDown(current_state.getFirstServeDown());
                                 new_state.setFirstServeMissUp(current_state.getFirstServeMissUp());
                                 new_state.setFirstServeMissDown(current_state.getFirstServeMissDown());
                                 new_state.setSecondServeUp(current_state.getSecondServeUp());
                                 new_state.setSecondServeDown(current_state.getSecondServeDown());
+
+                                new_state.setAceCountUp(current_state.getAceCountUp());
+                                new_state.setAceCountDown(current_state.getAceCountDown());
                                 new_state.setDoubleFaultUp(current_state.getDoubleFaultUp());
                                 new_state.setDoubleFaultDown(current_state.getDoubleFaultDown());
                                 new_state.setUnforceErrorUp(current_state.getUnforceErrorUp());
@@ -1665,6 +1805,47 @@ public class GameActivity extends AppCompatActivity{
                                     new_state.setSet_tiebreak_point_down(i, current_state.getSet_tiebreak_point_down(i));
                                 }
 
+                                if (current_state.isServe()) { //you serve
+                                    Log.d(TAG, "you serve");
+                                    first = current_state.getFirstServeDown()+first_serve_count;
+                                    first_miss = current_state.getFirstServeMissDown()+first_serve_miss;
+                                    second = current_state.getSecondServeDown()+second_serve_count;
+
+                                    new_state.setFirstServeDown((short) first);
+                                    new_state.setFirstServeMissDown((short) first_miss);
+                                    new_state.setSecondServeDown((short) second);
+                                    //win on your own
+                                    new_state.setAceCountDown((byte)(new_state.getAceCountDown()+ace_count));
+                                    new_state.setForehandWinnerDown((short)(new_state.getForehandWinnerDown()+forehand_winner_count));
+                                    new_state.setBackhandWinnerDown((short)(new_state.getBackhandWinnerDown()+backhand_winner_count));
+                                    new_state.setForehandVolleyDown((short)(new_state.getForehandVolleyDown()+forehand_volley_count));
+                                    new_state.setBackhandVolleyDown((short)(new_state.getBackhandVolleyDown()+backhand_volley_count));
+                                    //win on oppt lose
+                                    new_state.setUnforceErrorUp((byte)(new_state.getUnforceErrorUp()+unforced_errors_count));
+                                    new_state.setFoulToLoseUp((byte)(new_state.getFoulToLoseUp()+foul_to_lose_count));
+                                } else {
+                                    Log.d(TAG, "oppt serve");
+                                    first = current_state.getFirstServeUp()+first_serve_count;
+                                    first_miss = current_state.getFirstServeMissUp()+first_serve_miss;
+                                    second = current_state.getSecondServeUp()+second_serve_count;
+
+                                    new_state.setFirstServeUp((short) first);
+                                    new_state.setFirstServeMissUp((short) first_miss);
+                                    new_state.setSecondServeUp((short) second);
+
+                                    //win on your own
+                                    new_state.setForehandWinnerDown((short)(new_state.getForehandWinnerDown()+forehand_winner_count));
+                                    new_state.setBackhandWinnerDown((short)(new_state.getBackhandWinnerDown()+backhand_winner_count));
+                                    new_state.setForehandVolleyDown((short)(new_state.getForehandVolleyDown()+forehand_volley_count));
+                                    new_state.setBackhandVolleyDown((short)(new_state.getBackhandVolleyDown()+backhand_volley_count));
+                                    //win on oppt lose
+                                    new_state.setDoubleFaultUp((byte)(new_state.getDoubleFaultUp()+double_faults_count));
+                                    new_state.setUnforceErrorUp((byte)(new_state.getUnforceErrorUp()+unforced_errors_count));
+                                    new_state.setFoulToLoseUp((byte)(new_state.getFoulToLoseUp()+foul_to_lose_count));
+                                }
+
+                                Log.d(TAG, "your first serve : miss/count = "+new_state.getFirstServeMissDown()+"/"+new_state.getFirstServeDown());
+                                Log.d(TAG, "your second serve : miss/count = "+new_state.getDoubleFaultDown()+"/"+new_state.getSecondServeDown());
 
                                 //you score!
                                 byte point = current_state.getSet_point_down(current_set);
@@ -1677,17 +1858,34 @@ public class GameActivity extends AppCompatActivity{
                             }
                         }
 
+                        //scored, reset serve
+                        imgServeUp.setImageResource(R.drawable.ball_icon);
+                        imgServeDown.setImageResource(R.drawable.ball_icon);
                         Log.d(TAG, "=== I score end ===");
                         break;
                     case OPPT_SCORE: //oppt score
                         Log.d(TAG, "=== Oppt score start ===");
+
                         if (stack.isEmpty()) { //the state stack is empty
-                            //new_state = new State();
                             Log.d(TAG, "==>[Stack empty]");
+
                             if (serve.equals("0"))
                                 new_state.setServe(true);
                             else
                                 new_state.setServe(false);
+                            if (is_second_serve)
+                                new_state.setSecondServe(true);
+                            else
+                                new_state.setSecondServe(false);
+
+                            first = first_serve_count;
+                            if (new_state.isServe()) { //you serve
+                                Log.d(TAG, "you serve");
+                                new_state.setFirstServeDown((short) first);
+                            } else {
+                                Log.d(TAG, "oppt serve");
+                                new_state.setFirstServeUp((short) first);
+                            }
 
                             //set current set = 1
                             new_state.setCurrent_set((byte) 0x01);
@@ -1695,59 +1893,48 @@ public class GameActivity extends AppCompatActivity{
                             new_state.setSet_point_up((byte) 0x01, (byte) 0x01);
 
                             new_state.setDuration(time_use);
-                            //Log.e(TAG, "get_set_1_point_up = "+new_state.getSet_1_point_up()+", isServe ? "+ (new_state.isServe() ? "YES" : "NO"));
-                        /*new_state.setSetLimit(Byte.valueOf(set));
 
-                        if (deuce.equals("0")) {
-                            new_state.setDeuce(true);
-                        } else {
-                            new_state.setDeuce(false);
-                        }*/
+                            //oppt win on his own
+                            new_state.setAceCountUp(ace_count);
+                            new_state.setForehandWinnerUp(forehand_winner_count);
+                            new_state.setBackhandWinnerUp(backhand_winner_count);
+                            new_state.setForehandVolleyUp(forehand_volley_count);
+                            new_state.setBackhandVolleyUp(backhand_volley_count);
+
+                            //win by your lose
+                            new_state.setDoubleFaultDown(double_faults_count);
+                            new_state.setUnforceErrorDown(unforced_errors_count);
+                            new_state.setFoulToLoseDown(foul_to_lose_count);
+
+
                         } else {
                             Log.d(TAG, "==>[Stack not empty]");
                             if (current_state.isFinish()) {
                                 Log.d(TAG, "**** Game Finish ****");
                             } else {
-                                //new_state = new State();
-                                //new_state = stack.peek();
-                                // copy previous state;
-
                                 new_state.setCurrent_set(current_state.getCurrent_set());
                                 new_state.setServe(current_state.isServe());
                                 new_state.setInTiebreak(current_state.isInTiebreak());
                                 new_state.setFinish(current_state.isFinish());
+                                if (is_second_serve)
+                                    new_state.setSecondServe(true);
+                                else
+                                    new_state.setSecondServe(false);
 
-                                new_state.setFirstServeUp((short) (current_state.getFirstServeUp() + first_serve_count));
-                                new_state.setFirstServeMissUp((short) (current_state.getFirstServeMissUp() + first_serve_miss));
-                                new_state.setSecondServeUp((short) (current_state.getSecondServeUp() + second_serve_count));
-
-                                if (imgServeUp.getVisibility() == View.VISIBLE) { //I serve
-                                    if (is_second_serve) { //second serve
-                                        new_state.setSecondServeUp((short)(current_state.getSecondServeUp()+1));
-                                    } else { //first serve
-                                        new_state.setFirstServeUp((short)(current_state.getFirstServeUp()+1));
-                                    }
-                                }
-                            /*if (deuce.equals("0")) {
-                                new_state.setDeuce(true);
-                            } else {
-                                new_state.setDeuce(false);
-                            }
-
-                            new_state.setSetLimit(current_state.getSetLimit());*/
                                 new_state.setSetsUp(current_state.getSetsUp());
                                 new_state.setSetsDown(current_state.getSetsDown());
 
                                 new_state.setDuration(time_use);
 
-                                new_state.setAceCountUp(current_state.getAceCountUp());
-                                new_state.setAceCountDown(current_state.getAceCountDown());
                                 new_state.setFirstServeUp(current_state.getFirstServeUp());
                                 new_state.setFirstServeDown(current_state.getFirstServeDown());
                                 new_state.setFirstServeMissUp(current_state.getFirstServeMissUp());
                                 new_state.setFirstServeMissDown(current_state.getFirstServeMissDown());
                                 new_state.setSecondServeUp(current_state.getSecondServeUp());
                                 new_state.setSecondServeDown(current_state.getSecondServeDown());
+
+                                new_state.setAceCountUp(current_state.getAceCountUp());
+                                new_state.setAceCountDown(current_state.getAceCountDown());
                                 new_state.setDoubleFaultUp(current_state.getDoubleFaultUp());
                                 new_state.setDoubleFaultDown(current_state.getDoubleFaultDown());
                                 new_state.setUnforceErrorUp(current_state.getUnforceErrorUp());
@@ -1772,6 +1959,49 @@ public class GameActivity extends AppCompatActivity{
                                     new_state.setSet_tiebreak_point_down(i, current_state.getSet_tiebreak_point_down(i));
                                 }
 
+                                if (current_state.isServe()) { //you serve
+                                    Log.d(TAG, "you serve");
+                                    first = current_state.getFirstServeDown()+first_serve_count;
+                                    first_miss = current_state.getFirstServeMissDown()+first_serve_miss;
+                                    second = current_state.getSecondServeDown()+second_serve_count;
+
+                                    new_state.setFirstServeDown((short) first);
+                                    new_state.setFirstServeMissDown((short) first_miss);
+                                    new_state.setSecondServeDown((short) second);
+
+                                    //win on oppt own
+                                    new_state.setForehandWinnerUp((short)(new_state.getForehandWinnerUp()+forehand_winner_count));
+                                    new_state.setBackhandWinnerUp((short)(new_state.getBackhandWinnerUp()+backhand_winner_count));
+                                    new_state.setForehandVolleyUp((short)(new_state.getForehandVolleyUp()+forehand_volley_count));
+                                    new_state.setBackhandVolleyUp((short)(new_state.getBackhandVolleyUp()+backhand_volley_count));
+                                    //win on your lose
+                                    new_state.setDoubleFaultDown((byte)(new_state.getDoubleFaultDown()+double_faults_count));
+                                    new_state.setUnforceErrorDown((byte)(new_state.getUnforceErrorDown()+unforced_errors_count));
+                                    new_state.setFoulToLoseDown((byte)(new_state.getFoulToLoseDown()+foul_to_lose_count));
+                                } else {
+                                    Log.d(TAG, "oppt serve");
+                                    first = current_state.getFirstServeUp()+first_serve_count;
+                                    first_miss = current_state.getFirstServeMissUp()+first_serve_miss;
+                                    second = current_state.getSecondServeUp()+second_serve_count;
+
+                                    new_state.setFirstServeUp((short) first);
+                                    new_state.setFirstServeMissUp((short) first_miss);
+                                    new_state.setSecondServeUp((short) second);
+
+                                    //win on oppt own
+                                    new_state.setAceCountUp((byte)(new_state.getAceCountUp()+ace_count));
+                                    new_state.setForehandWinnerUp((short)(new_state.getForehandWinnerUp()+forehand_winner_count));
+                                    new_state.setBackhandWinnerUp((short)(new_state.getBackhandWinnerUp()+backhand_winner_count));
+                                    new_state.setForehandVolleyUp((short)(new_state.getForehandVolleyUp()+forehand_volley_count));
+                                    new_state.setBackhandVolleyUp((short)(new_state.getBackhandVolleyUp()+backhand_volley_count));
+                                    //win on your lose
+                                    new_state.setUnforceErrorDown((byte)(new_state.getUnforceErrorDown()+unforced_errors_count));
+                                    new_state.setFoulToLoseDown((byte)(new_state.getFoulToLoseDown()+foul_to_lose_count));
+                                }
+
+                                Log.d(TAG, "oppt first serve : miss/count = "+new_state.getFirstServeMissUp()+"/"+new_state.getFirstServeUp());
+                                Log.d(TAG, "oppt second serve : miss/count = "+new_state.getDoubleFaultUp()+"/"+new_state.getSecondServeUp());
+
                                 //oppt score!
                                 byte point = current_state.getSet_point_up(current_set);
                                 Log.d(TAG, "Opponent point " + point + " change to " + (++point));
@@ -1782,9 +2012,13 @@ public class GameActivity extends AppCompatActivity{
                                 checkGames(new_state);
                             }
                         }
+
+                        //scored, reset serve
+                        imgServeUp.setImageResource(R.drawable.ball_icon);
+                        imgServeDown.setImageResource(R.drawable.ball_icon);
                         Log.d(TAG, "=== Oppt score end ===");
                         break;
-                }
+                } //switch end
 
                 if (new_state != null) {
 
@@ -1793,6 +2027,7 @@ public class GameActivity extends AppCompatActivity{
                     Log.d(TAG, "Serve : " + new_state.isServe());
                     Log.d(TAG, "In tiebreak : " + new_state.isInTiebreak());
                     Log.d(TAG, "Finish : " + new_state.isFinish());
+                    Log.d(TAG, "Second serve : "+new_state.isSecondServe());
                     Log.d(TAG, "Ace : up = "+new_state.getAceCountUp()+" down = "+new_state.getAceCountDown());
                     Log.d(TAG, "Double Faults : up  = "+new_state.getDoubleFaultUp()+ " down = "+new_state.getDoubleFaultDown());
                     Log.d(TAG, "First serve miss/count : up = "+new_state.getFirstServeMissUp()+"/"+new_state.getFirstServeUp()+
@@ -1916,7 +2151,7 @@ public class GameActivity extends AppCompatActivity{
             }
             Log.d(TAG, "@@@@@@ stack @@@@@@");*/
                 }
-            }
+            } //not finish end
         } else { //current_state null
             Log.d(TAG, "current_state not null ==>[Stack empty]");
             if (is_pause) { //
@@ -1929,11 +2164,21 @@ public class GameActivity extends AppCompatActivity{
 
             new_state = new State();
 
+            Log.d(TAG, "first_serve_count = "+first_serve_count);
+            Log.d(TAG, "first_serve_miss = "+first_serve_miss);
+            Log.d(TAG, "second_serve_count = "+second_serve_count);
+
+
             if (serve.equals("0"))
                 new_state.setServe(true);
             else
                 new_state.setServe(false);
 
+
+            if (is_second_serve)
+                new_state.setSecondServe(true);
+            else
+                new_state.setSecondServe(false);
             //set current set = 1
             new_state.setCurrent_set((byte) 0x01);
 
@@ -1958,87 +2203,87 @@ public class GameActivity extends AppCompatActivity{
                     //new_state.setSecondServeUp(second_serve_count);
                     Log.d(TAG, "=== oppt serve end ===");
                     break;
-                case YOU_SCORE: //you serve
+                case YOU_SCORE: //you score
                     Log.d(TAG, "=== I score start ===");
 
+                    if (new_state.isServe()) //you serve
+                    {
+                        Log.d(TAG, "you serve");
+                        new_state.setFirstServeDown(first_serve_count);
+                        new_state.setFirstServeMissDown(first_serve_miss);
+                        new_state.setSecondServeDown(second_serve_count);
+
+                        //win on your own
+                        new_state.setAceCountDown(ace_count);
+                        new_state.setForehandWinnerDown(forehand_winner_count);
+                        new_state.setBackhandWinnerDown(backhand_winner_count);
+                        new_state.setForehandVolleyDown(forehand_volley_count);
+                        new_state.setBackhandVolleyDown(backhand_volley_count);
+                        //win on oppt lose
+                        new_state.setUnforceErrorUp(unforced_errors_count);
+                        new_state.setFoulToLoseUp(foul_to_lose_count);
+
+                    } else { //oppt serve
+                        Log.d(TAG, "oppt serve");
+                        new_state.setFirstServeUp(first_serve_count);
+                        new_state.setFirstServeMissUp(first_serve_miss);
+                        new_state.setSecondServeUp(second_serve_count);
+
+                        //win on your own
+                        new_state.setForehandWinnerDown(forehand_winner_count);
+                        new_state.setBackhandWinnerDown(backhand_winner_count);
+                        new_state.setForehandVolleyDown(forehand_volley_count);
+                        new_state.setBackhandVolleyDown(backhand_volley_count);
+                        //win on oppt lose
+                        new_state.setDoubleFaultUp(double_faults_count);
+                        new_state.setUnforceErrorUp(unforced_errors_count);
+                        new_state.setFoulToLoseUp(foul_to_lose_count);
+                    }
+
                     new_state.setSet_point_down((byte) 0x01, (byte) 0x01);
-
-                    if (is_ace) {
-                        new_state.setAceCountDown((byte) 0x01);
-                        is_ace = false;
-                    }
-
-                    if (is_double_fault) {
-                        new_state.setDoubleFaultDown((byte) 0x01);
-                        is_double_fault = false;
-                    }
-
-                    if (is_unforced_error) {
-                        new_state.setUnforceErrorDown((byte) 0x01);
-                        is_unforced_error = false;
-                    }
-
-                    if (is_forehand_winner) {
-                        new_state.setForehandWinnerDown((short)1);
-                        is_forehand_winner = false;
-                    }
-
-                    if (is_backhand_winner) {
-                        new_state.setBackhandWinnerDown((short)1);
-                        is_backhand_winner = false;
-                    }
-
-                    if (is_forehand_volley) {
-                        new_state.setForehandVolleyDown((short)1);
-                        is_forehand_volley = false;
-                    }
-
-                    if (is_backhand_volley) {
-                        new_state.setBackhandVolleyDown((short)1);
-                        is_backhand_volley = false;
-                    }
 
                     Log.d(TAG, "=== I score end ===");
                     break;
                 case OPPT_SCORE: //oppt score
                     Log.d(TAG, "=== Oppt score start ===");
 
+                    if (imgServeDown.getVisibility() == View.VISIBLE) //you serve
+                    {
+                        Log.d(TAG, "you serve");
+                        new_state.setFirstServeDown(first_serve_count);
+                        new_state.setFirstServeMissDown(first_serve_miss);
+                        new_state.setSecondServeDown(second_serve_count);
+
+                        //win on oppt own
+                        new_state.setForehandWinnerUp(forehand_winner_count);
+                        new_state.setBackhandWinnerUp(backhand_winner_count);
+                        new_state.setForehandVolleyUp(forehand_volley_count);
+                        new_state.setBackhandVolleyUp(backhand_volley_count);
+                        //win on you lose
+                        new_state.setDoubleFaultDown(double_faults_count);
+                        new_state.setUnforceErrorDown(unforced_errors_count);
+                        new_state.setFoulToLoseDown(foul_to_lose_count);
+
+                    } else { //oppt serve
+                        Log.d(TAG, "oppt serve");
+                        new_state.setFirstServeUp(first_serve_count);
+                        new_state.setFirstServeMissUp(first_serve_miss);
+                        new_state.setSecondServeUp(second_serve_count);
+
+                        //win on oppt own
+                        new_state.setAceCountUp(ace_count);
+                        new_state.setForehandWinnerUp(forehand_winner_count);
+                        new_state.setBackhandWinnerUp(backhand_winner_count);
+                        new_state.setForehandVolleyUp(forehand_volley_count);
+                        new_state.setBackhandVolleyUp(backhand_volley_count);
+                        //win on you lose
+                        new_state.setUnforceErrorDown(unforced_errors_count);
+                        new_state.setFoulToLoseDown(foul_to_lose_count);
+                    }
+
                     new_state.setSet_point_up((byte) 0x01, (byte) 0x01);
 
-                    if (is_ace) {
-                        new_state.setAceCountUp((byte) 0x01);
-                        is_ace = false;
-                    }
 
-                    if (is_double_fault) {
-                        new_state.setDoubleFaultUp((byte) 0x01);
-                        is_double_fault = false;
-                    }
-
-                    if (is_unforced_error) {
-                        new_state.setUnforceErrorUp((byte) 0x01);
-                        is_unforced_error = false;
-                    }
-
-                    if (is_forehand_winner) {
-                        new_state.setForehandWinnerUp((short)1);
-                        is_forehand_winner = false;
-                    }
-
-                    if (is_backhand_winner) {
-                        new_state.setBackhandWinnerUp((short)1);
-                        is_backhand_winner = false;
-                    }
-
-                    if (is_forehand_volley) {
-                        new_state.setForehandVolleyUp((short)1);
-                        is_forehand_volley = false;
-                    }
-
-                    if (is_backhand_volley) {
-                        new_state.setBackhandVolleyUp((short)1);
-                        is_backhand_volley = false;
-                    }
 
                     Log.d(TAG, "=== Oppt score end ===");
                     break;
@@ -2135,6 +2380,19 @@ public class GameActivity extends AppCompatActivity{
                 stack.push(new_state);
             }
         }
+
+        //reset all zero
+        ace_count = 0;
+        double_faults_count = 0;
+        unforced_errors_count = 0;
+        forehand_winner_count = 0;
+        backhand_winner_count = 0;
+        forehand_volley_count = 0;
+        backhand_volley_count = 0;
+        foul_to_lose_count = 0;
+        first_serve_count = 0;
+        first_serve_miss = 0;
+        second_serve_count = 0;
     }
 
     private void checkPoint(State new_state) {
@@ -2264,6 +2522,15 @@ public class GameActivity extends AppCompatActivity{
                         new_state.getSet_point_down(current_set) ==4) { //40A:40A => 40:40
                     new_state.setSet_point_up(current_set, (byte)0x03);
                     new_state.setSet_point_down(current_set, (byte)0x03);
+
+                    if (new_state.isServe()) { //you serve
+                        new_state.setBreakPointUp((byte)(new_state.getBreakPointUp()+1));
+                        new_state.setBreakPointMissUp((byte)(new_state.getBreakPointMissUp()+1));
+                    } else { //oppt serve
+                        new_state.setBreakPointDown((byte)(new_state.getBreakPointDown()+1));
+                        new_state.setBreakPointMissDown((byte)(new_state.getBreakPointMissDown()+1));
+                    }
+                    is_break_point = false;
                 } else if (new_state.getSet_point_up(current_set) == 5 &&
                         new_state.getSet_point_down(current_set) == 3) { //40A+ : 40 => oppt win this game
                     //set point clean
@@ -2278,6 +2545,10 @@ public class GameActivity extends AppCompatActivity{
                         new_state.setServe(false);
                     } else {
                         new_state.setServe(true);
+                    }
+
+                    if (new_state.isServe()) { //you serve, oppt win this break point
+                        new_state.setBreakPointUp((byte)(new_state.getBreakPointUp()+1));
                     }
 
                 } else if (new_state.getSet_point_up(current_set) == 3 &&
@@ -2295,6 +2566,10 @@ public class GameActivity extends AppCompatActivity{
                     } else {
                         new_state.setServe(true);
                     }
+
+                    if (!new_state.isServe()) { //oppt serve, you win this break point
+                        new_state.setBreakPointDown((byte)(new_state.getBreakPointDown()+1));
+                    }
                 } else if (new_state.getSet_point_up(current_set) == 4 &&
                         new_state.getSet_point_down(current_set) <= 2) { //40A : 0, 40A : 15, 40A : 30 => oppt win this game
                     //set point clean
@@ -2309,6 +2584,10 @@ public class GameActivity extends AppCompatActivity{
                         new_state.setServe(false);
                     } else {
                         new_state.setServe(true);
+                    }
+
+                    if (new_state.isServe()) { //you serve, oppt win this break point
+                        new_state.setBreakPointUp((byte)(new_state.getBreakPointUp()+1));
                     }
                 } else if (new_state.getSet_point_up(current_set) <=2 &&
                         new_state.getSet_point_down(current_set) == 4) { //0 : 40A, 15 : 40A, 30: 40A => you win this game
@@ -2325,9 +2604,41 @@ public class GameActivity extends AppCompatActivity{
                     } else {
                         new_state.setServe(true);
                     }
+
+                    if (!new_state.isServe()) { //oppt serve, you win this break point
+                        new_state.setBreakPointDown((byte)(new_state.getBreakPointDown()+1));
+                    }
                 }
                 else {
                     Log.d(TAG, "[points change without arrange]");
+                    if (new_state.getSet_point_up(current_set) == 3 &&
+                            new_state.getSet_point_down(current_set) <= 2 && !is_break_point) { // 40:0, 40:15, 40:30
+                        is_break_point = true;
+                        if (new_state.getSet_point_down(current_set) == 0) { //40:0, oppt has 3 break point
+                            new_state.setBreakPointUp((byte)(new_state.getBreakPointUp()+3));
+                        } else if (new_state.getSet_point_down(current_set) == 1) { //40:15, oppt has 2 break point
+                            new_state.setBreakPointUp((byte)(new_state.getBreakPointUp()+2));
+                        } else if (new_state.getSet_point_down(current_set) == 2) { //40:30, oppt has 1 break point
+                            new_state.setBreakPointUp((byte)(new_state.getBreakPointUp()+1));
+                        }
+                    } else if (new_state.getSet_point_down(current_set) == 3 &&
+                            new_state.getSet_point_up(current_set) <= 2 && !is_break_point) { // 0:40, 15:40, 30:40
+                        is_break_point = true;
+                        if (new_state.getSet_point_up(current_set) == 0) { //40:0, oppt has 3 break point
+                            new_state.setBreakPointDown((byte)(new_state.getBreakPointDown()+3));
+                        } else if (new_state.getSet_point_up(current_set) == 1) { //40:15, oppt has 2 break point
+                            new_state.setBreakPointDown((byte)(new_state.getBreakPointDown()+2));
+                        } else if (new_state.getSet_point_up(current_set) == 2) { //40:30, oppt has 1 break point
+                            new_state.setBreakPointDown((byte)(new_state.getBreakPointDown()+1));
+                        }
+                    } else if (new_state.getSet_point_up(current_set) == 3 &&
+                            new_state.getSet_point_down(current_set) == 3) { //40:40
+                        is_break_point = false;
+                    } else {
+                        if (is_break_point) { //in break point situation
+
+                        }
+                    }
                 }
             } else { //use deciding point
                 byte game;

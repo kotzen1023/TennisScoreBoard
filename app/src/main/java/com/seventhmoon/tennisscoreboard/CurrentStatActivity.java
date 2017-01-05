@@ -2,6 +2,7 @@ package com.seventhmoon.tennisscoreboard;
 
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,6 +13,7 @@ import com.seventhmoon.tennisscoreboard.Data.CurrentStatItem;
 import com.seventhmoon.tennisscoreboard.Data.State;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import static com.seventhmoon.tennisscoreboard.GameActivity.stack;
 
@@ -38,6 +40,14 @@ public class CurrentStatActivity extends AppCompatActivity{
         String playerUp = intent.getStringExtra("PLAYER_UP");
         String playerDown = intent.getStringExtra("PLAYER_DOWN");
 
+        Locale current_local;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            current_local = getResources().getConfiguration().locale;
+        } else {
+            current_local = getResources().getConfiguration().getLocales().get(0);
+        }
+
+
         CurrentStatItem item1 = new CurrentStatItem("", playerUp, playerDown);
         currrentArray.add(item1);
 
@@ -49,22 +59,30 @@ public class CurrentStatActivity extends AppCompatActivity{
                 String.valueOf(current_state.getDoubleFaultUp()), String.valueOf(current_state.getDoubleFaultDown()));
         currrentArray.add(item3);
 
-        CurrentStatItem item4 = new CurrentStatItem("1st Serve",
-                String.valueOf(((float)(current_state.getFirstServeUp()-current_state.getFirstServeMissUp())/(float)current_state.getFirstServeUp())),
-                String.valueOf(((float)(current_state.getFirstServeDown()-current_state.getFirstServeMissDown())/(float)current_state.getFirstServeDown())));
+        CurrentStatItem item4 = new CurrentStatItem(getResources().getString(R.string.stat_first_serve), current_state.getFirstServeUp() == 0 ? "0%" :
+                String.format(current_local, "%.1f", ((float)(current_state.getFirstServeUp()-current_state.getFirstServeMissUp())/(float)current_state.getFirstServeUp()) * 100 )+ "%",
+                current_state.getFirstServeDown() == 0 ? "0%" :
+                String.format(current_local, "%.1f", ((float)(current_state.getFirstServeDown()-current_state.getFirstServeMissDown())/(float)current_state.getFirstServeDown()) * 100 )+ "%");
         currrentArray.add(item4);
 
-        CurrentStatItem item5 = new CurrentStatItem("2nd Serve",
-                String.valueOf(((float)(current_state.getSecondServeUp()-current_state.getDoubleFaultUp())/(float)current_state.getSecondServeUp())),
-                String.valueOf(((float)(current_state.getSecondServeDown()-current_state.getDoubleFaultDown())/(float)current_state.getSecondServeDown())));
+        CurrentStatItem item5 = new CurrentStatItem(getResources().getString(R.string.stat_second_serve), current_state.getSecondServeUp() == 0 ? "0%" :
+                String.format(current_local, "%.1f", ((float)(current_state.getSecondServeUp()-current_state.getDoubleFaultUp())/(float)current_state.getSecondServeUp()) * 100) + "%",
+                current_state.getSecondServeDown() == 0 ? "0%" :
+                String.format(current_local, "%.1f", ((float)(current_state.getSecondServeDown()-current_state.getDoubleFaultDown())/(float)current_state.getSecondServeDown()) * 100) + "%");
         currrentArray.add(item5);
 
-        CurrentStatItem item6 = new CurrentStatItem("Winner",
-                String.valueOf(current_state.getForehandWinnerUp()+current_state.getForehandVolleyUp()),
-                String.valueOf(current_state.getForehandWinnerDown()+current_state.getForehandVolleyDown()));
+        CurrentStatItem item6 = new CurrentStatItem(getResources().getString(R.string.stat_winner),
+                String.valueOf(current_state.getForehandWinnerUp()+
+                        current_state.getBackhandWinnerUp()+
+                        current_state.getForehandVolleyUp()+
+                        current_state.getBackhandVolleyUp()),
+                String.valueOf(current_state.getForehandWinnerDown()+
+                        current_state.getBackhandWinnerDown()+
+                        current_state.getForehandVolleyDown()+
+                        current_state.getBackhandVolleyDown()));
         currrentArray.add(item6);
 
-        CurrentStatItem item7 = new CurrentStatItem("Unforced Error",
+        CurrentStatItem item7 = new CurrentStatItem(getResources().getString(R.string.stat_unforced_error),
                 String.valueOf(current_state.getUnforceErrorUp()),
                 String.valueOf(current_state.getUnforceErrorDown()));
         currrentArray.add(item7);

@@ -50,4 +50,8 @@
     <string name="game_other_winner">其他致勝球</string>
     <string name="game_serve_net">發球觸網進</string>
     <string name="menu_setup_stat">統計</string>
+    <string name="stat_first_serve">一發進球率</string>
+    <string name="stat_second_serve">二發進球率</string>
+    <string name="stat_winner">致勝球</string>
+    <string name="stat_unforced_error">非受迫性失誤</string>
 </resources>
