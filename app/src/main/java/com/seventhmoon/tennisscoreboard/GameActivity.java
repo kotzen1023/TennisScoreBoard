@@ -637,7 +637,8 @@ public class GameActivity extends AppCompatActivity{
 
                 if (stack.isEmpty()) {
                     Log.d(TAG, "stack is empty!");
-
+                    is_second_serve = false;
+                    is_break_point = false;
                 } else {
                     byte current_set;
                     //stack.pop();
@@ -756,6 +757,14 @@ public class GameActivity extends AppCompatActivity{
                             Log.d(TAG, "########## back state end ##########");
 
                         } else {
+                            Log.d(TAG, "back_state = null");
+
+                            is_break_point = false;
+                            is_second_serve = false;
+
+                            imgServeUp.setImageResource(R.drawable.ball_icon);
+                            imgServeDown.setImageResource(R.drawable.ball_icon);
+
                             gameUp.setText("0");
                             gameDown.setText("0");
 
@@ -2175,10 +2184,16 @@ public class GameActivity extends AppCompatActivity{
                 new_state.setServe(false);
 
 
-            if (is_second_serve)
+            if (is_second_serve) {
                 new_state.setSecondServe(true);
-            else
+                imgServeUp.setImageResource(R.drawable.ball_icon_red);
+                imgServeDown.setImageResource(R.drawable.ball_icon_red);
+            }
+            else {
                 new_state.setSecondServe(false);
+                imgServeUp.setImageResource(R.drawable.ball_icon);
+                imgServeDown.setImageResource(R.drawable.ball_icon);
+            }
             //set current set = 1
             new_state.setCurrent_set((byte) 0x01);
 
