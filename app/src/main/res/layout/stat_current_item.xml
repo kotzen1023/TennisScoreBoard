@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textViewStatTitle"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:layout_weight="4" />
+        android:layout_weight="1" />
 
     <TextView
         android:text="TextView"
@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textViewStatUp"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:layout_weight="3" />
+        android:layout_weight="1" />
 
     <TextView
         android:text="TextView"
@@ -25,5 +25,5 @@
         android:layout_height="wrap_content"
         android:id="@+id/textViewStatDown"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:layout_weight="3" />
+        android:layout_weight="1" />
 </LinearLayout>

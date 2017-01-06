@@ -51,7 +51,11 @@
     <string name="menu_setup_stat">Stat</string>
     <string name="stat_first_serve">1st Serve</string>
     <string name="stat_second_serve">2nd Serve</string>
+    <string name="stat_first_serve_won">1st Serve Won</string>
+    <string name="stat_second_serve_won">2nd Serve Won</string>
     <string name="stat_winner">Winner</string>
     <string name="stat_unforced_error">Unforced Error</string>
+    <string name="stat_net_point_won">Net Point Won</string>
+    <string name="stat_break_point_won">Break Point Won</string>
 </resources>
 

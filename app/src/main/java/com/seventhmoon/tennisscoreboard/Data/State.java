@@ -24,6 +24,15 @@ public class State {
     private byte breakPointMissUp;
     private byte breakPointMissDown;
 
+    private short firstServeWonUp;
+    private short firstServeWonDown;
+    private short firstServeLostUp;
+    private short firstServeLostDown;
+    private short secondServeWonUp;
+    private short secondServeWonDown;
+    private short secondServeLostUp;
+    private short secondServeLostDown;
+
     private byte doubleFaultUp;
     private byte doubleFaultDown;
     private short unforcedErrorUp;
@@ -245,6 +254,71 @@ public class State {
 
     public void setBreakPointMissDown(byte breakPointMissDown) {
         this.breakPointMissDown = breakPointMissDown;
+    }
+
+    //serve won
+    public short getFirstServeWonUp() {
+        return firstServeWonUp;
+    }
+
+    public void setFirstServeWonUp(short firstServeWonUp) {
+        this.firstServeWonUp = firstServeWonUp;
+    }
+
+    public short getFirstServeWonDown() {
+        return firstServeWonDown;
+    }
+
+    public void setFirstServeWonDown(short firstServeWonDown) {
+        this.firstServeWonDown = firstServeWonDown;
+    }
+
+    public short getFirstServeLostUp() {
+        return firstServeLostUp;
+    }
+
+    public void setFirstServeLostUp(short firstServeLostUp) {
+        this.firstServeLostUp = firstServeLostUp;
+    }
+
+    public short getFirstServeLostDown() {
+        return firstServeLostDown;
+    }
+
+    public void setFirstServeLostDown(short firstServeLostDown) {
+        this.firstServeLostDown = firstServeLostDown;
+    }
+
+    public short getSecondServeWonUp() {
+        return secondServeWonUp;
+    }
+
+    public void setSecondServeWonUp(short secondServeWonUp) {
+        this.secondServeWonUp = secondServeWonUp;
+    }
+
+    public short getSecondServeWonDown() {
+        return secondServeWonDown;
+    }
+
+    public void setSecondServeWonDown(short secondServeWonDown) {
+        this.secondServeWonDown = secondServeWonDown;
+    }
+
+    public short getSecondServeLostUp() {
+        return secondServeLostUp;
+    }
+
+    public void setSecondServeLostUp(short secondServeLostUp) {
+        this.secondServeLostUp = secondServeLostUp;
+    }
+
+    public short getSecondServeLostDown() {
+        return secondServeLostDown;
+    }
+
+    public void setSecondServeLostDown(short secondServeLostDown) {
+        this.secondServeLostDown = secondServeLostDown;
     }
 
     public byte getDoubleFaultUp() {

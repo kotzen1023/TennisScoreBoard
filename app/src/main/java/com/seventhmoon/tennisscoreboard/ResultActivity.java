@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -16,7 +18,8 @@ public class ResultActivity extends AppCompatActivity{
     private static final String TAG = ResultActivity.class.getName();
 
 
-
+    private static String playerUp;
+    private static String playerDown;
 
 
     @Override
@@ -79,6 +82,9 @@ public class ResultActivity extends AppCompatActivity{
 
         String win_player = intent.getStringExtra("WIN_PLAYER");
         String lose_player = intent.getStringExtra("LOSE_PLAYER");
+
+        playerUp = intent.getStringExtra("PLAYER_UP");
+        playerDown = intent.getStringExtra("PLAYER_DOWN");
 
         textViewSet1Up = (TextView) findViewById(R.id.set1_up);
         textViewSet1Down = (TextView) findViewById(R.id.set1_down);
@@ -203,5 +209,37 @@ public class ResultActivity extends AppCompatActivity{
                 finish();
             }
         });
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.game_activity_menu, menu);
+
+        //item_edit = menu.findItem(R.id.action_edit_group);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.action_show_stat:
+                intent = new Intent(ResultActivity.this, CurrentStatActivity.class);
+                intent.putExtra("PLAYER_UP", playerUp);
+                intent.putExtra("PLAYER_DOWN", playerDown);
+                startActivity(intent);
+                break;
+
+            default:
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        finish();
     }
 }
