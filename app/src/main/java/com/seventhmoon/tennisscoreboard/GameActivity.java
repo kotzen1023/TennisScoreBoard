@@ -637,8 +637,7 @@ public class GameActivity extends AppCompatActivity{
 
                 if (stack.isEmpty()) {
                     Log.d(TAG, "stack is empty!");
-                    is_second_serve = false;
-                    is_break_point = false;
+
                 } else {
                     byte current_set;
                     //stack.pop();
@@ -757,14 +756,6 @@ public class GameActivity extends AppCompatActivity{
                             Log.d(TAG, "########## back state end ##########");
 
                         } else {
-                            Log.d(TAG, "back_state = null");
-
-                            is_break_point = false;
-                            is_second_serve = false;
-
-                            imgServeUp.setImageResource(R.drawable.ball_icon);
-                            imgServeDown.setImageResource(R.drawable.ball_icon);
-
                             gameUp.setText("0");
                             gameDown.setText("0");
 
@@ -2188,8 +2179,7 @@ public class GameActivity extends AppCompatActivity{
                 new_state.setSecondServe(true);
                 imgServeUp.setImageResource(R.drawable.ball_icon_red);
                 imgServeDown.setImageResource(R.drawable.ball_icon_red);
-            }
-            else {
+            } else {
                 new_state.setSecondServe(false);
                 imgServeUp.setImageResource(R.drawable.ball_icon);
                 imgServeDown.setImageResource(R.drawable.ball_icon);
@@ -2532,42 +2522,58 @@ public class GameActivity extends AppCompatActivity{
         } else { //not in tiebreak;
             Log.d(TAG, "[Not in Tiebreak]");
             if (deuce.equals("0")) { //use deuce
+                Log.d(TAG, "[Game Using Deuce]");
                 byte game;
                 if (new_state.getSet_point_up(current_set) == 4 &&
                         new_state.getSet_point_down(current_set) ==4) { //40A:40A => 40:40
+                    Log.d(TAG, "40A:40A => 40:40");
+
                     new_state.setSet_point_up(current_set, (byte)0x03);
                     new_state.setSet_point_down(current_set, (byte)0x03);
 
-                    if (new_state.isServe()) { //you serve
-                        new_state.setBreakPointUp((byte)(new_state.getBreakPointUp()+1));
-                        new_state.setBreakPointMissUp((byte)(new_state.getBreakPointMissUp()+1));
-                    } else { //oppt serve
-                        new_state.setBreakPointDown((byte)(new_state.getBreakPointDown()+1));
-                        new_state.setBreakPointMissDown((byte)(new_state.getBreakPointMissDown()+1));
+                    if (is_break_point) {
+                        Log.d(TAG, "In break point");
+                        if (new_state.isServe()) { //you serve
+                            //new_state.setBreakPointUp((byte)(new_state.getBreakPointUp()+1));
+                            new_state.setBreakPointMissUp((byte)(new_state.getBreakPointMissUp()+1));
+                        } else { //oppt serve
+                            //new_state.setBreakPointDown((byte)(new_state.getBreakPointDown()+1));
+                            new_state.setBreakPointMissDown((byte)(new_state.getBreakPointMissDown()+1));
+                        }
+                    } else {
+                        Log.d(TAG, "Not in break point");
                     }
                     is_break_point = false;
                 } else if (new_state.getSet_point_up(current_set) == 5 &&
                         new_state.getSet_point_down(current_set) == 3) { //40A+ : 40 => oppt win this game
                     //set point clean
+                    Log.d(TAG, "40A+1 : 40, => oppt win this game");
                     new_state.setSet_point_up(current_set, (byte)0);
                     new_state.setSet_point_down(current_set, (byte)0);
                     //add to game
                     game = new_state.getSet_game_up(current_set);
                     game++;
                     new_state.setSet_game_up(current_set, game);
+
+                    if (is_break_point) {
+                        if (new_state.isServe()) { //you serve
+                            Log.d(TAG, "You serve, oppt got this break point");
+                            new_state.setBreakPointUp((byte)(new_state.getBreakPointUp()+1));
+                        } else { //oppt serve
+                            Log.d(TAG, "Oppt serve");
+                        }
+                    }
+
                     //change serve
                     if (new_state.isServe()) {
                         new_state.setServe(false);
                     } else {
                         new_state.setServe(true);
                     }
-
-                    if (new_state.isServe()) { //you serve, oppt win this break point
-                        new_state.setBreakPointUp((byte)(new_state.getBreakPointUp()+1));
-                    }
-
+                    is_break_point = false;
                 } else if (new_state.getSet_point_up(current_set) == 3 &&
                         new_state.getSet_point_down(current_set) == 5) { //40 : 40A+ => you win this game
+                    Log.d(TAG, "40 : 40A+ => you win this game");
                     //set point clean
                     new_state.setSet_point_up(current_set, (byte)0);
                     new_state.setSet_point_down(current_set, (byte)0);
@@ -2575,18 +2581,26 @@ public class GameActivity extends AppCompatActivity{
                     game = new_state.getSet_game_down(current_set);
                     game++;
                     new_state.setSet_game_down(current_set, game);
+
+                    if (is_break_point) {
+                        if (new_state.isServe()) {
+                            Log.d(TAG, "You serve");
+                        } else {
+                            Log.d(TAG, "Oppt serve, you got this break point");
+                            new_state.setBreakPointDown((byte)(new_state.getBreakPointDown()+1));
+                        }
+                    }
+
                     //change serve
                     if (new_state.isServe()) {
                         new_state.setServe(false);
                     } else {
                         new_state.setServe(true);
                     }
-
-                    if (!new_state.isServe()) { //oppt serve, you win this break point
-                        new_state.setBreakPointDown((byte)(new_state.getBreakPointDown()+1));
-                    }
+                    is_break_point = false;
                 } else if (new_state.getSet_point_up(current_set) == 4 &&
                         new_state.getSet_point_down(current_set) <= 2) { //40A : 0, 40A : 15, 40A : 30 => oppt win this game
+                    Log.d(TAG, "40A : 0, 40A : 15, 40A : 30 => oppt win this game");
                     //set point clean
                     new_state.setSet_point_up(current_set, (byte)0);
                     new_state.setSet_point_down(current_set, (byte)0);
@@ -2594,18 +2608,26 @@ public class GameActivity extends AppCompatActivity{
                     game = new_state.getSet_game_up(current_set);
                     game++;
                     new_state.setSet_game_up(current_set, game);
+
+                    if (is_break_point) {
+                        if (new_state.isServe()) { //you serve
+                            Log.d(TAG, "you serve, oppt got this break point");
+                            new_state.setBreakPointUp((byte)(new_state.getBreakPointUp()+1));
+                        } else {
+                            Log.d(TAG, "Oppt serve");
+                        }
+                    }
+
                     //change serve
                     if (new_state.isServe()) {
                         new_state.setServe(false);
                     } else {
                         new_state.setServe(true);
                     }
-
-                    if (new_state.isServe()) { //you serve, oppt win this break point
-                        new_state.setBreakPointUp((byte)(new_state.getBreakPointUp()+1));
-                    }
+                    is_break_point = false;
                 } else if (new_state.getSet_point_up(current_set) <=2 &&
                         new_state.getSet_point_down(current_set) == 4) { //0 : 40A, 15 : 40A, 30: 40A => you win this game
+                    Log.d(TAG, "0 : 40A, 15 : 40A, 30: 40A => you win this game");
                     //set point clean
                     new_state.setSet_point_up(current_set, (byte)0);
                     new_state.setSet_point_down(current_set, (byte)0);
@@ -2613,45 +2635,63 @@ public class GameActivity extends AppCompatActivity{
                     game = new_state.getSet_game_down(current_set);
                     game++;
                     new_state.setSet_game_down(current_set, game);
+
+                    if (is_break_point) {
+                        if (new_state.isServe()) { //you serve
+                            Log.d(TAG, "You serve");
+                        } else {
+                            Log.d(TAG, "Oppt serve, you got this break point");
+                            new_state.setBreakPointDown((byte)(new_state.getBreakPointDown()+1));
+                        }
+                    }
+
                     //change serve
                     if (new_state.isServe()) {
                         new_state.setServe(false);
                     } else {
                         new_state.setServe(true);
                     }
-
-                    if (!new_state.isServe()) { //oppt serve, you win this break point
-                        new_state.setBreakPointDown((byte)(new_state.getBreakPointDown()+1));
-                    }
+                    is_break_point = false;
                 }
                 else {
                     Log.d(TAG, "[points change without arrange]");
                     if (new_state.getSet_point_up(current_set) == 3 &&
                             new_state.getSet_point_down(current_set) <= 2 && !is_break_point) { // 40:0, 40:15, 40:30
+                        Log.d(TAG, "Not int break point => In break point");
                         is_break_point = true;
-                        if (new_state.getSet_point_down(current_set) == 0) { //40:0, oppt has 3 break point
-                            new_state.setBreakPointUp((byte)(new_state.getBreakPointUp()+3));
-                        } else if (new_state.getSet_point_down(current_set) == 1) { //40:15, oppt has 2 break point
-                            new_state.setBreakPointUp((byte)(new_state.getBreakPointUp()+2));
-                        } else if (new_state.getSet_point_down(current_set) == 2) { //40:30, oppt has 1 break point
-                            new_state.setBreakPointUp((byte)(new_state.getBreakPointUp()+1));
-                        }
-                    } else if (new_state.getSet_point_down(current_set) == 3 &&
-                            new_state.getSet_point_up(current_set) <= 2 && !is_break_point) { // 0:40, 15:40, 30:40
+
+                    } else if (new_state.getSet_point_up(current_set) <= 2 &&
+                            new_state.getSet_point_down(current_set) == 3 && !is_break_point) { // 0:40, 15:40, 30:40
+                        Log.d(TAG, "Not int break point => In break point");
                         is_break_point = true;
-                        if (new_state.getSet_point_up(current_set) == 0) { //40:0, oppt has 3 break point
-                            new_state.setBreakPointDown((byte)(new_state.getBreakPointDown()+3));
-                        } else if (new_state.getSet_point_up(current_set) == 1) { //40:15, oppt has 2 break point
-                            new_state.setBreakPointDown((byte)(new_state.getBreakPointDown()+2));
-                        } else if (new_state.getSet_point_up(current_set) == 2) { //40:30, oppt has 1 break point
-                            new_state.setBreakPointDown((byte)(new_state.getBreakPointDown()+1));
-                        }
+
                     } else if (new_state.getSet_point_up(current_set) == 3 &&
                             new_state.getSet_point_down(current_set) == 3) { //40:40
-                        is_break_point = false;
-                    } else {
-                        if (is_break_point) { //in break point situation
+                        Log.d(TAG, "become deuce ");
+                        if (is_break_point) { //in break point
+                            if (new_state.isServe()) { //you serve
+                                new_state.setBreakPointMissUp((byte)(new_state.getBreakPointMissUp()+1));
+                            } else { //oppt serve
+                                new_state.setBreakPointMissDown((byte)(new_state.getBreakPointMissDown()+1));
+                            }
+                        } else {
+                            Log.d(TAG, "not in break point");
+                        }
 
+                        is_break_point = false;
+                    } else { //other point 40:0 => 40:15, 40:15 => 40:30, 0:40=>15:40, 15:40=>30:40
+                        if (is_break_point) { //in break point situation
+                            Log.d(TAG, "In break point");
+                            Log.d(TAG, "40:0 => 40:15, 40:15 => 40:30, 0:40=>15:40, 15:40=>30:40");
+                            if (new_state.isServe()) { //you serve
+                                new_state.setBreakPointUp((byte)(new_state.getBreakPointUp()+1));
+                                new_state.setBreakPointMissUp((byte)(new_state.getBreakPointMissUp()+1));
+                            } else { //oppt serve
+                                new_state.setBreakPointDown((byte)(new_state.getBreakPointDown()+1));
+                                new_state.setBreakPointMissDown((byte)(new_state.getBreakPointMissDown()+1));
+                            }
+                        } else {
+                            Log.d(TAG, "Not In break point");
                         }
                     }
                 }
