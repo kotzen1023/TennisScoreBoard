@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -47,6 +48,17 @@ public class LoadGame extends AppCompatActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //for action bar
+        ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+
+            actionBar.setDisplayUseLogoEnabled(true);
+            //actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ball_icon);
+        }
 
         Intent intent = getIntent();
 

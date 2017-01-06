@@ -4,6 +4,7 @@ package com.seventhmoon.tennisscoreboard;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ListView;
@@ -29,6 +30,17 @@ public class CurrentStatActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.statistics_current);
+
+        //for action bar
+        ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+
+            actionBar.setDisplayUseLogoEnabled(true);
+            //actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ball_icon);
+        }
 
         listView = (ListView) findViewById(R.id.listViewStat);
 

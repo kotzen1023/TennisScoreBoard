@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -50,6 +51,17 @@ public class SetupMain extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setup_menu);
+
+        //for action bar
+        ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+
+            actionBar.setDisplayUseLogoEnabled(true);
+            //actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ball_icon);
+        }
 
         Intent intent = getIntent();
 

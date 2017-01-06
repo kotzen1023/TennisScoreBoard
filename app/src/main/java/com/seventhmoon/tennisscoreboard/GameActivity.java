@@ -11,6 +11,7 @@ import android.os.Bundle;
 
 import android.os.Handler;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -132,7 +133,16 @@ public class GameActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_layout);
 
+        //for action bar
+        ActionBar actionBar = getSupportActionBar();
 
+        if (actionBar != null) {
+
+            actionBar.setDisplayUseLogoEnabled(true);
+            //actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ball_icon);
+        }
         //is_ace = false;
         //is_double_fault = false;
         is_second_serve = false;
