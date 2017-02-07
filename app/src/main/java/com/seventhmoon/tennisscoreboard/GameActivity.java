@@ -890,6 +890,7 @@ public class GameActivity extends AppCompatActivity{
                                     if (item == 0) { //ace
                                         ace_count = 1;
                                         second_serve_won = 1;
+                                        forehand_winner_count = 1;
                                         calculateScore(YOU_SCORE);
                                     } else if (item == 1) { //double fault
                                         //is_double_fault = true;
@@ -932,6 +933,7 @@ public class GameActivity extends AppCompatActivity{
                                         //is_ace = true;
                                         ace_count = 1;
                                         first_serve_won = 1;
+                                        forehand_winner_count = 1;
                                         calculateScore(YOU_SCORE);
                                     } else if (item == 1) {
                                         Log.d(TAG, "second serve");
@@ -1108,6 +1110,7 @@ public class GameActivity extends AppCompatActivity{
                                     if (item == 0) { //ace
                                         ace_count = 1;
                                         second_serve_won = 1;
+                                        forehand_winner_count = 1;
                                         calculateScore(OPPT_SCORE);
                                     } else if (item == 1) { //double fault
                                         //is_double_fault = true;
@@ -1150,6 +1153,7 @@ public class GameActivity extends AppCompatActivity{
                                         //is_ace = true;
                                         ace_count = 1;
                                         first_serve_won = 1;
+                                        forehand_winner_count = 1;
                                         calculateScore(OPPT_SCORE);
                                     } else if (item == 1) {
                                         Log.d(TAG, "second serve");
