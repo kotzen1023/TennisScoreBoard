@@ -58,4 +58,11 @@
     <string name="stat_unforced_error">非受迫性失誤</string>
     <string name="stat_net_point_won">上網得分</string>
     <string name="stat_break_point_won">破發成功率</string>
+    <string name="stat_total_point">總得分</string>
+    <string name="stat_all_set">全部</string>
+    <string name="stat_first_set">第一盤</string>
+    <string name="stat_second_set">第二盤</string>
+    <string name="stat_third_set">第三盤</string>
+    <string name="stat_forth_set">第四盤</string>
+    <string name="stat_fifth_set">第五盤</string>
 </resources>

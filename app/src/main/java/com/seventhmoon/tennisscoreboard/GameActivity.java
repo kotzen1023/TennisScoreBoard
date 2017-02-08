@@ -1727,20 +1727,18 @@ public class GameActivity extends AppCompatActivity{
                             //new_state.setFirstServeMissDown(current_state.getFirstServeMissDown());
                             new_state.setSecondServeUp(current_state.getSecondServeUp());
                             //new_state.setSecondServeDown(current_state.getSecondServeDown());
-
+                            new_state.setBreakPointUp(current_state.getBreakPointUp());
+                            new_state.setBreakPointMissUp(current_state.getBreakPointMissUp());
+                            new_state.setBreakPointDown(current_state.getBreakPointDown());
+                            new_state.setBreakPointMissDown(current_state.getBreakPointMissDown());
                             new_state.setFirstServeWonUp(current_state.getFirstServeWonUp());
                             new_state.setFirstServeWonDown(current_state.getFirstServeWonDown());
                             new_state.setFirstServeLostUp(current_state.getFirstServeLostUp());
                             new_state.setFirstServeLostDown(current_state.getFirstServeLostDown());
-
                             new_state.setSecondServeWonUp(current_state.getSecondServeWonUp());
                             new_state.setSecondServeWonDown(current_state.getSecondServeWonDown());
                             new_state.setSecondServeLostUp(current_state.getSecondServeLostUp());
                             new_state.setSecondServeLostDown(current_state.getSecondServeLostDown());
-
-                            new_state.setBreakPointUp(current_state.getBreakPointUp());
-                            new_state.setBreakPointMissUp(current_state.getBreakPointMissUp());
-
                             new_state.setDoubleFaultUp(current_state.getDoubleFaultUp());
                             new_state.setDoubleFaultDown(current_state.getDoubleFaultDown());
                             new_state.setUnforceErrorUp(current_state.getUnforceErrorUp());
@@ -1841,20 +1839,18 @@ public class GameActivity extends AppCompatActivity{
                             new_state.setFirstServeMissDown(current_state.getFirstServeMissDown());
                             //new_state.setSecondServeUp(current_state.getSecondServeUp());
                             new_state.setSecondServeDown(current_state.getSecondServeDown());
-
+                            new_state.setBreakPointUp(current_state.getBreakPointUp());
+                            new_state.setBreakPointMissUp(current_state.getBreakPointMissUp());
+                            new_state.setBreakPointDown(current_state.getBreakPointDown());
+                            new_state.setBreakPointMissDown(current_state.getBreakPointMissDown());
                             new_state.setFirstServeWonUp(current_state.getFirstServeWonUp());
                             new_state.setFirstServeWonDown(current_state.getFirstServeWonDown());
                             new_state.setFirstServeLostUp(current_state.getFirstServeLostUp());
                             new_state.setFirstServeLostDown(current_state.getFirstServeLostDown());
-
                             new_state.setSecondServeWonUp(current_state.getSecondServeWonUp());
                             new_state.setSecondServeWonDown(current_state.getSecondServeWonDown());
                             new_state.setSecondServeLostUp(current_state.getSecondServeLostUp());
                             new_state.setSecondServeLostDown(current_state.getSecondServeLostDown());
-
-                            new_state.setBreakPointDown(current_state.getBreakPointDown());
-                            new_state.setBreakPointMissDown(current_state.getBreakPointMissDown());
-
                             new_state.setDoubleFaultUp(current_state.getDoubleFaultUp());
                             new_state.setDoubleFaultDown(current_state.getDoubleFaultDown());
                             new_state.setUnforceErrorUp(current_state.getUnforceErrorUp());
@@ -1954,30 +1950,26 @@ public class GameActivity extends AppCompatActivity{
 
                                 new_state.setDuration(time_use);
 
+                                new_state.setAceCountUp(current_state.getAceCountUp());
+                                new_state.setAceCountDown(current_state.getAceCountDown());
                                 new_state.setFirstServeUp(current_state.getFirstServeUp());
                                 new_state.setFirstServeDown(current_state.getFirstServeDown());
                                 new_state.setFirstServeMissUp(current_state.getFirstServeMissUp());
                                 new_state.setFirstServeMissDown(current_state.getFirstServeMissDown());
                                 new_state.setSecondServeUp(current_state.getSecondServeUp());
                                 new_state.setSecondServeDown(current_state.getSecondServeDown());
-
                                 new_state.setBreakPointUp(current_state.getBreakPointUp());
-                                new_state.setBreakPointDown(current_state.getBreakPointDown());
                                 new_state.setBreakPointMissUp(current_state.getBreakPointMissUp());
+                                new_state.setBreakPointDown(current_state.getBreakPointDown());
                                 new_state.setBreakPointMissDown(current_state.getBreakPointMissDown());
-
                                 new_state.setFirstServeWonUp(current_state.getFirstServeWonUp());
                                 new_state.setFirstServeWonDown(current_state.getFirstServeWonDown());
                                 new_state.setFirstServeLostUp(current_state.getFirstServeLostUp());
                                 new_state.setFirstServeLostDown(current_state.getFirstServeLostDown());
-
                                 new_state.setSecondServeWonUp(current_state.getSecondServeWonUp());
                                 new_state.setSecondServeWonDown(current_state.getSecondServeWonDown());
                                 new_state.setSecondServeLostUp(current_state.getSecondServeLostUp());
                                 new_state.setSecondServeLostDown(current_state.getSecondServeLostDown());
-
-                                new_state.setAceCountUp(current_state.getAceCountUp());
-                                new_state.setAceCountDown(current_state.getAceCountDown());
                                 new_state.setDoubleFaultUp(current_state.getDoubleFaultUp());
                                 new_state.setDoubleFaultDown(current_state.getDoubleFaultDown());
                                 new_state.setUnforceErrorUp(current_state.getUnforceErrorUp());
@@ -2144,30 +2136,26 @@ public class GameActivity extends AppCompatActivity{
 
                                 new_state.setDuration(time_use);
 
+                                new_state.setAceCountUp(current_state.getAceCountUp());
+                                new_state.setAceCountDown(current_state.getAceCountDown());
                                 new_state.setFirstServeUp(current_state.getFirstServeUp());
                                 new_state.setFirstServeDown(current_state.getFirstServeDown());
                                 new_state.setFirstServeMissUp(current_state.getFirstServeMissUp());
                                 new_state.setFirstServeMissDown(current_state.getFirstServeMissDown());
                                 new_state.setSecondServeUp(current_state.getSecondServeUp());
                                 new_state.setSecondServeDown(current_state.getSecondServeDown());
-
                                 new_state.setBreakPointUp(current_state.getBreakPointUp());
-                                new_state.setBreakPointDown(current_state.getBreakPointDown());
                                 new_state.setBreakPointMissUp(current_state.getBreakPointMissUp());
+                                new_state.setBreakPointDown(current_state.getBreakPointDown());
                                 new_state.setBreakPointMissDown(current_state.getBreakPointMissDown());
-
                                 new_state.setFirstServeWonUp(current_state.getFirstServeWonUp());
                                 new_state.setFirstServeWonDown(current_state.getFirstServeWonDown());
                                 new_state.setFirstServeLostUp(current_state.getFirstServeLostUp());
                                 new_state.setFirstServeLostDown(current_state.getFirstServeLostDown());
-
                                 new_state.setSecondServeWonUp(current_state.getSecondServeWonUp());
                                 new_state.setSecondServeWonDown(current_state.getSecondServeWonDown());
                                 new_state.setSecondServeLostUp(current_state.getSecondServeLostUp());
                                 new_state.setSecondServeLostDown(current_state.getSecondServeLostDown());
-
-                                new_state.setAceCountUp(current_state.getAceCountUp());
-                                new_state.setAceCountDown(current_state.getAceCountDown());
                                 new_state.setDoubleFaultUp(current_state.getDoubleFaultUp());
                                 new_state.setDoubleFaultDown(current_state.getDoubleFaultDown());
                                 new_state.setUnforceErrorUp(current_state.getUnforceErrorUp());
@@ -3398,6 +3386,7 @@ public class GameActivity extends AppCompatActivity{
                 intent = new Intent(GameActivity.this, CurrentStatActivity.class);
                 intent.putExtra("PLAYER_UP", playerUp);
                 intent.putExtra("PLAYER_DOWN", playerDown);
+                intent.putExtra("TOTAL_SETS", set);
                 startActivity(intent);
                 break;
 

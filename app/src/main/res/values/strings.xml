@@ -57,5 +57,12 @@
     <string name="stat_unforced_error">Unforced Error</string>
     <string name="stat_net_point_won">Net Point Won</string>
     <string name="stat_break_point_won">Break Point Won</string>
+    <string name="stat_total_point">Total point</string>
+    <string name="stat_all_set">All Sets</string>
+    <string name="stat_first_set">First Set</string>
+    <string name="stat_second_set">Second Set</string>
+    <string name="stat_third_set">Third Set</string>
+    <string name="stat_forth_set">Forth Set</string>
+    <string name="stat_fifth_set">Fifth Set</string>
 </resources>
 
