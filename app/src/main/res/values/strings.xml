@@ -64,5 +64,6 @@
     <string name="stat_third_set">Third Set</string>
     <string name="stat_forth_set">Forth Set</string>
     <string name="stat_fifth_set">Fifth Set</string>
+    <string name="game_saving">Saving...</string>
 </resources>
 

@@ -65,4 +65,5 @@
     <string name="stat_third_set">第三盤</string>
     <string name="stat_forth_set">第四盤</string>
     <string name="stat_fifth_set">第五盤</string>
+    <string name="game_saving">儲存中...</string>
 </resources>

@@ -4,9 +4,12 @@ package com.seventhmoon.tennisscoreboard;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 
+import android.content.IntentFilter;
 import android.os.Bundle;
 
 import android.os.Handler;
@@ -25,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
+import com.seventhmoon.tennisscoreboard.Data.Constants;
 import com.seventhmoon.tennisscoreboard.Data.State;
 import com.seventhmoon.tennisscoreboard.Data.StateAction;
 
@@ -52,6 +56,7 @@ import static com.seventhmoon.tennisscoreboard.Data.StateAction.YOU_SERVE;
 public class GameActivity extends AppCompatActivity{
     private static final String TAG = GameActivity.class.getName();
 
+    private Context context;
     //private static final SimpleDateFormat AMBIENT_DATE_FORMAT =
     //        new SimpleDateFormat("HH:mm", Locale.TAIWAN);
 
@@ -128,10 +133,16 @@ public class GameActivity extends AppCompatActivity{
     private static byte second_serve_won = 0;
     private static byte second_serve_lost = 0;
 
+    private static BroadcastReceiver mReceiver = null;
+    private static boolean isRegister = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_layout);
+
+        context = getBaseContext();
+        IntentFilter filter;
 
         //for action bar
         ActionBar actionBar = getSupportActionBar();
@@ -1308,160 +1319,153 @@ public class GameActivity extends AppCompatActivity{
 
                 loadDialog = new ProgressDialog(GameActivity.this);
                 loadDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                loadDialog.setTitle("Saving...");
+                loadDialog.setTitle(getResources().getString(R.string.game_saving));
                 loadDialog.setIndeterminate(false);
                 loadDialog.setCancelable(false);
 
                 loadDialog.show();
                 //clear
-                clear_record(filename);
 
-                boolean is_tiebreak;
-                boolean is_deuce;
-                boolean is_firstserve;
 
-                switch (tiebreak) {
-                    case "0":
-                        is_tiebreak = true;
-                        break;
-                    default:
-                        is_tiebreak = false;
-                        break;
-                }
 
-                /*if (tiebreak.equals("0")) {
-                    is_tiebreak = true;
-                } else {
-                    is_tiebreak = false;
-                }*/
+                new Thread() {
+                    public void run() {
+                        clear_record(filename);
 
-                switch (deuce) {
-                    case "0":
-                        is_deuce = true;
-                        break;
-                    default:
-                        is_deuce = false;
-                        break;
-                }
+                        boolean is_tiebreak;
+                        boolean is_deuce;
+                        boolean is_firstserve;
 
-                /*if (deuce.equals("0")) {
-                    is_deuce = true;
-                } else {
-                    is_deuce = false;
-                }*/
-
-                switch (serve) {
-                    case "0":
-                        is_firstserve = true;
-                        break;
-                    default:
-                        is_firstserve = false;
-                        break;
-                }
-
-                /*if (serve.equals("0")) {
-                    is_firstserve = true;
-                } else {
-                    is_firstserve = false;
-                }*/
-
-                String msg = playerUp + ";" + playerDown + ";" + is_tiebreak + ";" + is_deuce + ";" +is_firstserve+ ";" +set+ "|";
-                append_record(msg, filename);
-
-                State top = stack.peek();
-                if (top != null) {
-                    top.setDuration(time_use);
-
-                    int i = 0;
-                    //load stack
-                    for (State s : stack) {
-
-                        if (i >= 1) {
-                            append_record("&", filename);
+                        switch (tiebreak) {
+                            case "0":
+                                is_tiebreak = true;
+                                break;
+                            default:
+                                is_tiebreak = false;
+                                break;
                         }
 
+                        switch (deuce) {
+                            case "0":
+                                is_deuce = true;
+                                break;
+                            default:
+                                is_deuce = false;
+                                break;
+                        }
 
-                        String append_msg = s.getCurrent_set() + ";"
-                                + s.isServe() + ";"
-                                + s.isInTiebreak() + ";"
-                                + s.isFinish() + ";"
-                                + s.isSecondServe() + ";"
-                                + s.isInBreakPoint() + ";"
-                                + s.getSetsUp() + ";"
-                                + s.getSetsDown() + ";"
-                                + s.getDuration() + ";"
-                                + s.getAceCountUp() + ";"
-                                + s.getAceCountDown() + ";"
-                                + s.getFirstServeUp() + ";"
-                                + s.getFirstServeDown() + ";"
-                                + s.getFirstServeMissUp() + ";"
-                                + s.getFirstServeMissDown() + ";"
-                                + s.getSecondServeUp() + ";"
-                                + s.getSecondServeDown() + ";"
-                                + s.getBreakPointUp() + ";"
-                                + s.getBreakPointDown() + ";"
-                                + s.getBreakPointMissUp() + ";"
-                                + s.getBreakPointMissDown() + ";"
-                                + s.getFirstServeWonUp() + ";"
-                                + s.getFirstServeWonDown() + ";"
-                                + s.getFirstServeLostUp() + ";"
-                                + s.getFirstServeLostDown() + ";"
-                                + s.getSecondServeWonUp() + ";"
-                                + s.getSecondServeWonDown() + ";"
-                                + s.getSecondServeLostUp() + ";"
-                                + s.getSecondServeLostDown() + ";"
-                                + s.getDoubleFaultUp() + ";"
-                                + s.getDoubleFaultDown() + ";"
-                                + s.getUnforceErrorUp() + ";"
-                                + s.getUnforceErrorDown() + ";"
-                                + s.getForehandWinnerUp() + ";"
-                                + s.getForehandWinnerDown() + ";"
-                                + s.getBackhandWinnerUp() + ";"
-                                + s.getBackhandWinnerDown() + ";"
-                                + s.getForehandVolleyUp() + ";"
-                                + s.getForehandVolleyDown() + ";"
-                                + s.getBackhandVolleyUp() + ";"
-                                + s.getBackhandVolleyDown() + ";"
-                                + s.getFoulToLoseUp() + ";"
-                                + s.getFoulToLoseDown() + ";"
-                                + s.getSet_game_up((byte) 0x1) + ";"
-                                + s.getSet_game_down((byte) 0x1) + ";"
-                                + s.getSet_point_up((byte) 0x1) + ";"
-                                + s.getSet_point_down((byte) 0x1) + ";"
-                                + s.getSet_tiebreak_point_up((byte) 0x1) + ";"
-                                + s.getSet_tiebreak_point_down((byte) 0x1) + ";"
-                                + s.getSet_game_up((byte) 0x2) + ";"
-                                + s.getSet_game_down((byte) 0x2) + ";"
-                                + s.getSet_point_up((byte) 0x2) + ";"
-                                + s.getSet_point_down((byte) 0x2) + ";"
-                                + s.getSet_tiebreak_point_up((byte) 0x2) + ";"
-                                + s.getSet_tiebreak_point_down((byte) 0x2) + ";"
-                                + s.getSet_game_up((byte) 0x3) + ";"
-                                + s.getSet_game_down((byte) 0x3) + ";"
-                                + s.getSet_point_up((byte) 0x3) + ";"
-                                + s.getSet_point_down((byte) 0x3) + ";"
-                                + s.getSet_tiebreak_point_up((byte) 0x3) + ";"
-                                + s.getSet_tiebreak_point_down((byte) 0x3) + ";"
-                                + s.getSet_game_up((byte) 0x4) + ";"
-                                + s.getSet_game_down((byte) 0x4) + ";"
-                                + s.getSet_point_up((byte) 0x4) + ";"
-                                + s.getSet_point_down((byte) 0x4) + ";"
-                                + s.getSet_tiebreak_point_up((byte) 0x4) + ";"
-                                + s.getSet_tiebreak_point_down((byte) 0x4) + ";"
-                                + s.getSet_game_up((byte) 0x5) + ";"
-                                + s.getSet_game_down((byte) 0x5) + ";"
-                                + s.getSet_point_up((byte) 0x5) + ";"
-                                + s.getSet_point_down((byte) 0x5) + ";"
-                                + s.getSet_tiebreak_point_up((byte) 0x5) + ";"
-                                + s.getSet_tiebreak_point_down((byte) 0x5);
-                        append_record(append_msg, filename);
-                        i++;
+                        switch (serve) {
+                            case "0":
+                                is_firstserve = true;
+                                break;
+                            default:
+                                is_firstserve = false;
+                                break;
+                        }
+
+                        String msg = playerUp + ";" + playerDown + ";" + is_tiebreak + ";" + is_deuce + ";" + is_firstserve + ";" + set + "|";
+                        append_record(msg, filename);
+
+                        com.seventhmoon.tennisscoreboard.Data.State top = stack.peek();
+                        if (top != null) {
+                            top.setDuration(time_use);
+
+                            int i = 0;
+                            //load stack
+                            for (com.seventhmoon.tennisscoreboard.Data.State s : stack) {
+
+                                if (i >= 1) {
+                                    append_record("&", filename);
+                                }
+
+
+                                String append_msg = s.getCurrent_set() + ";"
+                                        + s.isServe() + ";"
+                                        + s.isInTiebreak() + ";"
+                                        + s.isFinish() + ";"
+                                        + s.isSecondServe() + ";"
+                                        + s.isInBreakPoint() + ";"
+                                        + s.getSetsUp() + ";"
+                                        + s.getSetsDown() + ";"
+                                        + s.getDuration() + ";"
+                                        + s.getAceCountUp() + ";"
+                                        + s.getAceCountDown() + ";"
+                                        + s.getFirstServeUp() + ";"
+                                        + s.getFirstServeDown() + ";"
+                                        + s.getFirstServeMissUp() + ";"
+                                        + s.getFirstServeMissDown() + ";"
+                                        + s.getSecondServeUp() + ";"
+                                        + s.getSecondServeDown() + ";"
+                                        + s.getBreakPointUp() + ";"
+                                        + s.getBreakPointDown() + ";"
+                                        + s.getBreakPointMissUp() + ";"
+                                        + s.getBreakPointMissDown() + ";"
+                                        + s.getFirstServeWonUp() + ";"
+                                        + s.getFirstServeWonDown() + ";"
+                                        + s.getFirstServeLostUp() + ";"
+                                        + s.getFirstServeLostDown() + ";"
+                                        + s.getSecondServeWonUp() + ";"
+                                        + s.getSecondServeWonDown() + ";"
+                                        + s.getSecondServeLostUp() + ";"
+                                        + s.getSecondServeLostDown() + ";"
+                                        + s.getDoubleFaultUp() + ";"
+                                        + s.getDoubleFaultDown() + ";"
+                                        + s.getUnforceErrorUp() + ";"
+                                        + s.getUnforceErrorDown() + ";"
+                                        + s.getForehandWinnerUp() + ";"
+                                        + s.getForehandWinnerDown() + ";"
+                                        + s.getBackhandWinnerUp() + ";"
+                                        + s.getBackhandWinnerDown() + ";"
+                                        + s.getForehandVolleyUp() + ";"
+                                        + s.getForehandVolleyDown() + ";"
+                                        + s.getBackhandVolleyUp() + ";"
+                                        + s.getBackhandVolleyDown() + ";"
+                                        + s.getFoulToLoseUp() + ";"
+                                        + s.getFoulToLoseDown() + ";"
+                                        + s.getSet_game_up((byte) 0x1) + ";"
+                                        + s.getSet_game_down((byte) 0x1) + ";"
+                                        + s.getSet_point_up((byte) 0x1) + ";"
+                                        + s.getSet_point_down((byte) 0x1) + ";"
+                                        + s.getSet_tiebreak_point_up((byte) 0x1) + ";"
+                                        + s.getSet_tiebreak_point_down((byte) 0x1) + ";"
+                                        + s.getSet_game_up((byte) 0x2) + ";"
+                                        + s.getSet_game_down((byte) 0x2) + ";"
+                                        + s.getSet_point_up((byte) 0x2) + ";"
+                                        + s.getSet_point_down((byte) 0x2) + ";"
+                                        + s.getSet_tiebreak_point_up((byte) 0x2) + ";"
+                                        + s.getSet_tiebreak_point_down((byte) 0x2) + ";"
+                                        + s.getSet_game_up((byte) 0x3) + ";"
+                                        + s.getSet_game_down((byte) 0x3) + ";"
+                                        + s.getSet_point_up((byte) 0x3) + ";"
+                                        + s.getSet_point_down((byte) 0x3) + ";"
+                                        + s.getSet_tiebreak_point_up((byte) 0x3) + ";"
+                                        + s.getSet_tiebreak_point_down((byte) 0x3) + ";"
+                                        + s.getSet_game_up((byte) 0x4) + ";"
+                                        + s.getSet_game_down((byte) 0x4) + ";"
+                                        + s.getSet_point_up((byte) 0x4) + ";"
+                                        + s.getSet_point_down((byte) 0x4) + ";"
+                                        + s.getSet_tiebreak_point_up((byte) 0x4) + ";"
+                                        + s.getSet_tiebreak_point_down((byte) 0x4) + ";"
+                                        + s.getSet_game_up((byte) 0x5) + ";"
+                                        + s.getSet_game_down((byte) 0x5) + ";"
+                                        + s.getSet_point_up((byte) 0x5) + ";"
+                                        + s.getSet_point_down((byte) 0x5) + ";"
+                                        + s.getSet_tiebreak_point_up((byte) 0x5) + ";"
+                                        + s.getSet_tiebreak_point_down((byte) 0x5);
+                                append_record(append_msg, filename);
+                                i++;
+                            }
+                        } else {
+                            Log.d(TAG, "Top null");
+                        }
+
+                        Intent intent = new Intent(Constants.ACTION.GAME_SAVE_COMPLETE);
+                        sendBroadcast(intent);
                     }
-                } else {
-                    Log.d(TAG, "Top null");
-                }
+                }.start();
 
-                loadDialog.dismiss();
+
+                //loadDialog.dismiss();
             }
         });
 
@@ -1491,6 +1495,26 @@ public class GameActivity extends AppCompatActivity{
                 }
             }
         });
+
+        mReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equalsIgnoreCase(Constants.ACTION.GAME_SAVE_COMPLETE)) {
+                    Log.d(TAG, "receive brocast !");
+
+                    loadDialog.dismiss();
+
+                }
+            }
+        };
+
+        if (!isRegister) {
+            filter = new IntentFilter();
+            filter.addAction(Constants.ACTION.GAME_SAVE_COMPLETE);
+            context.registerReceiver(mReceiver, filter);
+            isRegister = true;
+            Log.d(TAG, "registerReceiver mReceiver");
+        }
     }
 
 
@@ -1501,6 +1525,21 @@ public class GameActivity extends AppCompatActivity{
         time_use = 0;
         stack.clear();
         handler.removeCallbacks(updateTimer);
+
+        if (isRegister && mReceiver != null) {
+            try {
+                context.unregisterReceiver(mReceiver);
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            }
+            isRegister = false;
+            mReceiver = null;
+        }
+
+        if (loadDialog != null) {
+            loadDialog.dismiss();
+            loadDialog = null;
+        }
 
         super.onDestroy();
 
