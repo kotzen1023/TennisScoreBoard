@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/action_lang_support"
+        android:title="@string/game_voice"
+        android:icon="@drawable/ic_settings_voice_white_48dp"
+        app:showAsAction="ifRoom|withText" />
+
+
+</menu>

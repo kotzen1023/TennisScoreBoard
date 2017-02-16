@@ -65,5 +65,8 @@
     <string name="stat_forth_set">Forth Set</string>
     <string name="stat_fifth_set">Fifth Set</string>
     <string name="game_saving">Saving...</string>
+    <string name="voice_change_purchased">Purchased</string>
+    <string name="voice_change_ask_to_buy">Do you want to buy this item?</string>
+    <string name="game_voice">Voice</string>
 </resources>
 

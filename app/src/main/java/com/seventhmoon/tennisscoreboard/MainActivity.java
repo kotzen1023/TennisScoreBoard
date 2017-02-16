@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     //BroadcastReceiver mReceiver;
     //private boolean isRegister;
 
-
+    private static MenuItem voiceItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -354,5 +356,31 @@ public class MainActivity extends AppCompatActivity {
                 .setNegativeButton("Cancel", okListener)
                 .create()
                 .show();
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+
+        voiceItem = menu.findItem(R.id.action_lang_support);
+
+        //voiceItem.setVisible(false);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.action_lang_support:
+                intent = new Intent(MainActivity.this, VoiceSelectActivity.class);
+                startActivity(intent);
+                break;
+
+            default:
+                break;
+        }
+        return true;
     }
 }

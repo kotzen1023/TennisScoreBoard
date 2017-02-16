@@ -66,4 +66,7 @@
     <string name="stat_forth_set">第四盤</string>
     <string name="stat_fifth_set">第五盤</string>
     <string name="game_saving">儲存中...</string>
+    <string name="voice_change_purchased">已購買</string>
+    <string name="voice_change_ask_to_buy">您想購買此道具嗎?</string>
+    <string name="game_voice">語音</string>
 </resources>
