@@ -308,12 +308,12 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
             Log.d(TAG, "Query inventory was successful.");
 
 
-            if (inventory.getPurchase("sku_voice_gbr_man_1") != null) {
+            if (inventory.getPurchase("sku_voice_gbr_man_30days") != null) {
 
                 //String theme_cat_price = inventory.getSkuDetails("sku_theme_cat").getPrice();
                 //String theme_bear_price = inventory.getSkuDetails("sku_theme_bear").getPrice();
-                Log.i(TAG, "sku_voice_gbr_man_1 = " + inventory.getSkuDetails("sku_voice_gbr_man_1").getPriceCurrencyCode() + " " +
-                        inventory.getSkuDetails("sku_voice_gbr_man_1").getPrice() + "purchase " + inventory.getPurchase("sku_voice_gbr_man_1"));
+                Log.i(TAG, "sku_voice_gbr_man_30days = " + inventory.getSkuDetails("sku_voice_gbr_man_30days").getPriceCurrencyCode() + " " +
+                        inventory.getSkuDetails("sku_voice_gbr_man_30days").getPrice() + "purchase " + inventory.getPurchase("sku_voice_gbr_man_30days"));
 
             /*Log.i(TAG, "cat ="+inventory.getSkuDetails("sku_theme_cat").getPriceCurrencyCode()+ " "+
                     inventory.getSkuDetails("sku_theme_cat").getPrice()+ "purchase "+inventory.getPurchase("sku_theme_cat"));
@@ -321,11 +321,11 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
             Log.i(TAG, "classic = " + inventory.getSkuDetails("sku_theme_classic").getPriceCurrencyCode() + " " +
                     inventory.getSkuDetails("sku_theme_classic").getPrice() + "purchase " + inventory.getPurchase("sku_theme_classic"));*/
                 //theme bear
-                if (inventory.getPurchase("sku_voice_gbr_man_1") == null) { //not buy yet
+                if (inventory.getPurchase("sku_voice_gbr_man_30days") == null) { //not buy yet
                     if (debug)
                         imageBuyItems.get(0).setTitle("GBR Man 1 Month");
                     else
-                        imageBuyItems.get(0).setTitle("GBR Man 1 Month\n" + inventory.getSkuDetails("sku_voice_gbr_man_1").getPrice());
+                        imageBuyItems.get(0).setTitle("GBR Man 1 Month\n" + inventory.getSkuDetails("sku_voice_gbr_man_30days").getPrice());
                     imageBuyItems.get(0).setPurchased(false);
                 } else {
                     if (debug)
@@ -424,7 +424,7 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
                 //editor.putInt("CurrentTheme", previous_theme);
                 //editor.apply();
             }
-            else if (purchase.getSku().equals("sku_voice_gbr_man_1")) {
+            else if (purchase.getSku().equals("sku_voice_gbr_man_30days")) {
                 imageBuyItems.get(0).setPurchased(true);
 
             }
