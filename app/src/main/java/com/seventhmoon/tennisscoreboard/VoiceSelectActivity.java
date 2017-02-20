@@ -24,11 +24,15 @@ import android.widget.LinearLayout;
 
 import com.seventhmoon.tennisscoreboard.Data.GridViewVoiceAdapter;
 import com.seventhmoon.tennisscoreboard.Data.ImageBuyItem;
+import com.seventhmoon.tennisscoreboard.Data.RandomString;
 import com.seventhmoon.tennisscoreboard.util.IabBroadcastReceiver;
+import com.seventhmoon.tennisscoreboard.util.IabException;
 import com.seventhmoon.tennisscoreboard.util.IabHelper;
 import com.seventhmoon.tennisscoreboard.util.IabResult;
 import com.seventhmoon.tennisscoreboard.util.Inventory;
 import com.seventhmoon.tennisscoreboard.util.Purchase;
+
+import org.json.JSONException;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -53,8 +57,9 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
     // Provides purchase notification while this app is running
     IabBroadcastReceiver mBroadcastReceiver;
 
-    private static boolean debug = true;
+    private static boolean debug = false;
     private Window window;
+    ArrayList<String> additionalSkuList = new ArrayList<>();
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,8 +129,9 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
                 // IAB is fully set up. Now, let's get an inventory of stuff we own.
                 Log.d(TAG, "Setup successful. Querying inventory.");
 
-                ArrayList<String> additionalSkuList = new ArrayList<>();
-                additionalSkuList.add("sku_voice_gbr_man_1");
+                //ArrayList<String> additionalSkuList = new ArrayList<>();
+                additionalSkuList.clear();
+                additionalSkuList.add("sku_voice_gbr_man_30days");
                 //additionalSkuList.add("sku_theme_cat");
                 //additionalSkuList.add("sku_theme_classic");
 
@@ -171,7 +177,7 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 //ImageBuyItem item = (ImageBuyItem) parent.getItemAtPosition(position);
-                Log.i(TAG, "item" + position + " was select");
+                Log.i(TAG, "item " + position + " was select");
 
                 for (int i = 0; i < gridView.getCount(); i++) {
                     ImageBuyItem item = (ImageBuyItem) parent.getItemAtPosition(i);
@@ -191,7 +197,7 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
 
                 if (!debug) {
 
-                    if (position > 0 && !imageBuyItems.get(position).getPurchased()) //buy items
+                    if (!imageBuyItems.get(position).getPurchased()) //buy items
                     {
                         AlertDialog.Builder dialog = new AlertDialog.Builder(VoiceSelectActivity.this);
                         dialog.setTitle(getResources().getString(R.string.voice_change_ask_to_buy));
@@ -225,7 +231,7 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
     private ArrayList<ImageBuyItem> getData() {
         //clear
         imageBuyItems.clear();
-        Bitmap bitmap_simple = BitmapFactory.decodeResource(getResources(), R.drawable.ball_icon);
+        Bitmap bitmap_simple = BitmapFactory.decodeResource(getResources(), R.drawable.uk_flag);
 
         imageBuyItems.add(new ImageBuyItem(bitmap_simple, "Default"));
 
@@ -307,6 +313,10 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
 
             Log.d(TAG, "Query inventory was successful.");
 
+            //gbr man 30 days
+            if (inventory != null) {
+                imageBuyItems.get(0).setPurchase(inventory.getPurchase("sku_voice_gbr_man_30days"));
+            }
 
             if (inventory.getPurchase("sku_voice_gbr_man_30days") != null) {
 
@@ -314,6 +324,7 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
                 //String theme_bear_price = inventory.getSkuDetails("sku_theme_bear").getPrice();
                 Log.i(TAG, "sku_voice_gbr_man_30days = " + inventory.getSkuDetails("sku_voice_gbr_man_30days").getPriceCurrencyCode() + " " +
                         inventory.getSkuDetails("sku_voice_gbr_man_30days").getPrice() + "purchase " + inventory.getPurchase("sku_voice_gbr_man_30days"));
+
 
             /*Log.i(TAG, "cat ="+inventory.getSkuDetails("sku_theme_cat").getPriceCurrencyCode()+ " "+
                     inventory.getSkuDetails("sku_theme_cat").getPrice()+ "purchase "+inventory.getPurchase("sku_theme_cat"));
@@ -334,6 +345,13 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
                         imageBuyItems.get(0).setTitle("GBR Man 1 Month\n" + getResources().getString(R.string.voice_change_purchased));
                     imageBuyItems.get(0).setPurchased(true);
                 }
+            } else {
+                Log.e(TAG, "inventory.getPurchase = null");
+                if (debug)
+                    imageBuyItems.get(0).setTitle("GBR Man 1 Month");
+                else
+                    imageBuyItems.get(0).setTitle("GBR Man 1 Month\n" + inventory.getSkuDetails("sku_voice_gbr_man_30days").getPrice());
+                imageBuyItems.get(0).setPurchased(false);
             }
             //theme cat
             /*if(inventory.getPurchase("sku_theme_cat") == null) { //not buy yet
@@ -431,22 +449,61 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
         }
     };
 
+    IabHelper.OnConsumeFinishedListener mConsumeFinishedListener =
+            new IabHelper.OnConsumeFinishedListener() {
+                public void onConsumeFinished(Purchase purchase,
+                                              IabResult result) {
+
+                    if (result.isSuccess()) {
+                        //clickButton.setEnabled(true);
+                        Log.d(TAG, "buy Consume "+purchase.getSku()+" success!");
+                    } else {
+                        // handle error
+                    }
+                }
+            };
+
+
+
+    IabHelper.QueryInventoryFinishedListener mReceivedInventoryBuyGBRManListener
+            = new IabHelper.QueryInventoryFinishedListener() {
+        public void onQueryInventoryFinished(IabResult result,
+                                             Inventory inventory) {
+
+            if (result.isFailure()) {
+                // Handle failure
+            } else {
+                mHelper.consumeAsync(inventory.getPurchase("sku_voice_gbr_man_30days"),
+                        mConsumeFinishedListener);
+            }
+        }
+    };
+
     protected void do_buy_theme(int position)
     {
+        RandomString randomString = new RandomString(36);
+        Purchase purchase = imageBuyItems.get(0).getPurchase();
         switch (position)
         {
-            case 1: //bear
+            case 0: //bear
                 if (mHelper != null)
-                    mHelper.launchPurchaseFlow(VoiceSelectActivity.this, "sku_theme_cat", 10001, mPurchaseFinishedListener, null);
+                    //mHelper.launchPurchaseFlow(VoiceSelectActivity.this, "sku_voice_gbr_man_30days", 10001, mPurchaseFinishedListener, null);
+                    //mHelper.consumeAsync(imageBuyItems.get(0).getPurchase(), mConsumeFinishedListener);
+                    if (purchase != null) {
+                        Log.d(TAG, "purchase != null");
+                    } else {
+                        Log.d(TAG, "purchase == null");
+                    }
+
                 break;
-            case 2: //cat
+            /*case 2: //cat
                 if (mHelper != null)
                     mHelper.launchPurchaseFlow(VoiceSelectActivity.this, "sku_theme_bear", 10001, mPurchaseFinishedListener, null);
                 break;
             case 3: //classic
                 if (mHelper != null)
                     mHelper.launchPurchaseFlow(VoiceSelectActivity.this, "sku_theme_classic", 10001, mPurchaseFinishedListener, null);
-                break;
+                break;*/
             default:
                 break;
         }

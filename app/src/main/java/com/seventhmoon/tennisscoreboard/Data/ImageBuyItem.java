@@ -3,9 +3,12 @@ package com.seventhmoon.tennisscoreboard.Data;
 
 import android.graphics.Bitmap;
 
+import com.seventhmoon.tennisscoreboard.util.Purchase;
+
 public class ImageBuyItem  {
     private Bitmap image;
     private String title;
+    private Purchase purchase;
     private boolean selected;
     private boolean purchased;
 
@@ -29,6 +32,14 @@ public class ImageBuyItem  {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Purchase getPurchase() {
+        return purchase;
+    }
+
+    public void setPurchase(Purchase purchase) {
+        this.purchase = purchase;
     }
 
     public boolean getSelected()

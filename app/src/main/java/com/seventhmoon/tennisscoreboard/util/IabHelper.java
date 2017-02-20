@@ -68,6 +68,7 @@ import java.util.List;
  *
  */
 public class IabHelper {
+    private static final String TAG = IabHelper.class.getName();
     // Is debug logging enabled?
     boolean mDebugLog = false;
     String mDebugTag = "IabHelper";
@@ -577,6 +578,8 @@ public class IabHelper {
      */
     public Inventory queryInventory(boolean querySkuDetails, List<String> moreItemSkus,
             List<String> moreSubsSkus) throws IabException {
+        Log.d(TAG, "=== queryInventory start ===");
+
         checkNotDisposed();
         checkSetupDone("queryInventory");
         try {
@@ -607,15 +610,19 @@ public class IabHelper {
                     }
                 }
             }
+            Log.d(TAG, "=== queryInventory end ===");
 
             return inv;
         }
         catch (RemoteException e) {
+            Log.d(TAG, "=== queryInventory end ===");
             throw new IabException(IABHELPER_REMOTE_EXCEPTION, "Remote exception while refreshing inventory.", e);
         }
         catch (JSONException e) {
+            Log.d(TAG, "=== queryInventory end ===");
             throw new IabException(IABHELPER_BAD_RESPONSE, "Error parsing JSON response while refreshing inventory.", e);
         }
+
     }
 
     /**
@@ -644,6 +651,9 @@ public class IabHelper {
      */
     public void queryInventoryAsync(final boolean querySkuDetails, final List<String> moreSkus,
             final QueryInventoryFinishedListener listener) {
+        //Log.e(TAG, "=== queryInventoryAsync start ===");
+
+
         final Handler handler = new Handler();
         checkNotDisposed();
         checkSetupDone("queryInventory");
@@ -672,6 +682,7 @@ public class IabHelper {
                 }
             }
         })).start();
+        //Log.e(TAG, "=== queryInventoryAsync end ===");
     }
 
     public void queryInventoryAsync(QueryInventoryFinishedListener listener) {
