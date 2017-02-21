@@ -131,7 +131,7 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
 
                 //ArrayList<String> additionalSkuList = new ArrayList<>();
                 additionalSkuList.clear();
-                additionalSkuList.add("sku_voice_gbr_man_30days");
+                additionalSkuList.add("sku_voice_support_gbr_man_30days");
                 //additionalSkuList.add("sku_theme_cat");
                 //additionalSkuList.add("sku_theme_classic");
 
@@ -315,15 +315,15 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
 
             //gbr man 30 days
             if (inventory != null) {
-                imageBuyItems.get(0).setPurchase(inventory.getPurchase("sku_voice_gbr_man_30days"));
+                imageBuyItems.get(0).setPurchase(inventory.getPurchase("sku_voice_support_gbr_man_30days"));
             }
 
-            if (inventory.getPurchase("sku_voice_gbr_man_30days") != null) {
+            if (inventory.getPurchase("sku_voice_support_gbr_man_30days") != null) {
 
                 //String theme_cat_price = inventory.getSkuDetails("sku_theme_cat").getPrice();
                 //String theme_bear_price = inventory.getSkuDetails("sku_theme_bear").getPrice();
-                Log.i(TAG, "sku_voice_gbr_man_30days = " + inventory.getSkuDetails("sku_voice_gbr_man_30days").getPriceCurrencyCode() + " " +
-                        inventory.getSkuDetails("sku_voice_gbr_man_30days").getPrice() + "purchase " + inventory.getPurchase("sku_voice_gbr_man_30days"));
+                Log.i(TAG, "sku_voice_support_gbr_man_30days = " + inventory.getSkuDetails("sku_voice_support_gbr_man_30days").getPriceCurrencyCode() + " " +
+                        inventory.getSkuDetails("sku_voice_support_gbr_man_30days").getPrice() + "purchase " + inventory.getPurchase("sku_voice_support_gbr_man_30days"));
 
 
             /*Log.i(TAG, "cat ="+inventory.getSkuDetails("sku_theme_cat").getPriceCurrencyCode()+ " "+
@@ -332,11 +332,11 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
             Log.i(TAG, "classic = " + inventory.getSkuDetails("sku_theme_classic").getPriceCurrencyCode() + " " +
                     inventory.getSkuDetails("sku_theme_classic").getPrice() + "purchase " + inventory.getPurchase("sku_theme_classic"));*/
                 //theme bear
-                if (inventory.getPurchase("sku_voice_gbr_man_30days") == null) { //not buy yet
+                if (inventory.getPurchase("sku_voice_support_gbr_man_30days") == null) { //not buy yet
                     if (debug)
                         imageBuyItems.get(0).setTitle("GBR Man 1 Month");
                     else
-                        imageBuyItems.get(0).setTitle("GBR Man 1 Month\n" + inventory.getSkuDetails("sku_voice_gbr_man_30days").getPrice());
+                        imageBuyItems.get(0).setTitle("GBR Man 1 Month\n" + inventory.getSkuDetails("sku_voice_support_gbr_man_30days").getPrice());
                     imageBuyItems.get(0).setPurchased(false);
                 } else {
                     if (debug)
@@ -350,7 +350,7 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
                 if (debug)
                     imageBuyItems.get(0).setTitle("GBR Man 1 Month");
                 else
-                    imageBuyItems.get(0).setTitle("GBR Man 1 Month\n" + inventory.getSkuDetails("sku_voice_gbr_man_30days").getPrice());
+                    imageBuyItems.get(0).setTitle("GBR Man 1 Month\n" + inventory.getSkuDetails("sku_voice_support_gbr_man_30days").getPrice());
                 imageBuyItems.get(0).setPurchased(false);
             }
             //theme cat
@@ -442,7 +442,7 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
                 //editor.putInt("CurrentTheme", previous_theme);
                 //editor.apply();
             }
-            else if (purchase.getSku().equals("sku_voice_gbr_man_30days")) {
+            else if (purchase.getSku().equals("sku_voice_support_gbr_man_30days")) {
                 imageBuyItems.get(0).setPurchased(true);
 
             }
@@ -473,7 +473,7 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
             if (result.isFailure()) {
                 // Handle failure
             } else {
-                mHelper.consumeAsync(inventory.getPurchase("sku_voice_gbr_man_30days"),
+                mHelper.consumeAsync(inventory.getPurchase("sku_voice_support_gbr_man_30days"),
                         mConsumeFinishedListener);
             }
         }
@@ -482,18 +482,18 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
     protected void do_buy_theme(int position)
     {
         RandomString randomString = new RandomString(36);
-        Purchase purchase = imageBuyItems.get(0).getPurchase();
+        //Purchase purchase = imageBuyItems.get(0).getPurchase();
         switch (position)
         {
             case 0: //bear
                 if (mHelper != null)
-                    //mHelper.launchPurchaseFlow(VoiceSelectActivity.this, "sku_voice_gbr_man_30days", 10001, mPurchaseFinishedListener, null);
+                    mHelper.launchPurchaseFlow(VoiceSelectActivity.this, "sku_voice_support_gbr_man_30days", 10001, mPurchaseFinishedListener, null);
                     //mHelper.consumeAsync(imageBuyItems.get(0).getPurchase(), mConsumeFinishedListener);
-                    if (purchase != null) {
+                    /*if (purchase != null) {
                         Log.d(TAG, "purchase != null");
                     } else {
                         Log.d(TAG, "purchase == null");
-                    }
+                    }*/
 
                 break;
             /*case 2: //cat
