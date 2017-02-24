@@ -96,10 +96,10 @@ public class GameActivity extends AppCompatActivity{
     private TextView textGameTime;
 
     private static String set;
-    //private static String game;
     private static String tiebreak;
     private static String deuce;
     private static String serve;
+    private static String is_retire = "0";
     //private static String duration;
 
     private static String filename;
@@ -218,7 +218,8 @@ public class GameActivity extends AppCompatActivity{
         //Log.e(TAG, "GAME = "+game);
         Log.e(TAG, "TIEBREAK = "+tiebreak);
         Log.e(TAG, "DEUCE = "+deuce);
-        Log.e(TAG, "SERVE = "+serve);
+
+        Log.e(TAG, "IS_RETIRE = "+is_retire);
 
         Log.e(TAG, "filename = "+filename);
         Log.e(TAG, "playerUp = "+playerUp);
@@ -357,6 +358,12 @@ public class GameActivity extends AppCompatActivity{
 
                 //set
                 set = info[5];
+
+                if (info.length > 6) {
+                    is_retire = info[6];
+                } else {
+                    is_retire = "0";
+                }
             } else {
                 playerUp = "Player1";
                 playerDown = "Player2";
@@ -364,7 +371,7 @@ public class GameActivity extends AppCompatActivity{
                 deuce = "0";
                 serve = "0";
                 set = "0";
-
+                is_retire = "0";
 
             }
 
@@ -555,12 +562,21 @@ public class GameActivity extends AppCompatActivity{
                         imgServeUp.setVisibility(View.INVISIBLE);
                         imgServeDown.setVisibility(View.INVISIBLE);
 
-                        if (top.getSetsUp() > top.getSetsDown()) {
+                        if (is_retire.equals("1")) { //Oppt retire, you win
+                            imgWinCheckUp.setVisibility(View.GONE);
+                            imgWinCheckDown.setVisibility(View.VISIBLE);
+                        } else if (is_retire.equals("2")) { //you retire, oppt win
                             imgWinCheckUp.setVisibility(View.VISIBLE);
                             imgWinCheckDown.setVisibility(View.GONE);
                         } else {
-                            imgWinCheckUp.setVisibility(View.GONE);
-                            imgWinCheckDown.setVisibility(View.VISIBLE);
+
+                            if (top.getSetsUp() > top.getSetsDown()) {
+                                imgWinCheckUp.setVisibility(View.VISIBLE);
+                                imgWinCheckDown.setVisibility(View.GONE);
+                            } else {
+                                imgWinCheckUp.setVisibility(View.GONE);
+                                imgWinCheckDown.setVisibility(View.VISIBLE);
+                            }
                         }
                     } else {
                         if (top.isServe()) {
@@ -716,7 +732,7 @@ public class GameActivity extends AppCompatActivity{
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                is_retire = "0";
                 imgWinCheckUp.setVisibility(View.GONE);
                 imgWinCheckDown.setVisibility(View.GONE);
 
@@ -973,7 +989,8 @@ public class GameActivity extends AppCompatActivity{
                                         calculateScore(YOU_SCORE);
                                     } else if (item == 9) { //net in
                                         calculateScore(YOU_SERVE);
-                                    } else if (item == 10) { //retire
+                                    } else if (item == 10) { //
+                                        is_retire = "2";
                                         calculateScore(YOU_RETIRE);
                                     }
                                 } else { //first serve
@@ -1019,6 +1036,7 @@ public class GameActivity extends AppCompatActivity{
                                     } else if (item == 9) { //net in
                                         calculateScore(YOU_SERVE);
                                     } else if (item == 10) { //retire
+                                        is_retire = "2";
                                         calculateScore(YOU_RETIRE);
                                     }
                                 }
@@ -1072,6 +1090,7 @@ public class GameActivity extends AppCompatActivity{
                                         second_serve_lost = 1;
                                         calculateScore(YOU_SCORE);
                                     } else if (item == 7) { //retire
+                                        is_retire = "2";
                                         calculateScore(YOU_RETIRE);
                                     }
                                 } else { //first serve
@@ -1104,6 +1123,7 @@ public class GameActivity extends AppCompatActivity{
                                         first_serve_lost = 1;
                                         calculateScore(YOU_SCORE);
                                     } else if (item == 7) { //retire
+                                        is_retire = "2";
                                         calculateScore(YOU_RETIRE);
                                     }
                                 }
@@ -1205,6 +1225,7 @@ public class GameActivity extends AppCompatActivity{
                                     } else if (item == 9) { //net in
                                         calculateScore(OPPT_SERVE);
                                     } else if (item == 10) { //retire
+                                        is_retire = "1";
                                         calculateScore(OPPT_RETIRE);
                                     }
                                 } else { //first serve
@@ -1250,6 +1271,7 @@ public class GameActivity extends AppCompatActivity{
                                     } else if (item == 9) { //net in
                                         calculateScore(OPPT_SERVE);
                                     } else if (item == 10) { //retire
+                                        is_retire = "1";
                                         calculateScore(OPPT_RETIRE);
                                     }
                                 }
@@ -1303,6 +1325,7 @@ public class GameActivity extends AppCompatActivity{
                                         second_serve_lost = 1;
                                         calculateScore(OPPT_SCORE);
                                     } else if (item == 7) { //other winner
+                                        is_retire = "1";
                                         calculateScore(OPPT_RETIRE);
                                     }
                                 } else {
@@ -1335,6 +1358,7 @@ public class GameActivity extends AppCompatActivity{
                                         first_serve_lost = 1;
                                         calculateScore(OPPT_SCORE);
                                     } else if (item == 7) { //other winner
+                                        is_retire = "1";
                                         calculateScore(OPPT_RETIRE);
                                     }
                                 }
@@ -1419,7 +1443,7 @@ public class GameActivity extends AppCompatActivity{
                                 break;
                         }
 
-                        String msg = playerUp + ";" + playerDown + ";" + is_tiebreak + ";" + is_deuce + ";" + is_firstserve + ";" + set + "|";
+                        String msg = playerUp + ";" + playerDown + ";" + is_tiebreak + ";" + is_deuce + ";" + is_firstserve + ";" + set + ";" + is_retire+ "|";
                         append_record(msg, filename);
 
                         com.seventhmoon.tennisscoreboard.Data.State top = stack.peek();
@@ -1698,13 +1722,22 @@ public class GameActivity extends AppCompatActivity{
 
                         intent.putExtra("PLAYER_UP", playerUp);
                         intent.putExtra("PLAYER_DOWN", playerDown);
-                        if (current_state.getSetsUp() > current_state.getSetsDown()) {
+                        if (imgWinCheckUp.getVisibility() == View.VISIBLE
+                                && imgWinCheckDown.getVisibility() == View.GONE) {
                             intent.putExtra("WIN_PLAYER", playerUp);
                             intent.putExtra("LOSE_PLAYER", playerDown);
                         } else {
                             intent.putExtra("WIN_PLAYER", playerDown);
                             intent.putExtra("LOSE_PLAYER", playerUp);
                         }
+
+                        /*if (current_state.getSetsUp() > current_state.getSetsDown()) {
+                            intent.putExtra("WIN_PLAYER", playerUp);
+                            intent.putExtra("LOSE_PLAYER", playerDown);
+                        } else {
+                            intent.putExtra("WIN_PLAYER", playerDown);
+                            intent.putExtra("LOSE_PLAYER", playerUp);
+                        }*/
 
                         startActivity(intent);
 
@@ -3600,7 +3633,7 @@ public class GameActivity extends AppCompatActivity{
             is_firstserve = false;
         }*/
 
-        String msg = playerUp + ";" + playerDown + ";" + is_tiebreak + ";" + is_deuce + ";" +is_firstServe+ ";" +set+ "|";
+        String msg = playerUp + ";" + playerDown + ";" + is_tiebreak + ";" + is_deuce + ";" +is_firstServe+ ";" +set+ ";" +is_retire+ "|";
         append_record(msg, filename);
 
         State top = stack.peek();
