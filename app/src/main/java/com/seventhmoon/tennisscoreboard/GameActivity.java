@@ -5,15 +5,22 @@ package com.seventhmoon.tennisscoreboard;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.content.IntentFilter;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
+import android.os.Environment;
 import android.os.Handler;
 
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -32,6 +39,7 @@ import com.seventhmoon.tennisscoreboard.Data.Constants;
 import com.seventhmoon.tennisscoreboard.Data.State;
 import com.seventhmoon.tennisscoreboard.Data.StateAction;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -46,9 +54,13 @@ import java.util.TimeZone;
 import static com.seventhmoon.tennisscoreboard.Data.FileOperation.append_record;
 import static com.seventhmoon.tennisscoreboard.Data.FileOperation.check_file_exist;
 import static com.seventhmoon.tennisscoreboard.Data.FileOperation.clear_record;
+import static com.seventhmoon.tennisscoreboard.Data.FileOperation.copy_file;
+import static com.seventhmoon.tennisscoreboard.Data.FileOperation.get_absolute_path;
 import static com.seventhmoon.tennisscoreboard.Data.FileOperation.read_record;
+import static com.seventhmoon.tennisscoreboard.Data.StateAction.OPPT_RETIRE;
 import static com.seventhmoon.tennisscoreboard.Data.StateAction.OPPT_SCORE;
 import static com.seventhmoon.tennisscoreboard.Data.StateAction.OPPT_SERVE;
+import static com.seventhmoon.tennisscoreboard.Data.StateAction.YOU_RETIRE;
 import static com.seventhmoon.tennisscoreboard.Data.StateAction.YOU_SCORE;
 import static com.seventhmoon.tennisscoreboard.Data.StateAction.YOU_SERVE;
 
@@ -190,6 +202,8 @@ public class GameActivity extends AppCompatActivity{
 
         Intent intent = getIntent();
 
+        Log.d(TAG, "intent type = "+intent.getType());
+
         set = intent.getStringExtra("SETUP_SET");
         tiebreak = intent.getStringExtra("SETUP_TIEBREAK");
         deuce = intent.getStringExtra("SETUP_DEUCE");
@@ -266,6 +280,25 @@ public class GameActivity extends AppCompatActivity{
                 playerDown = "Player2";
             nameLayout.setVisibility(View.VISIBLE);
         }
+
+        //load file from intent
+        if (intent.getType() != null) {
+            Log.i(TAG, "get -> " + intent.getType());
+            //must use under api = 19
+            //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                if (intent.getType().contains("text/")) { //text start
+
+                    String downFile = intent.getData().getPath();
+                    if (downFile != null) {
+                        filename = copy_file(downFile);
+                    }
+                    Log.i(TAG, "text file, file name = "+ filename);
+                }
+            //} else {
+
+            //}
+        }
+
 
         //load file to stack
 
@@ -374,7 +407,6 @@ public class GameActivity extends AppCompatActivity{
                     new_state.setBreakPointMissDown(Byte.valueOf(data[20]));
                     //first serve won
                     new_state.setFirstServeWonUp(Short.valueOf(data[21]));
-                    new_state.setFirstServeWonDown(Short.valueOf(data[22]));
                     //first serve lost
                     new_state.setFirstServeLostUp(Short.valueOf(data[23]));
                     new_state.setFirstServeLostDown(Short.valueOf(data[24]));
@@ -386,6 +418,7 @@ public class GameActivity extends AppCompatActivity{
                     new_state.setSecondServeLostDown(Short.valueOf(data[28]));
                     //double faults
                     new_state.setDoubleFaultUp(Byte.valueOf(data[29]));
+                    new_state.setFirstServeWonDown(Short.valueOf(data[22]));
                     new_state.setDoubleFaultDown(Byte.valueOf(data[30]));
                     //unforced error
                     new_state.setUnforceErrorUp(Byte.valueOf(data[31]));
@@ -664,6 +697,7 @@ public class GameActivity extends AppCompatActivity{
         }
 
 
+
         //mClockView = (TextView) findViewById(R.id.clock);
 
         btnYouScore = (Button) findViewById(R.id.btnYouScore);
@@ -875,6 +909,7 @@ public class GameActivity extends AppCompatActivity{
                             items.add(getResources().getString(R.string.game_foul_to_lose));
                             items.add(getResources().getString(R.string.game_other_winner));
                             items.add(getResources().getString(R.string.game_serve_net));
+                            items.add(getResources().getString(R.string.game_retire));
                         } else {
                             items.add(getResources().getString(R.string.game_ace));
                             items.add(getResources().getString(R.string.game_second_serve));
@@ -886,6 +921,7 @@ public class GameActivity extends AppCompatActivity{
                             items.add(getResources().getString(R.string.game_foul_to_lose));
                             items.add(getResources().getString(R.string.game_other_winner));
                             items.add(getResources().getString(R.string.game_serve_net));
+                            items.add(getResources().getString(R.string.game_retire));
                         }
 
 
@@ -937,6 +973,8 @@ public class GameActivity extends AppCompatActivity{
                                         calculateScore(YOU_SCORE);
                                     } else if (item == 9) { //net in
                                         calculateScore(YOU_SERVE);
+                                    } else if (item == 10) { //retire
+                                        calculateScore(YOU_RETIRE);
                                     }
                                 } else { //first serve
                                     first_serve_count = 1;
@@ -980,6 +1018,8 @@ public class GameActivity extends AppCompatActivity{
                                         calculateScore(YOU_SCORE);
                                     } else if (item == 9) { //net in
                                         calculateScore(YOU_SERVE);
+                                    } else if (item == 10) { //retire
+                                        calculateScore(YOU_RETIRE);
                                     }
                                 }
                             }
@@ -993,6 +1033,7 @@ public class GameActivity extends AppCompatActivity{
                         items.add(getResources().getString(R.string.game_backhand_volley));
                         items.add(getResources().getString(R.string.game_foul_to_lose));
                         items.add(getResources().getString(R.string.game_other_winner));
+                        items.add(getResources().getString(R.string.game_retire));
 
                         ArrayAdapter<String> adapter = new ArrayAdapter<>(GameActivity.this, android.R.layout.select_dialog_item, items);
 
@@ -1030,6 +1071,8 @@ public class GameActivity extends AppCompatActivity{
                                     } else if (item == 6) { //other winner
                                         second_serve_lost = 1;
                                         calculateScore(YOU_SCORE);
+                                    } else if (item == 7) { //retire
+                                        calculateScore(YOU_RETIRE);
                                     }
                                 } else { //first serve
                                     first_serve_count = 1;
@@ -1060,6 +1103,8 @@ public class GameActivity extends AppCompatActivity{
                                     } else if (item == 6) { //other winner
                                         first_serve_lost = 1;
                                         calculateScore(YOU_SCORE);
+                                    } else if (item == 7) { //retire
+                                        calculateScore(YOU_RETIRE);
                                     }
                                 }
                             }
@@ -1094,6 +1139,7 @@ public class GameActivity extends AppCompatActivity{
                             items.add(getResources().getString(R.string.game_foul_to_lose));
                             items.add(getResources().getString(R.string.game_other_winner));
                             items.add(getResources().getString(R.string.game_serve_net));
+                            items.add(getResources().getString(R.string.game_retire));
                         } else { //first serve
                             items.add(getResources().getString(R.string.game_ace));
                             items.add(getResources().getString(R.string.game_second_serve));
@@ -1105,6 +1151,7 @@ public class GameActivity extends AppCompatActivity{
                             items.add(getResources().getString(R.string.game_foul_to_lose));
                             items.add(getResources().getString(R.string.game_other_winner));
                             items.add(getResources().getString(R.string.game_serve_net));
+                            items.add(getResources().getString(R.string.game_retire));
                         }
 
 
@@ -1157,6 +1204,8 @@ public class GameActivity extends AppCompatActivity{
                                         calculateScore(OPPT_SCORE);
                                     } else if (item == 9) { //net in
                                         calculateScore(OPPT_SERVE);
+                                    } else if (item == 10) { //retire
+                                        calculateScore(OPPT_RETIRE);
                                     }
                                 } else { //first serve
                                     first_serve_count = 1;
@@ -1200,6 +1249,8 @@ public class GameActivity extends AppCompatActivity{
                                         calculateScore(OPPT_SCORE);
                                     } else if (item == 9) { //net in
                                         calculateScore(OPPT_SERVE);
+                                    } else if (item == 10) { //retire
+                                        calculateScore(OPPT_RETIRE);
                                     }
                                 }
                             }
@@ -1213,6 +1264,7 @@ public class GameActivity extends AppCompatActivity{
                         items.add(getResources().getString(R.string.game_backhand_volley));
                         items.add(getResources().getString(R.string.game_foul_to_lose));
                         items.add(getResources().getString(R.string.game_other_winner));
+                        items.add(getResources().getString(R.string.game_retire));
 
                         ArrayAdapter<String> adapter = new ArrayAdapter<>(GameActivity.this, android.R.layout.select_dialog_item, items);
 
@@ -1250,6 +1302,8 @@ public class GameActivity extends AppCompatActivity{
                                     } else if (item == 6) { //other winner
                                         second_serve_lost = 1;
                                         calculateScore(OPPT_SCORE);
+                                    } else if (item == 7) { //other winner
+                                        calculateScore(OPPT_RETIRE);
                                     }
                                 } else {
                                     first_serve_count = 1;
@@ -1280,6 +1334,8 @@ public class GameActivity extends AppCompatActivity{
                                     } else if (item == 6) { //other winner
                                         first_serve_lost = 1;
                                         calculateScore(OPPT_SCORE);
+                                    } else if (item == 7) { //other winner
+                                        calculateScore(OPPT_RETIRE);
                                     }
                                 }
 
@@ -1694,6 +1750,207 @@ public class GameActivity extends AppCompatActivity{
                 Log.d(TAG, "second_serve_lost = "+second_serve_lost);
 
                 switch (action) {
+                    case YOU_RETIRE:
+                        Log.d(TAG, "=== I retire start ===");
+                        if (stack.isEmpty()) { //the state stack is empty
+
+                            if (serve.equals("0"))
+                                new_state.setServe(true);
+                            else
+                                new_state.setServe(false);
+
+                            //set current set = 1
+                            new_state.setCurrent_set((byte) 0x01);
+
+                            new_state.setDuration(time_use);
+                            new_state.setFinish(true);
+                            handler.removeCallbacks(updateTimer);
+                            is_pause = false;
+                        } else {
+                            Log.d(TAG, "==>[Stack not empty]");
+                            first = current_state.getFirstServeDown();
+                            first_miss = current_state.getFirstServeMissDown();
+                            second = current_state.getSecondServeDown();
+
+
+                            new_state.setFirstServeDown((short) first);
+                            new_state.setFirstServeMissDown((short) first_miss);
+                            new_state.setSecondServeDown((short) second);
+
+                            new_state.setCurrent_set(current_state.getCurrent_set());
+                            new_state.setServe(current_state.isServe());
+                            new_state.setInTiebreak(current_state.isInTiebreak());
+                            new_state.setFinish(true);
+                            handler.removeCallbacks(updateTimer);
+                            is_pause = false;
+                            if (is_second_serve) {
+                                imgServeUp.setImageResource(R.drawable.ball_icon_red);
+                                imgServeDown.setImageResource(R.drawable.ball_icon_red);
+                                new_state.setSecondServe(true);
+                            } else {
+                                imgServeUp.setImageResource(R.drawable.ball_icon);
+                                imgServeDown.setImageResource(R.drawable.ball_icon);
+                                new_state.setSecondServe(false);
+                            }
+
+
+                            new_state.setSetsUp(current_state.getSetsUp());
+                            new_state.setSetsDown(current_state.getSetsDown());
+
+                            new_state.setDuration(time_use);
+                            new_state.setFinish(true);
+                            handler.removeCallbacks(updateTimer);
+                            is_pause = false;
+
+                            imgWinCheckUp.setVisibility(View.VISIBLE);
+                            imgWinCheckDown.setVisibility(View.GONE);
+
+                            new_state.setAceCountUp(current_state.getAceCountUp());
+                            new_state.setAceCountDown(current_state.getAceCountDown());
+                            new_state.setFirstServeUp(current_state.getFirstServeUp());
+                            //new_state.setFirstServeDown(current_state.getFirstServeDown());
+                            new_state.setFirstServeMissUp(current_state.getFirstServeMissUp());
+                            //new_state.setFirstServeMissDown(current_state.getFirstServeMissDown());
+                            new_state.setSecondServeUp(current_state.getSecondServeUp());
+                            //new_state.setSecondServeDown(current_state.getSecondServeDown());
+                            new_state.setBreakPointUp(current_state.getBreakPointUp());
+                            new_state.setBreakPointMissUp(current_state.getBreakPointMissUp());
+                            new_state.setBreakPointDown(current_state.getBreakPointDown());
+                            new_state.setBreakPointMissDown(current_state.getBreakPointMissDown());
+                            new_state.setFirstServeWonUp(current_state.getFirstServeWonUp());
+                            new_state.setFirstServeWonDown(current_state.getFirstServeWonDown());
+                            new_state.setFirstServeLostUp(current_state.getFirstServeLostUp());
+                            new_state.setFirstServeLostDown(current_state.getFirstServeLostDown());
+                            new_state.setSecondServeWonUp(current_state.getSecondServeWonUp());
+                            new_state.setSecondServeWonDown(current_state.getSecondServeWonDown());
+                            new_state.setSecondServeLostUp(current_state.getSecondServeLostUp());
+                            new_state.setSecondServeLostDown(current_state.getSecondServeLostDown());
+                            new_state.setDoubleFaultUp(current_state.getDoubleFaultUp());
+                            new_state.setDoubleFaultDown(current_state.getDoubleFaultDown());
+                            new_state.setUnforceErrorUp(current_state.getUnforceErrorUp());
+                            new_state.setUnforceErrorDown(current_state.getUnforceErrorDown());
+                            new_state.setForehandWinnerUp(current_state.getForehandWinnerUp());
+                            new_state.setForehandWinnerDown(current_state.getForehandWinnerDown());
+                            new_state.setBackhandWinnerUp(current_state.getBackhandWinnerUp());
+                            new_state.setBackhandWinnerDown(current_state.getBackhandWinnerDown());
+                            new_state.setForehandVolleyUp(current_state.getForehandVolleyUp());
+                            new_state.setForehandVolleyDown(current_state.getForehandVolleyDown());
+                            new_state.setBackhandVolleyUp(current_state.getBackhandVolleyUp());
+                            new_state.setBackhandVolleyDown(current_state.getBackhandVolleyDown());
+                            new_state.setFoulToLoseUp(current_state.getFoulToLoseUp());
+                            new_state.setFoulToLoseDown(current_state.getFoulToLoseDown());
+
+                            for (byte i=1; i<=set_limit; i++) {
+                                new_state.setSet_game_up(i, current_state.getSet_game_up(i));
+                                new_state.setSet_game_down(i, current_state.getSet_game_down(i));
+                                new_state.setSet_point_up(i, current_state.getSet_point_up(i));
+                                new_state.setSet_point_down(i, current_state.getSet_point_down(i));
+                                new_state.setSet_tiebreak_point_up(i, current_state.getSet_tiebreak_point_up(i));
+                                new_state.setSet_tiebreak_point_down(i, current_state.getSet_tiebreak_point_down(i));
+                            }
+
+                            //Log.d(TAG, "your first serve : miss/count = "+new_state.getFirstServeMissDown()+"/"+new_state.getFirstServeDown());
+                            //.d(TAG, "your second serve : miss/count = "+new_state.getDoubleFaultDown()+"/"+new_state.getSecondServeDown());
+                        }
+                        Log.d(TAG, "=== I retire end ===");
+                        break;
+                    case OPPT_RETIRE:
+                        Log.d(TAG, "=== oppt retire start ===");
+                        if (stack.isEmpty()) { //the state stack is empty
+
+                            if (serve.equals("0"))
+                                new_state.setServe(true);
+                            else
+                                new_state.setServe(false);
+
+                            //set current set = 1
+                            new_state.setCurrent_set((byte) 0x01);
+
+                            new_state.setDuration(time_use);
+                            new_state.setFinish(true);
+                            handler.removeCallbacks(updateTimer);
+                            is_pause = false;
+                        } else {
+                            Log.d(TAG, "==>[Stack not empty]");
+                            first = current_state.getFirstServeUp()+first_serve_count;
+                            first_miss = current_state.getFirstServeMissUp()+first_serve_miss;
+                            second = current_state.getSecondServeUp()+second_serve_count;
+
+                            new_state.setFirstServeUp((short) first);
+                            new_state.setFirstServeMissUp((short) first_miss);
+                            new_state.setSecondServeUp((short) second);
+
+                            new_state.setCurrent_set(current_state.getCurrent_set());
+                            new_state.setServe(current_state.isServe());
+                            new_state.setInTiebreak(current_state.isInTiebreak());
+                            new_state.setFinish(current_state.isFinish());
+                            if (is_second_serve) {
+                                imgServeUp.setImageResource(R.drawable.ball_icon_red);
+                                imgServeDown.setImageResource(R.drawable.ball_icon_red);
+                                new_state.setSecondServe(true);
+                            } else {
+                                imgServeUp.setImageResource(R.drawable.ball_icon);
+                                imgServeDown.setImageResource(R.drawable.ball_icon);
+                                new_state.setSecondServe(false);
+                            }
+
+                            new_state.setSetsUp(current_state.getSetsUp());
+                            new_state.setSetsDown(current_state.getSetsDown());
+
+                            new_state.setDuration(time_use);
+                            new_state.setFinish(true);
+                            handler.removeCallbacks(updateTimer);
+                            is_pause = false;
+
+                            imgWinCheckUp.setVisibility(View.GONE);
+                            imgWinCheckDown.setVisibility(View.VISIBLE);
+
+                            new_state.setAceCountUp(current_state.getAceCountUp());
+                            new_state.setAceCountDown(current_state.getAceCountDown());
+                            //new_state.setFirstServeUp(current_state.getFirstServeUp());
+                            new_state.setFirstServeDown(current_state.getFirstServeDown());
+                            //new_state.setFirstServeMissUp(current_state.getFirstServeMissUp());
+                            new_state.setFirstServeMissDown(current_state.getFirstServeMissDown());
+                            //new_state.setSecondServeUp(current_state.getSecondServeUp());
+                            new_state.setSecondServeDown(current_state.getSecondServeDown());
+                            new_state.setBreakPointUp(current_state.getBreakPointUp());
+                            new_state.setBreakPointMissUp(current_state.getBreakPointMissUp());
+                            new_state.setBreakPointDown(current_state.getBreakPointDown());
+                            new_state.setBreakPointMissDown(current_state.getBreakPointMissDown());
+                            new_state.setFirstServeWonUp(current_state.getFirstServeWonUp());
+                            new_state.setFirstServeWonDown(current_state.getFirstServeWonDown());
+                            new_state.setFirstServeLostUp(current_state.getFirstServeLostUp());
+                            new_state.setFirstServeLostDown(current_state.getFirstServeLostDown());
+                            new_state.setSecondServeWonUp(current_state.getSecondServeWonUp());
+                            new_state.setSecondServeWonDown(current_state.getSecondServeWonDown());
+                            new_state.setSecondServeLostUp(current_state.getSecondServeLostUp());
+                            new_state.setSecondServeLostDown(current_state.getSecondServeLostDown());
+                            new_state.setDoubleFaultUp(current_state.getDoubleFaultUp());
+                            new_state.setDoubleFaultDown(current_state.getDoubleFaultDown());
+                            new_state.setUnforceErrorUp(current_state.getUnforceErrorUp());
+                            new_state.setUnforceErrorDown(current_state.getUnforceErrorDown());
+                            new_state.setForehandWinnerUp(current_state.getForehandWinnerUp());
+                            new_state.setForehandWinnerDown(current_state.getForehandWinnerDown());
+                            new_state.setBackhandWinnerUp(current_state.getBackhandWinnerUp());
+                            new_state.setBackhandWinnerDown(current_state.getBackhandWinnerDown());
+                            new_state.setForehandVolleyUp(current_state.getForehandVolleyUp());
+                            new_state.setForehandVolleyDown(current_state.getForehandVolleyDown());
+                            new_state.setBackhandVolleyUp(current_state.getBackhandVolleyUp());
+                            new_state.setBackhandVolleyDown(current_state.getBackhandVolleyDown());
+                            new_state.setFoulToLoseUp(current_state.getFoulToLoseUp());
+                            new_state.setFoulToLoseDown(current_state.getFoulToLoseDown());
+
+                            for (byte i=1; i<=set_limit; i++) {
+                                new_state.setSet_game_up(i, current_state.getSet_game_up(i));
+                                new_state.setSet_game_down(i, current_state.getSet_game_down(i));
+                                new_state.setSet_point_up(i, current_state.getSet_point_up(i));
+                                new_state.setSet_point_down(i, current_state.getSet_point_down(i));
+                                new_state.setSet_tiebreak_point_up(i, current_state.getSet_tiebreak_point_up(i));
+                                new_state.setSet_tiebreak_point_down(i, current_state.getSet_tiebreak_point_down(i));
+                            }
+                        }
+                        Log.d(TAG, "=== oppt retire end ===");
+                        break;
                     case YOU_SERVE: //you serve
                         Log.d(TAG, "=== I serve start ===");
                         if (stack.isEmpty()) { //the state stack is empty
@@ -2368,13 +2625,23 @@ public class GameActivity extends AppCompatActivity{
                         imgServeUp.setVisibility(View.INVISIBLE);
                         imgServeDown.setVisibility(View.INVISIBLE);
 
-                        if (new_state.getSetsUp() > new_state.getSetsDown()) {
+                        if (action == YOU_RETIRE) {
                             imgWinCheckUp.setVisibility(View.VISIBLE);
                             imgWinCheckDown.setVisibility(View.GONE);
-                        } else {
+                        } else if (action == OPPT_RETIRE){
                             imgWinCheckUp.setVisibility(View.GONE);
                             imgWinCheckDown.setVisibility(View.VISIBLE);
+                        } else {
+                            if (new_state.getSetsUp() > new_state.getSetsDown()) {
+                                imgWinCheckUp.setVisibility(View.VISIBLE);
+                                imgWinCheckDown.setVisibility(View.GONE);
+                            } else {
+                                imgWinCheckUp.setVisibility(View.GONE);
+                                imgWinCheckDown.setVisibility(View.VISIBLE);
+                            }
                         }
+
+
                     } else {
                         if (new_state.isServe()) {
                             imgServeUp.setVisibility(View.INVISIBLE);
@@ -2483,6 +2750,26 @@ public class GameActivity extends AppCompatActivity{
             new_state.setDuration(time_use);
 
             switch (action) {
+                case YOU_RETIRE:
+                    Log.d(TAG, "=== I retire start ===");
+                    new_state.setFinish(true);
+                    handler.removeCallbacks(updateTimer);
+                    is_pause = false;
+
+                    imgWinCheckUp.setVisibility(View.VISIBLE);
+                    imgWinCheckDown.setVisibility(View.GONE);
+                    Log.d(TAG, "=== I retire end ===");
+                    break;
+                case OPPT_RETIRE:
+                    Log.d(TAG, "=== oppt retire start ===");
+                    new_state.setFinish(true);
+                    handler.removeCallbacks(updateTimer);
+                    is_pause = false;
+
+                    imgWinCheckUp.setVisibility(View.GONE);
+                    imgWinCheckDown.setVisibility(View.VISIBLE);
+                    Log.d(TAG, "=== oppt retire end ===");
+                    break;
                 case YOU_SERVE: //you serve
                     Log.d(TAG, "=== I serve start ===");
                     new_state.setFirstServeDown(first_serve_count);
@@ -2503,7 +2790,9 @@ public class GameActivity extends AppCompatActivity{
                     break;
                 case YOU_SCORE: //you score
                     Log.d(TAG, "=== I score start ===");
+                    new_state.setCurrent_set((byte) 0x01);
 
+                    new_state.setDuration(time_use);
                     if (new_state.isServe()) //you serve
                     {
                         Log.d(TAG, "you serve");
@@ -3428,10 +3717,74 @@ public class GameActivity extends AppCompatActivity{
                 intent.putExtra("TOTAL_SETS", set);
                 startActivity(intent);
                 break;
+            case R.id.action_file_upload:
+                File file = new File(get_absolute_path(filename));
+                intent = new Intent();
+                intent.setAction(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file) );
+                startActivity(intent);
 
+                break;
             default:
                 break;
         }
         return true;
+    }
+
+    /**
+     * @param uri The Uri to check.
+     * @return Whether the Uri authority is ExternalStorageProvider.
+     */
+    public static boolean isExternalStorageDocument(Uri uri) {
+        return "com.android.externalstorage.documents".equals(uri.getAuthority());
+    }
+
+    /**
+     * @param uri The Uri to check.
+     * @return Whether the Uri authority is DownloadsProvider.
+     */
+    public static boolean isDownloadsDocument(Uri uri) {
+        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
+    }
+
+    /**
+     * @param uri The Uri to check.
+     * @return Whether the Uri authority is MediaProvider.
+     */
+    public static boolean isMediaDocument(Uri uri) {
+        return "com.android.providers.media.documents".equals(uri.getAuthority());
+    }
+
+    /**
+     * @param uri The Uri to check.
+     * @return Whether the Uri authority is Google Photos.
+     */
+    public static boolean isGooglePhotosUri(Uri uri) {
+        return "com.google.android.apps.photos.content".equals(uri.getAuthority());
+    }
+
+    public static String getDataColumn(Context context, Uri uri, String selection,
+                                       String[] selectionArgs) {
+
+        Cursor cursor = null;
+        final String column = "_data";
+        final String[] projection = {
+                column
+        };
+
+        try {
+            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
+                    null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                final int index = cursor.getColumnIndexOrThrow(column);
+                return cursor.getString(index);
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return null;
     }
 }

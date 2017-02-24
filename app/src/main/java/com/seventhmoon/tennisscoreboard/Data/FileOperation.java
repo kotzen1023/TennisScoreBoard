@@ -6,9 +6,13 @@ import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class FileOperation {
     private static final String TAG = FileOperation.class.getName();
@@ -250,5 +254,46 @@ public class FileOperation {
 
 
         return message;
+    }
+
+    public static String get_absolute_path(String fileName) {
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            //path = Environment.getExternalStorageDirectory();
+            RootDirectory = Environment.getExternalStorageDirectory();
+        }
+
+        File file = new File(RootDirectory.getAbsolutePath() + "/.tennisScoredBoard/"+fileName);
+
+        return file.getAbsolutePath();
+    }
+
+    public static String copy_file(String pathName) {
+
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            //path = Environment.getExternalStorageDirectory();
+            RootDirectory = Environment.getExternalStorageDirectory();
+        }
+
+        File src_file = new File(pathName);
+        File dest_file = new File(RootDirectory.getAbsolutePath() + "/.tennisScoredBoard/" + src_file.getName());
+
+        try {
+
+            InputStream in = new FileInputStream(src_file);
+            OutputStream out = new FileOutputStream(dest_file);
+
+            // Transfer bytes from in to out
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+            in.close();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return dest_file.getName();
     }
 }

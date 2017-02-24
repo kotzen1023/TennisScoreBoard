@@ -3,6 +3,12 @@
 
 
     <item
+        android:id="@+id/action_file_upload"
+        android:title="@string/game_send_result"
+        android:icon="@drawable/ic_file_upload_white_48dp"
+        app:showAsAction="ifRoom|withText" />
+
+    <item
         android:id="@+id/action_show_stat"
         android:title="@string/menu_setup_stat"
         android:icon="@drawable/ic_view_headline_white_48dp"

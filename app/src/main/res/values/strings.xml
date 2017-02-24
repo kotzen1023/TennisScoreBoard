@@ -68,5 +68,8 @@
     <string name="voice_change_purchased">Purchased</string>
     <string name="voice_change_ask_to_buy">Do you want to buy this item?</string>
     <string name="game_voice">Voice</string>
+    <string name="game_send_result">Send</string>
+    <string name="game_import_file">Import score</string>
+    <string name="game_retire">Retire from game</string>
 </resources>
 

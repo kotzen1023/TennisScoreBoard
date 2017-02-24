@@ -364,7 +364,7 @@ public class MainActivity extends AppCompatActivity {
 
         voiceItem = menu.findItem(R.id.action_lang_support);
 
-        //voiceItem.setVisible(false);
+        voiceItem.setVisible(false);
 
         return true;
     }

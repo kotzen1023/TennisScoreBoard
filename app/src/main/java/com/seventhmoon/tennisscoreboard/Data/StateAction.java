@@ -4,5 +4,7 @@ public enum StateAction {
     YOU_SERVE,
     OPPT_SERVE,
     YOU_SCORE,
-    OPPT_SCORE
+    OPPT_SCORE,
+    YOU_RETIRE,
+    OPPT_RETIRE
 }

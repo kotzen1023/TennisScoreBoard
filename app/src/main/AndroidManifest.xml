@@ -20,7 +20,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".SetupMain"/>
-        <activity android:name=".GameActivity"/>
+        <activity android:name=".GameActivity" android:label="@string/game_import_file">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
         <activity android:name=".LoadGame"/>
         <activity android:name=".ResultActivity"/>
         <activity android:name=".CurrentStatActivity"/>

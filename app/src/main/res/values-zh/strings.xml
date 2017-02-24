@@ -69,4 +69,7 @@
     <string name="voice_change_purchased">已購買</string>
     <string name="voice_change_ask_to_buy">您想購買此道具嗎?</string>
     <string name="game_voice">語音</string>
+    <string name="game_send_result">傳送</string>
+    <string name="game_import_file">匯入比分</string>
+    <string name="game_retire">棄賽</string>
 </resources>
