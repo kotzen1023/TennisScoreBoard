@@ -1764,7 +1764,7 @@ public class GameActivity extends AppCompatActivity{
                 new_state = new State();
 
                 int first, first_miss, second;
-                Log.d(TAG, "==>[Stack empty]");
+                //Log.d(TAG, "==>[Stack empty]");
                 Log.d(TAG, "first_serve_count = "+first_serve_count);
                 Log.d(TAG, "first_serve_miss = "+first_serve_miss);
                 Log.d(TAG, "second_serve_count = "+second_serve_count);
@@ -1801,9 +1801,9 @@ public class GameActivity extends AppCompatActivity{
                             is_pause = false;
                         } else {
                             Log.d(TAG, "==>[Stack not empty]");
-                            first = current_state.getFirstServeDown();
-                            first_miss = current_state.getFirstServeMissDown();
-                            second = current_state.getSecondServeDown();
+                            first = current_state.getFirstServeDown()+first_serve_count;
+                            first_miss = current_state.getFirstServeMissDown()+first_serve_miss;
+                            second = current_state.getSecondServeDown()+second_serve_count;
 
 
                             new_state.setFirstServeDown((short) first);
