@@ -96,6 +96,7 @@ public class GameActivity extends AppCompatActivity{
     private TextView textGameTime;
 
     private static String set;
+    private static String games;
     private static String tiebreak;
     private static String deuce;
     private static String serve;
@@ -205,6 +206,7 @@ public class GameActivity extends AppCompatActivity{
         Log.d(TAG, "intent type = "+intent.getType());
 
         set = intent.getStringExtra("SETUP_SET");
+        games = intent.getStringExtra("SETUP_GAME");
         tiebreak = intent.getStringExtra("SETUP_TIEBREAK");
         deuce = intent.getStringExtra("SETUP_DEUCE");
         serve = intent.getStringExtra("SETUP_SERVE");
@@ -215,7 +217,7 @@ public class GameActivity extends AppCompatActivity{
         //duration = intent.getStringExtra("GAME_DURATION");
 
         Log.e(TAG, "SET = "+set);
-        //Log.e(TAG, "GAME = "+game);
+        Log.e(TAG, "GAMES = "+games);
         Log.e(TAG, "TIEBREAK = "+tiebreak);
         Log.e(TAG, "DEUCE = "+deuce);
 
@@ -364,6 +366,13 @@ public class GameActivity extends AppCompatActivity{
                 } else {
                     is_retire = "0";
                 }
+
+                if (info.length > 7) {
+                    games = info[7];
+                } else {
+                    games = "0"; // 6 game in a set
+                }
+
             } else {
                 playerUp = "Player1";
                 playerDown = "Player2";
@@ -372,7 +381,7 @@ public class GameActivity extends AppCompatActivity{
                 serve = "0";
                 set = "0";
                 is_retire = "0";
-
+                games = "0";
             }
 
             if (msg.length > 1) {
@@ -1443,7 +1452,7 @@ public class GameActivity extends AppCompatActivity{
                                 break;
                         }
 
-                        String msg = playerUp + ";" + playerDown + ";" + is_tiebreak + ";" + is_deuce + ";" + is_firstserve + ";" + set + ";" + is_retire+ "|";
+                        String msg = playerUp + ";" + playerDown + ";" + is_tiebreak + ";" + is_deuce + ";" + is_firstserve + ";" + set + ";" + is_retire+ ";" + games + "|";
                         append_record(msg, filename);
 
                         com.seventhmoon.tennisscoreboard.Data.State top = stack.peek();
@@ -3053,107 +3062,197 @@ public class GameActivity extends AppCompatActivity{
             Log.d(TAG, "[In Tiebreak]");
             byte game;
 
-            /*if ((new_state.getSet_point_up(current_set) == 1 && new_state.getSet_point_down(current_set) == 0) ||
-                    (new_state.getSet_point_up(current_set) == 0 && new_state.getSet_point_down(current_set) == 1)) {
-                //in tiebreak, add first point should change serve
-                //change serve
-                if (new_state.isServe()) {
-                    new_state.setServe(false);
+            if (games.equals("0")) { //6 game in a set
+                Log.d(TAG, "[6 games in a set]"); //6:6 => tiebreak
+
+                if (new_state.getSet_point_up(current_set) == 7 && new_state.getSet_point_down(current_set) <= 5) {
+                    //7 : 0,1,2,3,4,5 => oppt win this game
+                    //set tiebreak point
+                    new_state.setSet_tiebreak_point_up(current_set, new_state.getSet_point_up(current_set));
+                    new_state.setSet_tiebreak_point_down(current_set, new_state.getSet_point_down(current_set));
+                    //set point clean
+                    new_state.setSet_point_up(current_set, (byte)0);
+                    new_state.setSet_point_down(current_set, (byte)0);
+                    //add to game
+                    game = new_state.getSet_game_up(current_set);
+                    game++;
+                    new_state.setSet_game_up(current_set, game);
+                    //change serve
+                    if (new_state.isServe()) {
+                        new_state.setServe(false);
+                    } else {
+                        new_state.setServe(true);
+                    }
+
+                    //leave tiebreak;
+                    new_state.setInTiebreak(false);
+                } else if (new_state.getSet_point_up(current_set) <= 5 && new_state.getSet_point_down(current_set) == 7) {
+                    //0,1,2,3,4,5 : 7 => you win this game
+                    //set tiebreak point
+                    new_state.setSet_tiebreak_point_up(current_set, new_state.getSet_point_up(current_set));
+                    new_state.setSet_tiebreak_point_down(current_set, new_state.getSet_point_down(current_set));
+                    //set point clean
+                    new_state.setSet_point_up(current_set, (byte)0);
+                    new_state.setSet_point_down(current_set, (byte)0);
+                    //add to game
+                    game = new_state.getSet_game_down(current_set);
+                    game++;
+                    new_state.setSet_game_down(current_set, game);
+                    //change serve
+                    if (new_state.isServe()) {
+                        new_state.setServe(false);
+                    } else {
+                        new_state.setServe(true);
+                    }
+                    //leave tiebreak;
+                    new_state.setInTiebreak(false);
+                } else if (new_state.getSet_point_up(current_set) >= 6 &&
+                        new_state.getSet_point_down(current_set) >= 6 &&
+                        (new_state.getSet_point_up(current_set) - new_state.getSet_point_down(current_set)) == 2) {
+                    //8:6, 9:7, 10:8.... => oppt win this game
+                    //set tiebreak point
+                    new_state.setSet_tiebreak_point_up(current_set, new_state.getSet_point_up(current_set));
+                    new_state.setSet_tiebreak_point_down(current_set, new_state.getSet_point_down(current_set));
+                    //set point clean
+                    new_state.setSet_point_up(current_set, (byte)0);
+                    new_state.setSet_point_down(current_set, (byte)0);
+                    //add to game
+                    game = new_state.getSet_game_up(current_set);
+                    game++;
+                    new_state.setSet_game_up(current_set, game);
+                    //change serve
+                    if (new_state.isServe()) {
+                        new_state.setServe(false);
+                    } else {
+                        new_state.setServe(true);
+                    }
+
+                    //leave tiebreak;
+                    new_state.setInTiebreak(false);
+                } else if (new_state.getSet_point_up(current_set) >= 6 &&
+                        new_state.getSet_point_down(current_set) >= 6 &&
+                        (new_state.getSet_point_down(current_set) - new_state.getSet_point_up(current_set)) == 2) {
+                    //6:8, 7:9, 8:10.... => you win this game
+                    //set tiebreak point
+                    new_state.setSet_tiebreak_point_up(current_set, new_state.getSet_point_up(current_set));
+                    new_state.setSet_tiebreak_point_down(current_set, new_state.getSet_point_down(current_set));
+                    //set point clean
+                    new_state.setSet_point_up(current_set, (byte)0);
+                    new_state.setSet_point_down(current_set, (byte)0);
+                    //add to game
+                    game = new_state.getSet_game_down(current_set);
+                    game++;
+                    new_state.setSet_game_down(current_set, game);
+                    //change serve
+                    if (new_state.isServe()) {
+                        new_state.setServe(false);
+                    } else {
+                        new_state.setServe(true);
+                    }
+
+                    //leave tiebreak;
+                    new_state.setInTiebreak(false);
                 } else {
-                    new_state.setServe(true);
-                }
-            } else */
-            if (new_state.getSet_point_up(current_set) == 7 && new_state.getSet_point_down(current_set) <= 5) {
-                //7 : 0,1,2,3,4,5 => oppt win this game
-                //set tiebreak point
-                new_state.setSet_tiebreak_point_up(current_set, new_state.getSet_point_up(current_set));
-                new_state.setSet_tiebreak_point_down(current_set, new_state.getSet_point_down(current_set));
-                //set point clean
-                new_state.setSet_point_up(current_set, (byte)0);
-                new_state.setSet_point_down(current_set, (byte)0);
-                //add to game
-                game = new_state.getSet_game_up(current_set);
-                game++;
-                new_state.setSet_game_up(current_set, game);
-                //change serve
-                if (new_state.isServe()) {
-                    new_state.setServe(false);
-                } else {
-                    new_state.setServe(true);
+                    Log.d(TAG, "Other tie break");
+
                 }
 
-                //leave tiebreak;
-                new_state.setInTiebreak(false);
-            } else if (new_state.getSet_point_up(current_set) <= 5 && new_state.getSet_point_down(current_set) == 7) {
-                //0,1,2,3,4,5 : 7 => you win this game
-                //set tiebreak point
-                new_state.setSet_tiebreak_point_up(current_set, new_state.getSet_point_up(current_set));
-                new_state.setSet_tiebreak_point_down(current_set, new_state.getSet_point_down(current_set));
-                //set point clean
-                new_state.setSet_point_up(current_set, (byte)0);
-                new_state.setSet_point_down(current_set, (byte)0);
-                //add to game
-                game = new_state.getSet_game_down(current_set);
-                game++;
-                new_state.setSet_game_down(current_set, game);
-                //change serve
-                if (new_state.isServe()) {
-                    new_state.setServe(false);
-                } else {
-                    new_state.setServe(true);
-                }
-                //leave tiebreak;
-                new_state.setInTiebreak(false);
-            } else if (new_state.getSet_point_up(current_set) >= 6 &&
-                    new_state.getSet_point_down(current_set) >= 6 &&
-                    (new_state.getSet_point_up(current_set) - new_state.getSet_point_down(current_set)) == 2) {
-                //8:6, 9:7, 10:8.... => oppt win this game
-                //set tiebreak point
-                new_state.setSet_tiebreak_point_up(current_set, new_state.getSet_point_up(current_set));
-                new_state.setSet_tiebreak_point_down(current_set, new_state.getSet_point_down(current_set));
-                //set point clean
-                new_state.setSet_point_up(current_set, (byte)0);
-                new_state.setSet_point_down(current_set, (byte)0);
-                //add to game
-                game = new_state.getSet_game_up(current_set);
-                game++;
-                new_state.setSet_game_up(current_set, game);
-                //change serve
-                if (new_state.isServe()) {
-                    new_state.setServe(false);
-                } else {
-                    new_state.setServe(true);
-                }
-
-                //leave tiebreak;
-                new_state.setInTiebreak(false);
-            } else if (new_state.getSet_point_up(current_set) >= 6 &&
-                    new_state.getSet_point_down(current_set) >= 6 &&
-                    (new_state.getSet_point_down(current_set) - new_state.getSet_point_up(current_set)) == 2) {
-                //6:8, 7:9, 8:10.... => you win this game
-                //set tiebreak point
-                new_state.setSet_tiebreak_point_up(current_set, new_state.getSet_point_up(current_set));
-                new_state.setSet_tiebreak_point_down(current_set, new_state.getSet_point_down(current_set));
-                //set point clean
-                new_state.setSet_point_up(current_set, (byte)0);
-                new_state.setSet_point_down(current_set, (byte)0);
-                //add to game
-                game = new_state.getSet_game_down(current_set);
-                game++;
-                new_state.setSet_game_down(current_set, game);
-                //change serve
-                if (new_state.isServe()) {
-                    new_state.setServe(false);
-                } else {
-                    new_state.setServe(true);
-                }
-
-                //leave tiebreak;
-                new_state.setInTiebreak(false);
             } else {
-                Log.d(TAG, "Other tie break");
+                Log.d(TAG, "[4 games in a set]"); //4:4 => tiebreak
 
+                if (new_state.getSet_point_up(current_set) == 5 && new_state.getSet_point_down(current_set) <= 5) {
+                    //7 : 0,1,2,3,4,5 => oppt win this game
+                    //set tiebreak point
+                    new_state.setSet_tiebreak_point_up(current_set, new_state.getSet_point_up(current_set));
+                    new_state.setSet_tiebreak_point_down(current_set, new_state.getSet_point_down(current_set));
+                    //set point clean
+                    new_state.setSet_point_up(current_set, (byte)0);
+                    new_state.setSet_point_down(current_set, (byte)0);
+                    //add to game
+                    game = new_state.getSet_game_up(current_set);
+                    game++;
+                    new_state.setSet_game_up(current_set, game);
+                    //change serve
+                    if (new_state.isServe()) {
+                        new_state.setServe(false);
+                    } else {
+                        new_state.setServe(true);
+                    }
+
+                    //leave tiebreak;
+                    new_state.setInTiebreak(false);
+                } else if (new_state.getSet_point_up(current_set) <= 3 && new_state.getSet_point_down(current_set) == 5) {
+                    //0,1,2,3,4,5 : 7 => you win this game
+                    //set tiebreak point
+                    new_state.setSet_tiebreak_point_up(current_set, new_state.getSet_point_up(current_set));
+                    new_state.setSet_tiebreak_point_down(current_set, new_state.getSet_point_down(current_set));
+                    //set point clean
+                    new_state.setSet_point_up(current_set, (byte)0);
+                    new_state.setSet_point_down(current_set, (byte)0);
+                    //add to game
+                    game = new_state.getSet_game_down(current_set);
+                    game++;
+                    new_state.setSet_game_down(current_set, game);
+                    //change serve
+                    if (new_state.isServe()) {
+                        new_state.setServe(false);
+                    } else {
+                        new_state.setServe(true);
+                    }
+                    //leave tiebreak;
+                    new_state.setInTiebreak(false);
+                } else if (new_state.getSet_point_up(current_set) >= 4 &&
+                        new_state.getSet_point_down(current_set) >= 4 &&
+                        (new_state.getSet_point_up(current_set) - new_state.getSet_point_down(current_set)) == 2) {
+                    //8:6, 9:7, 10:8.... => oppt win this game
+                    //set tiebreak point
+                    new_state.setSet_tiebreak_point_up(current_set, new_state.getSet_point_up(current_set));
+                    new_state.setSet_tiebreak_point_down(current_set, new_state.getSet_point_down(current_set));
+                    //set point clean
+                    new_state.setSet_point_up(current_set, (byte)0);
+                    new_state.setSet_point_down(current_set, (byte)0);
+                    //add to game
+                    game = new_state.getSet_game_up(current_set);
+                    game++;
+                    new_state.setSet_game_up(current_set, game);
+                    //change serve
+                    if (new_state.isServe()) {
+                        new_state.setServe(false);
+                    } else {
+                        new_state.setServe(true);
+                    }
+
+                    //leave tiebreak;
+                    new_state.setInTiebreak(false);
+                } else if (new_state.getSet_point_up(current_set) >= 4 &&
+                        new_state.getSet_point_down(current_set) >= 4 &&
+                        (new_state.getSet_point_down(current_set) - new_state.getSet_point_up(current_set)) == 2) {
+                    //6:8, 7:9, 8:10.... => you win this game
+                    //set tiebreak point
+                    new_state.setSet_tiebreak_point_up(current_set, new_state.getSet_point_up(current_set));
+                    new_state.setSet_tiebreak_point_down(current_set, new_state.getSet_point_down(current_set));
+                    //set point clean
+                    new_state.setSet_point_up(current_set, (byte)0);
+                    new_state.setSet_point_down(current_set, (byte)0);
+                    //add to game
+                    game = new_state.getSet_game_down(current_set);
+                    game++;
+                    new_state.setSet_game_down(current_set, game);
+                    //change serve
+                    if (new_state.isServe()) {
+                        new_state.setServe(false);
+                    } else {
+                        new_state.setServe(true);
+                    }
+
+                    //leave tiebreak;
+                    new_state.setInTiebreak(false);
+                } else {
+                    Log.d(TAG, "Other tie break");
+
+                }
             }
+
 
             byte plus = (byte) (new_state.getSet_point_up(current_set)+new_state.getSet_point_down(current_set));
 
@@ -3431,60 +3530,134 @@ public class GameActivity extends AppCompatActivity{
         if (tiebreak.equals("0")) { //use tibreak
             Log.d(TAG, "[Use Tiebreak]");
 
-            if (new_state.getSet_game_up(current_set) == 6 &&
-                    new_state.getSet_game_down(current_set) == 6) {
-                new_state.setInTiebreak(true); //into tiebreak;
-            } else if (new_state.getSet_game_up(current_set) == 7 &&
-                    new_state.getSet_game_down(current_set) == 5) { // 7:5 => oppt win this set
-                //set sets win
-                setsWinUp++;
-                new_state.setSetsUp(setsWinUp);
-                checkSets(new_state);
-            } else if (new_state.getSet_game_up(current_set) == 5 &&
-                    new_state.getSet_game_down(current_set) == 7) { // 5:7 => you win this set
-                //set sets win
-                setsWinDown++;
-                new_state.setSetsDown(setsWinDown);
-                checkSets(new_state);
-            } else if (new_state.getSet_game_up(current_set) == 7 &&
-                    new_state.getSet_game_down(current_set) == 6) { // 7:6 => oppt win this set
-                //set sets win
-                setsWinUp++;
-                new_state.setSetsUp(setsWinUp);
-                checkSets(new_state);
-            } else if (new_state.getSet_game_up(current_set) == 6 &&
-                    new_state.getSet_game_down(current_set) == 7) { // 5:7 => you win this set
-                //set sets win
-                setsWinDown++;
-                new_state.setSetsDown(setsWinDown);
-                checkSets(new_state);
-            } else if (new_state.getSet_game_up(current_set) == 6 &&
-                    new_state.getSet_game_down(current_set) <=4 ) { // 6:0,1,2,3,4 => oppt win this set
-                //set sets win
-                setsWinUp++;
-                new_state.setSetsUp(setsWinUp);
-                checkSets(new_state);
-            } else if (new_state.getSet_game_up(current_set) <= 4 &&
-                    new_state.getSet_game_down(current_set) == 6) { // 0,1,2,3,4:6 => you win this set
-                //set sets win
-                setsWinDown++;
-                new_state.setSetsDown(setsWinDown);
-                checkSets(new_state);
+            if (games.equals("0")) { //6 game in a set
+                Log.d(TAG, "[6 game in a set]");
+
+                if (new_state.getSet_game_up(current_set) == 6 &&
+                        new_state.getSet_game_down(current_set) == 6) {
+                    new_state.setInTiebreak(true); //into tiebreak;
+                } else if (new_state.getSet_game_up(current_set) == 7 &&
+                        new_state.getSet_game_down(current_set) == 5) { // 7:5 => oppt win this set
+                    //set sets win
+                    setsWinUp++;
+                    new_state.setSetsUp(setsWinUp);
+                    checkSets(new_state);
+                } else if (new_state.getSet_game_up(current_set) == 5 &&
+                        new_state.getSet_game_down(current_set) == 7) { // 5:7 => you win this set
+                    //set sets win
+                    setsWinDown++;
+                    new_state.setSetsDown(setsWinDown);
+                    checkSets(new_state);
+                } else if (new_state.getSet_game_up(current_set) == 7 &&
+                        new_state.getSet_game_down(current_set) == 6) { // 7:6 => oppt win this set
+                    //set sets win
+                    setsWinUp++;
+                    new_state.setSetsUp(setsWinUp);
+                    checkSets(new_state);
+                } else if (new_state.getSet_game_up(current_set) == 6 &&
+                        new_state.getSet_game_down(current_set) == 7) { // 5:7 => you win this set
+                    //set sets win
+                    setsWinDown++;
+                    new_state.setSetsDown(setsWinDown);
+                    checkSets(new_state);
+                } else if (new_state.getSet_game_up(current_set) == 6 &&
+                        new_state.getSet_game_down(current_set) <=4 ) { // 6:0,1,2,3,4 => oppt win this set
+                    //set sets win
+                    setsWinUp++;
+                    new_state.setSetsUp(setsWinUp);
+                    checkSets(new_state);
+                } else if (new_state.getSet_game_up(current_set) <= 4 &&
+                        new_state.getSet_game_down(current_set) == 6) { // 0,1,2,3,4:6 => you win this set
+                    //set sets win
+                    setsWinDown++;
+                    new_state.setSetsDown(setsWinDown);
+                    checkSets(new_state);
+                }
+
+            } else {
+                Log.d(TAG, "[4 game in a set]");
+
+                if (new_state.getSet_game_up(current_set) == 4 &&
+                        new_state.getSet_game_down(current_set) == 4) {
+                    new_state.setInTiebreak(true); //into tiebreak;
+                } else if (new_state.getSet_game_up(current_set) == 5 &&
+                        new_state.getSet_game_down(current_set) == 3) { // 5:3 => oppt win this set
+                    //set sets win
+                    setsWinUp++;
+                    new_state.setSetsUp(setsWinUp);
+                    checkSets(new_state);
+                } else if (new_state.getSet_game_up(current_set) == 3 &&
+                        new_state.getSet_game_down(current_set) == 5) { // 3:5 => you win this set
+                    //set sets win
+                    setsWinDown++;
+                    new_state.setSetsDown(setsWinDown);
+                    checkSets(new_state);
+                } else if (new_state.getSet_game_up(current_set) == 5 &&
+                        new_state.getSet_game_down(current_set) == 4) { // 5:4 => oppt win this set
+                    //set sets win
+                    setsWinUp++;
+                    new_state.setSetsUp(setsWinUp);
+                    checkSets(new_state);
+                } else if (new_state.getSet_game_up(current_set) == 4 &&
+                        new_state.getSet_game_down(current_set) == 5) { // 4:5 => you win this set
+                    //set sets win
+                    setsWinDown++;
+                    new_state.setSetsDown(setsWinDown);
+                    checkSets(new_state);
+                } else if (new_state.getSet_game_up(current_set) == 4 &&
+                        new_state.getSet_game_down(current_set) <=2 ) { // 4:0,1,2 => oppt win this set
+                    //set sets win
+                    setsWinUp++;
+                    new_state.setSetsUp(setsWinUp);
+                    checkSets(new_state);
+                } else if (new_state.getSet_game_up(current_set) <= 2 &&
+                        new_state.getSet_game_down(current_set) == 4) { // 0,1,2:6 => you win this set
+                    //set sets win
+                    setsWinDown++;
+                    new_state.setSetsDown(setsWinDown);
+                    checkSets(new_state);
+                }
             }
+
+
         } else {
-            if (new_state.getSet_game_up(current_set) == 6 &&
-                    new_state.getSet_game_down(current_set) <= 5) { // 6:5 => oppt win this set
-                //set sets win
-                setsWinUp++;
-                new_state.setSetsUp(setsWinUp);
-                checkSets(new_state);
-            } else if (new_state.getSet_game_up(current_set) <= 5 &&
-                    new_state.getSet_game_down(current_set) == 6) { // 5:6 => you win this set
-                //set sets win
-                setsWinDown++;
-                new_state.setSetsDown(setsWinDown);
-                checkSets(new_state);
+            Log.d(TAG, "[Use deciding point]");
+            if (games.equals("0")) { //6 game in a set
+                Log.d(TAG, "[6 game in a set]");
+
+                if (new_state.getSet_game_up(current_set) == 6 &&
+                        new_state.getSet_game_down(current_set) <= 5) { // 6:5 => oppt win this set
+                    //set sets win
+                    setsWinUp++;
+                    new_state.setSetsUp(setsWinUp);
+                    checkSets(new_state);
+                } else if (new_state.getSet_game_up(current_set) <= 5 &&
+                        new_state.getSet_game_down(current_set) == 6) { // 5:6 => you win this set
+                    //set sets win
+                    setsWinDown++;
+                    new_state.setSetsDown(setsWinDown);
+                    checkSets(new_state);
+                }
+
+            } else {
+                Log.d(TAG, "[4 game in a set]");
+
+                if (new_state.getSet_game_up(current_set) == 4 &&
+                        new_state.getSet_game_down(current_set) <= 3) { // 4:3 => oppt win this set
+                    //set sets win
+                    setsWinUp++;
+                    new_state.setSetsUp(setsWinUp);
+                    checkSets(new_state);
+                } else if (new_state.getSet_game_up(current_set) <= 3 &&
+                        new_state.getSet_game_down(current_set) == 4) { // 3:4 => you win this set
+                    //set sets win
+                    setsWinDown++;
+                    new_state.setSetsDown(setsWinDown);
+                    checkSets(new_state);
+                }
             }
+
+
         }
 
 
@@ -3633,7 +3806,7 @@ public class GameActivity extends AppCompatActivity{
             is_firstserve = false;
         }*/
 
-        String msg = playerUp + ";" + playerDown + ";" + is_tiebreak + ";" + is_deuce + ";" +is_firstServe+ ";" +set+ ";" +is_retire+ "|";
+        String msg = playerUp + ";" + playerDown + ";" + is_tiebreak + ";" + is_deuce + ";" +is_firstServe+ ";" +set+ ";" +is_retire+ ";" +games+ "|";
         append_record(msg, filename);
 
         State top = stack.peek();

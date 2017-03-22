@@ -55,11 +55,11 @@
         android:id="@+id/spinnerSets"
         android:layout_weight="1"/>
 
-    <!--Spinner
+    <Spinner
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/spinnerGames"
-        android:layout_weight="1"/-->
+        android:layout_weight="1"/>
 
     <Spinner
         android:layout_width="match_parent"

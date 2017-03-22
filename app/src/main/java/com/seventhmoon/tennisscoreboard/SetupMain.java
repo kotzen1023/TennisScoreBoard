@@ -28,13 +28,13 @@ public class SetupMain extends AppCompatActivity{
     private TextView textUpPlayer;
     private TextView textDownPlayer;
     private Spinner setSpinner;
-    //private Spinner gameSpinner;
+    private Spinner gameSpinner;
     private Spinner tiebreakSpinner;
     private Spinner deuceSpinner;
     private Spinner serveSpinner;
 
     public ArrayAdapter<String> setAdapter;
-    //public ArrayAdapter<String> gameAdapter;
+    public ArrayAdapter<String> gameAdapter;
     public ArrayAdapter<String> tiebreakAdapter;
     public ArrayAdapter<String> deuceAdapter;
     public ArrayAdapter<String> serveAdapter;
@@ -75,7 +75,7 @@ public class SetupMain extends AppCompatActivity{
         textUpPlayer = (TextView) findViewById(R.id.textViewUpPlayer);
         textDownPlayer = (TextView) findViewById(R.id.textViewDownPlayer);
         setSpinner = (Spinner) findViewById(R.id.spinnerSets);
-        //gameSpinner = (Spinner) findViewById(R.id.spinnerGames);
+        gameSpinner = (Spinner) findViewById(R.id.spinnerGames);
         tiebreakSpinner = (Spinner) findViewById(R.id.spinnerTieBreak);
         deuceSpinner = (Spinner) findViewById(R.id.spinnerDeuce);
         serveSpinner = (Spinner) findViewById(R.id.spinnerServe);
@@ -85,8 +85,8 @@ public class SetupMain extends AppCompatActivity{
                 getResources().getString(R.string.setup_three_sets),
                 getResources().getString(R.string.setup_five_set)};
 
-        //String[] gameList = {getResources().getString(R.string.setup_four_game),
-        //        getResources().getString(R.string.setup_six_games)};
+        String[] gameList = {getResources().getString(R.string.setup_six_games),
+                getResources().getString(R.string.setup_four_game)};
 
         final String[] tiebreakList = {getResources().getString(R.string.setup_tiebreak), getResources().getString(R.string.setup_deciding_game)};
 
@@ -124,8 +124,8 @@ public class SetupMain extends AppCompatActivity{
         setAdapter = new ArrayAdapter<>(SetupMain.this, R.layout.myspinner, setList);
         setSpinner.setAdapter(setAdapter);
 
-        //gameAdapter = new ArrayAdapter<>(SetupMain.this, R.layout.myspinner, gameList);
-        //gameSpinner.setAdapter(gameAdapter);
+        gameAdapter = new ArrayAdapter<>(SetupMain.this, R.layout.myspinner, gameList);
+        gameSpinner.setAdapter(gameAdapter);
 
         tiebreakAdapter = new ArrayAdapter<>(SetupMain.this, R.layout.myspinner, tiebreakList);
         tiebreakSpinner.setAdapter(tiebreakAdapter);
@@ -155,6 +155,7 @@ public class SetupMain extends AppCompatActivity{
                 boolean is_tiebreak;
                 boolean is_deuce;
                 boolean is_firstServe;
+                boolean is_6game;
 
                 //int is_setLimit;
 
@@ -167,11 +168,11 @@ public class SetupMain extends AppCompatActivity{
                         break;
                 }
 
-                /*if (tiebreakSpinner.getSelectedItemPosition() == 0) {
-                    is_tiebreak = true;
+                if (gameSpinner.getSelectedItemPosition() == 0) {
+                    is_6game = true;
                 } else {
-                    is_tiebreak = false;
-                }*/
+                    is_6game = false;
+                }
 
                 switch (deuceSpinner.getSelectedItemPosition()) {
                     case 0:
@@ -208,12 +209,12 @@ public class SetupMain extends AppCompatActivity{
 
 
 
-                String msg = playerUp + ";" + playerDown + ";" + is_tiebreak +";"+ is_deuce+ ";" +is_firstServe+ ";"+setSpinner.getSelectedItemPosition()+ "|";
+                String msg = playerUp + ";" + playerDown + ";" + is_tiebreak +";"+ is_deuce+ ";" +is_firstServe+ ";"+setSpinner.getSelectedItemPosition()+ ";"+ is_6game +"|";
                 append_record(msg, fileName);
 
                 Intent intent = new Intent(SetupMain.this, GameActivity.class);
                 intent.putExtra("SETUP_SET", String.valueOf(setSpinner.getSelectedItemPosition()));
-                //intent.putExtra("SETUP_GAME", String.valueOf(gameSpinner.getSelectedItemPosition()));
+                intent.putExtra("SETUP_GAME", String.valueOf(gameSpinner.getSelectedItemPosition()));
                 intent.putExtra("SETUP_TIEBREAK", String.valueOf(tiebreakSpinner.getSelectedItemPosition()));
                 intent.putExtra("SETUP_DEUCE", String.valueOf(deuceSpinner.getSelectedItemPosition()));
                 intent.putExtra("SETUP_SERVE", String.valueOf(serveSpinner.getSelectedItemPosition()));
