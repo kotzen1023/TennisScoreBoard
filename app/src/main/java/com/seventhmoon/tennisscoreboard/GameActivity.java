@@ -369,8 +369,6 @@ public class GameActivity extends AppCompatActivity{
 
                 if (info.length > 7) {
                     games = info[7];
-                } else {
-                    games = "0"; // 6 game in a set
                 }
 
             } else {
@@ -1662,7 +1660,7 @@ public class GameActivity extends AppCompatActivity{
             Log.d(TAG, "########## current state start ##########");
             Log.d(TAG, "default:");
             Log.d(TAG, "set = " + set);
-            //Log.d(TAG, "game = " + game);
+            Log.d(TAG, "games = " + games);
             Log.d(TAG, "tiebreak = " + tiebreak);
             Log.d(TAG, "deuce = " + deuce);
             Log.d(TAG, "serve = " + serve);

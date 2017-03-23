@@ -168,10 +168,13 @@ public class SetupMain extends AppCompatActivity{
                         break;
                 }
 
-                if (gameSpinner.getSelectedItemPosition() == 0) {
-                    is_6game = true;
-                } else {
-                    is_6game = false;
+                switch (gameSpinner.getSelectedItemPosition()) {
+                    case 0:
+                        is_6game = true;
+                        break;
+                    default:
+                        is_6game = false;
+                        break;
                 }
 
                 switch (deuceSpinner.getSelectedItemPosition()) {
@@ -209,7 +212,7 @@ public class SetupMain extends AppCompatActivity{
 
 
 
-                String msg = playerUp + ";" + playerDown + ";" + is_tiebreak +";"+ is_deuce+ ";" +is_firstServe+ ";"+setSpinner.getSelectedItemPosition()+ ";"+ is_6game +"|";
+                String msg = playerUp + ";" + playerDown + ";" + is_tiebreak +";"+ is_deuce+ ";" +is_firstServe+ ";"+setSpinner.getSelectedItemPosition()+ ";false;"+ gameSpinner.getSelectedItemPosition() +"|";
                 append_record(msg, fileName);
 
                 Intent intent = new Intent(SetupMain.this, GameActivity.class);
