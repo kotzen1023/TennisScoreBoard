@@ -86,7 +86,7 @@ public class SetupMain extends AppCompatActivity{
                 getResources().getString(R.string.setup_five_set)};
 
         String[] gameList = {getResources().getString(R.string.setup_six_games),
-                getResources().getString(R.string.setup_four_game)};
+                getResources().getString(R.string.setup_four_games)};
 
         final String[] tiebreakList = {getResources().getString(R.string.setup_tiebreak), getResources().getString(R.string.setup_deciding_game)};
 
