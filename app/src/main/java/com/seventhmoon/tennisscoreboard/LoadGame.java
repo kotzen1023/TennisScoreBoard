@@ -239,7 +239,7 @@ public class LoadGame extends AppCompatActivity {
         Intent intent;
         switch (call_activity) {
             case "Main":
-                intent = new Intent(LoadGame.this, MainActivity.class);
+                intent = new Intent(LoadGame.this, PlayMainActivity.class);
                 startActivity(intent);
                 break;
             case "Game":

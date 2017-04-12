@@ -71,5 +71,9 @@
     <string name="game_send_result">Send</string>
     <string name="game_import_file">Import score</string>
     <string name="game_retire">Retire from game</string>
+    <string name="main_menu_letsplay">Let\'s Play</string>
+    <string name="main_menu_findcourt">Find Court</string>
+    <string name="find_court_search">Search</string>
+    <string name="find_court_add">Add</string>
 </resources>
 

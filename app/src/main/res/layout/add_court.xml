@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:id="@+id/imageViewCourt"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srcCompat="@drawable/common_google_signin_btn_icon_dark"
+        android:layout_weight="3"/>
+
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <!--EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text=""
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:ems="10"
+                android:hint="Court Name"
+                android:id="@+id/editFirstName" /-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/courtNameHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:ems="10"
+                    android:text="Name" />
+
+                <EditText
+                    android:id="@+id/courtName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/courtTypeHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:ems="10"
+                    android:text="Type" />
+
+                <Spinner
+                    android:id="@+id/spinnerCourtType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/courtUsageHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:ems="10"
+                    android:text="Usage" />
+
+                <Spinner
+                    android:id="@+id/spinnerCourtUsage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/courtLightHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:ems="10"
+                    android:text="Light" />
+
+                <Spinner
+                    android:id="@+id/spinnerLight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/courtNumHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:ems="10"
+                    android:text="Courts" />
+
+                <EditText
+                    android:id="@+id/courtNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:maxLength = "2"
+                    android:inputType="number"
+                    android:gravity="center"
+                    android:text="2" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/courtChargeHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:ems="10"
+                    android:text="Charge" />
+
+                <EditText
+                    android:id="@+id/courtCharge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:gravity="center"
+                    android:text="Free" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/maintenanceHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:ems="10"
+                    android:text="Maintenance"
+                    android:gravity="center_vertical"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_weight="2">
+
+                    <RatingBar
+                        android:id="@+id/ratingMaintain"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:numStars="5"
+                        android:rating="2.5" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/trafficHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:ems="10"
+                    android:text="Traffic"
+                    android:gravity="center_vertical"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_weight="2">
+
+                    <RatingBar
+                        android:id="@+id/ratingTraffic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:numStars="5"
+                        android:rating="2.5" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/parkingHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:ems="10"
+                    android:text="Parking"
+                    android:gravity="center_vertical"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_weight="2">
+
+                    <RatingBar
+                        android:id="@+id/ratingParking"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:numStars="5"
+                        android:rating="2.5" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingTop="10dp">
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Confirm"
+                    android:id="@+id/btnConfirm"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</LinearLayout>

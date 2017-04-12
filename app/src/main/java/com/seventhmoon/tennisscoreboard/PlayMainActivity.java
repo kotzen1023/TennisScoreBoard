@@ -5,11 +5,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -29,8 +29,8 @@ import static com.seventhmoon.tennisscoreboard.Data.FileOperation.clear_record;
 import static com.seventhmoon.tennisscoreboard.Data.FileOperation.init_folder_and_files;
 
 
-public class MainActivity extends AppCompatActivity {
-    private static final String TAG = MainActivity.class.getName();
+public class PlayMainActivity extends AppCompatActivity {
+    private static final String TAG = PlayMainActivity.class.getName();
 
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
     //private SensorManager mSensorManager;
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.play_main);
 
         //for action bar
         ActionBar actionBar = getSupportActionBar();
@@ -58,29 +58,29 @@ public class MainActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ball_icon);
         }
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+        /*if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             init_folder_and_files();
-            init_setting();
         } else {
             if(checkAndRequestPermissions()) {
                 // carry on the normal flow, as the case of  permissions  granted.
 
                 init_folder_and_files();
-                init_setting();
             }
-        }
+        }*/
 
 
 
 
 
-        /*Button btnNewGame = (Button) findViewById(R.id.btnNewGame);
+        Button btnNewGame = (Button) findViewById(R.id.btnNewGame);
         Button btnContinue = (Button) findViewById(R.id.btnContinue);
 
         btnNewGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                /*Intent intent = new Intent(MainActivity.this, SetupMain.class);
+                startActivity(intent);
+                finish();*/
                 showInputDialog();
             }
         });
@@ -88,12 +88,12 @@ public class MainActivity extends AppCompatActivity {
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LoadGame.class);
+                Intent intent = new Intent(PlayMainActivity.this, LoadGame.class);
                 intent.putExtra("CALL_ACTIVITY", "Main");
                 startActivity(intent);
                 finish();
             }
-        });*/
+        });
 
 
 
@@ -141,19 +141,14 @@ public class MainActivity extends AppCompatActivity {
         toast.show();
     }
 
-    public void init_setting() {
-        Intent intent = new Intent(MainActivity.this, MainMenu.class);
-        startActivity(intent);
-        finish();
-    }
-
-    /*protected void showInputDialog() {
+    protected void showInputDialog() {
 
         // get prompts.xml view
+        /*LayoutInflater layoutInflater = LayoutInflater.from(Nfc_read_app.this);
+        View promptView = layoutInflater.inflate(R.layout.input_dialog, null);*/
+        View promptView = View.inflate(PlayMainActivity.this, R.layout.input_dialog, null);
 
-        View promptView = View.inflate(MainActivity.this, R.layout.input_dialog, null);
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(PlayMainActivity.this);
         alertDialogBuilder.setView(promptView);
 
         final EditText editFileName = (EditText) promptView.findViewById(R.id.editFileName);
@@ -173,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
                     //check same file name
                     if (check_file_exist(editFileName.getText().toString()))
                     {
-                        AlertDialog.Builder confirmdialog = new AlertDialog.Builder(MainActivity.this);
+                        AlertDialog.Builder confirmdialog = new AlertDialog.Builder(PlayMainActivity.this);
                         confirmdialog.setTitle("File "+"\""+editFileName.getText().toString()+"\" is exist, want to overwrite it?");
                         confirmdialog.setIcon(R.drawable.ball_icon);
 
@@ -187,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
                                 //String msg = editPlayerUp.getText().toString() + ";" + editPlayerDown.getText().toString() + "|";
                                 //append_record(msg, editFileName.getText().toString());
 
-                                Intent intent = new Intent(MainActivity.this, SetupMain.class);
+                                Intent intent = new Intent(PlayMainActivity.this, SetupMain.class);
                                 intent.putExtra("FILE_NAME", editFileName.getText().toString());
                                 if (!editPlayerUp.getText().toString().equals(""))
                                     intent.putExtra("PLAYER_UP", editPlayerUp.getText().toString());
@@ -215,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
                         //append_record(msg, editFileName.getText().toString());
 
 
-                        Intent intent = new Intent(MainActivity.this, SetupMain.class);
+                        Intent intent = new Intent(PlayMainActivity.this, SetupMain.class);
                         intent.putExtra("FILE_NAME", editFileName.getText().toString());
                         if (!editPlayerUp.getText().toString().equals(""))
                             intent.putExtra("PLAYER_UP", editPlayerUp.getText().toString());
@@ -237,133 +232,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         alertDialogBuilder.show();
-    }*/
-
-    private  boolean checkAndRequestPermissions() {
-        //int permissionSendMessage = ContextCompat.checkSelfPermission(this,
-        //        android.Manifest.permission.WRITE_CALENDAR);
-        int locationPermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        //int cameraPermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA);
-
-        List<String> listPermissionsNeeded = new ArrayList<>();
-        if (locationPermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
-        //if (permissionSendMessage != PackageManager.PERMISSION_GRANTED) {
-        //    listPermissionsNeeded.add(android.Manifest.permission.WRITE_CALENDAR);
-        //}
-        //if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
-        //    listPermissionsNeeded.add(android.Manifest.permission.CAMERA);
-        //}
-
-        if (!listPermissionsNeeded.isEmpty()) {
-            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),REQUEST_ID_MULTIPLE_PERMISSIONS);
-            return false;
-        }
-        return true;
-    }
-
-
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        //Log.e(TAG, "result size = "+grantResults.length+ "result[0] = "+grantResults[0]+", result[1] = "+grantResults[1]);
-
-
-        /*switch (requestCode) {
-            case 200: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-
-
-                    Log.i(TAG, "WRITE_CALENDAR permissions granted");
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    Log.i(TAG, "READ_CONTACTS permissions denied");
-
-                    RetryDialog();
-                }
-            }
-            break;
-
-            // other 'case' lines to check for other
-            // permissions this app might request
-        }*/
-        Log.d(TAG, "Permission callback called-------");
-        switch (requestCode) {
-            case REQUEST_ID_MULTIPLE_PERMISSIONS: {
-
-                Map<String, Integer> perms = new HashMap<>();
-                // Initialize the map with both permissions
-                //perms.put(android.Manifest.permission.WRITE_CALENDAR, PackageManager.PERMISSION_GRANTED);
-                perms.put(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
-                //perms.put(android.Manifest.permission.CAMERA, PackageManager.PERMISSION_GRANTED);
-                // Fill with actual results from user
-                if (grantResults.length > 0) {
-                    for (int i = 0; i < permissions.length; i++)
-                        perms.put(permissions[i], grantResults[i]);
-                    // Check for both permissions
-                    if (//perms.get(android.Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED &&
-                            perms.get(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED )
-                                    //&& perms.get(android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
-                    {
-                        Log.d(TAG, "write permission granted");
-
-                        // process the normal flow
-                        //else any one or both the permissions are not granted
-                        init_folder_and_files();
-                        init_setting();
-                    } else {
-                        Log.d(TAG, "Some permissions are not granted ask again ");
-                        //permission is denied (this is the first time, when "never ask again" is not checked) so ask again explaining the usage of permission
-//                        // shouldShowRequestPermissionRationale will return true
-                        //show the dialog or snackbar saying its necessary and try again otherwise proceed with setup.
-                        if (//ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.WRITE_CALENDAR) ||
-                                ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                        //|| ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.CAMERA)
-                                ) {
-                            showDialogOK(getResources().getString(R.string.permission_descript),
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            switch (which) {
-                                                case DialogInterface.BUTTON_POSITIVE:
-                                                    checkAndRequestPermissions();
-                                                    break;
-                                                case DialogInterface.BUTTON_NEGATIVE:
-                                                    // proceed with logic by disabling the related features or quit the app.
-                                                    break;
-                                            }
-                                        }
-                                    });
-                        }
-                        //permission is denied (and never ask again is  checked)
-                        //shouldShowRequestPermissionRationale will return false
-                        else {
-                            Toast.makeText(this, "Go to settings and enable permissions", Toast.LENGTH_LONG)
-                                    .show();
-                            //                            //proceed with logic by disabling the related features or quit the app.
-                        }
-                    }
-                }
-            }
-        }
-
-    }
-
-    private void showDialogOK(String message, DialogInterface.OnClickListener okListener) {
-        new AlertDialog.Builder(this)
-                .setMessage(message)
-                .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", okListener)
-                .create()
-                .show();
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -382,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent;
         switch (item.getItemId()) {
             case R.id.action_lang_support:
-                intent = new Intent(MainActivity.this, VoiceSelectActivity.class);
+                intent = new Intent(PlayMainActivity.this, VoiceSelectActivity.class);
                 startActivity(intent);
                 break;
 
@@ -390,5 +258,11 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        finish();
     }
 }

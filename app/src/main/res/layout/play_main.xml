@@ -9,7 +9,7 @@
 
 
 
-    <!--LinearLayout
+    <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="160dp"
@@ -31,5 +31,5 @@
             android:id="@+id/btnContinue"
             android:layout_weight="1"
             android:textSize="50sp"/>
-    </LinearLayout-->
+    </LinearLayout>
 </RelativeLayout>

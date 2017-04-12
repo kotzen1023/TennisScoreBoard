@@ -296,4 +296,27 @@ public class FileOperation {
 
         return dest_file.getName();
     }
+
+    public static boolean init_camera_folder() {
+        boolean ret = true;
+
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            //path = Environment.getExternalStorageDirectory();
+            RootDirectory = Environment.getExternalStorageDirectory();
+        }
+
+        //check folder
+        File folder = new File(RootDirectory.getAbsolutePath() + "/DCIM/Camera");
+
+        if(!folder.exists()) {
+            Log.i(TAG, "Camera folder not exist");
+            ret = folder.mkdirs();
+            if (!ret) {
+                Log.e(TAG, "init_camera_folder: failed to mkdir " + folder.getAbsolutePath());
+
+            }
+        }
+
+        return ret;
+    }
 }

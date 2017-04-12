@@ -72,4 +72,8 @@
     <string name="game_send_result">傳送</string>
     <string name="game_import_file">匯入比分</string>
     <string name="game_retire">棄賽</string>
+    <string name="main_menu_letsplay">來比賽</string>
+    <string name="main_menu_findcourt">找球場</string>
+    <string name="find_court_search">搜尋</string>
+    <string name="find_court_add">新增</string>
 </resources>
