@@ -10,10 +10,16 @@
         android:id="@+id/imageViewCourt"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srcCompat="@drawable/common_google_signin_btn_icon_dark"
-        android:layout_weight="3"/>
+        android:layout_weight="3"
+        app:srcCompat="@android:drawable/sym_def_app_icon" />
 
-
+    <RelativeLayout
+        android:id="@+id/view1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_weight="0"
+        android:background="#b7b7b7">
+    </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"

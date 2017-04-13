@@ -20,6 +20,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import static com.seventhmoon.tennisscoreboard.FindCourtActivity.myCourtList;
+import static com.seventhmoon.tennisscoreboard.FindCourtActivity.pageAdapter;
 
 public class Jdbc {
     private static final String TAG = Jdbc.class.getName();
@@ -33,16 +34,27 @@ public class Jdbc {
     private static Connection con = null;
     private static PreparedStatement pst = null;
 
-    private static String insertdbSQL = "insert into court(name, longitude ,latitude, type, court_usage, light, court_num, charge, maintenance, traffic, parking, pic) " +
+    private static String insertdbSQLCourt = "insert into court(name, longitude ,latitude, type, court_usage, light, court_num, charge, maintenance, traffic, parking, pic) " +
             "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    private static String querydbSQL = "select * from court ";
+    private static String insertdbSQLUserId = "insert into user_id(user_mac, uploaded) " +
+            "values(?, ?)";
+
+    private static String querydbSQLCourt = "select * from court";
+    private static String querydbSQLUserId = "select * from user_id";
     private static Context context;
 
-    public Jdbc(Context context) {
+    private static double longitude = 0.0;
+    private static double latitude = 0.0;
+
+    private static String macAddress;
+
+    public Jdbc(Context context, double longitude, double latitude, String macAddress) {
         Log.d(TAG, "Jdbc create");
         this.context = context;
-
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.macAddress = macAddress;
         /*new Thread() {
             public void run() {
                 Connect();
@@ -118,7 +130,7 @@ public class Jdbc {
         }
     }
 
-    public static void queryTable() {
+    public static void queryCourtTable() {
 
         myCourtList.clear();
 
@@ -137,7 +149,12 @@ public class Jdbc {
                     try
                     {
                         stat = con.createStatement();
-                        rs = stat.executeQuery(querydbSQL);
+                        String query = querydbSQLCourt + " WHERE longitude BETWEEN "+ String.valueOf(longitude-1)+" AND "+String.valueOf(longitude+1)+
+                                " AND latitude BETWEEN "+ String.valueOf(latitude-1)+" AND "+String.valueOf(latitude+1);
+
+                        Log.e(TAG, "query = "+query);
+
+                        rs = stat.executeQuery(query);
                         Log.d(TAG, "=== Data Read ===");
                         //name, longitude ,latitude, type, court_num, maintenance, rate, night_play, charge
                         while(rs.next())
@@ -173,6 +190,83 @@ public class Jdbc {
 
                             myCourtList.add(item);
 
+
+                        }
+                        Log.d(TAG, "=== Data Read ===");
+                    }
+                    catch(SQLException e)
+                    {
+                        System.out.println("DropDB Exception :" + e.toString());
+                    }
+                    finally
+                    {
+                        Close();
+                    }
+                }
+
+                Intent newNotifyIntent = new Intent(Constants.ACTION.GET_COURT_INFO_COMPLETE);
+                context.sendBroadcast(newNotifyIntent);
+                Log.d(TAG, "=== queryTable end ===");
+            }
+        }.start();
+
+        sqlTask conTask;
+        conTask = new sqlTask();
+        conTask.execute(10);
+
+
+    }
+
+    public static void queryUserIdTable() {
+
+        myCourtList.clear();
+
+        new Thread() {
+            public void run() {
+                Log.d(TAG, "=== queryTable start ===");
+                //boolean ret = false;
+                if (con == null) {
+                    Log.e(TAG, "Connection = null, we must connect first...");
+                    Connect();
+                } else {
+                    Log.e(TAG, "Connection = " + con.getClass().getName());
+                }
+
+                if (con != null) {
+                    try
+                    {
+                        stat = con.createStatement();
+                        String query = querydbSQLUserId + "WHERE user_mac = '"+macAddress+"'";
+
+                        Log.e(TAG, "query = "+query);
+
+                        rs = stat.executeQuery(query);
+                        Log.d(TAG, "=== Data Read ===");
+                        //name, longitude ,latitude, type, court_num, maintenance, rate, night_play, charge
+                        while(rs.next())
+                        {
+
+                            Log.d(TAG, ""+rs.getString("user_mac")+", "+
+                                    rs.getInt("uploaded"));
+
+                            /*PageItem item = new PageItem();
+                            item.setName(rs.getString("name"));
+                            item.setLongitude(rs.getDouble("longitude"));
+                            item.setLatitude(rs.getDouble("latitude"));
+                            item.setType(rs.getInt("type"));
+                            item.setCourt_usage((byte) rs.getInt("court_usage"));
+                            item.setLight((byte) rs.getInt("light"));
+                            item.setCourt_num(rs.getInt("court_num"));
+                            item.setCharge(rs.getString("charge"));
+                            item.setMaintenance(rs.getFloat("maintenance"));
+                            item.setTraffic(rs.getFloat("traffic"));
+                            item.setParking(rs.getFloat("parking"));
+                            Blob blob = rs.getBlob("pic");
+                            Bitmap bp = BitmapFactory.decodeStream(blob.getBinaryStream());
+                            item.setPic(bp);
+
+                            myCourtList.add(item);*/
+
                         }
                         Log.d(TAG, "=== Data Read ===");
                     }
@@ -200,7 +294,7 @@ public class Jdbc {
     }
 
 
-    public static void insertTable(final String name, final String longitude, final String latitude, final String type, final String usage, final String court_num,
+    public static void insertTableCourt(final String name, final String longitude, final String latitude, final String type, final String usage, final String court_num,
                                    final String night_play, final String charge, final String maintenance, final String traffic, final String parking, final byte[] blob)
     {
         new Thread() {
@@ -217,7 +311,7 @@ public class Jdbc {
                 if (con != null) {
 
                     try {
-                        pst = con.prepareStatement(insertdbSQL);
+                        pst = con.prepareStatement(insertdbSQLCourt);
 
                         pst.setString(1, name); //court name
                         pst.setString(2, longitude);

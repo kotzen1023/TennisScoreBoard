@@ -3,12 +3,14 @@ package com.seventhmoon.tennisscoreboard;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -119,10 +121,19 @@ public class FindCourtActivity extends AppCompatActivity implements
     //private ArrayList<LatLng> latlngs = new ArrayList<>();
     private ArrayList<Marker> markerList = new ArrayList<>();
 
+    static SharedPreferences pref ;
+    //static SharedPreferences.Editor editor;
+    private static final String FILE_NAME = "Preference";
+    private static String macAddress;
+    ProgressDialog loadDialog = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.find_court);
+
+        pref = getSharedPreferences(FILE_NAME, MODE_PRIVATE);
+        macAddress = pref.getString("WIFIMAC", "");
 
         context = getBaseContext();
 
@@ -154,14 +165,14 @@ public class FindCourtActivity extends AppCompatActivity implements
 
             is_permmision = true;
             init_mapFragment();
-            init_view_pager();
+            //init_view_pager();
 
         } else {
             if(checkAndRequestPermissions()) {
                 is_permmision = true;
                 // carry on the normal flow, as the case of  permissions  granted.
                 init_mapFragment();
-                init_view_pager();
+                //init_view_pager();
             }
         }
 
@@ -274,36 +285,9 @@ public class FindCourtActivity extends AppCompatActivity implements
                             //        .title(myCourtList.get(i).getName()));
 
                         }
+
                     }
-
-
-
-                    /*viewPager.setAdapter(adapter);
-
-                    viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                        @Override
-                        public void onPageSelected(int position) {
-                            Log.i(TAG, "onPageSelected = "+position);
-                            currentPage = position;
-                        }
-                        @Override
-                        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                            // not needed
-                        }
-                        @Override
-                        public void onPageScrollStateChanged(int state) {
-                            if (state == ViewPager.SCROLL_STATE_IDLE) {
-                                int pageCount = rank.length+2;
-
-                                if (currentPage == pageCount-1){
-                                    viewPager.setCurrentItem(1,false);
-                                } else if (currentPage == 0){
-                                    viewPager.setCurrentItem(pageCount-2,false);
-                                }
-                            }
-                        }
-                    });*/
-
+                    loadDialog.dismiss();
 
                 }
             }
@@ -328,6 +312,8 @@ public class FindCourtActivity extends AppCompatActivity implements
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
             }
+            pageAdapter = null;
+
             isRegister = false;
             mReceiver = null;
         }
@@ -339,6 +325,10 @@ public class FindCourtActivity extends AppCompatActivity implements
     public void onPause() {
         super.onPause();
 
+        Log.i(TAG, "onPause");
+
+        myCourtList.clear();
+        pageAdapter.notifyDataSetChanged();
         //stop location updates when Activity is no longer active
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
@@ -347,14 +337,24 @@ public class FindCourtActivity extends AppCompatActivity implements
 
     @Override
     public void onResume() {
+        super.onResume();
 
         Log.i(TAG, "onResume");
 
-        if (is_permmision)
-            jdbc.queryTable();
+        if (is_permmision) {
+            loadDialog = new ProgressDialog(FindCourtActivity.this);
+            loadDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            loadDialog.setTitle("Loading...");
+            loadDialog.setIndeterminate(false);
+            loadDialog.setCancelable(false);
+
+            loadDialog.show();
+
+            jdbc.queryCourtTable();
+        }
 
 
-        super.onResume();
+
     }
 
     public void init_mapFragment() {
@@ -365,7 +365,7 @@ public class FindCourtActivity extends AppCompatActivity implements
     }
 
     public void init_view_pager() {
-        jdbc = new Jdbc(context);
+        jdbc = new Jdbc(context, longitude, latitude, macAddress);
 
         //jdbc.queryTable();
     }
@@ -397,6 +397,8 @@ public class FindCourtActivity extends AppCompatActivity implements
                 longitude = myLocation.getLongitude();
                 latitude = myLocation.getLatitude();
                 Log.d(TAG, "longitude = "+longitude+" latitude = "+latitude);
+
+                init_view_pager();
             } else {
                 Log.d(TAG, "location = null");
             }
@@ -623,7 +625,7 @@ public class FindCourtActivity extends AppCompatActivity implements
                         Log.d(TAG, "all permission granted");
                         is_permmision = true;
                         init_mapFragment();
-                        init_view_pager();
+                        //init_view_pager();
 
 
 

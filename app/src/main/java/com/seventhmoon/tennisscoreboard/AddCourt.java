@@ -36,6 +36,8 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Calendar;
 
+import static android.R.drawable.sym_def_app_icon;
+
 
 public class AddCourt extends AppCompatActivity {
     private static final String TAG = AddCourt.class.getName();
@@ -174,6 +176,7 @@ public class AddCourt extends AppCompatActivity {
                             //Connection.saveMyInfo();
 
                             //imageView.setImageResource(R.drawable.personal);
+                            imageView.setImageResource(sym_def_app_icon);
                         }
                     }
                 } );
@@ -207,7 +210,7 @@ public class AddCourt extends AppCompatActivity {
                     Log.d(TAG, "parking = "+ratingBarParking.getRating());
 
                     //Jdbc jdbc = new Jdbc();
-                    Jdbc.insertTable(editTextCourtName.getText().toString(),
+                    Jdbc.insertTableCourt(editTextCourtName.getText().toString(),
                             String.valueOf(longitude),
                             String.valueOf(latitude),
                             String.valueOf(courtTypeSpinner.getSelectedItemPosition()),

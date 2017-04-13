@@ -1,9 +1,14 @@
 package com.seventhmoon.tennisscoreboard;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -19,6 +24,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +49,11 @@ public class MainActivity extends AppCompatActivity {
     //BroadcastReceiver mReceiver;
     //private boolean isRegister;
 
+    static SharedPreferences pref ;
+    static SharedPreferences.Editor editor;
+    private static final String FILE_NAME = "Preference";
+    private static String macAddress;
+
     private static MenuItem voiceItem;
 
     @Override
@@ -56,6 +70,66 @@ public class MainActivity extends AppCompatActivity {
             //actionBar.setDisplayShowHomeEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ball_icon);
+        }
+
+        //get wifi mac
+        pref = getSharedPreferences(FILE_NAME, MODE_PRIVATE);
+        String wifi_mac = pref.getString("WIFIMAC", "");
+
+        if (wifi_mac.equals("")) {
+            boolean mobileDataEnabled = false; // Assume disabled
+            ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            try {
+                Class cmClass = Class.forName(cm.getClass().getName());
+                Method method = cmClass.getDeclaredMethod("getMobileDataEnabled");
+                method.setAccessible(true); // Make the method callable
+                // get the setting for "mobile data"
+                mobileDataEnabled = (Boolean) method.invoke(cm);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+            //WifiInfo wInfo = wifiManager.getConnectionInfo();
+            //macAddress = wInfo.getMacAddress();
+
+            if (wifiManager.isWifiEnabled()) {
+                // WIFI ALREADY ENABLED. GRAB THE MAC ADDRESS HERE
+                WifiInfo info = wifiManager.getConnectionInfo();
+                macAddress = info.getMacAddress();
+            } else {
+                // ENABLE THE WIFI FIRST
+                wifiManager.setWifiEnabled(true);
+
+                // WIFI IS NOW ENABLED. GRAB THE MAC ADDRESS HERE
+                WifiInfo info = wifiManager.getConnectionInfo();
+                macAddress = info.getMacAddress();
+
+                while (macAddress == null) {
+
+                }
+
+                if (mobileDataEnabled)
+                    wifiManager.setWifiEnabled(false);
+            }
+
+            if (macAddress.equals("02:00:00:00:00:00")) {
+
+                try {
+                    BufferedReader br = new BufferedReader(new FileReader("/sys/class/net/wlan0/address"));
+                    macAddress = br.readLine();
+                    //Log.i(TAG, "mac addr: " + macAddress);
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            Log.e(TAG, "macAddress = "+macAddress);
+
+            editor = pref.edit();
+            editor.putString("WIFIMAC", macAddress);
+            editor.apply();
         }
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
