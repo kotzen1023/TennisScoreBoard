@@ -60,6 +60,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import static com.seventhmoon.tennisscoreboard.MainMenu.initData;
+
 public class FindCourtActivity extends AppCompatActivity implements
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -114,7 +116,7 @@ public class FindCourtActivity extends AppCompatActivity implements
 
     private static BroadcastReceiver mReceiver = null;
     private static boolean isRegister = false;
-    private Jdbc jdbc;
+    //private Jdbc jdbc;
     private boolean is_permmision = false;
 
     //private MarkerOptions options = new MarkerOptions();
@@ -165,14 +167,12 @@ public class FindCourtActivity extends AppCompatActivity implements
 
             is_permmision = true;
             init_mapFragment();
-            //init_view_pager();
 
         } else {
             if(checkAndRequestPermissions()) {
                 is_permmision = true;
                 // carry on the normal flow, as the case of  permissions  granted.
                 init_mapFragment();
-                //init_view_pager();
             }
         }
 
@@ -350,7 +350,9 @@ public class FindCourtActivity extends AppCompatActivity implements
 
             loadDialog.show();
 
-            jdbc.queryCourtTable();
+            if (longitude != 0.0 && latitude != 0.0) {
+                initData.jdbc.queryCourtTable(context, longitude, latitude);
+            }
         }
 
 
@@ -365,9 +367,11 @@ public class FindCourtActivity extends AppCompatActivity implements
     }
 
     public void init_view_pager() {
-        jdbc = new Jdbc(context, longitude, latitude, macAddress);
+        //jdbc = new Jdbc(context, longitude, latitude, macAddress);
+        //jdbc = new Jdbc();
 
-        //jdbc.queryTable();
+        //jdbc.queryUserIdTable;
+        initData.jdbc.queryCourtTable(context, longitude, latitude);
     }
 
     /**
@@ -684,11 +688,19 @@ public class FindCourtActivity extends AppCompatActivity implements
 
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         MenuItem searchMenuItem = menu.findItem(R.id.action_search);
+        MenuItem addCourtItem = menu.findItem(R.id.action_locate);
+
         //SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
         searchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
         searchMenuItem.setVisible(false);
+
+        if (initData.getUpload_remain() > 0){
+            addCourtItem.setVisible(true);
+        } else {
+            addCourtItem.setVisible(false);
+        }
 
         try {
             //SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search_keeper));

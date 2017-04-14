@@ -76,4 +76,25 @@
     <string name="main_menu_findcourt">找球場</string>
     <string name="find_court_search">搜尋</string>
     <string name="find_court_add">新增</string>
+    <string name="court_type_hard">硬地</string>
+    <string name="court_type_grass">草地</string>
+    <string name="court_type_clay">紅土</string>
+    <string name="court_type_all">全部</string>
+    <string name="add_court_header_name">名稱</string>
+    <string name="add_court_header_type">類型</string>
+    <string name="add_court_header_usage">使用</string>
+    <string name="add_court_header_light">燈光</string>
+    <string name="add_court_header_courts">球場數量</string>
+    <string name="add_court_header_charge">費用</string>
+    <string name="add_court_header_maintenance">維護狀況</string>
+    <string name="add_court_header_traffic">交通</string>
+    <string name="add_court_header_parking">停車</string>
+    <string name="court_usage_public">開放</string>
+    <string name="court_usage_private">私人</string>
+    <string name="court_light_all">全部場地</string>
+    <string name="court_light_some">部分場地</string>
+    <string name="court_light_no">無</string>
+    <string name="court_charge_charge">收費</string>
+    <string name="add_court_header_if_charge">收費</string>
+    <string name="court_charge_free">免費</string>
 </resources>

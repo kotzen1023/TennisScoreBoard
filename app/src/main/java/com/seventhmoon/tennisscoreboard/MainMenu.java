@@ -4,11 +4,18 @@ package com.seventhmoon.tennisscoreboard;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.seventhmoon.tennisscoreboard.Data.InitData;
+import com.seventhmoon.tennisscoreboard.Service.CheckMacExistsService;
+import com.seventhmoon.tennisscoreboard.Sql.Jdbc;
+
+import static com.seventhmoon.tennisscoreboard.Sql.Jdbc.is_query;
 
 public class MainMenu extends Activity{
     private static final String TAG = MainMenu.class.getName();
@@ -19,10 +26,20 @@ public class MainMenu extends Activity{
     private static final String FILE_NAME = "Preference";
     //private  String saveEncryptKey="";
     private boolean is_initData = false;
+
+    public static InitData initData = new InitData();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu);
+
+        Log.d(TAG, "onCreate");
+
+        Intent intent = getIntent();
+        String macAddress = intent.getStringExtra("WiFiMac");
+        Log.d(TAG, "macAddress = "+macAddress);
+
 
         ImageView imgLetsPlay = (ImageView) findViewById(R.id.imageLetsPlay);
         TextView txtLetsPlay = (TextView) findViewById(R.id.textLetsPlay);
@@ -64,6 +81,34 @@ public class MainMenu extends Activity{
                 startActivity(intent);
             }
         });
+
+        //check user mac(id ) exists
+
+        //InitData initData = new InitData();
+        initData.setWifiMac(macAddress);
+        String id = Build.MODEL;
+        initData.setUpload_remain(0);
+        initData.jdbc.queryUserIdTable(MainMenu.this, id +" - "+initData.getWifiMac());
+
+        while (is_query) {
+
+        }
+
+        if (initData.isMatch_mac()) {
+            Log.d(TAG, "found same id! current_upload = "+initData.getUpload_remain());
+
+        } else {
+            Log.d(TAG, "id not found!");
+            initData.jdbc.insertTableUserId(id +" - "+macAddress, "5");
+        }
+
+        //Intent serviceintent = new Intent(MainMenu.this, CheckMacExistsService.class);
+        //serviceintent.setAction(Constants.ACTION.GET_MESSAGE_LIST_ACTION);
+        //serviceintent.putExtra("ACCOUNT", account);
+        //serviceintent.putExtra("DEVICE_ID", device_id);
+        //startService(serviceintent);
+
+
 
         /*imgNotify.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/court_show_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="header"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:gravity="fill_vertical"
+            android:layout_weight="3"
+            >
+        </TextView>
+
+        <TextView
+            android:id="@+id/court_show_msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:gravity="center"
+            android:layout_weight="1">
+        </TextView>
+
+        <RatingBar
+            android:id="@+id/court_show_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:isIndicator="true"
+            android:visibility="gone"/>
+
+
+</LinearLayout>

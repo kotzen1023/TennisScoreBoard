@@ -19,10 +19,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -37,6 +39,7 @@ import java.text.NumberFormat;
 import java.util.Calendar;
 
 import static android.R.drawable.sym_def_app_icon;
+import static com.seventhmoon.tennisscoreboard.MainMenu.initData;
 
 
 public class AddCourt extends AppCompatActivity {
@@ -49,10 +52,12 @@ public class AddCourt extends AppCompatActivity {
     private Spinner courtTypeSpinner;
     private Spinner courtUsageSpinner;
     private Spinner lightSpinner;
+    private Spinner ifChargeSpinner;
 
     public ArrayAdapter<String> courtTypeAdapter;
     public ArrayAdapter<String> courtUsageAdapter;
     public ArrayAdapter<String> lightAdapter;
+    public ArrayAdapter<String> courtIfChargeAdapter;
 
     private EditText editTextCourtName;
     private EditText editTextCourtNum;
@@ -61,6 +66,7 @@ public class AddCourt extends AppCompatActivity {
     private RatingBar ratingBarTraffic;
     private RatingBar ratingBarParking;
     private Button btnConfirm;
+    private LinearLayout linearLayoutCharge;
 
     private final int PICK_FROM_CAMERA = 600;
     private final int PICK_FROM_FILE = 800;
@@ -88,16 +94,20 @@ public class AddCourt extends AppCompatActivity {
         courtTypeSpinner = (Spinner) findViewById(R.id.spinnerCourtType);
         courtUsageSpinner = (Spinner) findViewById(R.id.spinnerCourtUsage);
         lightSpinner = (Spinner) findViewById(R.id.spinnerLight);
+        ifChargeSpinner = (Spinner) findViewById(R.id.spinnerIfCharge);
         editTextCourtNum = (EditText) findViewById(R.id.courtNumber);
+
         editTextCharge = (EditText) findViewById(R.id.courtCharge);
         ratingBarMaintenance = (RatingBar) findViewById(R.id.ratingMaintain);
         ratingBarTraffic = (RatingBar) findViewById(R.id.ratingTraffic);
         ratingBarParking = (RatingBar) findViewById(R.id.ratingParking);
         btnConfirm = (Button) findViewById(R.id.btnConfirm);
+        linearLayoutCharge = (LinearLayout) findViewById(R.id.layoutCharge);
 
         String[] courtTypeList = {"Hard", "Grass", "Clay", "Hard, Grass", "Hard, Clay", "Grass, Clay", "All"};
         String[] courtUsageList = {"Public", "Private"};
         String[] lightList = {"Yes", "No"};
+        String[] ifChargeList = {"Free", "Charge"};
 
         courtTypeAdapter = new ArrayAdapter<>(AddCourt.this, R.layout.myspinner, courtTypeList);
         courtTypeSpinner.setAdapter(courtTypeAdapter);
@@ -107,6 +117,9 @@ public class AddCourt extends AppCompatActivity {
 
         lightAdapter = new ArrayAdapter<>(AddCourt.this, R.layout.myspinner, lightList);
         lightSpinner.setAdapter(lightAdapter);
+
+        courtIfChargeAdapter = new ArrayAdapter<>(AddCourt.this, R.layout.myspinner, ifChargeList);
+        ifChargeSpinner.setAdapter(courtIfChargeAdapter);
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,6 +197,24 @@ public class AddCourt extends AppCompatActivity {
             }
         });
 
+        ifChargeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 1) {
+                    Log.e(TAG, "charge");
+                    linearLayoutCharge.setVisibility(View.VISIBLE);
+                } else {
+                    Log.e(TAG, "free");
+                    linearLayoutCharge.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,6 +234,7 @@ public class AddCourt extends AppCompatActivity {
                     Log.d(TAG, "type = "+courtTypeSpinner.getSelectedItemPosition());
                     Log.d(TAG, "usage = "+courtUsageSpinner.getSelectedItemPosition());
                     Log.d(TAG, "light = "+lightSpinner.getSelectedItemPosition());
+                    Log.d(TAG, "ifCharge = "+ifChargeSpinner.getSelectedItemPosition());
                     Log.d(TAG, "courts = "+editTextCourtNum.getText().toString());
                     Log.d(TAG, "charge = "+editTextCharge.getText().toString());
                     Log.d(TAG, "maintenance = "+ratingBarMaintenance.getRating());
@@ -210,13 +242,14 @@ public class AddCourt extends AppCompatActivity {
                     Log.d(TAG, "parking = "+ratingBarParking.getRating());
 
                     //Jdbc jdbc = new Jdbc();
-                    Jdbc.insertTableCourt(editTextCourtName.getText().toString(),
+                    initData.jdbc.insertTableCourt(editTextCourtName.getText().toString(),
                             String.valueOf(longitude),
                             String.valueOf(latitude),
                             String.valueOf(courtTypeSpinner.getSelectedItemPosition()),
                             String.valueOf(courtUsageSpinner.getSelectedItemPosition()),
                             String.valueOf(lightSpinner.getSelectedItemPosition()),
                             editTextCourtNum.getText().toString(),
+                            String.valueOf(ifChargeSpinner.getSelectedItemPosition()),
                             editTextCharge.getText().toString(),
                             String.valueOf(ratingBarMaintenance.getRating()),
                             String.valueOf(ratingBarTraffic.getRating()),

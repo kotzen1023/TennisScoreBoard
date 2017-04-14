@@ -11,6 +11,7 @@ public class PageItem {
     private byte court_usage;
     private byte light;
     private int court_num;
+    private byte ifCharge;
     private String charge;
     private float maintenance;
     private float traffic;
@@ -71,6 +72,14 @@ public class PageItem {
 
     public void setCourt_num(int court_num) {
         this.court_num = court_num;
+    }
+
+    public byte getIfCharge() {
+        return ifCharge;
+    }
+
+    public void setIfCharge(byte ifCharge) {
+        this.ifCharge = ifCharge;
     }
 
     public String getCharge() {

@@ -48,6 +48,8 @@
         <activity android:name=".MainMenu"/>
         <activity android:name=".AddCourt"/>
         <activity android:name=".FindCourtActivity"/>
+
+        <service android:name=".Service.CheckMacExistsService"/>
     </application>
 
 </manifest>

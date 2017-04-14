@@ -75,5 +75,26 @@
     <string name="main_menu_findcourt">Find Court</string>
     <string name="find_court_search">Search</string>
     <string name="find_court_add">Add</string>
+    <string name="court_type_hard">Hard</string>
+    <string name="court_type_grass">Grass</string>
+    <string name="court_type_clay">Clay</string>
+    <string name="court_type_all">All</string>
+    <string name="add_court_header_name">Name</string>
+    <string name="add_court_header_type">Type</string>
+    <string name="add_court_header_usage">Usage</string>
+    <string name="add_court_header_light">Light</string>
+    <string name="add_court_header_courts">Court Num</string>
+    <string name="add_court_header_charge">Price</string>
+    <string name="add_court_header_maintenance">Maintenance</string>
+    <string name="add_court_header_traffic">Traffic</string>
+    <string name="add_court_header_parking">Parking</string>
+    <string name="court_usage_public">Public</string>
+    <string name="court_usage_private">Private</string>
+    <string name="court_light_all">All courts</string>
+    <string name="court_light_some">Some courts</string>
+    <string name="court_light_no">No</string>
+    <string name="court_charge_charge">Charge</string>
+    <string name="add_court_header_if_charge">Charge</string>
+    <string name="court_charge_free">Free</string>
 </resources>
 

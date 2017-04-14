@@ -24,6 +24,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.seventhmoon.tennisscoreboard.Data.InitData;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -72,11 +74,13 @@ public class MainActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ball_icon);
         }
 
+        //InitData initData = new InitData();
+
         //get wifi mac
         pref = getSharedPreferences(FILE_NAME, MODE_PRIVATE);
-        String wifi_mac = pref.getString("WIFIMAC", "");
+        macAddress = pref.getString("WIFIMAC", "");
 
-        if (wifi_mac.equals("")) {
+        if (macAddress.equals("")) {
             boolean mobileDataEnabled = false; // Assume disabled
             ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
             try {
@@ -130,6 +134,8 @@ public class MainActivity extends AppCompatActivity {
             editor = pref.edit();
             editor.putString("WIFIMAC", macAddress);
             editor.apply();
+
+
         }
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
@@ -217,6 +223,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void init_setting() {
         Intent intent = new Intent(MainActivity.this, MainMenu.class);
+        intent.putExtra("WiFiMac", macAddress);
         startActivity(intent);
         finish();
     }

@@ -168,13 +168,38 @@
                 android:paddingTop="10dp">
 
                 <TextView
-                    android:id="@+id/courtChargeHeader"
+                    android:id="@+id/courtIfChageHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:ems="10"
                     android:text="Charge" />
+
+                <Spinner
+                    android:id="@+id/spinnerIfCharge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingTop="10dp"
+                android:id="@+id/layoutCharge"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/courtChargeHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:ems="10"
+                    android:text="Price" />
 
                 <EditText
                     android:id="@+id/courtCharge"
