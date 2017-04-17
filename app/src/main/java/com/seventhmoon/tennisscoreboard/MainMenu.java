@@ -17,6 +17,7 @@ import com.seventhmoon.tennisscoreboard.Sql.Jdbc;
 
 import static com.seventhmoon.tennisscoreboard.Sql.Jdbc.is_query;
 
+
 public class MainMenu extends Activity{
     private static final String TAG = MainMenu.class.getName();
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
@@ -88,7 +89,14 @@ public class MainMenu extends Activity{
         initData.setWifiMac(macAddress);
         String id = Build.MODEL;
         initData.setUpload_remain(0);
-        initData.jdbc.queryUserIdTable(MainMenu.this, id +" - "+initData.getWifiMac());
+
+        String my_id = id +" - "+initData.getWifiMac();
+
+        Intent checkIntent = new Intent(MainMenu.this, CheckMacExistsService.class);
+        checkIntent.putExtra("my_id", my_id);
+        startService(checkIntent);
+
+        //initData.jdbc.queryUserIdTable(MainMenu.this, id +" - "+initData.getWifiMac());
 
         while (is_query) {
 

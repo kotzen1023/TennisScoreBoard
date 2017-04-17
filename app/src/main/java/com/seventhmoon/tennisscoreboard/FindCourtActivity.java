@@ -27,11 +27,14 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -49,8 +52,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.seventhmoon.tennisscoreboard.Data.Constants;
+import com.seventhmoon.tennisscoreboard.Data.InitData;
 import com.seventhmoon.tennisscoreboard.Data.LocationPager;
 import com.seventhmoon.tennisscoreboard.Data.PageItem;
+import com.seventhmoon.tennisscoreboard.Service.CheckCourtTableService;
+import com.seventhmoon.tennisscoreboard.Service.CheckMacExistsService;
 import com.seventhmoon.tennisscoreboard.Sql.Jdbc;
 
 import java.io.IOException;
@@ -193,9 +199,14 @@ public class FindCourtActivity extends AppCompatActivity implements
 
         //viewPager = (ViewPager) findViewById(R.id.view_pager);
 
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
+        Log.e(TAG, "width = "+width+" height = "+height);
 
-
-
+        initData.setCurrent_width(width);
+        initData.setCurrent_height(height);
 
 
         mReceiver = new BroadcastReceiver() {
@@ -351,7 +362,12 @@ public class FindCourtActivity extends AppCompatActivity implements
             loadDialog.show();
 
             if (longitude != 0.0 && latitude != 0.0) {
-                initData.jdbc.queryCourtTable(context, longitude, latitude);
+                //initData.jdbc.queryCourtTable(context, longitude, latitude);
+
+                Intent checkIntent = new Intent(FindCourtActivity.this, CheckCourtTableService.class);
+                checkIntent.putExtra("longitude", String.valueOf(longitude));
+                checkIntent.putExtra("latitude", String.valueOf(latitude));
+                startService(checkIntent);
             }
         }
 
@@ -371,7 +387,11 @@ public class FindCourtActivity extends AppCompatActivity implements
         //jdbc = new Jdbc();
 
         //jdbc.queryUserIdTable;
-        initData.jdbc.queryCourtTable(context, longitude, latitude);
+        //initData.jdbc.queryCourtTable(context, longitude, latitude);
+        Intent checkIntent = new Intent(FindCourtActivity.this, CheckCourtTableService.class);
+        checkIntent.putExtra("longitude", String.valueOf(longitude));
+        checkIntent.putExtra("latitude", String.valueOf(latitude));
+        startService(checkIntent);
     }
 
     /**

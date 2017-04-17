@@ -50,6 +50,7 @@
         <activity android:name=".FindCourtActivity"/>
 
         <service android:name=".Service.CheckMacExistsService"/>
+        <service android:name=".Service.CheckCourtTableService"/>
     </application>
 
 </manifest>

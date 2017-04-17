@@ -83,6 +83,7 @@ public class LocationPager extends PagerAdapter {
         imgPic = (ImageView) itemView.findViewById(R.id.imgViewPic);
 
         // Capture position and set to the TextViews
+        //Log.e(TAG, "image height = "+imgPic.getDrawable().getIntrinsicHeight()+" width = "+imgPic.getDrawable().getIntrinsicWidth());
 
         if (items.size() > 0) {
 

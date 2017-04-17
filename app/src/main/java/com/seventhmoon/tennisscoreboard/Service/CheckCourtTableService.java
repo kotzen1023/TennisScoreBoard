@@ -6,19 +6,18 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.seventhmoon.tennisscoreboard.Data.InitData;
-import com.seventhmoon.tennisscoreboard.MainMenu;
+import com.seventhmoon.tennisscoreboard.Data.Constants;
 
 import static com.seventhmoon.tennisscoreboard.MainMenu.initData;
 import static com.seventhmoon.tennisscoreboard.Sql.Jdbc.is_query;
 
 
-public class CheckMacExistsService extends IntentService {
-    private static final String TAG = CheckMacExistsService.class.getName();
+public class CheckCourtTableService extends IntentService {
+    private static final String TAG = CheckCourtTableService.class.getName();
     private Context context;
 
-    public CheckMacExistsService() {
-        super("CheckMacExistsService");
+    public CheckCourtTableService() {
+        super("CheckCourtTableService");
     }
 
     @Override
@@ -43,11 +42,16 @@ public class CheckMacExistsService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         Log.i(TAG, "onHandleIntent");
 
-        String my_id = intent.getStringExtra("my_id");
+        String longitude = intent.getStringExtra("longitude");
+        String latitude = intent.getStringExtra("latitude");
 
-        if (!is_query) { // not in query
+        Log.e(TAG, "longitude = "+longitude+", latitude = "+latitude);
 
-            initData.jdbc.queryUserIdTable(my_id);
+        if (longitude != null && latitude != null) {
+
+            if (!is_query) {// not in query
+                initData.jdbc.queryCourtTable(context, Double.valueOf(longitude), Double.valueOf(latitude));
+            }
         }
     }
 
@@ -56,5 +60,7 @@ public class CheckMacExistsService extends IntentService {
         super.onDestroy();
         Log.d(TAG, "onDestroy()");
 
+        Intent newNotifyIntent = new Intent(Constants.ACTION.GET_COURT_INFO_COMPLETE);
+        context.sendBroadcast(newNotifyIntent);
     }
 }

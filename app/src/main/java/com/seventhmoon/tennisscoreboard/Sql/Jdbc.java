@@ -11,6 +11,8 @@ import android.util.Log;
 import com.seventhmoon.tennisscoreboard.Data.Constants;
 import com.seventhmoon.tennisscoreboard.Data.PageItem;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -43,7 +45,7 @@ public class Jdbc {
 
     private static String querydbSQLCourt = "select * from court";
     private static String querydbSQLUserId = "select * from user_id";
-    private static Context context;
+    private static Context myContext;
 
     private static double longitude = 0.0;
     private static double latitude = 0.0;
@@ -54,10 +56,10 @@ public class Jdbc {
 
     public Jdbc() {
         Log.d(TAG, "Jdbc create");
-        this.context = context;
-        this.longitude = longitude;
-        this.latitude = latitude;
-        this.macAddress = macAddress;
+        //this.myContext = context;
+        //this.longitude = longitude;
+        //this.latitude = latitude;
+        //this.macAddress = macAddress;
         /*new Thread() {
             public void run() {
                 Connect();
@@ -140,100 +142,111 @@ public class Jdbc {
 
     public void queryCourtTable(final Context context, final double longitude, final double latitude) {
 
-        myCourtList.clear();
 
-        new Thread() {
-            public void run() {
-                Log.d(TAG, "=== queryTable start ===");
-                //boolean ret = false;
-                if (con == null) {
-                    Log.e(TAG, "Connection = null, we must connect first...");
-                    Connect();
-                } else {
-                    Log.e(TAG, "Connection = " + con.getClass().getName());
-                }
+        if (!is_query) {
+            myContext = context;
+            myCourtList.clear();
 
-                if (con != null) {
-                    try
-                    {
-                        stat = con.createStatement();
-                        String query = querydbSQLCourt + " WHERE longitude BETWEEN "+ String.valueOf(longitude-1)+" AND "+String.valueOf(longitude+1)+
-                                " AND latitude BETWEEN "+ String.valueOf(latitude-1)+" AND "+String.valueOf(latitude+1);
+            is_query = true;
+            //new Thread() {
+            //    public void run() {
+                    Log.d(TAG, "=== queryTable start ===");
+                    //boolean ret = false;
+                    if (con == null) {
+                        Log.e(TAG, "Connection = null, we must connect first...");
+                        Connect();
+                    } else {
+                        Log.e(TAG, "Connection = " + con.getClass().getName());
+                    }
 
-                        Log.e(TAG, "query = "+query);
+                    if (con != null) {
+                        try {
+                            stat = con.createStatement();
+                            String query = querydbSQLCourt + " WHERE longitude BETWEEN " + String.valueOf(longitude - 1) + " AND " + String.valueOf(longitude + 1) +
+                                    " AND latitude BETWEEN " + String.valueOf(latitude - 1) + " AND " + String.valueOf(latitude + 1);
 
-                        rs = stat.executeQuery(query);
-                        Log.d(TAG, "=== Data Read ===");
-                        //name, longitude ,latitude, type, court_num, maintenance, rate, night_play, charge
-                        while(rs.next())
-                        {
+                            Log.e(TAG, "query = " + query);
 
-                            Log.d(TAG, ""+rs.getString("name")+", "+
-                                    rs.getDouble("longitude")+", "+
-                                    rs.getDouble("latitude")+", "+
-                                    rs.getInt("type")+", "+
-                                    rs.getInt("court_usage")+", "+
-                                    rs.getInt("light")+", "+
-                                    rs.getInt("court_num")+", "+
-                                    rs.getString("charge")+", "+
-                                    rs.getFloat("maintenance")+", "+
-                                    rs.getFloat("traffic")+", "+
-                                    rs.getFloat("parking"));
+                            rs = stat.executeQuery(query);
+                            Log.d(TAG, "=== Data Read ===");
+                            //name, longitude ,latitude, type, court_num, maintenance, rate, night_play, charge
+                            while (rs.next()) {
 
-                            PageItem item = new PageItem();
-                            item.setName(rs.getString("name"));
-                            item.setLongitude(rs.getDouble("longitude"));
-                            item.setLatitude(rs.getDouble("latitude"));
-                            item.setType(rs.getInt("type"));
-                            item.setCourt_usage((byte) rs.getInt("court_usage"));
-                            item.setLight((byte) rs.getInt("light"));
-                            item.setCourt_num(rs.getInt("court_num"));
-                            item.setCharge(rs.getString("charge"));
-                            item.setMaintenance(rs.getFloat("maintenance"));
-                            item.setTraffic(rs.getFloat("traffic"));
-                            item.setParking(rs.getFloat("parking"));
-                            Blob blob = rs.getBlob("pic");
-                            Bitmap bp = BitmapFactory.decodeStream(blob.getBinaryStream());
-                            item.setPic(bp);
+                                Log.d(TAG, "" + rs.getString("name") + ", " +
+                                        rs.getDouble("longitude") + ", " +
+                                        rs.getDouble("latitude") + ", " +
+                                        rs.getInt("type") + ", " +
+                                        rs.getInt("court_usage") + ", " +
+                                        rs.getInt("light") + ", " +
+                                        rs.getInt("court_num") + ", " +
+                                        rs.getString("charge") + ", " +
+                                        rs.getFloat("maintenance") + ", " +
+                                        rs.getFloat("traffic") + ", " +
+                                        rs.getFloat("parking"));
 
-                            myCourtList.add(item);
+                                PageItem item = new PageItem();
+                                item.setName(rs.getString("name"));
+                                item.setLongitude(rs.getDouble("longitude"));
+                                item.setLatitude(rs.getDouble("latitude"));
+                                item.setType(rs.getInt("type"));
+                                item.setCourt_usage((byte) rs.getInt("court_usage"));
+                                item.setLight((byte) rs.getInt("light"));
+                                item.setCourt_num(rs.getInt("court_num"));
+                                item.setCharge(rs.getString("charge"));
+                                item.setMaintenance(rs.getFloat("maintenance"));
+                                item.setTraffic(rs.getFloat("traffic"));
+                                item.setParking(rs.getFloat("parking"));
+                                Blob blob = rs.getBlob("pic");
 
 
+
+                                Bitmap bp = BitmapFactory.decodeStream(blob.getBinaryStream());
+                                Log.e(TAG, "before compress = "+bp.getByteCount());
+
+                                Bitmap scaled = Bitmap.createScaledBitmap(bp, initData.getCurrent_width()/3, initData.getCurrent_height()/3, true);
+
+                                //ByteArrayOutputStream out = new ByteArrayOutputStream();
+                                //bp.compress(Bitmap.CompressFormat.PNG, 50, out);
+                                //Bitmap decoded = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
+                                Log.e(TAG, "after compress = "+scaled.getByteCount());
+                                item.setPic(scaled);
+
+                                myCourtList.add(item);
+
+
+                            }
+                            Log.d(TAG, "=== Data Read ===");
+                        } catch (SQLException e) {
+                            System.out.println("DropDB Exception :" + e.toString());
+                        } finally {
+                            Close();
                         }
-                        Log.d(TAG, "=== Data Read ===");
                     }
-                    catch(SQLException e)
-                    {
-                        System.out.println("DropDB Exception :" + e.toString());
-                    }
-                    finally
-                    {
-                        Close();
-                    }
-                }
 
-                Intent newNotifyIntent = new Intent(Constants.ACTION.GET_COURT_INFO_COMPLETE);
-                context.sendBroadcast(newNotifyIntent);
-                Log.d(TAG, "=== queryTable end ===");
-            }
-        }.start();
+                    //Intent newNotifyIntent = new Intent(Constants.ACTION.GET_COURT_INFO_COMPLETE);
+                    //context.sendBroadcast(newNotifyIntent);
+                    Log.d(TAG, "=== queryTable end ===");
+            is_query = false;
+                //}
+            //}.start();
 
-        sqlTask conTask;
-        conTask = new sqlTask();
-        conTask.execute(10);
+            //sqlQueryCourtTask conTask;
+            //conTask = new sqlQueryCourtTask();
+            //conTask.execute(10);
+        }
 
 
     }
 
-    public void queryUserIdTable(final Context context, final String macAddress) {
+    public void queryUserIdTable(final String macAddress) {
 
         if (!is_query) {
             is_query = true;
             initData.setMatch_mac(false);
-            myCourtList.clear();
+            //myCourtList.clear();
 
-            new Thread() {
-                public void run() {
+            //new Thread() {
+            //    public void run() {
                     Log.d(TAG, "=== queryUserIdTable start ===");
                     //boolean ret = false;
                     if (con == null) {
@@ -260,25 +273,6 @@ public class Jdbc {
 
                                 initData.setUpload_remain(rs.getInt("uploaded"));
                                 initData.setMatch_mac(true);
-
-                            /*PageItem item = new PageItem();
-                            item.setName(rs.getString("name"));
-                            item.setLongitude(rs.getDouble("longitude"));
-                            item.setLatitude(rs.getDouble("latitude"));
-                            item.setType(rs.getInt("type"));
-                            item.setCourt_usage((byte) rs.getInt("court_usage"));
-                            item.setLight((byte) rs.getInt("light"));
-                            item.setCourt_num(rs.getInt("court_num"));
-                            item.setCharge(rs.getString("charge"));
-                            item.setMaintenance(rs.getFloat("maintenance"));
-                            item.setTraffic(rs.getFloat("traffic"));
-                            item.setParking(rs.getFloat("parking"));
-                            Blob blob = rs.getBlob("pic");
-                            Bitmap bp = BitmapFactory.decodeStream(blob.getBinaryStream());
-                            item.setPic(bp);
-
-                            myCourtList.add(item);*/
-
                             }
                             Log.d(TAG, "=== Data Read ===");
                         } catch (SQLException e) {
@@ -292,12 +286,12 @@ public class Jdbc {
                     //context.sendBroadcast(newNotifyIntent);
                     Log.d(TAG, "=== queryUserIdTable end ===");
                     is_query = false;
-                }
-            }.start();
+                //}
+            //}.start();
 
-            sqlTask conTask;
-            conTask = new sqlTask();
-            conTask.execute(10);
+            //sqlTask conTask;
+            //conTask = new sqlTask();
+            //conTask.execute(10);
 
         }
     }
@@ -348,8 +342,8 @@ public class Jdbc {
             }
         }.start();
 
-        sqlTask conTask;
-        conTask = new sqlTask();
+        sqlQueryCourtTask conTask;
+        conTask = new sqlQueryCourtTask();
         conTask.execute(10);
 
 
@@ -390,14 +384,14 @@ public class Jdbc {
             }
         }.start();
 
-        sqlTask conTask;
-        conTask = new sqlTask();
-        conTask.execute(10);
+        //sqlTask conTask;
+        //conTask = new sqlTask();
+        //conTask.execute(10);
 
 
     }
 
-    private static class sqlTask extends AsyncTask<Integer, Integer, String>
+    private static class sqlQueryCourtTask extends AsyncTask<Integer, Integer, String>
     {
         // <傳入參數, 處理中更新介面參數, 處理後傳出參數>
         //int nowCount;
@@ -484,7 +478,8 @@ public class Jdbc {
             btnShare.setVisibility(View.INVISIBLE);
             btnDelete.setVisibility(View.INVISIBLE);
             selected_count = 0;*/
-
+            //Intent newNotifyIntent = new Intent(Constants.ACTION.GET_COURT_INFO_COMPLETE);
+            //myContext.sendBroadcast(newNotifyIntent);
         }
 
         @Override
