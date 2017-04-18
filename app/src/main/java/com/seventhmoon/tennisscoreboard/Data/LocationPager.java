@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.seventhmoon.tennisscoreboard.FindCourtActivity.is_setCurrentItem_click;
+
 
 public class LocationPager extends PagerAdapter {
     private static final String TAG = LocationPager.class.getName();
@@ -75,6 +77,13 @@ public class LocationPager extends PagerAdapter {
         View itemView = inflater.inflate(R.layout.viewpager_item, container,
                 false);
 
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         // Locate the TextViews in viewpager_item.xml
         //textViewName = (TextView) itemView.findViewById(R.id.textView1);
         //textViewCharge = (TextView) itemView.findViewById(R.id.textView2);
@@ -87,6 +96,7 @@ public class LocationPager extends PagerAdapter {
 
         if (items.size() > 0) {
 
+            showItemArrayList.clear();
             if (position == getCount() - 1) {
                 Log.d(TAG, "<last>");
                 imgPic.setImageBitmap(items.get(0).getPic());
@@ -94,7 +104,7 @@ public class LocationPager extends PagerAdapter {
                 //textViewCharge.setText(items.get(0).getCharge());
                 //textViewMaintain.setText(items.get(0).getCourt_usage());
 
-                showItemArrayList.clear();
+
                 ShowItem courtName = new ShowItem(context.getResources().getString(R.string.add_court_header_name), items.get(0).getName(), 0);
                 showItemArrayList.add(courtName);
 
@@ -125,8 +135,8 @@ public class LocationPager extends PagerAdapter {
                 ShowItem courtParking = new ShowItem(context.getResources().getString(R.string.add_court_header_parking), "", items.get(0).getParking());
                 showItemArrayList.add(courtParking);
 
-                ShowItemAdapter showItemAdapter= new ShowItemAdapter(context,R.layout.court_show_item,showItemArrayList);
-                listView.setAdapter(showItemAdapter);
+                //ShowItemAdapter showItemAdapter= new ShowItemAdapter(context,R.layout.court_show_item,showItemArrayList);
+                //listView.setAdapter(showItemAdapter);
 
             } else if (position == 0) {
                 Log.d(TAG, "<first>");
@@ -135,7 +145,7 @@ public class LocationPager extends PagerAdapter {
                 //textViewCharge.setText(items.get(items.size() - 1).getCharge());
                 //textViewMaintain.setText(items.get(items.size() - 1).getCourt_usage());
 
-                showItemArrayList.clear();
+
                 ShowItem courtName = new ShowItem(context.getResources().getString(R.string.add_court_header_name), items.get(items.size() - 1).getName(), 0);
                 showItemArrayList.add(courtName);
 
@@ -166,8 +176,8 @@ public class LocationPager extends PagerAdapter {
                 ShowItem courtParking = new ShowItem(context.getResources().getString(R.string.add_court_header_parking), "", items.get(items.size() - 1).getParking());
                 showItemArrayList.add(courtParking);
 
-                ShowItemAdapter showItemAdapter= new ShowItemAdapter(context,R.layout.court_show_item,showItemArrayList);
-                listView.setAdapter(showItemAdapter);
+                //ShowItemAdapter showItemAdapter= new ShowItemAdapter(context,R.layout.court_show_item,showItemArrayList);
+                //listView.setAdapter(showItemAdapter);
             } else {
                 Log.d(TAG, "<normal>");
                 imgPic.setImageBitmap(items.get(position - 1).getPic());
@@ -175,7 +185,6 @@ public class LocationPager extends PagerAdapter {
                 //textViewCharge.setText(items.get(position - 1).getCharge());
                 //textViewMaintain.setText(items.get(position - 1).getCourt_usage());
 
-                showItemArrayList.clear();
                 ShowItem courtName = new ShowItem(context.getResources().getString(R.string.add_court_header_name), items.get(position - 1).getName(), 0);
                 showItemArrayList.add(courtName);
 
@@ -205,10 +214,9 @@ public class LocationPager extends PagerAdapter {
 
                 ShowItem courtParking = new ShowItem(context.getResources().getString(R.string.add_court_header_parking), "", items.get(position - 1).getParking());
                 showItemArrayList.add(courtParking);
-
-                ShowItemAdapter showItemAdapter= new ShowItemAdapter(context,R.layout.court_show_item,showItemArrayList);
-                listView.setAdapter(showItemAdapter);
             }
+            ShowItemAdapter showItemAdapter= new ShowItemAdapter(context,R.layout.court_show_item,showItemArrayList);
+            listView.setAdapter(showItemAdapter);
         }
 
 

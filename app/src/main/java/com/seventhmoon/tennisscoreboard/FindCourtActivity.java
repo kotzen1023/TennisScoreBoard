@@ -19,6 +19,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -135,6 +136,8 @@ public class FindCourtActivity extends AppCompatActivity implements
     private static String macAddress;
     ProgressDialog loadDialog = null;
 
+    public static boolean is_setCurrentItem_click = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -205,8 +208,8 @@ public class FindCourtActivity extends AppCompatActivity implements
         int height = metrics.heightPixels;
         Log.e(TAG, "width = "+width+" height = "+height);
 
-        initData.setCurrent_width(width);
-        initData.setCurrent_height(height);
+        //initData.setCurrent_width(width);
+        //initData.setCurrent_height(height);
 
 
         mReceiver = new BroadcastReceiver() {
@@ -243,6 +246,8 @@ public class FindCourtActivity extends AppCompatActivity implements
                                             marker = markerList.get(currentPage -1);
                                         }
 
+
+
                                         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
                                         mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
                                         marker.showInfoWindow();
@@ -260,13 +265,21 @@ public class FindCourtActivity extends AppCompatActivity implements
 
                                 @Override
                                 public void onPageScrollStateChanged(int state) {
+
                                     if (state == ViewPager.SCROLL_STATE_IDLE) {
-                                        int pageCount = myCourtList.size() + 2;
+                                        final int pageCount = myCourtList.size() + 2;
 
                                         if (currentPage == pageCount - 1) {
+                                            Log.e(TAG, "=== set first start ===");
+                                            is_setCurrentItem_click = true;
                                             viewPager.setCurrentItem(1, false);
+                                            is_setCurrentItem_click = false;
+                                            Log.e(TAG, "=== set first end ===");
                                         } else if (currentPage == 0) {
+                                            Log.e(TAG, "=== set last start ===");
                                             viewPager.setCurrentItem(pageCount - 2, false);
+
+                                            Log.e(TAG, "=== set last end ===");
                                         }
                                     }
                                 }
@@ -801,9 +814,38 @@ public class FindCourtActivity extends AppCompatActivity implements
         }
     };
 
-    @Override
-    public void onBackPressed() {
+    private String getCourtType(int type) {
+        String court_type;
+        switch (type) {
+            case 0:
+                court_type = getResources().getString(R.string.court_type_hard);
+                break;
+            case 1:
+                court_type = getResources().getString(R.string.court_type_grass);
+                break;
+            case 2:
+                court_type = getResources().getString(R.string.court_type_clay);
+                break;
+            case 3:
+                court_type = getResources().getString(R.string.court_type_hard) + ", " +getResources().getString(R.string.court_type_grass);
+                break;
+            case 4:
+                court_type = getResources().getString(R.string.court_type_hard) + ", " +getResources().getString(R.string.court_type_clay);
+                break;
+            case 5:
+                court_type = getResources().getString(R.string.court_type_grass) + ", " +getResources().getString(R.string.court_type_clay);
+                break;
+            case 6:
+                court_type = getResources().getString(R.string.court_type_all);
+                break;
 
-        finish();
+            default:
+                court_type = context.getResources().getString(R.string.court_type_hard);
+                break;
+        }
+
+        return court_type;
     }
+
+
 }

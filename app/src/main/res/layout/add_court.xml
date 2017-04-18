@@ -55,7 +55,7 @@
                     android:layout_weight="4"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:ems="10"
-                    android:text="Name" />
+                    android:text="@string/add_court_header_name" />
 
                 <EditText
                     android:id="@+id/courtName"
@@ -80,7 +80,7 @@
                     android:layout_weight="4"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:ems="10"
-                    android:text="Type" />
+                    android:text="@string/add_court_header_type" />
 
                 <Spinner
                     android:id="@+id/spinnerCourtType"
@@ -102,7 +102,7 @@
                     android:layout_weight="4"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:ems="10"
-                    android:text="Usage" />
+                    android:text="@string/add_court_header_usage" />
 
                 <Spinner
                     android:id="@+id/spinnerCourtUsage"
@@ -124,7 +124,7 @@
                     android:layout_weight="4"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:ems="10"
-                    android:text="Light" />
+                    android:text="@string/add_court_header_light" />
 
                 <Spinner
                     android:id="@+id/spinnerLight"
@@ -146,7 +146,7 @@
                     android:layout_weight="4"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:ems="10"
-                    android:text="Courts" />
+                    android:text="@string/add_court_header_courts" />
 
                 <EditText
                     android:id="@+id/courtNumber"
@@ -174,7 +174,7 @@
                     android:layout_weight="4"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:ems="10"
-                    android:text="Charge" />
+                    android:text="@string/add_court_header_if_charge" />
 
                 <Spinner
                     android:id="@+id/spinnerIfCharge"
@@ -199,7 +199,7 @@
                     android:layout_weight="4"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:ems="10"
-                    android:text="Price" />
+                    android:text="@string/add_court_header_charge" />
 
                 <EditText
                     android:id="@+id/courtCharge"
@@ -225,7 +225,7 @@
                     android:layout_weight="4"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:ems="10"
-                    android:text="Maintenance"
+                    android:text="@string/add_court_header_maintenance"
                     android:gravity="center_vertical"/>
 
                 <LinearLayout
@@ -256,7 +256,7 @@
                     android:layout_weight="4"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:ems="10"
-                    android:text="Traffic"
+                    android:text="@string/add_court_header_traffic"
                     android:gravity="center_vertical"/>
 
                 <LinearLayout
@@ -287,7 +287,7 @@
                     android:layout_weight="4"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:ems="10"
-                    android:text="Parking"
+                    android:text="@string/add_court_header_parking"
                     android:gravity="center_vertical"/>
 
                 <LinearLayout
@@ -314,7 +314,7 @@
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Confirm"
+                    android:text="@string/setup_confirm"
                     android:id="@+id/btnConfirm"/>
             </LinearLayout>
 

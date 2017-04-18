@@ -51,6 +51,7 @@
 
         <service android:name=".Service.CheckMacExistsService"/>
         <service android:name=".Service.CheckCourtTableService"/>
+        <service android:name=".Service.InertCourtService"/>
     </application>
 
 </manifest>

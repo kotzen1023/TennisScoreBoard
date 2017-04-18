@@ -201,14 +201,14 @@ public class Jdbc {
 
 
                                 Bitmap bp = BitmapFactory.decodeStream(blob.getBinaryStream());
-                                Log.e(TAG, "before compress = "+bp.getByteCount());
+                                //Log.e(TAG, "before compress = "+bp.getByteCount()+" width = "+bp.getWidth()+" height = "+bp.getHeight());
 
-                                Bitmap scaled = Bitmap.createScaledBitmap(bp, initData.getCurrent_width()/3, initData.getCurrent_height()/3, true);
+                                Bitmap scaled = Bitmap.createScaledBitmap(bp, bp.getWidth()/2, bp.getHeight()/2, true);
 
                                 //ByteArrayOutputStream out = new ByteArrayOutputStream();
                                 //bp.compress(Bitmap.CompressFormat.PNG, 50, out);
                                 //Bitmap decoded = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
-                                Log.e(TAG, "after compress = "+scaled.getByteCount());
+                                //Log.e(TAG, "after compress = "+scaled.getByteCount());
                                 item.setPic(scaled);
 
                                 myCourtList.add(item);
@@ -299,54 +299,56 @@ public class Jdbc {
     public void insertTableCourt(final String name, final String longitude, final String latitude, final String type, final String usage, final String light,
                                  final String court_num, final String ifCharge, final String charge, final String maintenance, final String traffic, final String parking, final byte[] blob)
     {
-        new Thread() {
-            public void run() {
-                Log.d(TAG, "=== insertTable start ===");
-                //boolean ret = false;
-                if (con == null) {
-                    Log.e(TAG, "Connection = null, we must connect first...");
-                    Connect();
-                } else {
-                    Log.e(TAG, "Connection = "+con.getClass().getName());
-                }
-
-                if (con != null) {
-
-                    try {
-                        pst = con.prepareStatement(insertdbSQLCourt);
-
-                        pst.setString(1, name); //court name
-                        pst.setString(2, longitude);
-                        pst.setString(3, latitude);
-                        pst.setString(4, type); //hard, grass, clay
-                        pst.setString(5, usage); //boolean
-                        pst.setString(6, light); //boolean
-                        pst.setString(7, court_num); //int
-                        pst.setString(8, ifCharge); //if charge
-                        pst.setString(9, charge); //string
-                        pst.setString(10, maintenance); //
-                        pst.setString(11, traffic);
-                        pst.setString(12, parking);
-                        pst.setBytes(13, blob);
-
-                        pst.executeUpdate();
-
-                    } catch (SQLException e) {
-                        System.out.println("InsertDB Exception :" + e.toString());
-                    } finally {
-                        Close();
-                    }
-                }
-                Log.d(TAG, "=== insertTable end ===");
-
+        if (!is_update) {
+            is_update = true;
+            //new Thread() {
+            //    public void run() {
+            Log.d(TAG, "=== insertTable start ===");
+            //boolean ret = false;
+            if (con == null) {
+                Log.e(TAG, "Connection = null, we must connect first...");
+                Connect();
+            } else {
+                Log.e(TAG, "Connection = " + con.getClass().getName());
             }
-        }.start();
 
-        sqlQueryCourtTask conTask;
-        conTask = new sqlQueryCourtTask();
-        conTask.execute(10);
+            if (con != null) {
 
+                try {
+                    pst = con.prepareStatement(insertdbSQLCourt);
 
+                    pst.setString(1, name); //court name
+                    pst.setString(2, longitude);
+                    pst.setString(3, latitude);
+                    pst.setString(4, type); //hard, grass, clay
+                    pst.setString(5, usage); //boolean
+                    pst.setString(6, light); //boolean
+                    pst.setString(7, court_num); //int
+                    pst.setString(8, ifCharge); //if charge
+                    pst.setString(9, charge); //string
+                    pst.setString(10, maintenance); //
+                    pst.setString(11, traffic);
+                    pst.setString(12, parking);
+                    pst.setBytes(13, blob);
+
+                    pst.executeUpdate();
+
+                } catch (SQLException e) {
+                    System.out.println("InsertDB Exception :" + e.toString());
+                } finally {
+                    Close();
+                }
+            }
+            Log.d(TAG, "=== insertTable end ===");
+
+            //}
+            //}.start();
+
+            //sqlQueryCourtTask conTask;
+            //conTask = new sqlQueryCourtTask();
+            //conTask.execute(10);
+            is_update = false;
+        }
     }
 
     public void insertTableUserId(final String mac, final String upload)

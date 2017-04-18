@@ -13,8 +13,8 @@ public class InitData {
     private double current_longitude;
     private double current_latitude;
     private boolean match_mac;
-    private int current_width;
-    private int current_height;
+    //private int current_width;
+    //private int current_height;
 
     public InitData() {
         jdbc = new Jdbc();
@@ -66,7 +66,7 @@ public class InitData {
         this.match_mac = match_mac;
     }
 
-    public int getCurrent_width() {
+    /*public int getCurrent_width() {
         return current_width;
     }
 
@@ -80,5 +80,5 @@ public class InitData {
 
     public void setCurrent_height(int current_height) {
         this.current_height = current_height;
-    }
+    }*/
 }

@@ -2,10 +2,12 @@ package com.seventhmoon.tennisscoreboard;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,6 +17,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
@@ -29,7 +33,15 @@ import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.seventhmoon.tennisscoreboard.Data.Constants;
 import com.seventhmoon.tennisscoreboard.Data.FileOperation;
+import com.seventhmoon.tennisscoreboard.Data.LocationPager;
+import com.seventhmoon.tennisscoreboard.Service.CheckCourtTableService;
+import com.seventhmoon.tennisscoreboard.Service.InertCourtService;
 import com.seventhmoon.tennisscoreboard.Sql.Jdbc;
 
 import java.io.ByteArrayOutputStream;
@@ -75,11 +87,27 @@ public class AddCourt extends AppCompatActivity {
     private static ByteArrayOutputStream stream;
     private static Bitmap resized = null;
     //private static Blob blob;
+    private static BroadcastReceiver mReceiver = null;
+    private static boolean isRegister = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_court);
+
+        ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+
+            actionBar.setDisplayUseLogoEnabled(true);
+            //actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ball_icon);
+            actionBar.setTitle("Upload remain "+initData.getUpload_remain());
+        }
+
+
+        IntentFilter filter;
 
         Intent intent = getIntent();
         final double longitude = intent.getDoubleExtra("longitude", 0.0);
@@ -104,10 +132,18 @@ public class AddCourt extends AppCompatActivity {
         btnConfirm = (Button) findViewById(R.id.btnConfirm);
         linearLayoutCharge = (LinearLayout) findViewById(R.id.layoutCharge);
 
-        String[] courtTypeList = {"Hard", "Grass", "Clay", "Hard, Grass", "Hard, Clay", "Grass, Clay", "All"};
-        String[] courtUsageList = {"Public", "Private"};
-        String[] lightList = {"Yes", "No"};
-        String[] ifChargeList = {"Free", "Charge"};
+        String[] courtTypeList = {getResources().getString(R.string.court_type_hard),
+                getResources().getString(R.string.court_type_grass),
+                getResources().getString(R.string.court_type_clay),
+                getResources().getString(R.string.court_type_hard)+","+getResources().getString(R.string.court_type_grass),
+                getResources().getString(R.string.court_type_hard)+","+getResources().getString(R.string.court_type_clay),
+                getResources().getString(R.string.court_type_grass)+","+getResources().getString(R.string.court_type_clay),
+                getResources().getString(R.string.court_type_all)};
+        String[] courtUsageList = {getResources().getString(R.string.court_usage_public), getResources().getString(R.string.court_usage_private)};
+        String[] lightList = {getResources().getString(R.string.court_light_no),
+                getResources().getString(R.string.court_light_some),
+                getResources().getString(R.string.court_light_all)};
+        String[] ifChargeList = {getResources().getString(R.string.court_charge_free), getResources().getString(R.string.court_charge_charge)};
 
         courtTypeAdapter = new ArrayAdapter<>(AddCourt.this, R.layout.myspinner, courtTypeList);
         courtTypeSpinner.setAdapter(courtTypeAdapter);
@@ -223,7 +259,7 @@ public class AddCourt extends AppCompatActivity {
                     toast("Name can not be null!");
                 } else if (editTextCourtNum.equals("")) {
                     toast("Court number can not be null!");
-                } else if (editTextCharge.equals("")) {
+                } else if (ifChargeSpinner.getSelectedItemPosition() == 1 && editTextCharge.equals("")) {
                     toast("Charge can not be null!");
                 } else if (resized == null) {
                     toast("Please add a pic of court!");
@@ -242,7 +278,7 @@ public class AddCourt extends AppCompatActivity {
                     Log.d(TAG, "parking = "+ratingBarParking.getRating());
 
                     //Jdbc jdbc = new Jdbc();
-                    initData.jdbc.insertTableCourt(editTextCourtName.getText().toString(),
+                    /*initData.jdbc.insertTableCourt(editTextCourtName.getText().toString(),
                             String.valueOf(longitude),
                             String.valueOf(latitude),
                             String.valueOf(courtTypeSpinner.getSelectedItemPosition()),
@@ -255,11 +291,65 @@ public class AddCourt extends AppCompatActivity {
                             String.valueOf(ratingBarTraffic.getRating()),
                             String.valueOf(ratingBarParking.getRating()),
                             stream.toByteArray()
-                    );
+                    );*/
+
+                    Intent insertIntent = new Intent(AddCourt.this, InertCourtService.class);
+                    insertIntent.putExtra("name", editTextCourtName.getText().toString());
+                    insertIntent.putExtra("longitude", String.valueOf(longitude));
+                    insertIntent.putExtra("latitude", String.valueOf(latitude));
+                    insertIntent.putExtra("type", String.valueOf(courtTypeSpinner.getSelectedItemPosition()));
+                    insertIntent.putExtra("usage", String.valueOf(courtUsageSpinner.getSelectedItemPosition()));
+                    insertIntent.putExtra("light", String.valueOf(lightSpinner.getSelectedItemPosition()));
+                    insertIntent.putExtra("courts", String.valueOf(editTextCourtNum.getText().toString()));
+                    insertIntent.putExtra("ifCharge", String.valueOf(ifChargeSpinner.getSelectedItemPosition()));
+                    insertIntent.putExtra("charge", editTextCharge.getText().toString());
+                    insertIntent.putExtra("maintenance", String.valueOf(ratingBarMaintenance.getRating()));
+                    insertIntent.putExtra("traffic", String.valueOf(ratingBarTraffic.getRating()));
+                    insertIntent.putExtra("parking", String.valueOf(ratingBarParking.getRating()));
+                    insertIntent.putExtra("blob", stream.toByteArray());
+                    startService(insertIntent);
 
                 }
             }
         });
+
+        mReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equalsIgnoreCase(Constants.ACTION.INSERT_COURT_INFO_COMPLETE)) {
+                    Log.d(TAG, "receive brocast !");
+                    finish();
+
+
+                }
+            }
+        };
+
+        if (!isRegister) {
+            filter = new IntentFilter();
+            filter.addAction(Constants.ACTION.INSERT_COURT_INFO_COMPLETE);
+            registerReceiver(mReceiver, filter);
+            isRegister = true;
+            Log.d(TAG, "registerReceiver mReceiver");
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.i(TAG, "onDestroy");
+
+        if (isRegister && mReceiver != null) {
+            try {
+                unregisterReceiver(mReceiver);
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            }
+
+            isRegister = false;
+            mReceiver = null;
+        }
+
+        super.onDestroy();
     }
 
     public void toast(String message) {
