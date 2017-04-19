@@ -19,7 +19,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.seventhmoon.tennisscoreboard.FindCourtActivity.is_setCurrentItem_click;
+import static com.seventhmoon.tennisscoreboard.FindCourtActivity.is_init;
+import static com.seventhmoon.tennisscoreboard.FindCourtActivity.is_setFirst;
+import static com.seventhmoon.tennisscoreboard.FindCourtActivity.is_setLast;
+import static com.seventhmoon.tennisscoreboard.FindCourtActivity.set_count;
+
 
 
 public class LocationPager extends PagerAdapter {
@@ -33,6 +37,16 @@ public class LocationPager extends PagerAdapter {
     private int layoutResourceId;
     private ArrayList<PageItem> items = new ArrayList<>();
     ArrayList<ShowItem> showItemArrayList = new ArrayList<>();
+    ArrayList<ShowItem> currentArrayList = new ArrayList<>();
+    ArrayList<ShowItem> preArrayList = new ArrayList<>();
+    ArrayList<ShowItem> nextArrayList = new ArrayList<>();
+    ShowItemAdapter prevAdapter;
+    ShowItemAdapter currentAdapter;
+    ShowItemAdapter nextAdapter;
+
+    private ListView currentListView;
+    private ListView preListView;
+    private ListView nextListView;
 
     public LocationPager(Context context,
                          ArrayList<PageItem> objects) {
@@ -69,7 +83,7 @@ public class LocationPager extends PagerAdapter {
         TextView textViewMaintain;
         ListView listView;
 
-
+        Log.d(TAG, "=======================================================");
         Log.i(TAG, "get position = "+position);
 
         inflater = (LayoutInflater) context
@@ -135,16 +149,33 @@ public class LocationPager extends PagerAdapter {
                 ShowItem courtParking = new ShowItem(context.getResources().getString(R.string.add_court_header_parking), "", items.get(0).getParking());
                 showItemArrayList.add(courtParking);
 
+                if (is_setLast) {
+                    if (set_count == 2) {
+                        nextListView = listView;
+                        //prevAdapter = new ShowItemAdapter(context,R.layout.court_show_item,showItemArrayList);
+                        //listView.setAdapter(prevAdapter);
+                    }
+                    set_count++;
+                } else {
+                    ShowItemAdapter showItemAdapter = new ShowItemAdapter(context,R.layout.court_show_item,showItemArrayList);
+                    listView.setAdapter(showItemAdapter);
+                }
+
                 //ShowItemAdapter showItemAdapter= new ShowItemAdapter(context,R.layout.court_show_item,showItemArrayList);
                 //listView.setAdapter(showItemAdapter);
 
+                Log.d(TAG, "</last>");
             } else if (position == 0) {
                 Log.d(TAG, "<first>");
+
+                if (is_init) {
+                    currentListView = listView;
+                }
+
                 imgPic.setImageBitmap(items.get(items.size() - 1).getPic());
                 //textViewName.setText(items.get(items.size() - 1).getName());
                 //textViewCharge.setText(items.get(items.size() - 1).getCharge());
                 //textViewMaintain.setText(items.get(items.size() - 1).getCourt_usage());
-
 
                 ShowItem courtName = new ShowItem(context.getResources().getString(R.string.add_court_header_name), items.get(items.size() - 1).getName(), 0);
                 showItemArrayList.add(courtName);
@@ -175,11 +206,28 @@ public class LocationPager extends PagerAdapter {
 
                 ShowItem courtParking = new ShowItem(context.getResources().getString(R.string.add_court_header_parking), "", items.get(items.size() - 1).getParking());
                 showItemArrayList.add(courtParking);
-
                 //ShowItemAdapter showItemAdapter= new ShowItemAdapter(context,R.layout.court_show_item,showItemArrayList);
                 //listView.setAdapter(showItemAdapter);
+                Log.d(TAG, "</first>");
+
+                if (is_setFirst) {
+                    if (set_count == 1) {
+                        preListView = listView;
+                        //prevAdapter = new ShowItemAdapter(context,R.layout.court_show_item,showItemArrayList);
+                        //listView.setAdapter(prevAdapter);
+                    }
+                    set_count++;
+                } else {
+                    ShowItemAdapter showItemAdapter = new ShowItemAdapter(context,R.layout.court_show_item,showItemArrayList);
+                    listView.setAdapter(showItemAdapter);
+                }
             } else {
                 Log.d(TAG, "<normal>");
+
+                if (is_init) {
+                    nextListView = listView;
+                }
+
                 imgPic.setImageBitmap(items.get(position - 1).getPic());
                 //textViewName.setText(items.get(position - 1).getName());
                 //textViewCharge.setText(items.get(position - 1).getCharge());
@@ -214,12 +262,53 @@ public class LocationPager extends PagerAdapter {
 
                 ShowItem courtParking = new ShowItem(context.getResources().getString(R.string.add_court_header_parking), "", items.get(position - 1).getParking());
                 showItemArrayList.add(courtParking);
+
+                Log.d(TAG, "</normal>");
+
+                if (is_setFirst) {
+                    if (set_count == 0) { //first, set current
+                        currentListView = listView;
+                        //currentAdapter = new ShowItemAdapter(context,R.layout.court_show_item,showItemArrayList);
+                        //currentListView.setAdapter(currentAdapter);
+                    } else if (set_count == 2) {
+                        nextListView = listView;
+                        //nextAdapter = new ShowItemAdapter(context,R.layout.court_show_item,showItemArrayList);
+                        //listView.setAdapter(nextAdapter);
+                    }
+                    set_count++;
+                } else if (is_setLast) {
+                    if (set_count == 0) { //first, set current
+                        currentListView = listView;
+                    } else if (set_count == 1) {
+                        preListView = listView;
+                        //nextAdapter = new ShowItemAdapter(context,R.layout.court_show_item,showItemArrayList);
+                        //listView.setAdapter(nextAdapter);
+                    }
+
+                    set_count++;
+                } else {
+                    ShowItemAdapter showItemAdapter = new ShowItemAdapter(context, R.layout.court_show_item, showItemArrayList);
+                    listView.setAdapter(showItemAdapter);
+                }
             }
-            ShowItemAdapter showItemAdapter= new ShowItemAdapter(context,R.layout.court_show_item,showItemArrayList);
-            listView.setAdapter(showItemAdapter);
+
         }
 
+        Log.e(TAG, "set_count = "+set_count);
 
+        if (is_setFirst && set_count == 3) {
+            Log.e(TAG, "is_setFirst set current!");
+
+            //listView.setAdapter(currentAdapter);
+            set_count = 0;
+        }
+
+        if (is_setLast && set_count == 3) {
+            Log.e(TAG, "is_setLast set current!");
+
+            //listView.setAdapter(currentAdapter);
+            set_count = 0;
+        }
 
         // Locate the ImageView in viewpager_item.xml
         //imgPic = (ImageView) itemView.findViewById(R.id.flag);
@@ -234,6 +323,330 @@ public class LocationPager extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
+    }
+
+    public void show_current_page_init() {
+        Log.d(TAG, "show_current_page");
+
+        Log.e(TAG, "name = "+items.get(items.size() - 1).getName());
+        currentArrayList.clear();
+
+        ShowItem courtName = new ShowItem(context.getResources().getString(R.string.add_court_header_name), items.get(items.size() - 1).getName(), 0);
+        currentArrayList.add(courtName);
+
+        ShowItem courtType = new ShowItem(context.getResources().getString(R.string.add_court_header_type), getCourtType(items.get(items.size() - 1).getType()), 0);
+        currentArrayList.add(courtType);
+
+        ShowItem courtUsage = new ShowItem(context.getResources().getString(R.string.add_court_header_usage), getCourtUsage(items.get(items.size() - 1).getCourt_usage()), 0);
+        currentArrayList.add(courtUsage);
+
+        ShowItem courtLight = new ShowItem(context.getResources().getString(R.string.add_court_header_light), getCourtLight(items.get(items.size() - 1).getLight()), 0);
+        currentArrayList.add(courtLight);
+
+        ShowItem courtNum = new ShowItem(context.getResources().getString(R.string.add_court_header_courts), String.valueOf(items.get(items.size() - 1).getCourt_num()), 0);
+        currentArrayList.add(courtNum);
+
+        ShowItem courtIfCharge = new ShowItem(context.getResources().getString(R.string.add_court_header_if_charge), getCourtCharge(items.get(items.size() - 1).getIfCharge()), 0);
+        currentArrayList.add(courtIfCharge);
+
+        ShowItem courtCharge = new ShowItem(context.getResources().getString(R.string.add_court_header_charge), String.valueOf(items.get(items.size() - 1).getCharge()), 0);
+        currentArrayList.add(courtCharge);
+
+        ShowItem courtMaintain = new ShowItem(context.getResources().getString(R.string.add_court_header_maintenance), "", items.get(items.size() - 1).getMaintenance());
+        currentArrayList.add(courtMaintain);
+
+        ShowItem courtTraffic = new ShowItem(context.getResources().getString(R.string.add_court_header_traffic), "", items.get(items.size() - 1).getTraffic());
+        currentArrayList.add(courtTraffic);
+
+        ShowItem courtParking = new ShowItem(context.getResources().getString(R.string.add_court_header_parking), "", items.get(items.size() - 1).getParking());
+        currentArrayList.add(courtParking);
+
+        currentAdapter = new ShowItemAdapter(context,R.layout.court_show_item,currentArrayList);
+        currentListView.setAdapter(currentAdapter);
+
+        /*preArrayList.clear();
+        ShowItem courtName1 = new ShowItem(context.getResources().getString(R.string.add_court_header_name), items.get(items.size() - 1).getName(), 0);
+        preArrayList.add(courtName1);
+
+        ShowItem courtType1 = new ShowItem(context.getResources().getString(R.string.add_court_header_type), String.valueOf(items.get(items.size() - 1).getType()), 0);
+        preArrayList.add(courtType1);
+
+        ShowItem courtUsage1 = new ShowItem(context.getResources().getString(R.string.add_court_header_usage), getCourtUsage(items.get(items.size() - 1).getCourt_usage()), 0);
+        preArrayList.add(courtUsage1);
+
+        ShowItem courtLight1 = new ShowItem(context.getResources().getString(R.string.add_court_header_light), getCourtLight(items.get(items.size() - 1).getLight()), 0);
+        preArrayList.add(courtLight1);
+
+        ShowItem courtNum1 = new ShowItem(context.getResources().getString(R.string.add_court_header_courts), String.valueOf(items.get(items.size() - 1).getCourt_num()), 0);
+        preArrayList.add(courtNum1);
+
+        ShowItem courtIfCharge1 = new ShowItem(context.getResources().getString(R.string.add_court_header_if_charge), getCourtCharge(items.get(items.size() - 1).getIfCharge()), 0);
+        preArrayList.add(courtIfCharge1);
+
+        ShowItem courtCharge1 = new ShowItem(context.getResources().getString(R.string.add_court_header_charge), String.valueOf(items.get(items.size() - 1).getCharge()), 0);
+        preArrayList.add(courtCharge1);
+
+        ShowItem courtMaintain1 = new ShowItem(context.getResources().getString(R.string.add_court_header_maintenance), "", items.get(items.size() - 1).getMaintenance());
+        preArrayList.add(courtMaintain1);
+
+        ShowItem courtTraffic1 = new ShowItem(context.getResources().getString(R.string.add_court_header_traffic), "", items.get(items.size() - 1).getTraffic());
+        preArrayList.add(courtTraffic1);
+
+        ShowItem courtParking1 = new ShowItem(context.getResources().getString(R.string.add_court_header_parking), "", items.get(items.size() - 1).getParking());
+        preArrayList.add(courtParking1);
+
+        prevAdapter = new ShowItemAdapter(context,R.layout.court_show_item,preArrayList);
+        preListView.setAdapter(prevAdapter);*/
+
+        nextArrayList.clear();
+        ShowItem courtName2 = new ShowItem(context.getResources().getString(R.string.add_court_header_name), items.get(0).getName(), 0);
+        nextArrayList.add(courtName2);
+
+        ShowItem courtType2 = new ShowItem(context.getResources().getString(R.string.add_court_header_type), getCourtType(items.get(0).getType()), 0);
+        nextArrayList.add(courtType2);
+
+        ShowItem courtUsage2 = new ShowItem(context.getResources().getString(R.string.add_court_header_usage), getCourtUsage(items.get(0).getCourt_usage()), 0);
+        nextArrayList.add(courtUsage2);
+
+        ShowItem courtLight2 = new ShowItem(context.getResources().getString(R.string.add_court_header_light), getCourtLight(items.get(0).getLight()), 0);
+        nextArrayList.add(courtLight2);
+
+        ShowItem courtNum2 = new ShowItem(context.getResources().getString(R.string.add_court_header_courts), String.valueOf(items.get(0).getCourt_num()), 0);
+        nextArrayList.add(courtNum2);
+
+        ShowItem courtIfCharge2 = new ShowItem(context.getResources().getString(R.string.add_court_header_if_charge), getCourtCharge(items.get(0).getIfCharge()), 0);
+        nextArrayList.add(courtIfCharge2);
+
+        ShowItem courtCharge2 = new ShowItem(context.getResources().getString(R.string.add_court_header_charge), String.valueOf(items.get(0).getCharge()), 0);
+        nextArrayList.add(courtCharge2);
+
+        ShowItem courtMaintain2 = new ShowItem(context.getResources().getString(R.string.add_court_header_maintenance), "", items.get(0).getMaintenance());
+        nextArrayList.add(courtMaintain2);
+
+        ShowItem courtTraffic2 = new ShowItem(context.getResources().getString(R.string.add_court_header_traffic), "", items.get(0).getTraffic());
+        nextArrayList.add(courtTraffic2);
+
+        ShowItem courtParking2 = new ShowItem(context.getResources().getString(R.string.add_court_header_parking), "", items.get(0).getParking());
+        nextArrayList.add(courtParking2);
+
+        nextAdapter = new ShowItemAdapter(context,R.layout.court_show_item,nextArrayList);
+        nextListView.setAdapter(nextAdapter);
+    }
+
+    public void show_current_page_first() {
+        Log.d(TAG, "show_current_page");
+
+        Log.e(TAG, "name = "+items.get(0).getName());
+        currentArrayList.clear();
+
+        ShowItem courtName = new ShowItem(context.getResources().getString(R.string.add_court_header_name), items.get(0).getName(), 0);
+        currentArrayList.add(courtName);
+
+        ShowItem courtType = new ShowItem(context.getResources().getString(R.string.add_court_header_type), getCourtType(items.get(0).getType()), 0);
+        currentArrayList.add(courtType);
+
+        ShowItem courtUsage = new ShowItem(context.getResources().getString(R.string.add_court_header_usage), getCourtUsage(items.get(0).getCourt_usage()), 0);
+        currentArrayList.add(courtUsage);
+
+        ShowItem courtLight = new ShowItem(context.getResources().getString(R.string.add_court_header_light), getCourtLight(items.get(0).getLight()), 0);
+        currentArrayList.add(courtLight);
+
+        ShowItem courtNum = new ShowItem(context.getResources().getString(R.string.add_court_header_courts), String.valueOf(items.get(0).getCourt_num()), 0);
+        currentArrayList.add(courtNum);
+
+        ShowItem courtIfCharge = new ShowItem(context.getResources().getString(R.string.add_court_header_if_charge), getCourtCharge(items.get(0).getIfCharge()), 0);
+        currentArrayList.add(courtIfCharge);
+
+        ShowItem courtCharge = new ShowItem(context.getResources().getString(R.string.add_court_header_charge), String.valueOf(items.get(0).getCharge()), 0);
+        currentArrayList.add(courtCharge);
+
+        ShowItem courtMaintain = new ShowItem(context.getResources().getString(R.string.add_court_header_maintenance), "", items.get(0).getMaintenance());
+        currentArrayList.add(courtMaintain);
+
+        ShowItem courtTraffic = new ShowItem(context.getResources().getString(R.string.add_court_header_traffic), "", items.get(0).getTraffic());
+        currentArrayList.add(courtTraffic);
+
+        ShowItem courtParking = new ShowItem(context.getResources().getString(R.string.add_court_header_parking), "", items.get(0).getParking());
+        currentArrayList.add(courtParking);
+
+        currentAdapter = new ShowItemAdapter(context,R.layout.court_show_item,currentArrayList);
+        currentListView.setAdapter(currentAdapter);
+
+        preArrayList.clear();
+        ShowItem courtName1 = new ShowItem(context.getResources().getString(R.string.add_court_header_name), items.get(items.size() - 1).getName(), 0);
+        preArrayList.add(courtName1);
+
+        ShowItem courtType1 = new ShowItem(context.getResources().getString(R.string.add_court_header_type), String.valueOf(items.get(items.size() - 1).getType()), 0);
+        preArrayList.add(courtType1);
+
+        ShowItem courtUsage1 = new ShowItem(context.getResources().getString(R.string.add_court_header_usage), getCourtUsage(items.get(items.size() - 1).getCourt_usage()), 0);
+        preArrayList.add(courtUsage1);
+
+        ShowItem courtLight1 = new ShowItem(context.getResources().getString(R.string.add_court_header_light), getCourtLight(items.get(items.size() - 1).getLight()), 0);
+        preArrayList.add(courtLight1);
+
+        ShowItem courtNum1 = new ShowItem(context.getResources().getString(R.string.add_court_header_courts), String.valueOf(items.get(items.size() - 1).getCourt_num()), 0);
+        preArrayList.add(courtNum1);
+
+        ShowItem courtIfCharge1 = new ShowItem(context.getResources().getString(R.string.add_court_header_if_charge), getCourtCharge(items.get(items.size() - 1).getIfCharge()), 0);
+        preArrayList.add(courtIfCharge1);
+
+        ShowItem courtCharge1 = new ShowItem(context.getResources().getString(R.string.add_court_header_charge), String.valueOf(items.get(items.size() - 1).getCharge()), 0);
+        preArrayList.add(courtCharge1);
+
+        ShowItem courtMaintain1 = new ShowItem(context.getResources().getString(R.string.add_court_header_maintenance), "", items.get(items.size() - 1).getMaintenance());
+        preArrayList.add(courtMaintain1);
+
+        ShowItem courtTraffic1 = new ShowItem(context.getResources().getString(R.string.add_court_header_traffic), "", items.get(items.size() - 1).getTraffic());
+        preArrayList.add(courtTraffic1);
+
+        ShowItem courtParking1 = new ShowItem(context.getResources().getString(R.string.add_court_header_parking), "", items.get(items.size() - 1).getParking());
+        preArrayList.add(courtParking1);
+
+        prevAdapter = new ShowItemAdapter(context,R.layout.court_show_item,preArrayList);
+        preListView.setAdapter(prevAdapter);
+
+        nextArrayList.clear();
+        ShowItem courtName2 = new ShowItem(context.getResources().getString(R.string.add_court_header_name), items.get(1).getName(), 0);
+        nextArrayList.add(courtName2);
+
+        ShowItem courtType2 = new ShowItem(context.getResources().getString(R.string.add_court_header_type), getCourtType(items.get(1).getType()), 0);
+        nextArrayList.add(courtType2);
+
+        ShowItem courtUsage2 = new ShowItem(context.getResources().getString(R.string.add_court_header_usage), getCourtUsage(items.get(1).getCourt_usage()), 0);
+        nextArrayList.add(courtUsage2);
+
+        ShowItem courtLight2 = new ShowItem(context.getResources().getString(R.string.add_court_header_light), getCourtLight(items.get(1).getLight()), 0);
+        nextArrayList.add(courtLight2);
+
+        ShowItem courtNum2 = new ShowItem(context.getResources().getString(R.string.add_court_header_courts), String.valueOf(items.get(1).getCourt_num()), 0);
+        nextArrayList.add(courtNum2);
+
+        ShowItem courtIfCharge2 = new ShowItem(context.getResources().getString(R.string.add_court_header_if_charge), getCourtCharge(items.get(1).getIfCharge()), 0);
+        nextArrayList.add(courtIfCharge2);
+
+        ShowItem courtCharge2 = new ShowItem(context.getResources().getString(R.string.add_court_header_charge), String.valueOf(items.get(1).getCharge()), 0);
+        nextArrayList.add(courtCharge2);
+
+        ShowItem courtMaintain2 = new ShowItem(context.getResources().getString(R.string.add_court_header_maintenance), "", items.get(1).getMaintenance());
+        nextArrayList.add(courtMaintain2);
+
+        ShowItem courtTraffic2 = new ShowItem(context.getResources().getString(R.string.add_court_header_traffic), "", items.get(1).getTraffic());
+        nextArrayList.add(courtTraffic2);
+
+        ShowItem courtParking2 = new ShowItem(context.getResources().getString(R.string.add_court_header_parking), "", items.get(1).getParking());
+        nextArrayList.add(courtParking2);
+
+        nextAdapter = new ShowItemAdapter(context,R.layout.court_show_item,nextArrayList);
+        nextListView.setAdapter(nextAdapter);
+    }
+
+    public void show_current_page_last() {
+        Log.d(TAG, "show_current_page");
+
+        Log.e(TAG, "name = "+items.get(0).getName());
+        currentArrayList.clear();
+
+        ShowItem courtName = new ShowItem(context.getResources().getString(R.string.add_court_header_name), items.get(items.size()-1).getName(), 0);
+        currentArrayList.add(courtName);
+
+        ShowItem courtType = new ShowItem(context.getResources().getString(R.string.add_court_header_type), getCourtType(items.get(items.size()-1).getType()), 0);
+        currentArrayList.add(courtType);
+
+        ShowItem courtUsage = new ShowItem(context.getResources().getString(R.string.add_court_header_usage), getCourtUsage(items.get(items.size()-1).getCourt_usage()), 0);
+        currentArrayList.add(courtUsage);
+
+        ShowItem courtLight = new ShowItem(context.getResources().getString(R.string.add_court_header_light), getCourtLight(items.get(items.size()-1).getLight()), 0);
+        currentArrayList.add(courtLight);
+
+        ShowItem courtNum = new ShowItem(context.getResources().getString(R.string.add_court_header_courts), String.valueOf(items.get(items.size()-1).getCourt_num()), 0);
+        currentArrayList.add(courtNum);
+
+        ShowItem courtIfCharge = new ShowItem(context.getResources().getString(R.string.add_court_header_if_charge), getCourtCharge(items.get(items.size()-1).getIfCharge()), 0);
+        currentArrayList.add(courtIfCharge);
+
+        ShowItem courtCharge = new ShowItem(context.getResources().getString(R.string.add_court_header_charge), String.valueOf(items.get(items.size()-1).getCharge()), 0);
+        currentArrayList.add(courtCharge);
+
+        ShowItem courtMaintain = new ShowItem(context.getResources().getString(R.string.add_court_header_maintenance), "", items.get(items.size()-1).getMaintenance());
+        currentArrayList.add(courtMaintain);
+
+        ShowItem courtTraffic = new ShowItem(context.getResources().getString(R.string.add_court_header_traffic), "", items.get(items.size()-1).getTraffic());
+        currentArrayList.add(courtTraffic);
+
+        ShowItem courtParking = new ShowItem(context.getResources().getString(R.string.add_court_header_parking), "", items.get(items.size()-1).getParking());
+        currentArrayList.add(courtParking);
+
+        currentAdapter = new ShowItemAdapter(context,R.layout.court_show_item,currentArrayList);
+        currentListView.setAdapter(currentAdapter);
+
+        preArrayList.clear();
+        ShowItem courtName1 = new ShowItem(context.getResources().getString(R.string.add_court_header_name), items.get(items.size() - 2).getName(), 0);
+        preArrayList.add(courtName1);
+
+        ShowItem courtType1 = new ShowItem(context.getResources().getString(R.string.add_court_header_type), String.valueOf(items.get(items.size() - 2).getType()), 0);
+        preArrayList.add(courtType1);
+
+        ShowItem courtUsage1 = new ShowItem(context.getResources().getString(R.string.add_court_header_usage), getCourtUsage(items.get(items.size() - 2).getCourt_usage()), 0);
+        preArrayList.add(courtUsage1);
+
+        ShowItem courtLight1 = new ShowItem(context.getResources().getString(R.string.add_court_header_light), getCourtLight(items.get(items.size() - 2).getLight()), 0);
+        preArrayList.add(courtLight1);
+
+        ShowItem courtNum1 = new ShowItem(context.getResources().getString(R.string.add_court_header_courts), String.valueOf(items.get(items.size() - 2).getCourt_num()), 0);
+        preArrayList.add(courtNum1);
+
+        ShowItem courtIfCharge1 = new ShowItem(context.getResources().getString(R.string.add_court_header_if_charge), getCourtCharge(items.get(items.size() - 2).getIfCharge()), 0);
+        preArrayList.add(courtIfCharge1);
+
+        ShowItem courtCharge1 = new ShowItem(context.getResources().getString(R.string.add_court_header_charge), String.valueOf(items.get(items.size() - 2).getCharge()), 0);
+        preArrayList.add(courtCharge1);
+
+        ShowItem courtMaintain1 = new ShowItem(context.getResources().getString(R.string.add_court_header_maintenance), "", items.get(items.size() - 2).getMaintenance());
+        preArrayList.add(courtMaintain1);
+
+        ShowItem courtTraffic1 = new ShowItem(context.getResources().getString(R.string.add_court_header_traffic), "", items.get(items.size() - 2).getTraffic());
+        preArrayList.add(courtTraffic1);
+
+        ShowItem courtParking1 = new ShowItem(context.getResources().getString(R.string.add_court_header_parking), "", items.get(items.size() - 2).getParking());
+        preArrayList.add(courtParking1);
+
+        prevAdapter = new ShowItemAdapter(context,R.layout.court_show_item,preArrayList);
+        preListView.setAdapter(prevAdapter);
+
+        nextArrayList.clear();
+        ShowItem courtName2 = new ShowItem(context.getResources().getString(R.string.add_court_header_name), items.get(0).getName(), 0);
+        nextArrayList.add(courtName2);
+
+        ShowItem courtType2 = new ShowItem(context.getResources().getString(R.string.add_court_header_type), getCourtType(items.get(0).getType()), 0);
+        nextArrayList.add(courtType2);
+
+        ShowItem courtUsage2 = new ShowItem(context.getResources().getString(R.string.add_court_header_usage), getCourtUsage(items.get(0).getCourt_usage()), 0);
+        nextArrayList.add(courtUsage2);
+
+        ShowItem courtLight2 = new ShowItem(context.getResources().getString(R.string.add_court_header_light), getCourtLight(items.get(0).getLight()), 0);
+        nextArrayList.add(courtLight2);
+
+        ShowItem courtNum2 = new ShowItem(context.getResources().getString(R.string.add_court_header_courts), String.valueOf(items.get(0).getCourt_num()), 0);
+        nextArrayList.add(courtNum2);
+
+        ShowItem courtIfCharge2 = new ShowItem(context.getResources().getString(R.string.add_court_header_if_charge), getCourtCharge(items.get(0).getIfCharge()), 0);
+        nextArrayList.add(courtIfCharge2);
+
+        ShowItem courtCharge2 = new ShowItem(context.getResources().getString(R.string.add_court_header_charge), String.valueOf(items.get(0).getCharge()), 0);
+        nextArrayList.add(courtCharge2);
+
+        ShowItem courtMaintain2 = new ShowItem(context.getResources().getString(R.string.add_court_header_maintenance), "", items.get(0).getMaintenance());
+        nextArrayList.add(courtMaintain2);
+
+        ShowItem courtTraffic2 = new ShowItem(context.getResources().getString(R.string.add_court_header_traffic), "", items.get(0).getTraffic());
+        nextArrayList.add(courtTraffic2);
+
+        ShowItem courtParking2 = new ShowItem(context.getResources().getString(R.string.add_court_header_parking), "", items.get(0).getParking());
+        nextArrayList.add(courtParking2);
+
+        nextAdapter = new ShowItemAdapter(context,R.layout.court_show_item,nextArrayList);
+        nextListView.setAdapter(nextAdapter);
     }
 
     private String getCourtType(int type) {
@@ -327,4 +740,6 @@ public class LocationPager extends PagerAdapter {
 
         return court_charge;
     }
+
+
 }

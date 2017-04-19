@@ -136,7 +136,10 @@ public class FindCourtActivity extends AppCompatActivity implements
     private static String macAddress;
     ProgressDialog loadDialog = null;
 
-    public static boolean is_setCurrentItem_click = false;
+    public static boolean is_setFirst = false;
+    public static int set_count = 0;
+    public static boolean is_setLast = false;
+    public static boolean is_init = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -222,8 +225,10 @@ public class FindCourtActivity extends AppCompatActivity implements
 
                         if (pageAdapter == null) {
                             Log.d(TAG, "pageAdapter = null");
+                            is_init = true;
                             pageAdapter = new LocationPager(context, myCourtList);
                             viewPager.setAdapter(pageAdapter);
+
 
                             viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                                 @Override
@@ -271,14 +276,17 @@ public class FindCourtActivity extends AppCompatActivity implements
 
                                         if (currentPage == pageCount - 1) {
                                             Log.e(TAG, "=== set first start ===");
-                                            is_setCurrentItem_click = true;
+                                            is_setFirst = true;
                                             viewPager.setCurrentItem(1, false);
-                                            is_setCurrentItem_click = false;
+                                            pageAdapter.show_current_page_first();
+                                            is_setFirst = false;
                                             Log.e(TAG, "=== set first end ===");
                                         } else if (currentPage == 0) {
                                             Log.e(TAG, "=== set last start ===");
+                                            is_setLast = true;
                                             viewPager.setCurrentItem(pageCount - 2, false);
-
+                                            pageAdapter.show_current_page_last();
+                                            is_setLast = false;
                                             Log.e(TAG, "=== set last end ===");
                                         }
                                     }
@@ -286,7 +294,7 @@ public class FindCourtActivity extends AppCompatActivity implements
                             });
                         } else {
                             Log.d(TAG, "pageAdapter not null");
-                            pageAdapter.notifyDataSetChanged();
+                            //pageAdapter.notifyDataSetChanged();
                         }
 
                         markerList.clear();
@@ -309,7 +317,8 @@ public class FindCourtActivity extends AppCompatActivity implements
                             //        .title(myCourtList.get(i).getName()));
 
                         }
-
+                        pageAdapter.show_current_page_init();
+                        is_init = false;
                     }
                     loadDialog.dismiss();
 
@@ -351,8 +360,9 @@ public class FindCourtActivity extends AppCompatActivity implements
 
         Log.i(TAG, "onPause");
 
-        myCourtList.clear();
-        pageAdapter.notifyDataSetChanged();
+        //myCourtList.clear();
+        //if (pageAdapter != null)
+        //    pageAdapter.notifyDataSetChanged();
         //stop location updates when Activity is no longer active
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
