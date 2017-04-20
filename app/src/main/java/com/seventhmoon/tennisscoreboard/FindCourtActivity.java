@@ -110,7 +110,7 @@ public class FindCourtActivity extends AppCompatActivity implements
     public static String[] country;
     public static String[] population;
 
-    private static int currentPage;
+    public static int currentPage;
     private View viewDrawer;
     private LinearLayout linearLayout;
     private ImageView imageView;
@@ -140,6 +140,11 @@ public class FindCourtActivity extends AppCompatActivity implements
     public static int set_count = 0;
     public static boolean is_setLast = false;
     public static boolean is_init = false;
+    public static boolean is_reload = false;
+    public static boolean is_markFirst = false;
+    public static boolean is_markLast = false;
+    public static boolean is_markOther = false;
+    public static int mark_count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -308,7 +313,7 @@ public class FindCourtActivity extends AppCompatActivity implements
 
 
 
-                            marker.setTag(0);
+                            marker.setTag(i);
                             markerList.add(marker);
 
                             //latlngs.add(new LatLng(myCourtList.get(i).getLongitude(), myCourtList.get(i).getLatitude()));
@@ -333,6 +338,8 @@ public class FindCourtActivity extends AppCompatActivity implements
             isRegister = true;
             Log.d(TAG, "registerReceiver mReceiver");
         }
+
+        is_reload = true;
     }
 
     @Override
@@ -376,21 +383,26 @@ public class FindCourtActivity extends AppCompatActivity implements
         Log.i(TAG, "onResume");
 
         if (is_permmision) {
-            loadDialog = new ProgressDialog(FindCourtActivity.this);
-            loadDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            loadDialog.setTitle("Loading...");
-            loadDialog.setIndeterminate(false);
-            loadDialog.setCancelable(false);
+            if (is_reload) {
+                loadDialog = new ProgressDialog(FindCourtActivity.this);
+                loadDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                loadDialog.setTitle("Loading...");
+                loadDialog.setIndeterminate(false);
+                loadDialog.setCancelable(false);
 
-            loadDialog.show();
+                loadDialog.show();
 
-            if (longitude != 0.0 && latitude != 0.0) {
-                //initData.jdbc.queryCourtTable(context, longitude, latitude);
+                if (longitude != 0.0 && latitude != 0.0) {
+                    //initData.jdbc.queryCourtTable(context, longitude, latitude);
 
-                Intent checkIntent = new Intent(FindCourtActivity.this, CheckCourtTableService.class);
-                checkIntent.putExtra("longitude", String.valueOf(longitude));
-                checkIntent.putExtra("latitude", String.valueOf(latitude));
-                startService(checkIntent);
+                    Intent checkIntent = new Intent(FindCourtActivity.this, CheckCourtTableService.class);
+                    checkIntent.putExtra("longitude", String.valueOf(longitude));
+                    checkIntent.putExtra("latitude", String.valueOf(latitude));
+                    startService(checkIntent);
+                } else {
+                    loadDialog.dismiss();
+                }
+                is_reload = false;
             }
         }
 
@@ -484,14 +496,64 @@ public class FindCourtActivity extends AppCompatActivity implements
             @Override
             public boolean onMarkerClick(Marker marker) {
 
-                Log.e(TAG, "onMarkerClick");
-                if (markerList.size() > 0) {
-                    for (int i=0; i<markerList.size(); i++) {
-                        if (marker.getTitle().equals(markerList.get(i).getTitle())) {
-                            viewPager.setCurrentItem(i+1, false);
+                if (marker.getTag() == null) {
+                    Log.e(TAG, "onMarker ");
+                } else {
+                    Log.e(TAG, "onMarker " + (int) marker.getTag() + " Click ");
+
+                    if (markerList.size() > 0) {
+                        for (int i=0; i<markerList.size(); i++) {
+                            //if (marker.getTitle().equals(markerList.get(i).getTitle())) {
+                            //if (marker.getPosition().longitude == markerList.get(i).getPosition().longitude &&
+                            //        marker.getPosition().latitude == markerList.get(i).getPosition().latitude &&
+                            //        marker.getTitle().equals(markerList.get(i).getTitle())) {
+                            if ((int)marker.getTag() == i) {
+
+                                if ( i == 0) {
+                                    is_markFirst = true;
+                                    mark_count = 0;
+                                    viewPager.setCurrentItem(i, false);
+                                    pageAdapter.mark_current_page_first();
+                                    is_markFirst = false;
+                                } else if ( i == markerList.size() -1 ) {
+                                    is_markLast = true;
+                                    mark_count = 0;
+                                    viewPager.setCurrentItem(i, false);
+                                    pageAdapter.mark_current_page_last();
+                                    is_markLast = false;
+                                } else {
+                                    is_markOther = true;
+                                    mark_count = 0;
+                                    viewPager.setCurrentItem(i, false);
+                                    pageAdapter.mark_current_page_other(i);
+                                    is_markOther = false;
+                                }
+
+                                /*if ( i == 0 ) {
+                                    Log.e(TAG, "=== set first start ===");
+                                    is_setFirst = true;
+                                    viewPager.setCurrentItem(1, false);
+                                    pageAdapter.show_current_page_first();
+                                    is_setFirst = false;
+                                    Log.e(TAG, "=== set first end ===");
+                                } else if ( i == markerList.size() - 1) {
+                                    Log.e(TAG, "=== set last start ===");
+                                    is_setLast = true;
+                                    viewPager.setCurrentItem(markerList.size(), false);
+                                    pageAdapter.show_current_page_last();
+                                    is_setLast = false;
+                                    Log.e(TAG, "=== set last end ===");
+                                } else {
+                                    viewPager.setCurrentItem(i, false);
+                                }*/
+
+
+
+                            }
                         }
                     }
                 }
+
 
 
                 return false;

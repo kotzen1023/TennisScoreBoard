@@ -48,10 +48,13 @@
         <activity android:name=".MainMenu"/>
         <activity android:name=".AddCourt"/>
         <activity android:name=".FindCourtActivity"/>
+        <activity android:name=".FullScreenView"/>
+
 
         <service android:name=".Service.CheckMacExistsService"/>
         <service android:name=".Service.CheckCourtTableService"/>
         <service android:name=".Service.InertCourtService"/>
+        <service android:name=".Service.GetCourtImageService"/>
     </application>
 
 </manifest>

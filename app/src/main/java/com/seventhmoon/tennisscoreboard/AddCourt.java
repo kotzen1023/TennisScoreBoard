@@ -51,6 +51,7 @@ import java.text.NumberFormat;
 import java.util.Calendar;
 
 import static android.R.drawable.sym_def_app_icon;
+import static com.seventhmoon.tennisscoreboard.FindCourtActivity.is_reload;
 import static com.seventhmoon.tennisscoreboard.MainMenu.initData;
 
 
@@ -318,6 +319,9 @@ public class AddCourt extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equalsIgnoreCase(Constants.ACTION.INSERT_COURT_INFO_COMPLETE)) {
                     Log.d(TAG, "receive brocast !");
+
+                    is_reload = true;
+
                     finish();
 
 
