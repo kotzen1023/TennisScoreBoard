@@ -32,9 +32,11 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -145,6 +147,7 @@ public class FindCourtActivity extends AppCompatActivity implements
     public static boolean is_markLast = false;
     public static boolean is_markOther = false;
     public static int mark_count = 0;
+    public static int mark_select = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -322,8 +325,16 @@ public class FindCourtActivity extends AppCompatActivity implements
                             //        .title(myCourtList.get(i).getName()));
 
                         }
-                        pageAdapter.show_current_page_init();
-                        is_init = false;
+
+                        //viewPager.removeAllViews();
+                        //viewPager.setCurrentItem(1, false);
+
+                        //pageAdapter.show_current_page_init();
+
+                        viewPager.setCurrentItem(1, false);
+                        //pageAdapter.show_current_page_init();
+
+                        //is_init = false;
                     }
                     loadDialog.dismiss();
 
@@ -499,7 +510,7 @@ public class FindCourtActivity extends AppCompatActivity implements
                 if (marker.getTag() == null) {
                     Log.e(TAG, "onMarker ");
                 } else {
-                    Log.e(TAG, "onMarker " + (int) marker.getTag() + " Click ");
+                    Log.e(TAG, "onMarker " + ((int) marker.getTag()+1) + " Click ");
 
                     if (markerList.size() > 0) {
                         for (int i=0; i<markerList.size(); i++) {
@@ -510,23 +521,32 @@ public class FindCourtActivity extends AppCompatActivity implements
                             if ((int)marker.getTag() == i) {
 
                                 if ( i == 0) {
-                                    is_markFirst = true;
+                                    is_init = true;
+                                    viewPager.setCurrentItem(0, false);
+                                    viewPager.setCurrentItem(1, false);
+                                    /*is_markFirst = true;
                                     mark_count = 0;
                                     viewPager.setCurrentItem(i, false);
                                     pageAdapter.mark_current_page_first();
-                                    is_markFirst = false;
+                                    is_markFirst = false;*/
                                 } else if ( i == markerList.size() -1 ) {
-                                    is_markLast = true;
+                                    /*is_markLast = true;
                                     mark_count = 0;
                                     viewPager.setCurrentItem(i, false);
                                     pageAdapter.mark_current_page_last();
-                                    is_markLast = false;
+                                    is_markLast = false;*/
+                                    int pageCount = markerList.size() + 2;
+                                    is_setLast = true;
+                                    viewPager.setCurrentItem(pageCount - 2, false);
+                                    pageAdapter.mark_current_page_last();
+                                    is_setLast = false;
                                 } else {
                                     is_markOther = true;
-                                    mark_count = 0;
-                                    viewPager.setCurrentItem(i, false);
-                                    pageAdapter.mark_current_page_other(i);
-                                    is_markOther = false;
+                                    mark_select = i;
+                                    viewPager.setCurrentItem(i+1, false);
+                                    pageAdapter.mark_current_page_other(i+1);
+                                    //is_markOther = false;
+
                                 }
 
                                 /*if ( i == 0 ) {
