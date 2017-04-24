@@ -79,12 +79,12 @@ public class ShowItemAdapter extends ArrayAdapter<ShowItem> {
                 holder.content.setVisibility(View.VISIBLE);
                 holder.rating.setVisibility(View.GONE);
                 holder.content.setText(showItem.getTextShow());
-                Log.e(TAG, "getView = "+ position+ " "+showItem.getTextShow());
+                //Log.e(TAG, "getView = "+ position+ " "+showItem.getTextShow());
             } else {
                 holder.content.setVisibility(View.GONE);
                 holder.rating.setVisibility(View.VISIBLE);
                 holder.rating.setRating(showItem.getFloatShow());
-                Log.e(TAG, "getView = "+ position+ " "+showItem.getFloatShow());
+                //Log.e(TAG, "getView = "+ position+ " "+showItem.getFloatShow());
             }
 
             /*if (position == 0) {

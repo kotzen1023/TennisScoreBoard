@@ -286,14 +286,14 @@ public class FindCourtActivity extends AppCompatActivity implements
                                             Log.e(TAG, "=== set first start ===");
                                             is_setFirst = true;
                                             viewPager.setCurrentItem(1, false);
-                                            pageAdapter.show_current_page_first();
+                                            //pageAdapter.show_current_page_first();
                                             is_setFirst = false;
                                             Log.e(TAG, "=== set first end ===");
                                         } else if (currentPage == 0) {
                                             Log.e(TAG, "=== set last start ===");
                                             is_setLast = true;
                                             viewPager.setCurrentItem(pageCount - 2, false);
-                                            pageAdapter.show_current_page_last();
+                                            //pageAdapter.show_current_page_last();
                                             is_setLast = false;
                                             Log.e(TAG, "=== set last end ===");
                                         }

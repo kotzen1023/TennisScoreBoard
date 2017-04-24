@@ -20,18 +20,19 @@ import com.seventhmoon.tennisscoreboard.MainMenu;
 import com.seventhmoon.tennisscoreboard.R;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static com.seventhmoon.tennisscoreboard.FindCourtActivity.currentPage;
 import static com.seventhmoon.tennisscoreboard.FindCourtActivity.is_init;
-import static com.seventhmoon.tennisscoreboard.FindCourtActivity.is_markFirst;
-import static com.seventhmoon.tennisscoreboard.FindCourtActivity.is_markLast;
+
 import static com.seventhmoon.tennisscoreboard.FindCourtActivity.is_markOther;
 import static com.seventhmoon.tennisscoreboard.FindCourtActivity.is_setFirst;
 import static com.seventhmoon.tennisscoreboard.FindCourtActivity.is_setLast;
-import static com.seventhmoon.tennisscoreboard.FindCourtActivity.mark_count;
+
 import static com.seventhmoon.tennisscoreboard.FindCourtActivity.mark_select;
 import static com.seventhmoon.tennisscoreboard.FindCourtActivity.set_count;
 
@@ -51,16 +52,24 @@ public class LocationPager extends PagerAdapter {
     ArrayList<ShowItem> currentArrayList = new ArrayList<>();
     ArrayList<ShowItem> preArrayList = new ArrayList<>();
     ArrayList<ShowItem> nextArrayList = new ArrayList<>();
+
+    ArrayList<ShowItem> tempArrayList = new ArrayList<>();
+
     ShowItemAdapter prevAdapter;
     ShowItemAdapter currentAdapter;
     ShowItemAdapter nextAdapter;
 
-    //private ListView listView;
+    ShowItemAdapter tempAdapter;
+
+
     private ListView currentListView;
     private ListView preListView;
     private ListView nextListView;
 
+    private ListView tempListView;
+
     private boolean init = false;
+    private int prev_position = -1;
 
 
     public LocationPager(Context context,
@@ -101,7 +110,7 @@ public class LocationPager extends PagerAdapter {
         //ListView listView;
 
         Log.d(TAG, "=======================================================");
-        Log.i(TAG, "position = "+position);
+        Log.i(TAG, "position = "+position+", prev_position = "+prev_position);
 
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View itemView = inflater.inflate(R.layout.viewpager_item, container, false);
@@ -155,6 +164,10 @@ public class LocationPager extends PagerAdapter {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 Log.e(TAG, "onScrollStateChanged position = "+position);
+                Log.e(TAG, "current = "+currentArrayList.get(0).getTextShow());
+                Log.e(TAG, "prev = "+preArrayList.get(0).getTextShow());
+                Log.e(TAG, "next = "+nextArrayList.get(0).getTextShow());
+
 
 
             }
@@ -172,13 +185,18 @@ public class LocationPager extends PagerAdapter {
 
         if (items.size() > 0) {
 
+
             showItemArrayList.clear();
+            //currentArrayList.clear();
+            //preArrayList.clear();
+            //nextArrayList.clear();
             if (position == getCount() - 1) {
                 Log.d(TAG, "<last>");
                 imgPic.setImageBitmap(items.get(0).getPic());
                 //textViewName.setText(items.get(0).getName());
                 //textViewCharge.setText(items.get(0).getCharge());
                 //textViewMaintain.setText(items.get(0).getCourt_usage());
+
 
 
                 ShowItem courtName = new ShowItem(context.getResources().getString(R.string.add_court_header_name), items.get(0).getName(), 0);
@@ -211,35 +229,113 @@ public class LocationPager extends PagerAdapter {
                 ShowItem courtParking = new ShowItem(context.getResources().getString(R.string.add_court_header_parking), "", items.get(0).getParking());
                 showItemArrayList.add(courtParking);
 
+                ShowItemAdapter showItemAdapter = new ShowItemAdapter(context,R.layout.court_show_item,showItemArrayList);
+                listView.setAdapter(showItemAdapter);
+
                 if (is_setLast) {
                     if (set_count == 2) {
-                        nextListView = listView;
 
+                        nextArrayList.clear();
+                        nextArrayList = new ArrayList<>(showItemArrayList);
+                        //Collections.copy(nextArrayList, showItemArrayList);
+
+                        nextListView = listView;
+                        nextAdapter = showItemAdapter;
                     }
                     set_count++;
-                } else if (is_markLast) {
-                    if (mark_count == 2) {
-                        nextListView = listView;
-
-                    }
-                    mark_count++;
                 } else {
-                    ShowItemAdapter showItemAdapter = new ShowItemAdapter(context,R.layout.court_show_item,showItemArrayList);
-                    listView.setAdapter(showItemAdapter);
+
+                    if (position > prev_position) { //left slide
+
+                        if (currentArrayList.size() > 0) { //copy current to prev
+
+                            preArrayList.clear();
+                            preArrayList = new ArrayList<>(currentArrayList);
+
+                            Log.e(TAG, "preArrayList " + preArrayList.get(0).getTextShow());
+
+                            preListView = currentListView;
+                            prevAdapter = currentAdapter;
+
+                            prevAdapter = new ShowItemAdapter(context, R.layout.court_show_item, preArrayList);
+                            preListView.setAdapter(prevAdapter);
+
+                        }
+
+                        if (nextArrayList.size() > 0) { //copy next to currrent
+
+                            currentArrayList.clear();
+                            currentArrayList = new ArrayList<>(nextArrayList);
+
+                            Log.e(TAG, "currentArrayList " + currentArrayList.get(0).getTextShow());
+
+                            currentListView = nextListView;
+                            currentAdapter = nextAdapter;
+
+                            currentAdapter = new ShowItemAdapter(context, R.layout.court_show_item, currentArrayList);
+                            currentListView.setAdapter(currentAdapter);
+
+                        }
+                    } else if (position < prev_position) {
+
+                        if (currentArrayList.size() > 0) { //copy current to temp
+
+                            tempArrayList.clear();
+                            tempArrayList = new ArrayList<>(currentArrayList);
+
+                            Log.e(TAG, "tempArrayList " + tempArrayList.get(0).getTextShow());
+
+                            tempListView = currentListView;
+                            tempAdapter = currentAdapter;
+
+                        }
+
+                        if (preArrayList.size() > 0) { //copy prev to currrent
+
+                            currentArrayList.clear();
+                            currentArrayList = new ArrayList<>(preArrayList);
+
+                            Log.e(TAG, "currentArrayList " + currentArrayList.get(0).getTextShow());
+
+                            currentListView = preListView;
+                            currentAdapter = prevAdapter;
+
+                            currentAdapter = new ShowItemAdapter(context, R.layout.court_show_item, currentArrayList);
+                            currentListView.setAdapter(currentAdapter);
+
+                        }
+
+                        if (tempArrayList.size() > 0) { //copy temp to prev
+                            preArrayList.clear();
+                            preArrayList = new ArrayList<>(tempArrayList);
+
+                            Log.e(TAG, "preArrayList " + preArrayList.get(0).getTextShow());
+
+                            preListView = tempListView;
+                            prevAdapter = tempAdapter;
+
+                            prevAdapter = new ShowItemAdapter(context, R.layout.court_show_item, preArrayList);
+                            preListView.setAdapter(prevAdapter);
+                        }
+                    }
+
+                    nextArrayList.clear();
+                    nextArrayList = new ArrayList<>(showItemArrayList);
+
+                    Log.e(TAG, "nextArrayList " + nextArrayList.get(0).getTextShow());
+                    //Collections.copy(nextArrayList, showItemArrayList);
+
+                    nextListView = listView;
+                    nextAdapter = showItemAdapter;
                 }
-
-
+                //nextArrayList.clear();
 
                 Log.d(TAG, "</last>");
             } else if (position == 0) {
                 Log.d(TAG, "<first>");
 
-
-
                 imgPic.setImageBitmap(items.get(items.size() - 1).getPic());
-                //textViewName.setText(items.get(items.size() - 1).getName());
-                //textViewCharge.setText(items.get(items.size() - 1).getCharge());
-                //textViewMaintain.setText(items.get(items.size() - 1).getCourt_usage());
+
 
                 ShowItem courtName = new ShowItem(context.getResources().getString(R.string.add_court_header_name), items.get(items.size() - 1).getName(), 0);
                 showItemArrayList.add(courtName);
@@ -271,26 +367,113 @@ public class LocationPager extends PagerAdapter {
                 ShowItem courtParking = new ShowItem(context.getResources().getString(R.string.add_court_header_parking), "", items.get(items.size() - 1).getParking());
                 showItemArrayList.add(courtParking);
 
+                ShowItemAdapter showItemAdapter = new ShowItemAdapter(context,R.layout.court_show_item,showItemArrayList);
+                listView.setAdapter(showItemAdapter);
+
                 Log.d(TAG, "</first>");
 
                 if (is_init) {
+
+                    Log.e(TAG, "=== is_init start ===");
+                    preArrayList.clear();
+                    preArrayList = new ArrayList<>(showItemArrayList);
+                    //Collections.copy(preArrayList, showItemArrayList);
+
                     preListView = listView;
+                    prevAdapter = showItemAdapter;
                 } else if (is_setFirst) {
                     if (set_count == 1) {
-                        preListView = listView;
+                        preArrayList.clear();
+                        //Collections.copy(preArrayList, showItemArrayList);
+                        preArrayList = new ArrayList<>(showItemArrayList);
 
+                        preListView = listView;
+                        prevAdapter = showItemAdapter;
                     }
                     set_count++;
-                } else if (is_markFirst) {
-                    if (set_count == 0) {
-                        imgPic.setImageBitmap(items.get(0).getPic());
-                        currentListView = listView;
-
-                    }
-                    mark_count++;
                 } else {
-                    ShowItemAdapter showItemAdapter = new ShowItemAdapter(context,R.layout.court_show_item,showItemArrayList);
-                    listView.setAdapter(showItemAdapter);
+
+                    if (position > prev_position) { //left slide
+
+                        if (currentArrayList.size() > 0) { //copy current to prev
+
+                            preArrayList.clear();
+                            preArrayList = new ArrayList<>(currentArrayList);
+
+                            Log.e(TAG, "preArrayList " + preArrayList.get(0).getTextShow());
+
+                            preListView = currentListView;
+                            prevAdapter = currentAdapter;
+
+                            prevAdapter = new ShowItemAdapter(context, R.layout.court_show_item, preArrayList);
+                            preListView.setAdapter(prevAdapter);
+
+                        }
+
+                        if (nextArrayList.size() > 0) { //copy next to currrent
+
+                            currentArrayList.clear();
+                            currentArrayList = new ArrayList<>(nextArrayList);
+
+                            Log.e(TAG, "currentArrayList " + currentArrayList.get(0).getTextShow());
+
+                            currentListView = nextListView;
+                            currentAdapter = nextAdapter;
+
+                            currentAdapter = new ShowItemAdapter(context, R.layout.court_show_item, currentArrayList);
+                            currentListView.setAdapter(currentAdapter);
+
+                        }
+                    } else if (position < prev_position) {
+
+                        if (currentArrayList.size() > 0) { //copy current to temp
+
+                            tempArrayList.clear();
+                            tempArrayList = new ArrayList<>(currentArrayList);
+
+                            Log.e(TAG, "tempArrayList " + tempArrayList.get(0).getTextShow());
+
+                            tempListView = currentListView;
+                            tempAdapter = currentAdapter;
+
+                        }
+
+                        if (preArrayList.size() > 0) { //copy prev to currrent
+
+                            currentArrayList.clear();
+                            currentArrayList = new ArrayList<>(preArrayList);
+
+                            Log.e(TAG, "currentArrayList " + currentArrayList.get(0).getTextShow());
+
+                            currentListView = preListView;
+                            currentAdapter = prevAdapter;
+
+                            currentAdapter = new ShowItemAdapter(context, R.layout.court_show_item, currentArrayList);
+                            currentListView.setAdapter(currentAdapter);
+                        }
+
+                        if (tempArrayList.size() > 0) { //copy temp to prev
+                            preArrayList.clear();
+                            preArrayList = new ArrayList<>(tempArrayList);
+
+                            Log.e(TAG, "preArrayList " + preArrayList.get(0).getTextShow());
+
+                            preListView = tempListView;
+                            prevAdapter = tempAdapter;
+
+                            prevAdapter = new ShowItemAdapter(context, R.layout.court_show_item, preArrayList);
+                            preListView.setAdapter(prevAdapter);
+                        }
+                    }
+
+                    nextArrayList.clear();
+                    nextArrayList = new ArrayList<>(showItemArrayList);
+                    //Collections.copy(nextArrayList, showItemArrayList);
+                    Log.e(TAG, "nextArrayList " + nextArrayList.get(0).getTextShow());
+
+                    nextListView = listView;
+                    nextAdapter = showItemAdapter;
+
                 }
             } else {
                 Log.d(TAG, "<normal>");
@@ -299,9 +482,7 @@ public class LocationPager extends PagerAdapter {
 
                 imgPic.setImageBitmap(items.get(position - 1).getPic());
                 Log.e(TAG, "===> Get name "+items.get(position - 1).getName());
-                //textViewName.setText(items.get(position - 1).getName());
-                //textViewCharge.setText(items.get(position - 1).getCharge());
-                //textViewMaintain.setText(items.get(position - 1).getCourt_usage());
+
 
                 ShowItem courtName = new ShowItem(context.getResources().getString(R.string.add_court_header_name), items.get(position - 1).getName(), 0);
                 showItemArrayList.add(courtName);
@@ -333,68 +514,195 @@ public class LocationPager extends PagerAdapter {
                 ShowItem courtParking = new ShowItem(context.getResources().getString(R.string.add_court_header_parking), "", items.get(position - 1).getParking());
                 showItemArrayList.add(courtParking);
 
+                ShowItemAdapter showItemAdapter = new ShowItemAdapter(context, R.layout.court_show_item, showItemArrayList);
+                listView.setAdapter(showItemAdapter);
+
                 Log.d(TAG, "</normal>");
 
                 if (is_init) {
                     if (position == 1) {
+                        currentArrayList.clear();
+                        currentArrayList = new ArrayList<>(showItemArrayList);
+                        //Collections.copy(currentArrayList, showItemArrayList);
+
                         currentListView = listView;
+                        currentAdapter = showItemAdapter;
+
                     } else if (position == 2) {
+                        nextArrayList.clear();
+                        nextArrayList = new ArrayList<>(showItemArrayList);
+
+
+                        //Collections.copy(nextArrayList, showItemArrayList);
+
                         nextListView = listView;
-                        show_current_page_init();
+                        nextAdapter = showItemAdapter;
+
+                        currentAdapter = new ShowItemAdapter(context, R.layout.court_show_item, currentArrayList);
+                        currentListView.setAdapter(currentAdapter);
+
+                        prevAdapter = new ShowItemAdapter(context, R.layout.court_show_item, preArrayList);
+                        preListView.setAdapter(prevAdapter);
+                        //show_current_page_init();
+                        Log.e(TAG, "=== is_init end ===");
                         is_init = false;
                     }
                 } else if (is_setFirst) {
                     if (set_count == 0) { //first, set current
+                        currentArrayList.clear();
+                        currentArrayList = new ArrayList<>(showItemArrayList);
+                        //Collections.copy(currentArrayList, showItemArrayList);
+
                         currentListView = listView;
+                        currentAdapter = showItemAdapter;
 
                     } else if (set_count == 2) {
-                        nextListView = listView;
+                        nextArrayList.clear();
+                        nextArrayList = new ArrayList<>(showItemArrayList);
+                        //Collections.copy(nextArrayList, showItemArrayList);
 
+                        nextListView = listView;
+                        nextAdapter = showItemAdapter;
                     }
                     set_count++;
                 } else if (is_setLast) {
                     if (set_count == 0) { //first, set current
-                        currentListView = listView;
-                    } else if (set_count == 1) {
-                        preListView = listView;
+                        currentArrayList.clear();
+                        currentArrayList = new ArrayList<>(showItemArrayList);
+                        //Collections.copy(currentArrayList, showItemArrayList);
 
+                        currentListView = listView;
+                        currentAdapter = showItemAdapter;
+                    } else if (set_count == 1) {
+                        preArrayList.clear();
+                        preArrayList = new ArrayList<>(showItemArrayList);
+                        //Collections.copy(preArrayList, showItemArrayList);
+
+                        preListView = listView;
+                        prevAdapter = showItemAdapter;
                     }
 
                     set_count++;
-                } else if (is_markFirst) {
-                    if (mark_count == 1) { //first, set current
-                        imgPic.setImageBitmap(items.get(1).getPic());
-                        nextListView = listView;
-                    }
-
-                    mark_count++;
-                } else if (is_markLast) {
-                    if (mark_count == 0) { //first, set current
-                        imgPic.setImageBitmap(items.get(items.size()-1).getPic());
-                        currentListView = listView;
-                    } else if (mark_count == 1) {
-                        imgPic.setImageBitmap(items.get(items.size()-2).getPic());
-                        preListView = listView;
-                    }
-
-                    mark_count++;
                 } else if (is_markOther) {
                     Log.e(TAG, "<position = "+position+" mark_select = "+mark_select+">");
                     if (position == mark_select + 1) {
+                        currentArrayList.clear();
+                        currentArrayList = new ArrayList<>(showItemArrayList);
+                        //Collections.copy(currentArrayList, showItemArrayList);
+
                         currentListView = listView;
+                        currentAdapter = showItemAdapter;
+
                     } else if (position == mark_select ) {
+                        preArrayList.clear();
+                        preArrayList = new ArrayList<>(showItemArrayList);
+                        //Collections.copy(preArrayList, showItemArrayList);
+
                         preListView = listView;
+                        prevAdapter = showItemAdapter;
                     } else if (position == mark_select + 2) {
+                        nextArrayList.clear();
+                        nextArrayList = new ArrayList<>(showItemArrayList);
+                        //Collections.copy(nextArrayList, showItemArrayList);
+
                         nextListView = listView;
+                        nextAdapter = showItemAdapter;
+
                         is_markOther = false;
                     }
 
                 } else {
-                    ShowItemAdapter showItemAdapter = new ShowItemAdapter(context, R.layout.court_show_item, showItemArrayList);
-                    listView.setAdapter(showItemAdapter);
+
+                    if (position > prev_position) { //left slide
+
+                        if (currentArrayList.size() > 0) { //copy current to prev
+
+                            preArrayList.clear();
+                            preArrayList = new ArrayList<>(currentArrayList);
+
+                            Log.e(TAG, "preArrayList " + preArrayList.get(0).getTextShow());
+
+                            preListView = currentListView;
+                            prevAdapter = currentAdapter;
+
+                            prevAdapter = new ShowItemAdapter(context, R.layout.court_show_item, preArrayList);
+                            preListView.setAdapter(prevAdapter);
+
+                        }
+
+                        if (nextArrayList.size() > 0) { //copy next to currrent
+
+                            currentArrayList.clear();
+                            currentArrayList = new ArrayList<>(nextArrayList);
+
+                            Log.e(TAG, "currentArrayList " + currentArrayList.get(0).getTextShow());
+
+                            currentListView = nextListView;
+                            currentAdapter = nextAdapter;
+
+                            currentAdapter = new ShowItemAdapter(context, R.layout.court_show_item, currentArrayList);
+                            currentListView.setAdapter(currentAdapter);
+
+                        }
+                    } else if (position < prev_position) {
+
+                        if (currentArrayList.size() > 0) { //copy current to temp
+
+                            tempArrayList.clear();
+                            tempArrayList = new ArrayList<>(currentArrayList);
+
+                            Log.e(TAG, "tempArrayList " + tempArrayList.get(0).getTextShow());
+
+                            tempListView = currentListView;
+                            tempAdapter = currentAdapter;
+
+                        }
+
+                        if (preArrayList.size() > 0) { //copy prev to currrent
+
+                            currentArrayList.clear();
+                            currentArrayList = new ArrayList<>(preArrayList);
+
+                            Log.e(TAG, "currentArrayList " + currentArrayList.get(0).getTextShow());
+
+                            currentListView = preListView;
+                            currentAdapter = prevAdapter;
+
+                            currentAdapter = new ShowItemAdapter(context, R.layout.court_show_item, currentArrayList);
+                            currentListView.setAdapter(currentAdapter);
+
+                        }
+
+                        if (tempArrayList.size() > 0) { //copy temp to prev
+                            preArrayList.clear();
+                            preArrayList = new ArrayList<>(tempArrayList);
+
+                            Log.e(TAG, "preArrayList " + preArrayList.get(0).getTextShow());
+
+                            preListView = tempListView;
+                            prevAdapter = tempAdapter;
+
+                            prevAdapter = new ShowItemAdapter(context, R.layout.court_show_item, preArrayList);
+                            preListView.setAdapter(prevAdapter);
+                        }
+                    }
+
+
+
+                    nextArrayList.clear();
+                    nextArrayList = new ArrayList<>(showItemArrayList);
+                    //Collections.copy(nextArrayList, showItemArrayList);
+                    Log.e(TAG, "nextArrayList " + nextArrayList.get(0).getTextShow());
+
+                    nextListView = listView;
+                    nextAdapter = showItemAdapter;
+
+
                 }
             }
 
+
+            prev_position = position;
         }
 
         Log.e(TAG, "set_count = "+set_count);
@@ -413,19 +721,6 @@ public class LocationPager extends PagerAdapter {
             set_count = 0;
         }
 
-        if (is_markFirst && mark_count == 2) {
-            Log.e(TAG, "is_markLast set current!");
-
-            //listView.setAdapter(currentAdapter);
-            mark_count = 0;
-        }
-
-        if (is_markLast && mark_count == 3) {
-            Log.e(TAG, "is_markLast set current!");
-
-            //listView.setAdapter(currentAdapter);
-            mark_count = 0;
-        }
 
         // Locate the ImageView in viewpager_item.xml
         //imgPic = (ImageView) itemView.findViewById(R.id.flag);
@@ -438,15 +733,15 @@ public class LocationPager extends PagerAdapter {
         container.addView(itemView);
         Log.e(TAG, "==> addItem "+position+"");
 
+
+
         return itemView;
     }
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         Log.e(TAG, "==> destroyItem "+position);
 
-        if (is_markFirst) {
 
-        }
 
         container.removeView((View) object);
     }
@@ -775,7 +1070,7 @@ public class LocationPager extends PagerAdapter {
         nextListView.setAdapter(nextAdapter);
     }
 
-    public void mark_current_page_first() {
+    /*public void mark_current_page_first() {
         Log.d(TAG, "mark_current_page_first");
 
         Log.e(TAG, "name = "+items.get(0).getName());
@@ -814,39 +1109,7 @@ public class LocationPager extends PagerAdapter {
         currentAdapter = new ShowItemAdapter(context,R.layout.court_show_item,currentArrayList);
         currentListView.setAdapter(currentAdapter);
 
-        /*preArrayList.clear();
-        ShowItem courtName1 = new ShowItem(context.getResources().getString(R.string.add_court_header_name), items.get(items.size() - 1).getName(), 0);
-        preArrayList.add(courtName1);
 
-        ShowItem courtType1 = new ShowItem(context.getResources().getString(R.string.add_court_header_type), String.valueOf(items.get(items.size() - 1).getType()), 0);
-        preArrayList.add(courtType1);
-
-        ShowItem courtUsage1 = new ShowItem(context.getResources().getString(R.string.add_court_header_usage), getCourtUsage(items.get(items.size() - 1).getCourt_usage()), 0);
-        preArrayList.add(courtUsage1);
-
-        ShowItem courtLight1 = new ShowItem(context.getResources().getString(R.string.add_court_header_light), getCourtLight(items.get(items.size() - 1).getLight()), 0);
-        preArrayList.add(courtLight1);
-
-        ShowItem courtNum1 = new ShowItem(context.getResources().getString(R.string.add_court_header_courts), String.valueOf(items.get(items.size() - 1).getCourt_num()), 0);
-        preArrayList.add(courtNum1);
-
-        ShowItem courtIfCharge1 = new ShowItem(context.getResources().getString(R.string.add_court_header_if_charge), getCourtCharge(items.get(items.size() - 1).getIfCharge()), 0);
-        preArrayList.add(courtIfCharge1);
-
-        ShowItem courtCharge1 = new ShowItem(context.getResources().getString(R.string.add_court_header_charge), String.valueOf(items.get(items.size() - 1).getCharge()), 0);
-        preArrayList.add(courtCharge1);
-
-        ShowItem courtMaintain1 = new ShowItem(context.getResources().getString(R.string.add_court_header_maintenance), "", items.get(items.size() - 1).getMaintenance());
-        preArrayList.add(courtMaintain1);
-
-        ShowItem courtTraffic1 = new ShowItem(context.getResources().getString(R.string.add_court_header_traffic), "", items.get(items.size() - 1).getTraffic());
-        preArrayList.add(courtTraffic1);
-
-        ShowItem courtParking1 = new ShowItem(context.getResources().getString(R.string.add_court_header_parking), "", items.get(items.size() - 1).getParking());
-        preArrayList.add(courtParking1);
-
-        prevAdapter = new ShowItemAdapter(context,R.layout.court_show_item,preArrayList);
-        preListView.setAdapter(prevAdapter);*/
 
         nextArrayList.clear();
         ShowItem courtName2 = new ShowItem(context.getResources().getString(R.string.add_court_header_name), items.get(1).getName(), 0);
@@ -881,7 +1144,7 @@ public class LocationPager extends PagerAdapter {
 
         nextAdapter = new ShowItemAdapter(context,R.layout.court_show_item,nextArrayList);
         nextListView.setAdapter(nextAdapter);
-    }
+    }*/
 
     public void mark_current_page_last() {
         Log.d(TAG, "mark_current_page_last");
