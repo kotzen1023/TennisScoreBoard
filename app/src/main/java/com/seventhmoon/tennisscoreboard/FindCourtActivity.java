@@ -287,14 +287,14 @@ public class FindCourtActivity extends AppCompatActivity implements
                                             is_setFirst = true;
                                             viewPager.setCurrentItem(1, false);
                                             //pageAdapter.show_current_page_first();
-                                            is_setFirst = false;
+                                            //is_setFirst = false;
                                             Log.e(TAG, "=== set first end ===");
                                         } else if (currentPage == 0) {
                                             Log.e(TAG, "=== set last start ===");
                                             is_setLast = true;
                                             viewPager.setCurrentItem(pageCount - 2, false);
                                             //pageAdapter.show_current_page_last();
-                                            is_setLast = false;
+                                            //is_setLast = false;
                                             Log.e(TAG, "=== set last end ===");
                                         }
                                     }
@@ -520,52 +520,63 @@ public class FindCourtActivity extends AppCompatActivity implements
                             //        marker.getTitle().equals(markerList.get(i).getTitle())) {
                             if ((int)marker.getTag() == i) {
 
-                                if ( i == 0) {
-                                    is_init = true;
-                                    viewPager.setCurrentItem(0, false);
+                                /*if ( i == 0) {
+                                    Log.e(TAG, "=== set first start ===");
+                                    is_markOther = true;
+                                    mark_select = i;
                                     viewPager.setCurrentItem(1, false);
-                                    /*is_markFirst = true;
-                                    mark_count = 0;
-                                    viewPager.setCurrentItem(i, false);
-                                    pageAdapter.mark_current_page_first();
-                                    is_markFirst = false;*/
+
+                                    Log.e(TAG, "=== set first end ===");
                                 } else if ( i == markerList.size() -1 ) {
-                                    /*is_markLast = true;
-                                    mark_count = 0;
-                                    viewPager.setCurrentItem(i, false);
-                                    pageAdapter.mark_current_page_last();
-                                    is_markLast = false;*/
+                                    Log.e(TAG, "=== set last start ===");
                                     int pageCount = markerList.size() + 2;
                                     is_setLast = true;
                                     viewPager.setCurrentItem(pageCount - 2, false);
-                                    pageAdapter.mark_current_page_last();
-                                    is_setLast = false;
+
+                                    Log.e(TAG, "=== set last end ===");
+
                                 } else {
+                                    Log.e(TAG, "=== mark other start ===");
                                     is_markOther = true;
                                     mark_select = i;
+                                    mark_count = 0;
                                     viewPager.setCurrentItem(i+1, false);
-                                    pageAdapter.mark_current_page_other(i+1);
-                                    //is_markOther = false;
 
+
+                                    if (mark_count == 3) {
+                                        Log.e(TAG, "mark_count = 3, will remove 3 items.");
+                                    } else if (mark_count == 2) {
+                                        Log.e(TAG, "mark_count = 2, will remove 2 items.");
+                                    } else if (mark_count == 1) {
+                                        Log.e(TAG, "mark_count = 1, will remove 1 item.");
+                                    } else {
+                                        Log.e(TAG, "same mark, will not remove any item.");
+                                    }
+                                    is_markOther = false;
+                                    Log.e(TAG, "=== mark other end ===");
+
+                                }*/
+                                Log.e(TAG, "=== mark other start ===");
+                                is_markOther = true;
+                                mark_select = i;
+                                mark_count = 0;
+                                viewPager.setCurrentItem(i+1, false);
+                                is_markOther = false;
+
+                                if (mark_count == 3) {
+                                    Log.e(TAG, "mark_count = 3, will remove 3 items.");
+                                } else if (mark_count == 2) {
+                                    Log.e(TAG, "mark_count = 2, will remove 2 items.");
+                                } else if (mark_count == 1) {
+                                    Log.e(TAG, "mark_count = 1, will remove 1 item.");
+                                } else {
+                                    Log.e(TAG, "same mark, will not remove any item.");
                                 }
 
-                                /*if ( i == 0 ) {
-                                    Log.e(TAG, "=== set first start ===");
-                                    is_setFirst = true;
-                                    viewPager.setCurrentItem(1, false);
-                                    pageAdapter.show_current_page_first();
-                                    is_setFirst = false;
-                                    Log.e(TAG, "=== set first end ===");
-                                } else if ( i == markerList.size() - 1) {
-                                    Log.e(TAG, "=== set last start ===");
-                                    is_setLast = true;
-                                    viewPager.setCurrentItem(markerList.size(), false);
-                                    pageAdapter.show_current_page_last();
-                                    is_setLast = false;
-                                    Log.e(TAG, "=== set last end ===");
-                                } else {
-                                    viewPager.setCurrentItem(i, false);
-                                }*/
+                                pageAdapter.set_mark_adjust();
+
+                                Log.e(TAG, "=== mark other end ===");
+
 
 
 

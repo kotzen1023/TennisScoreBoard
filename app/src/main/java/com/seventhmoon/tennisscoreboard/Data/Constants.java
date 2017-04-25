@@ -10,4 +10,9 @@ public class Constants {
         String INSERT_COURT_INFO_COMPLETE = "com.seventhmoon.InsertCourtInfoComplete";
 
     }
+
+    public interface DIRECTION {
+        Integer SLIDE_RIGHT_DIRECTION = 0;
+        Integer SLIDE_LEFT_DIRECTION = 1;
+    }
 }
