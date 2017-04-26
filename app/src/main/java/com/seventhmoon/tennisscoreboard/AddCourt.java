@@ -41,7 +41,9 @@ import com.seventhmoon.tennisscoreboard.Data.Constants;
 import com.seventhmoon.tennisscoreboard.Data.FileOperation;
 import com.seventhmoon.tennisscoreboard.Data.LocationPager;
 import com.seventhmoon.tennisscoreboard.Service.CheckCourtTableService;
+import com.seventhmoon.tennisscoreboard.Service.CheckMacExistsService;
 import com.seventhmoon.tennisscoreboard.Service.InertCourtService;
+import com.seventhmoon.tennisscoreboard.Service.UpdateUploadRemainService;
 import com.seventhmoon.tennisscoreboard.Sql.Jdbc;
 
 import java.io.ByteArrayOutputStream;
@@ -319,6 +321,12 @@ public class AddCourt extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equalsIgnoreCase(Constants.ACTION.INSERT_COURT_INFO_COMPLETE)) {
                     Log.d(TAG, "receive brocast !");
+
+                    initData.setUpload_remain(initData.getUpload_remain()-1);
+
+                    Intent checkIntent = new Intent(AddCourt.this, UpdateUploadRemainService.class);
+                    //checkIntent.putExtra("my_id", my_id);
+                    startService(checkIntent);
 
                     is_reload = true;
 

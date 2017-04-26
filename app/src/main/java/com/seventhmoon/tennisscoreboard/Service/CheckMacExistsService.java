@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.seventhmoon.tennisscoreboard.Data.Constants;
 import com.seventhmoon.tennisscoreboard.Data.InitData;
 import com.seventhmoon.tennisscoreboard.MainMenu;
 
@@ -53,8 +54,12 @@ public class CheckMacExistsService extends IntentService {
 
     @Override
     public void onDestroy() {
+        Intent newNotifyIntent = new Intent(Constants.ACTION.CHECK_MAC_EXIST_COMPLETE);
+        context.sendBroadcast(newNotifyIntent);
+
         super.onDestroy();
         Log.d(TAG, "onDestroy()");
+
 
     }
 }

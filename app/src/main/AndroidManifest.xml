@@ -55,6 +55,7 @@
         <service android:name=".Service.CheckCourtTableService"/>
         <service android:name=".Service.InertCourtService"/>
         <service android:name=".Service.GetCourtImageService"/>
+        <service android:name=".Service.UpdateUploadRemainService"/>
     </application>
 
 </manifest>

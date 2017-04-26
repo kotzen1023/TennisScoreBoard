@@ -8,7 +8,7 @@ public class Constants {
         String GET_COURT_INFO_COMPLETE = "com.seventhmoon.GetCourtInfo";
         String GET_COURT_IMAGE_COMPLETE = "com.seventhmoon.GetCourtComplete";
         String INSERT_COURT_INFO_COMPLETE = "com.seventhmoon.InsertCourtInfoComplete";
-
+        String CHECK_MAC_EXIST_COMPLETE = "com.seventhmoon.CheckMacExistComplete";
     }
 
     public interface DIRECTION {

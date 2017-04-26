@@ -459,7 +459,7 @@ public class LocationPager extends PagerAdapter {
                 ShowItemAdapter showItemAdapter = new ShowItemAdapter(context,R.layout.court_show_item,showItemArrayList);
                 listView.setAdapter(showItemAdapter);
 
-                Log.d(TAG, "</first>");
+
 
                 if (is_init) {
 
@@ -638,6 +638,7 @@ public class LocationPager extends PagerAdapter {
 
 
                 }
+                Log.d(TAG, "</first>");
             } else {
                 Log.d(TAG, "<normal>");
 
@@ -679,8 +680,6 @@ public class LocationPager extends PagerAdapter {
 
                 ShowItemAdapter showItemAdapter = new ShowItemAdapter(context, R.layout.court_show_item, showItemArrayList);
                 listView.setAdapter(showItemAdapter);
-
-                Log.d(TAG, "</normal>");
 
                 if (is_init) {
                     if (position == 1) {
@@ -940,6 +939,7 @@ public class LocationPager extends PagerAdapter {
                     }
 
                 }
+                Log.d(TAG, "</normal>");
             }
 
 
@@ -1315,58 +1315,227 @@ public class LocationPager extends PagerAdapter {
         Log.e(TAG, "**** set_mark_adjust start ****");
 
         Log.d(TAG, "Direction : "+ (direction > 0 ? "<===" : "===>"));
-        Log.d(TAG, "make_count = "+mark_count);
+        Log.d(TAG, "mark_count = "+mark_count);
 
-        if (mark_count == 1) {
-            Log.d(TAG, "tempArrayList0 "+tempArrayList0.get(0).getTextShow());
-        } else if (mark_count == 2) {
-            Log.d(TAG, "tempArrayList0 "+tempArrayList0.get(0).getTextShow());
-            Log.d(TAG, "tempArrayList1 "+tempArrayList1.get(0).getTextShow());
+        if (items.size() == 1) {
+            Log.d(TAG, "item size = 1");
 
-            if (direction == Constants.DIRECTION.SLIDE_RIGHT_DIRECTION) {
-
-            } else { //SLIDE_LEFT_DIRECTION
-
-            }
-
-
-        } else if (mark_count == 3) {
-            Log.d(TAG, "tempArrayList0 "+tempArrayList0.get(0).getTextShow());
-            Log.d(TAG, "tempArrayList1 "+tempArrayList1.get(0).getTextShow());
-            Log.d(TAG, "tempArrayList2 "+tempArrayList2.get(0).getTextShow());
-
-            currentArrayList.clear();
-            currentArrayList = new ArrayList<>(tempArrayList0);
-
-            Log.e(TAG, "currentArrayList " + currentArrayList.get(0).getTextShow());
-
-            currentListView = tempListView0;
-            currentAdapter = tempAdapter0;
-
-            currentAdapter = new ShowItemAdapter(context, R.layout.court_show_item, currentArrayList);
-            currentListView.setAdapter(currentAdapter);
-
-            preArrayList.clear();
-            preArrayList = new ArrayList<>(tempArrayList1);
-
-            Log.e(TAG, "preArrayList " + preArrayList.get(0).getTextShow());
-
-            preListView = tempListView1;
-            prevAdapter = tempAdapter1;
+            Log.d(TAG, "preArrayList = "+preArrayList.get(0).getTextShow());
+            Log.d(TAG, "currentArrayList = "+currentArrayList.get(0).getTextShow());
+            Log.d(TAG, "nextArrayList = "+nextArrayList.get(0).getTextShow());
 
             prevAdapter = new ShowItemAdapter(context, R.layout.court_show_item, preArrayList);
             preListView.setAdapter(prevAdapter);
 
-            nextArrayList.clear();
-            nextArrayList = new ArrayList<>(tempArrayList2);
-
-            Log.e(TAG, "nextArrayList " + nextArrayList.get(0).getTextShow());
-
-            nextListView = tempListView2;
-            nextAdapter = tempAdapter2;
+            currentAdapter = new ShowItemAdapter(context, R.layout.court_show_item, currentArrayList);
+            currentListView.setAdapter(currentAdapter);
 
             nextAdapter = new ShowItemAdapter(context, R.layout.court_show_item, nextArrayList);
             nextListView.setAdapter(nextAdapter);
+        } else if (items.size() == 2) {
+            Log.d(TAG, "item size = 2");
+
+            Log.d(TAG, "preArrayList = "+preArrayList.get(0).getTextShow());
+            Log.d(TAG, "currentArrayList = "+currentArrayList.get(0).getTextShow());
+            Log.d(TAG, "nextArrayList = "+nextArrayList.get(0).getTextShow());
+
+            prevAdapter = new ShowItemAdapter(context, R.layout.court_show_item, preArrayList);
+            preListView.setAdapter(prevAdapter);
+
+            currentAdapter = new ShowItemAdapter(context, R.layout.court_show_item, currentArrayList);
+            currentListView.setAdapter(currentAdapter);
+
+            nextAdapter = new ShowItemAdapter(context, R.layout.court_show_item, nextArrayList);
+            nextListView.setAdapter(nextAdapter);
+        } else {
+
+            if (mark_count == 1) {
+                Log.d(TAG, "tempArrayList0 " + tempArrayList0.get(0).getTextShow());
+
+                if (direction == Constants.DIRECTION.SLIDE_RIGHT_DIRECTION) {
+                    //the prev should current
+                    preArrayList.clear();
+                    preArrayList = new ArrayList<>(currentArrayList);
+
+                    Log.e(TAG, "preArrayList " + preArrayList.get(0).getTextShow());
+
+                    preListView = currentListView;
+                    prevAdapter = currentAdapter;
+
+                    prevAdapter = new ShowItemAdapter(context, R.layout.court_show_item, preArrayList);
+                    preListView.setAdapter(prevAdapter);
+
+                    currentArrayList.clear();
+                    currentArrayList = new ArrayList<>(nextArrayList);
+
+                    Log.e(TAG, "currentArrayList " + currentArrayList.get(0).getTextShow());
+
+                    currentListView = nextListView;
+                    currentAdapter = nextAdapter;
+
+                    currentAdapter = new ShowItemAdapter(context, R.layout.court_show_item, currentArrayList);
+                    currentListView.setAdapter(currentAdapter);
+
+                    nextArrayList.clear();
+                    nextArrayList = new ArrayList<>(tempArrayList0);
+
+                    Log.e(TAG, "nextArrayList " + nextArrayList.get(0).getTextShow());
+
+                    nextListView = tempListView0;
+                    nextAdapter = tempAdapter0;
+
+                    nextAdapter = new ShowItemAdapter(context, R.layout.court_show_item, nextArrayList);
+                    nextListView.setAdapter(nextAdapter);
+                } else { //SLIDE_LEFT_DIRECTION
+                    nextArrayList.clear();
+                    nextArrayList = new ArrayList<>(currentArrayList);
+
+                    Log.e(TAG, "nextArrayList " + nextArrayList.get(0).getTextShow());
+
+                    nextListView = tempListView0;
+                    nextAdapter = tempAdapter0;
+
+                    nextAdapter = new ShowItemAdapter(context, R.layout.court_show_item, nextArrayList);
+                    nextListView.setAdapter(nextAdapter);
+
+                    currentArrayList.clear();
+                    currentArrayList = new ArrayList<>(preArrayList);
+
+                    Log.e(TAG, "currentArrayList " + currentArrayList.get(0).getTextShow());
+
+                    currentListView = preListView;
+                    currentAdapter = prevAdapter;
+
+                    currentAdapter = new ShowItemAdapter(context, R.layout.court_show_item, currentArrayList);
+                    currentListView.setAdapter(currentAdapter);
+
+                    preArrayList.clear();
+                    preArrayList = new ArrayList<>(tempArrayList0);
+
+                    Log.e(TAG, "preArrayList " + preArrayList.get(0).getTextShow());
+
+                    preListView = tempListView0;
+                    prevAdapter = tempAdapter0;
+
+                    prevAdapter = new ShowItemAdapter(context, R.layout.court_show_item, preArrayList);
+                    preListView.setAdapter(prevAdapter);
+                }
+
+            } else if (mark_count == 2) {
+                Log.d(TAG, "tempArrayList0 " + tempArrayList0.get(0).getTextShow());
+                Log.d(TAG, "tempArrayList1 " + tempArrayList1.get(0).getTextShow());
+
+                if (direction == Constants.DIRECTION.SLIDE_RIGHT_DIRECTION) {
+                    currentArrayList.clear();
+                    currentArrayList = new ArrayList<>(tempArrayList0);
+
+                    Log.e(TAG, "currentArrayList " + currentArrayList.get(0).getTextShow());
+
+                    currentListView = tempListView0;
+                    currentAdapter = tempAdapter0;
+
+                    currentAdapter = new ShowItemAdapter(context, R.layout.court_show_item, currentArrayList);
+                    currentListView.setAdapter(currentAdapter);
+
+                    //the prev should be next
+                    preArrayList.clear();
+                    preArrayList = new ArrayList<>(nextArrayList);
+
+                    Log.e(TAG, "preArrayList " + preArrayList.get(0).getTextShow());
+
+                    preListView = nextListView;
+                    prevAdapter = nextAdapter;
+
+                    prevAdapter = new ShowItemAdapter(context, R.layout.court_show_item, preArrayList);
+                    preListView.setAdapter(prevAdapter);
+
+
+                    nextArrayList.clear();
+                    nextArrayList = new ArrayList<>(tempArrayList1);
+
+                    Log.e(TAG, "nextArrayList " + nextArrayList.get(0).getTextShow());
+
+                    nextListView = tempListView1;
+                    nextAdapter = tempAdapter1;
+
+                    nextAdapter = new ShowItemAdapter(context, R.layout.court_show_item, nextArrayList);
+                    nextListView.setAdapter(nextAdapter);
+
+                } else { //SLIDE_LEFT_DIRECTION
+                    currentArrayList.clear();
+                    currentArrayList = new ArrayList<>(tempArrayList0);
+
+                    Log.e(TAG, "currentArrayList " + currentArrayList.get(0).getTextShow());
+
+                    currentListView = tempListView0;
+                    currentAdapter = tempAdapter0;
+
+                    currentAdapter = new ShowItemAdapter(context, R.layout.court_show_item, currentArrayList);
+                    currentListView.setAdapter(currentAdapter);
+
+                    //the next should be prev
+                    nextArrayList.clear();
+                    nextArrayList = new ArrayList<>(preArrayList);
+
+                    Log.e(TAG, "nextArrayList " + nextArrayList.get(0).getTextShow());
+
+                    nextListView = preListView;
+                    nextAdapter = prevAdapter;
+
+                    nextAdapter = new ShowItemAdapter(context, R.layout.court_show_item, nextArrayList);
+                    nextListView.setAdapter(nextAdapter);
+
+                    preArrayList.clear();
+                    preArrayList = new ArrayList<>(tempArrayList1);
+
+                    Log.e(TAG, "preArrayList " + preArrayList.get(0).getTextShow());
+
+                    preListView = tempListView1;
+                    prevAdapter = tempAdapter1;
+
+                    prevAdapter = new ShowItemAdapter(context, R.layout.court_show_item, preArrayList);
+                    preListView.setAdapter(prevAdapter);
+                }
+
+
+            } else if (mark_count == 3) {
+                Log.d(TAG, "tempArrayList0 " + tempArrayList0.get(0).getTextShow());
+                Log.d(TAG, "tempArrayList1 " + tempArrayList1.get(0).getTextShow());
+                Log.d(TAG, "tempArrayList2 " + tempArrayList2.get(0).getTextShow());
+
+                currentArrayList.clear();
+                currentArrayList = new ArrayList<>(tempArrayList0);
+
+                Log.e(TAG, "currentArrayList " + currentArrayList.get(0).getTextShow());
+
+                currentListView = tempListView0;
+                currentAdapter = tempAdapter0;
+
+                currentAdapter = new ShowItemAdapter(context, R.layout.court_show_item, currentArrayList);
+                currentListView.setAdapter(currentAdapter);
+
+                preArrayList.clear();
+                preArrayList = new ArrayList<>(tempArrayList1);
+
+                Log.e(TAG, "preArrayList " + preArrayList.get(0).getTextShow());
+
+                preListView = tempListView1;
+                prevAdapter = tempAdapter1;
+
+                prevAdapter = new ShowItemAdapter(context, R.layout.court_show_item, preArrayList);
+                preListView.setAdapter(prevAdapter);
+
+                nextArrayList.clear();
+                nextArrayList = new ArrayList<>(tempArrayList2);
+
+                Log.e(TAG, "nextArrayList " + nextArrayList.get(0).getTextShow());
+
+                nextListView = tempListView2;
+                nextAdapter = tempAdapter2;
+
+                nextAdapter = new ShowItemAdapter(context, R.layout.court_show_item, nextArrayList);
+                nextListView.setAdapter(nextAdapter);
+            }
         }
 
         Log.e(TAG, "**** set_mark_adjust end ****");

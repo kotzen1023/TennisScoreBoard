@@ -282,7 +282,34 @@ public class FindCourtActivity extends AppCompatActivity implements
                                     if (state == ViewPager.SCROLL_STATE_IDLE) {
                                         final int pageCount = myCourtList.size() + 2;
 
+                                        Log.e(TAG, "=== mark other start ===");
+                                        is_markOther = true;
+                                        mark_count = 0;
                                         if (currentPage == pageCount - 1) {
+                                            mark_select = 0;
+                                            viewPager.setCurrentItem(1, false);
+                                        } else if (currentPage == 0) {
+                                            mark_select = myCourtList.size() - 1;
+                                            viewPager.setCurrentItem(pageCount - 2, false);
+                                        }
+
+                                        is_markOther = false;
+
+                                        if (mark_count == 3) {
+                                            Log.e(TAG, "mark_count = 3, will remove 3 items.");
+                                        } else if (mark_count == 2) {
+                                            Log.e(TAG, "mark_count = 2, will remove 2 items.");
+                                        } else if (mark_count == 1) {
+                                            Log.e(TAG, "mark_count = 1, will remove 1 item.");
+                                        } else {
+                                            Log.e(TAG, "same mark, will not remove any item.");
+                                        }
+
+                                        pageAdapter.set_mark_adjust();
+
+                                        Log.e(TAG, "=== mark other end ===");
+
+                                        /*if (currentPage == pageCount - 1) {
                                             Log.e(TAG, "=== set first start ===");
                                             is_setFirst = true;
                                             viewPager.setCurrentItem(1, false);
@@ -296,13 +323,13 @@ public class FindCourtActivity extends AppCompatActivity implements
                                             //pageAdapter.show_current_page_last();
                                             //is_setLast = false;
                                             Log.e(TAG, "=== set last end ===");
-                                        }
+                                        }*/
                                     }
                                 }
                             });
                         } else {
                             Log.d(TAG, "pageAdapter not null");
-                            //pageAdapter.notifyDataSetChanged();
+                            pageAdapter.notifyDataSetChanged();
                         }
 
                         markerList.clear();
@@ -395,6 +422,9 @@ public class FindCourtActivity extends AppCompatActivity implements
 
         if (is_permmision) {
             if (is_reload) {
+                if (pageAdapter != null)
+                    pageAdapter.notifyDataSetChanged();
+
                 loadDialog = new ProgressDialog(FindCourtActivity.this);
                 loadDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 loadDialog.setTitle("Loading...");

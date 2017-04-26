@@ -3,6 +3,7 @@ package com.seventhmoon.tennisscoreboard.Service;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -12,12 +13,12 @@ import static com.seventhmoon.tennisscoreboard.MainMenu.initData;
 import static com.seventhmoon.tennisscoreboard.Sql.Jdbc.is_query;
 
 
-public class CheckCourtTableService extends IntentService {
-    private static final String TAG = CheckCourtTableService.class.getName();
+public class UpdateUploadRemainService extends IntentService {
+    private static final String TAG = UpdateUploadRemainService.class.getName();
     private Context context;
 
-    public CheckCourtTableService() {
-        super("CheckCourtTableService");
+    public UpdateUploadRemainService() {
+        super("UpdateUploadRemainService");
     }
 
     @Override
@@ -42,23 +43,22 @@ public class CheckCourtTableService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         Log.i(TAG, "onHandleIntent");
 
-        String longitude = intent.getStringExtra("longitude");
-        String latitude = intent.getStringExtra("latitude");
+        //String my_id = intent.getStringExtra("my_id");
 
-        Log.e(TAG, "longitude = "+longitude+", latitude = "+latitude);
+        Log.e(TAG, "Upload remain : "+initData.getUpload_remain());
 
-        if (longitude != null && latitude != null) {
+        String id = Build.MODEL + " - " + initData.getWifiMac();
+        String upload_remain = String.valueOf(initData.getUpload_remain());
 
-            if (!is_query) {// not in query
-                initData.jdbc.queryCourtTable(context, Double.valueOf(longitude), Double.valueOf(latitude));
-            }
+        if (!is_query) { // not in query
+
+            initData.jdbc.updateTableUserId(id, upload_remain);
         }
     }
 
     @Override
     public void onDestroy() {
-
-        Intent newNotifyIntent = new Intent(Constants.ACTION.GET_COURT_INFO_COMPLETE);
+        Intent newNotifyIntent = new Intent(Constants.ACTION.CHECK_MAC_EXIST_COMPLETE);
         context.sendBroadcast(newNotifyIntent);
 
         super.onDestroy();

@@ -43,6 +43,8 @@ public class Jdbc {
     private static String insertdbSQLUserId = "insert into user_id(user_mac, uploaded) " +
             "values(?, ?)";
 
+    private static String updatedbSQLUserId = "UPDATE user_id SET uploaded = ? where user_mac = ?";
+
     private static String querydbSQLCourt = "select * from court";
     private static String querydbSQLUserId = "select * from user_id";
 
@@ -148,6 +150,7 @@ public class Jdbc {
         if (!is_query) {
             myContext = context;
             myCourtList.clear();
+
 
             is_query = true;
             //new Thread() {
@@ -496,101 +499,46 @@ public class Jdbc {
 
     }
 
-    private static class sqlQueryCourtTask extends AsyncTask<Integer, Integer, String>
+    public void updateTableUserId(final String mac, final String upload)
     {
-        // <傳入參數, 處理中更新介面參數, 處理後傳出參數>
-        //int nowCount;
-        @Override
-        protected String doInBackground(Integer... countTo) {
+        Log.d(TAG, "=== updateTable start === mac = "+mac+" upload = "+upload);
+        //boolean ret = false;
 
-            // 再背景中處理的耗時工作
-            /*try {
-                while(Data.pass_count<selected_names.size()){
-
-                    //nowCount = i + 1;
-                    publishProgress(Data.pass_count+1);
-                    Thread.sleep(200);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return "10";*/
-            /*while(decrypting) {
-                try {
-
-                    long percent = 0;
-                    if (Data.current_file_size > 0)
-                        percent = (Data.complete_file_size * 100)/Data.current_file_size;
-
-                    publishProgress((int)percent);
-                    Thread.sleep(200);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }*/
-
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            /*loadDialog = new ProgressDialog(PhotoList.this);
-            loadDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            loadDialog.setTitle(R.string.photolist_decrypting_title);
-            loadDialog.setProgress(0);
-            loadDialog.setMax(100);
-            loadDialog.setIndeterminate(false);
-            loadDialog.setCancelable(false);
-
-            loadDialog.show();*/
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-
-            super.onProgressUpdate(values);
-            // 背景工作處理"中"更新的事
-            /*long percent = 0;
-            if (Data.current_file_size > 0)
-                percent = (Data.complete_file_size * 100)/Data.current_file_size;
-
-            decryptDialog.setMessage(getResources().getString(R.string.photolist_decrypting_files) + "(" + values[0] + "/" + selected_names.size() + ") " + percent + "%\n" + selected_names.get(values[0] - 1));
-            */
-            /*if (Data.OnDecompressing) {
-                loadDialog.setTitle(getResources().getString(R.string.decompressing_files_title) + " " + Data.CompressingFileName);
-                loadDialog.setProgress(values[0]);
-            } else if (Data.OnDecrypting) {
-                loadDialog.setTitle(getResources().getString(R.string.decrypting_files_title) + " " + Data.EnryptingOrDecryptingFileName);
-                loadDialog.setProgress(values[0]);
+        if (!is_update) {
+            is_update = true;
+            if (con == null) {
+                Log.e(TAG, "Connection = null, we must connect first...");
+                Connect();
             } else {
-                loadDialog.setMessage(getResources().getString(R.string.decrypting_files_title));
-            }*/
+                Log.e(TAG, "Connection = " + con.getClass().getName());
+            }
+
+            if (con != null) {
+
+                try {
+                    pst = con.prepareStatement(updatedbSQLUserId);
+
+                    pst.setInt(1, Integer.valueOf(upload));
+                    pst.setString(2, mac);
+
+
+                    pst.executeUpdate();
+
+                } catch (SQLException e) {
+                    System.out.println("updateDB Exception :" + e.toString());
+                } finally {
+                    Close();
+                }
+            }
+            is_update = false;
         }
 
-        @Override
-        protected void onPostExecute(String result) {
+        Log.d(TAG, "=== updateTable end ===");
 
-            super.onPostExecute(result);
+        //sqlTask conTask;
+        //conTask = new sqlTask();
+        //conTask.execute(10);
 
-            Log.d(TAG, "onPostExecute");
-            //send broadcast
 
-            //loadDialog.dismiss();
-            /*btnDecrypt.setVisibility(View.INVISIBLE);
-            btnShare.setVisibility(View.INVISIBLE);
-            btnDelete.setVisibility(View.INVISIBLE);
-            selected_count = 0;*/
-            //Intent newNotifyIntent = new Intent(Constants.ACTION.GET_COURT_INFO_COMPLETE);
-            //myContext.sendBroadcast(newNotifyIntent);
-        }
-
-        @Override
-        protected void onCancelled() {
-
-            super.onCancelled();
-        }
     }
 }

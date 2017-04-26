@@ -2,16 +2,26 @@ package com.seventhmoon.tennisscoreboard;
 
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.seventhmoon.tennisscoreboard.Data.Constants;
 import com.seventhmoon.tennisscoreboard.Data.InitData;
+import com.seventhmoon.tennisscoreboard.Data.LocationPager;
 import com.seventhmoon.tennisscoreboard.Service.CheckMacExistsService;
 import com.seventhmoon.tennisscoreboard.Sql.Jdbc;
 
@@ -30,6 +40,13 @@ public class MainMenu extends Activity{
 
     public static InitData initData = new InitData();
 
+    private static BroadcastReceiver mReceiver = null;
+    private static boolean isRegister = false;
+
+    private static String my_id;
+    private static String id;
+    private static String macAddress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +54,10 @@ public class MainMenu extends Activity{
 
         Log.d(TAG, "onCreate");
 
+        IntentFilter filter;
         Intent intent = getIntent();
-        String macAddress = intent.getStringExtra("WiFiMac");
+        macAddress = intent.getStringExtra("WiFiMac");
+
         Log.d(TAG, "macAddress = "+macAddress);
 
 
@@ -87,10 +106,10 @@ public class MainMenu extends Activity{
 
         //InitData initData = new InitData();
         initData.setWifiMac(macAddress);
-        String id = Build.MODEL;
+        id = Build.MODEL;
         initData.setUpload_remain(0);
 
-        String my_id = id +" - "+initData.getWifiMac();
+        my_id = id +" - "+initData.getWifiMac();
 
         Intent checkIntent = new Intent(MainMenu.this, CheckMacExistsService.class);
         checkIntent.putExtra("my_id", my_id);
@@ -98,17 +117,11 @@ public class MainMenu extends Activity{
 
         //initData.jdbc.queryUserIdTable(MainMenu.this, id +" - "+initData.getWifiMac());
 
-        while (is_query) {
+        //while (is_query) {
 
-        }
+        //}
 
-        if (initData.isMatch_mac()) {
-            Log.d(TAG, "found same id! current_upload = "+initData.getUpload_remain());
 
-        } else {
-            Log.d(TAG, "id not found!");
-            initData.jdbc.insertTableUserId(id +" - "+macAddress, "5");
-        }
 
         //Intent serviceintent = new Intent(MainMenu.this, CheckMacExistsService.class);
         //serviceintent.setAction(Constants.ACTION.GET_MESSAGE_LIST_ACTION);
@@ -135,7 +148,31 @@ public class MainMenu extends Activity{
         });*/
 
 
+        mReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equalsIgnoreCase(Constants.ACTION.CHECK_MAC_EXIST_COMPLETE)) {
+                    Log.d(TAG, "receive brocast !");
 
+                    if (initData.isMatch_mac()) {
+                        Log.d(TAG, "found same id! current_upload = "+initData.getUpload_remain());
+
+                    } else {
+                        Log.d(TAG, "id not found!");
+                        initData.jdbc.insertTableUserId(id +" - "+macAddress, "5");
+                    }
+
+                }
+            }
+        };
+
+        if (!isRegister) {
+            filter = new IntentFilter();
+            filter.addAction(Constants.ACTION.CHECK_MAC_EXIST_COMPLETE);
+            registerReceiver(mReceiver, filter);
+            isRegister = true;
+            Log.d(TAG, "registerReceiver mReceiver");
+        }
     }
 
     @Override
@@ -153,6 +190,17 @@ public class MainMenu extends Activity{
     protected void onDestroy() {
         Log.d(TAG, "onDestroy");
 
+        if (isRegister && mReceiver != null) {
+            try {
+                unregisterReceiver(mReceiver);
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            }
+
+
+            isRegister = false;
+            mReceiver = null;
+        }
 
         super.onDestroy();
 
