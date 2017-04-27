@@ -150,7 +150,8 @@ public class Jdbc {
         if (!is_query) {
             myContext = context;
             myCourtList.clear();
-
+            if (pageAdapter != null)
+                pageAdapter.notifyDataSetChanged();
 
             is_query = true;
             //new Thread() {

@@ -230,9 +230,11 @@ public class FindCourtActivity extends AppCompatActivity implements
                     Log.d(TAG, "receive brocast !");
 
                     if (myCourtList.size() > 0) {
+                        Log.d(TAG, "myCourtList.size() = "+myCourtList.size());
+                        //if (pageAdapter == null) {
+                        pageAdapter = null;
 
-                        if (pageAdapter == null) {
-                            Log.d(TAG, "pageAdapter = null");
+                            //Log.d(TAG, "pageAdapter = null");
                             is_init = true;
                             pageAdapter = new LocationPager(context, myCourtList);
                             viewPager.setAdapter(pageAdapter);
@@ -282,15 +284,21 @@ public class FindCourtActivity extends AppCompatActivity implements
                                     if (state == ViewPager.SCROLL_STATE_IDLE) {
                                         final int pageCount = myCourtList.size() + 2;
 
-                                        Log.e(TAG, "=== mark other start ===");
+                                        /*Log.e(TAG, "=== mark other start ===");
                                         is_markOther = true;
                                         mark_count = 0;
                                         if (currentPage == pageCount - 1) {
+                                            Log.d(TAG, "last -> first");
                                             mark_select = 0;
                                             viewPager.setCurrentItem(1, false);
                                         } else if (currentPage == 0) {
+                                            Log.d(TAG, "first -> last");
                                             mark_select = myCourtList.size() - 1;
                                             viewPager.setCurrentItem(pageCount - 2, false);
+                                        } else {
+                                            Log.d(TAG, "normal -> normal");
+                                            mark_select = currentPage - 1;
+                                            viewPager.setCurrentItem(currentPage);
                                         }
 
                                         is_markOther = false;
@@ -307,30 +315,86 @@ public class FindCourtActivity extends AppCompatActivity implements
 
                                         pageAdapter.set_mark_adjust();
 
-                                        Log.e(TAG, "=== mark other end ===");
-
-                                        /*if (currentPage == pageCount - 1) {
-                                            Log.e(TAG, "=== set first start ===");
+                                        Log.e(TAG, "=== mark other end ===");*/
+                                        Log.e(TAG, "=== onPageScrollStateChanged start ===");
+                                        if (currentPage == pageCount - 1) {
+                                            /*Log.e(TAG, "=== set first start ===");
                                             is_setFirst = true;
                                             viewPager.setCurrentItem(1, false);
-                                            //pageAdapter.show_current_page_first();
-                                            //is_setFirst = false;
-                                            Log.e(TAG, "=== set first end ===");
+                                            Log.e(TAG, "=== set first end ===");*/
+
+                                            Log.e(TAG, "=== last => first start ===");
+                                            is_markOther = true;
+                                            mark_count = 0;
+                                            viewPager.setCurrentItem(1, false);
+                                            is_markOther = false;
+
+                                            if (mark_count == 3) {
+                                                Log.e(TAG, "mark_count = 3, will remove 3 items.");
+                                            } else if (mark_count == 2) {
+                                                Log.e(TAG, "mark_count = 2, will remove 2 items.");
+                                            } else if (mark_count == 1) {
+                                                Log.e(TAG, "mark_count = 1, will remove 1 item.");
+                                            } else {
+                                                Log.e(TAG, "same mark, will not remove any item.");
+                                            }
+
+                                            pageAdapter.set_mark_adjust();
+                                            Log.e(TAG, "=== last => first end ===");
+
                                         } else if (currentPage == 0) {
-                                            Log.e(TAG, "=== set last start ===");
+                                            /*Log.e(TAG, "=== set last start ===");
                                             is_setLast = true;
                                             viewPager.setCurrentItem(pageCount - 2, false);
-                                            //pageAdapter.show_current_page_last();
-                                            //is_setLast = false;
-                                            Log.e(TAG, "=== set last end ===");
-                                        }*/
+                                            Log.e(TAG, "=== set last end ===");*/
+
+                                            Log.e(TAG, "=== first => last start ===");
+                                            is_markOther = true;
+                                            mark_count = 0;
+                                            viewPager.setCurrentItem(pageCount - 2, false);
+                                            is_markOther = false;
+
+                                            if (mark_count == 3) {
+                                                Log.e(TAG, "mark_count = 3, will remove 3 items.");
+                                            } else if (mark_count == 2) {
+                                                Log.e(TAG, "mark_count = 2, will remove 2 items.");
+                                            } else if (mark_count == 1) {
+                                                Log.e(TAG, "mark_count = 1, will remove 1 item.");
+                                            } else {
+                                                Log.e(TAG, "same mark, will not remove any item.");
+                                            }
+
+                                            pageAdapter.set_mark_adjust();
+                                            Log.e(TAG, "=== first => last end ===");
+                                        } else {
+                                            Log.e(TAG, "=== normal => normal start ===");
+                                            is_markOther = true;
+                                            mark_count = 0;
+                                            viewPager.setCurrentItem(currentPage, false);
+                                            is_markOther = false;
+
+                                            if (mark_count == 3) {
+                                                Log.e(TAG, "mark_count = 3, will remove 3 items.");
+                                            } else if (mark_count == 2) {
+                                                Log.e(TAG, "mark_count = 2, will remove 2 items.");
+                                            } else if (mark_count == 1) {
+                                                Log.e(TAG, "mark_count = 1, will remove 1 item.");
+                                            } else {
+                                                Log.e(TAG, "same mark, will not remove any item.");
+                                            }
+
+                                            if (mark_count > 0 )
+                                                pageAdapter.set_mark_adjust();
+                                            Log.e(TAG, "=== normal => normal end ===");
+                                        }
+                                        Log.e(TAG, "=== onPageScrollStateChanged end ===");
                                     }
                                 }
                             });
-                        } else {
-                            Log.d(TAG, "pageAdapter not null");
-                            pageAdapter.notifyDataSetChanged();
-                        }
+                        //} else {
+                        //    Log.d(TAG, "pageAdapter not null");
+                        //    pageAdapter.notifyDataSetChanged();
+                        //}
 
                         markerList.clear();
 
@@ -421,9 +485,13 @@ public class FindCourtActivity extends AppCompatActivity implements
         Log.i(TAG, "onResume");
 
         if (is_permmision) {
+            Log.i(TAG, "-> is_permmision");
             if (is_reload) {
-                if (pageAdapter != null)
-                    pageAdapter.notifyDataSetChanged();
+                Log.i(TAG, "-> is_reload");
+                //myCourtList.clear();
+                //if (pageAdapter != null) {
+                //    pageAdapter.notifyDataSetChanged();
+                //}
 
                 loadDialog = new ProgressDialog(FindCourtActivity.this);
                 loadDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
