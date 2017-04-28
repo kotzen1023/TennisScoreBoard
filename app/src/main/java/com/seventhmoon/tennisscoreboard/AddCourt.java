@@ -2,6 +2,8 @@ package com.seventhmoon.tennisscoreboard;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+
 import android.content.BroadcastReceiver;
 import android.content.ContentUris;
 import android.content.Context;
@@ -17,11 +19,14 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.support.v4.view.ViewPager;
+
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -33,18 +38,13 @@ import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
+
 import com.seventhmoon.tennisscoreboard.Data.Constants;
 import com.seventhmoon.tennisscoreboard.Data.FileOperation;
-import com.seventhmoon.tennisscoreboard.Data.LocationPager;
-import com.seventhmoon.tennisscoreboard.Service.CheckCourtTableService;
-import com.seventhmoon.tennisscoreboard.Service.CheckMacExistsService;
+
 import com.seventhmoon.tennisscoreboard.Service.InertCourtService;
 import com.seventhmoon.tennisscoreboard.Service.UpdateUploadRemainService;
-import com.seventhmoon.tennisscoreboard.Sql.Jdbc;
+
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -53,6 +53,7 @@ import java.text.NumberFormat;
 import java.util.Calendar;
 
 import static android.R.drawable.sym_def_app_icon;
+
 import static com.seventhmoon.tennisscoreboard.FindCourtActivity.is_reload;
 import static com.seventhmoon.tennisscoreboard.MainMenu.initData;
 
@@ -80,18 +81,19 @@ public class AddCourt extends AppCompatActivity {
     private RatingBar ratingBarMaintenance;
     private RatingBar ratingBarTraffic;
     private RatingBar ratingBarParking;
-    private Button btnConfirm;
+    //private Button btnConfirm;
     private LinearLayout linearLayoutCharge;
 
     private final int PICK_FROM_CAMERA = 600;
     private final int PICK_FROM_FILE = 800;
     //private static Uri mImageCaptureUri;
     private static String picFromCamera;
-    private static ByteArrayOutputStream stream;
+    public static ByteArrayOutputStream stream;
     private static Bitmap resized = null;
     //private static Blob blob;
     private static BroadcastReceiver mReceiver = null;
     private static boolean isRegister = false;
+    ProgressDialog loadDialog = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +108,7 @@ public class AddCourt extends AppCompatActivity {
             //actionBar.setDisplayShowHomeEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ball_icon);
-            actionBar.setTitle("Upload remain "+initData.getUpload_remain());
+            actionBar.setTitle(getResources().getString(R.string.add_court_upload_remain)+" "+initData.getUpload_remain());
         }
 
 
@@ -132,7 +134,7 @@ public class AddCourt extends AppCompatActivity {
         ratingBarMaintenance = (RatingBar) findViewById(R.id.ratingMaintain);
         ratingBarTraffic = (RatingBar) findViewById(R.id.ratingTraffic);
         ratingBarParking = (RatingBar) findViewById(R.id.ratingParking);
-        btnConfirm = (Button) findViewById(R.id.btnConfirm);
+        Button btnConfirm = (Button) findViewById(R.id.btnConfirm);
         linearLayoutCharge = (LinearLayout) findViewById(R.id.layoutCharge);
 
         String[] courtTypeList = {getResources().getString(R.string.court_type_hard),
@@ -163,14 +165,13 @@ public class AddCourt extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String [] items        = new String [] {"Camera",
-                        "Gallery",
-                        "Remove"};
+                final String [] items        = new String [] {getResources().getString(R.string.add_court_camera),
+                        getResources().getString(R.string.add_court_gallery)};
                 ArrayAdapter<String> adapter = new ArrayAdapter<> (AddCourt.this, android.R.layout.select_dialog_item,items);
 
                 AlertDialog.Builder builder  = new AlertDialog.Builder(AddCourt.this);
 
-                builder.setTitle("Select:");
+                builder.setTitle(getResources().getString(R.string.add_court_select));
                 builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
                     public void onClick( DialogInterface dialog, int item ) { //pick from camer
                         if (item == 0) {
@@ -260,9 +261,9 @@ public class AddCourt extends AppCompatActivity {
             public void onClick(View v) {
                 if (editTextCourtName.getText().toString().equals("")) {
                     toast("Name can not be null!");
-                } else if (editTextCourtNum.equals("")) {
+                } else if (editTextCourtNum.getText().toString().equals("")) {
                     toast("Court number can not be null!");
-                } else if (ifChargeSpinner.getSelectedItemPosition() == 1 && editTextCharge.equals("")) {
+                } else if (ifChargeSpinner.getSelectedItemPosition() == 1 && editTextCharge.getText().toString().equals("")) {
                     toast("Charge can not be null!");
                 } else if (resized == null) {
                     toast("Please add a pic of court!");
@@ -309,8 +310,16 @@ public class AddCourt extends AppCompatActivity {
                     insertIntent.putExtra("maintenance", String.valueOf(ratingBarMaintenance.getRating()));
                     insertIntent.putExtra("traffic", String.valueOf(ratingBarTraffic.getRating()));
                     insertIntent.putExtra("parking", String.valueOf(ratingBarParking.getRating()));
-                    insertIntent.putExtra("blob", stream.toByteArray());
+                    //insertIntent.putExtra("blob", stream.toByteArray());
                     startService(insertIntent);
+
+                    loadDialog = new ProgressDialog(AddCourt.this);
+                    loadDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    loadDialog.setTitle(getResources().getString(R.string.uploading));
+                    loadDialog.setIndeterminate(false);
+                    loadDialog.setCancelable(false);
+
+                    loadDialog.show();
 
                 }
             }
@@ -321,6 +330,7 @@ public class AddCourt extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equalsIgnoreCase(Constants.ACTION.INSERT_COURT_INFO_COMPLETE)) {
                     Log.d(TAG, "receive brocast !");
+                    loadDialog.dismiss();
 
                     initData.setUpload_remain(initData.getUpload_remain()-1);
 
@@ -470,14 +480,14 @@ public class AddCourt extends AppCompatActivity {
                             //imageView.setImageBitmap(bmImg);
                             int new_width, new_height;
                             if (bmImg.getWidth() > bmImg.getHeight()) {
-                                new_width = 512;
-                                new_height =  (bmImg.getHeight() * 512) / bmImg.getWidth();
+                                new_width = 1024;
+                                new_height =  (bmImg.getHeight() * 1024) / bmImg.getWidth();
                             } else if (bmImg.getWidth() < bmImg.getHeight()){
-                                new_height = 512;
-                                new_width = (bmImg.getWidth() * 512) /bmImg.getHeight();
+                                new_height = 1024;
+                                new_width = (bmImg.getWidth() * 1024) /bmImg.getHeight();
                             } else {
-                                new_width = 512;
-                                new_height = 512;
+                                new_width = 1024;
+                                new_height = 1024;
                             }
                             resized = Bitmap.createScaledBitmap(bmImg, new_width, new_height, true);
                             stream = new ByteArrayOutputStream();
@@ -535,14 +545,14 @@ public class AddCourt extends AppCompatActivity {
                         //imageView.setImageBitmap(bmImg);
                         int new_width, new_height;
                         if (bmImg.getWidth() > bmImg.getHeight()) {
-                            new_width = 512;
-                            new_height =  (bmImg.getHeight() * 512) / bmImg.getWidth();
+                            new_width = 1024;
+                            new_height =  (bmImg.getHeight() * 1024) / bmImg.getWidth();
                         } else if (bmImg.getWidth() < bmImg.getHeight()){
-                            new_height = 512;
-                            new_width = (bmImg.getWidth() * 512) /bmImg.getHeight();
+                            new_height = 1024;
+                            new_width = (bmImg.getWidth() * 1024) /bmImg.getHeight();
                         } else {
-                            new_width = 512;
-                            new_height = 512;
+                            new_width = 1024;
+                            new_height = 1024;
                         }
                         resized = Bitmap.createScaledBitmap(bmImg, new_width, new_height, true);
                         stream = new ByteArrayOutputStream();
@@ -561,12 +571,45 @@ public class AddCourt extends AppCompatActivity {
 
                     }
                 } else if (resultCode == Activity.RESULT_CANCELED) {
-                    toast("Cancelled");
+                    toast(getResources().getString(R.string.add_court_cancel));
                 }
                 break;
         }
     }
 
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.add_court_menu, menu);
+
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_help:
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(AddCourt.this);
+
+                alertDialog.setTitle(R.string.add_court_help_title);
+                alertDialog.setMessage(getResources().getString(R.string.add_court_help_message));
+                alertDialog.setIcon(android.R.drawable.ic_menu_help);
+                alertDialog.setCancelable(false);
+                alertDialog.setPositiveButton(getResources().getString(R.string.find_court_ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                alertDialog.show();
+                break;
+
+            default:
+                break;
+        }
+        return true;
+    }
 
     /**
      * @param uri The Uri to check.

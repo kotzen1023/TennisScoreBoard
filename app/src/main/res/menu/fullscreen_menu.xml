@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_rotate_left"
+        android:title="@string/rotate_nighty_degree"
+        android:icon="@drawable/ic_rotate_left_white_24dp"
+        app:showAsAction="always|withText" />
+
+    <item
+        android:id="@+id/action_rotate_right"
+        android:title="@string/rotate_nighty_degree"
+        android:icon="@drawable/ic_rotate_right_white_24dp"
+        app:showAsAction="always|withText"/>
+
+
+</menu>

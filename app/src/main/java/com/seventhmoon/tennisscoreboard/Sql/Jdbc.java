@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 
 import com.seventhmoon.tennisscoreboard.Data.Constants;
@@ -21,8 +22,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+//import static com.seventhmoon.tennisscoreboard.FindCourtActivity.getPageAdapter;
 import static com.seventhmoon.tennisscoreboard.FindCourtActivity.myCourtList;
-import static com.seventhmoon.tennisscoreboard.FindCourtActivity.pageAdapter;
+
 import static com.seventhmoon.tennisscoreboard.MainMenu.initData;
 
 public class Jdbc {
@@ -149,9 +151,12 @@ public class Jdbc {
 
         if (!is_query) {
             myContext = context;
-            myCourtList.clear();
-            if (pageAdapter != null)
-                pageAdapter.notifyDataSetChanged();
+            //myCourtList.clear();
+
+            //PagerAdapter pagerAdapter = getPageAdapter();
+
+            //if (pagerAdapter != null)
+            //    pagerAdapter.notifyDataSetChanged();
 
             is_query = true;
             //new Thread() {
@@ -211,7 +216,7 @@ public class Jdbc {
                                 Bitmap bp = BitmapFactory.decodeStream(blob.getBinaryStream());
                                 //Log.e(TAG, "before compress = "+bp.getByteCount()+" width = "+bp.getWidth()+" height = "+bp.getHeight());
 
-                                Bitmap scaled = Bitmap.createScaledBitmap(bp, bp.getWidth()/2, bp.getHeight()/2, true);
+                                Bitmap scaled = Bitmap.createScaledBitmap(bp, bp.getWidth()/4, bp.getHeight()/4, true);
 
                                 //ByteArrayOutputStream out = new ByteArrayOutputStream();
                                 //bp.compress(Bitmap.CompressFormat.PNG, 50, out);

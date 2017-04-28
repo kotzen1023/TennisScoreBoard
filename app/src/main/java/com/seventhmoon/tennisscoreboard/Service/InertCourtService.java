@@ -8,8 +8,9 @@ import android.util.Log;
 
 import com.seventhmoon.tennisscoreboard.Data.Constants;
 
+import static com.seventhmoon.tennisscoreboard.AddCourt.stream;
 import static com.seventhmoon.tennisscoreboard.MainMenu.initData;
-import static com.seventhmoon.tennisscoreboard.Sql.Jdbc.is_query;
+
 import static com.seventhmoon.tennisscoreboard.Sql.Jdbc.is_update;
 
 
@@ -49,53 +50,55 @@ public class InertCourtService extends IntentService {
                     insertIntent.putExtra("parking", String.valueOf(ratingBarParking.getRating()));
          */
 
-        String name = intent.getStringExtra("name");
-        String longitude = intent.getStringExtra("longitude");
-        String latitude = intent.getStringExtra("latitude");
-        String type = intent.getStringExtra("type");
-        String usage = intent.getStringExtra("usage");
-        String light = intent.getStringExtra("light");
-        String courts = intent.getStringExtra("courts");
-        String ifCharge = intent.getStringExtra("ifCharge");
-        String charge = intent.getStringExtra("charge");
-        String maintenance = intent.getStringExtra("maintenance");
-        String traffic = intent.getStringExtra("traffic");
-        String parking = intent.getStringExtra("parking");
-        byte blob[] = intent.getByteArrayExtra("blob");
+        if (intent != null) {
+
+            String name = intent.getStringExtra("name");
+            String longitude = intent.getStringExtra("longitude");
+            String latitude = intent.getStringExtra("latitude");
+            String type = intent.getStringExtra("type");
+            String usage = intent.getStringExtra("usage");
+            String light = intent.getStringExtra("light");
+            String courts = intent.getStringExtra("courts");
+            String ifCharge = intent.getStringExtra("ifCharge");
+            String charge = intent.getStringExtra("charge");
+            String maintenance = intent.getStringExtra("maintenance");
+            String traffic = intent.getStringExtra("traffic");
+            String parking = intent.getStringExtra("parking");
+            //byte blob[] = intent.getByteArrayExtra("blob");
 
 
-        Log.d(TAG, "name = "+name);
-        Log.d(TAG, "longitude = "+longitude);
-        Log.d(TAG, "latitude = "+latitude);
-        Log.d(TAG, "type = "+type);
-        Log.d(TAG, "usage = "+usage);
-        Log.d(TAG, "light = "+light);
-        Log.d(TAG, "courts = "+courts);
-        Log.d(TAG, "ifCharge = "+ifCharge);
-        Log.d(TAG, "charge = "+charge);
-        Log.d(TAG, "maintenance = "+maintenance);
-        Log.d(TAG, "traffic = "+traffic);
-        Log.d(TAG, "parking = "+parking);
+            Log.d(TAG, "name = "+name);
+            Log.d(TAG, "longitude = "+longitude);
+            Log.d(TAG, "latitude = "+latitude);
+            Log.d(TAG, "type = "+type);
+            Log.d(TAG, "usage = "+usage);
+            Log.d(TAG, "light = "+light);
+            Log.d(TAG, "courts = "+courts);
+            Log.d(TAG, "ifCharge = "+ifCharge);
+            Log.d(TAG, "charge = "+charge);
+            Log.d(TAG, "maintenance = "+maintenance);
+            Log.d(TAG, "traffic = "+traffic);
+            Log.d(TAG, "parking = "+parking);
 
 
-        if (!is_update) {// not in query
-            //initData.jdbc.insertTableCourt(context, Double.valueOf(longitude), Double.valueOf(latitude));
-            initData.jdbc.insertTableCourt(name,
-                    longitude,
-                    latitude,
-                    type,
-                    usage,
-                    light,
-                    courts,
-                    ifCharge,
-                    charge,
-                    maintenance,
-                    traffic,
-                    parking,
-                    blob
-            );
+            if (!is_update) {// not in query
+                //initData.jdbc.insertTableCourt(context, Double.valueOf(longitude), Double.valueOf(latitude));
+                initData.jdbc.insertTableCourt(name,
+                        longitude,
+                        latitude,
+                        type,
+                        usage,
+                        light,
+                        courts,
+                        ifCharge,
+                        charge,
+                        maintenance,
+                        traffic,
+                        parking,
+                        stream.toByteArray()
+                );
+            }
         }
-
 
 
     }
@@ -104,6 +107,8 @@ public class InertCourtService extends IntentService {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy()");
+
+
 
         Intent newNotifyIntent = new Intent(Constants.ACTION.INSERT_COURT_INFO_COMPLETE);
         context.sendBroadcast(newNotifyIntent);

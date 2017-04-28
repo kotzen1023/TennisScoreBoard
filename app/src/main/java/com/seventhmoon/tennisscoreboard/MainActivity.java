@@ -215,6 +215,12 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    @Override
+    public void onBackPressed() {
+
+        finish();
+    }
+
     public void toast(String message) {
         Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL, 0, 0);
@@ -419,6 +425,7 @@ public class MainActivity extends AppCompatActivity {
                                                     break;
                                                 case DialogInterface.BUTTON_NEGATIVE:
                                                     // proceed with logic by disabling the related features or quit the app.
+                                                    finish();
                                                     break;
                                             }
                                         }
@@ -441,8 +448,8 @@ public class MainActivity extends AppCompatActivity {
     private void showDialogOK(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(this)
                 .setMessage(message)
-                .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", okListener)
+                .setPositiveButton(getResources().getString(R.string.dialog_confirm), okListener)
+                .setNegativeButton(getResources().getString(R.string.dialog_cancel), okListener)
                 .create()
                 .show();
     }

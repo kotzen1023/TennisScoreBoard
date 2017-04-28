@@ -4,40 +4,38 @@ package com.seventhmoon.tennisscoreboard;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.app.SearchManager;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
+
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
+
 import android.location.Location;
-import android.location.LocationListener;
+
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
+
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.MenuItemCompat;
+
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
+
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
+
 import android.view.Gravity;
-import android.view.LayoutInflater;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
+
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -55,21 +53,20 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.seventhmoon.tennisscoreboard.Data.Constants;
-import com.seventhmoon.tennisscoreboard.Data.InitData;
+
 import com.seventhmoon.tennisscoreboard.Data.LocationPager;
 import com.seventhmoon.tennisscoreboard.Data.PageItem;
 import com.seventhmoon.tennisscoreboard.Service.CheckCourtTableService;
-import com.seventhmoon.tennisscoreboard.Service.CheckMacExistsService;
-import com.seventhmoon.tennisscoreboard.Sql.Jdbc;
 
-import java.io.IOException;
+
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
+
 import java.util.Map;
 
-import static com.seventhmoon.tennisscoreboard.MainMenu.initData;
+
 
 public class FindCourtActivity extends AppCompatActivity implements
         OnMapReadyCallback,
@@ -85,35 +82,31 @@ public class FindCourtActivity extends AppCompatActivity implements
     private static GoogleMap mGoogleMap;
     private static GoogleApiClient mGoogleApiClient;
 
-    private static LocationManager mLocationManager;
-    private Context context;
+    //private static LocationManager mLocationManager;
+    //private Context context;
 
-    SupportMapFragment mapFrag;
+    //SupportMapFragment mapFrag;
     LocationRequest mLocationRequest;
 
     Location mLastLocation;
     Marker mCurrLocationMarker;
 
 
-    LatLng latLng;
+    /*LatLng latLng;
     SupportMapFragment mFragment;
     Marker currLocationMarker;
-    LocationListener locationListener;
+    LocationListener locationListener;*/
 
-    private SearchView searchView;
+    //private SearchView searchView;
 
-    List<Marker> mMarkers = new ArrayList<>();
+    //List<Marker> mMarkers = new ArrayList<>();
 
     //LocationPager adapter;
-    public static LocationPager pageAdapter = null;
+    private LocationPager pageAdapter = null;
     private ViewPager viewPager;
 
-    public static String[] rank;
-    public static String[] country;
-    public static String[] population;
-
     public static int currentPage;
-    private View viewDrawer;
+
     private LinearLayout linearLayout;
     private ImageView imageView;
     private static boolean is_close = false;
@@ -126,16 +119,16 @@ public class FindCourtActivity extends AppCompatActivity implements
     private static BroadcastReceiver mReceiver = null;
     private static boolean isRegister = false;
     //private Jdbc jdbc;
-    private boolean is_permmision = false;
+    private boolean is_permission = false;
 
     //private MarkerOptions options = new MarkerOptions();
     //private ArrayList<LatLng> latlngs = new ArrayList<>();
     private ArrayList<Marker> markerList = new ArrayList<>();
 
-    static SharedPreferences pref ;
+    //static SharedPreferences pref ;
     //static SharedPreferences.Editor editor;
-    private static final String FILE_NAME = "Preference";
-    private static String macAddress;
+   // private static final String FILE_NAME = "Preference";
+    //private static String macAddress;
     ProgressDialog loadDialog = null;
 
     public static boolean is_setFirst = false;
@@ -143,8 +136,8 @@ public class FindCourtActivity extends AppCompatActivity implements
     public static boolean is_setLast = false;
     public static boolean is_init = false;
     public static boolean is_reload = false;
-    public static boolean is_markFirst = false;
-    public static boolean is_markLast = false;
+    //public static boolean is_markFirst = false;
+    //public static boolean is_markLast = false;
     public static boolean is_markOther = false;
     public static int mark_count = 0;
     public static int mark_select = 0;
@@ -154,16 +147,16 @@ public class FindCourtActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.find_court);
 
-        pref = getSharedPreferences(FILE_NAME, MODE_PRIVATE);
-        macAddress = pref.getString("WIFIMAC", "");
+        //pref = getSharedPreferences(FILE_NAME, MODE_PRIVATE);
+        //String macAddress = pref.getString("WIFIMAC", "");
 
-        context = getBaseContext();
+        //Context context = getBaseContext();
 
         IntentFilter filter;
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
 
-        viewDrawer = findViewById(R.id.view1);
+        View viewDrawer = findViewById(R.id.view1);
         linearLayout = (LinearLayout) findViewById(R.id.viewPagerLaylout);
         imageView = (ImageView) findViewById(R.id.imgDraw);
 
@@ -185,12 +178,12 @@ public class FindCourtActivity extends AppCompatActivity implements
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             Log.d(TAG, "No need to ask permmision");
 
-            is_permmision = true;
+            is_permission = true;
             init_mapFragment();
 
         } else {
             if(checkAndRequestPermissions()) {
-                is_permmision = true;
+                is_permission = true;
                 // carry on the normal flow, as the case of  permissions  granted.
                 init_mapFragment();
             }
@@ -429,6 +422,10 @@ public class FindCourtActivity extends AppCompatActivity implements
                     }
                     loadDialog.dismiss();
 
+                    if (myCourtList.size() == 0) {
+                        toast(getResources().getString(R.string.find_court_no_share_courts));
+                    }
+
                 }
             }
         };
@@ -484,8 +481,8 @@ public class FindCourtActivity extends AppCompatActivity implements
 
         Log.i(TAG, "onResume");
 
-        if (is_permmision) {
-            Log.i(TAG, "-> is_permmision");
+        if (is_permission) {
+            Log.i(TAG, "-> is_permission");
             if (is_reload) {
                 Log.i(TAG, "-> is_reload");
                 //myCourtList.clear();
@@ -495,7 +492,7 @@ public class FindCourtActivity extends AppCompatActivity implements
 
                 loadDialog = new ProgressDialog(FindCourtActivity.this);
                 loadDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                loadDialog.setTitle("Loading...");
+                loadDialog.setTitle(getResources().getString(R.string.loading));
                 loadDialog.setIndeterminate(false);
                 loadDialog.setCancelable(false);
 
@@ -503,6 +500,9 @@ public class FindCourtActivity extends AppCompatActivity implements
 
                 if (longitude != 0.0 && latitude != 0.0) {
                     //initData.jdbc.queryCourtTable(context, longitude, latitude);
+                    myCourtList.clear();
+                    if (pageAdapter != null)
+                        pageAdapter.notifyDataSetChanged();
 
                     Intent checkIntent = new Intent(FindCourtActivity.this, CheckCourtTableService.class);
                     checkIntent.putExtra("longitude", String.valueOf(longitude));
@@ -737,7 +737,7 @@ public class FindCourtActivity extends AppCompatActivity implements
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
-        markerOptions.title("Current Position");
+        markerOptions.title(getResources().getString(R.string.find_court_current_position));
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
         mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
 
@@ -753,7 +753,7 @@ public class FindCourtActivity extends AppCompatActivity implements
 
 
     private Location getLastKnownLocation() {
-        mLocationManager = (LocationManager)getApplicationContext().getSystemService(LOCATION_SERVICE);
+        LocationManager mLocationManager = (LocationManager)getApplicationContext().getSystemService(LOCATION_SERVICE);
         List<String> providers = mLocationManager.getProviders(true);
         Location bestLocation = null;
         for (String provider : providers) {
@@ -779,7 +779,7 @@ public class FindCourtActivity extends AppCompatActivity implements
 
 
     public void toast(String message) {
-        Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
         toast.show();
     }
@@ -789,7 +789,7 @@ public class FindCourtActivity extends AppCompatActivity implements
         //        android.Manifest.permission.WRITE_CALENDAR);
         int locationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
 
-        int writePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        //int writePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         int cameraPermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA);
 
@@ -797,9 +797,9 @@ public class FindCourtActivity extends AppCompatActivity implements
         if (locationPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
         }
-        if (writePermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
+        //if (writePermission != PackageManager.PERMISSION_GRANTED) {
+        //    listPermissionsNeeded.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        //}
         if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(android.Manifest.permission.CAMERA);
         }
@@ -848,7 +848,7 @@ public class FindCourtActivity extends AppCompatActivity implements
 
                 Map<String, Integer> perms = new HashMap<>();
                 // Initialize the map with both permissions
-                perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+                //perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
                 perms.put(android.Manifest.permission.ACCESS_FINE_LOCATION, PackageManager.PERMISSION_GRANTED);
                 perms.put(android.Manifest.permission.CAMERA, PackageManager.PERMISSION_GRANTED);
                 // Fill with actual results from user
@@ -856,12 +856,12 @@ public class FindCourtActivity extends AppCompatActivity implements
                     for (int i = 0; i < permissions.length; i++)
                         perms.put(permissions[i], grantResults[i]);
                     // Check for both permissions
-                    if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                    if (//perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
                             perms.get(android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                             && perms.get(android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
                     {
                         Log.d(TAG, "all permission granted");
-                        is_permmision = true;
+                        is_permission = true;
                         init_mapFragment();
                         //init_view_pager();
 
@@ -874,9 +874,9 @@ public class FindCourtActivity extends AppCompatActivity implements
                         //show the dialog or snackbar saying its necessary and try again otherwise proceed with setup.
                         if (//ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.WRITE_CALENDAR) ||
                                 ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                            //|| ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.CAMERA)
+                            || ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.CAMERA)
                                 ) {
-                            showDialogOK("Need location access",
+                            showDialogOK(getResources().getString(R.string.find_court_permission_msg),
                                     new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
@@ -885,6 +885,7 @@ public class FindCourtActivity extends AppCompatActivity implements
                                                     checkAndRequestPermissions();
                                                     break;
                                                 case DialogInterface.BUTTON_NEGATIVE:
+                                                    finish();
                                                     // proceed with logic by disabling the related features or quit the app.
                                                     break;
                                             }
@@ -908,8 +909,8 @@ public class FindCourtActivity extends AppCompatActivity implements
     private void showDialogOK(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(this)
                 .setMessage(message)
-                .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", okListener)
+                .setPositiveButton(getResources().getString(R.string.dialog_confirm), okListener)
+                .setNegativeButton(getResources().getString(R.string.dialog_cancel), okListener)
                 .create()
                 .show();
     }
@@ -920,12 +921,12 @@ public class FindCourtActivity extends AppCompatActivity implements
 
 
 
-        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+        /*SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         MenuItem searchMenuItem = menu.findItem(R.id.action_search);
         MenuItem addCourtItem = menu.findItem(R.id.action_locate);
 
-        //SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
-        searchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
+
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
         searchMenuItem.setVisible(false);
@@ -941,7 +942,7 @@ public class FindCourtActivity extends AppCompatActivity implements
             searchView.setOnQueryTextListener(queryListener);
         }catch(Exception e){
             e.printStackTrace();
-        }
+        }*/
 
         return true;
     }
@@ -950,8 +951,20 @@ public class FindCourtActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.action_search:
+            case R.id.action_help:
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(FindCourtActivity.this);
 
+                alertDialog.setTitle(R.string.find_court_help_title);
+                alertDialog.setMessage(getResources().getString(R.string.find_court_help));
+                alertDialog.setIcon(android.R.drawable.ic_menu_help);
+                alertDialog.setCancelable(false);
+                alertDialog.setPositiveButton(getResources().getString(R.string.find_court_ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                alertDialog.show();
                 break;
             case R.id.action_locate:
                 Intent intent = new Intent(FindCourtActivity.this, AddCourt.class);
@@ -965,88 +978,8 @@ public class FindCourtActivity extends AppCompatActivity implements
         return true;
     }
 
-    final private android.support.v7.widget.SearchView.OnQueryTextListener queryListener = new android.support.v7.widget.SearchView.OnQueryTextListener() {
-        //searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-        @Override
-        public boolean onQueryTextSubmit(String query) {
-            return false;
-        }
-
-        @Override
-        public boolean onQueryTextChange(String newText) {
-            List<Address> addressList = null;
-            //String location = newText;
-            for (Marker marker: mMarkers) {
-                marker.remove();
-            }
-            mMarkers.clear();
-            mGoogleMap.clear();
-
-            if (newText != null || !newText.equals("")) {
-                Geocoder geocoder = new Geocoder(FindCourtActivity.this, Locale.getDefault());
-                try {
-                    addressList = geocoder.getFromLocationName(newText, 1);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                if (addressList != null && addressList.size() > 0) {
-                    Address address = addressList.get(0);
-                    LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-
-                    MarkerOptions markerOptions = new MarkerOptions();
-                    markerOptions.position(latLng);
-
-                    Marker marker = mGoogleMap.addMarker(markerOptions);
-                    marker.setTitle("Marker");
-                    //marker.setSnippet("this is snippet");
-                    //marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_search_white_24dp));
-
-                    mMarkers.add(marker);
-
-                    //mGoogleMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
-                    //mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-                }
-            }
 
 
-            return false;
-        }
-    };
-
-    private String getCourtType(int type) {
-        String court_type;
-        switch (type) {
-            case 0:
-                court_type = getResources().getString(R.string.court_type_hard);
-                break;
-            case 1:
-                court_type = getResources().getString(R.string.court_type_grass);
-                break;
-            case 2:
-                court_type = getResources().getString(R.string.court_type_clay);
-                break;
-            case 3:
-                court_type = getResources().getString(R.string.court_type_hard) + ", " +getResources().getString(R.string.court_type_grass);
-                break;
-            case 4:
-                court_type = getResources().getString(R.string.court_type_hard) + ", " +getResources().getString(R.string.court_type_clay);
-                break;
-            case 5:
-                court_type = getResources().getString(R.string.court_type_grass) + ", " +getResources().getString(R.string.court_type_clay);
-                break;
-            case 6:
-                court_type = getResources().getString(R.string.court_type_all);
-                break;
-
-            default:
-                court_type = context.getResources().getString(R.string.court_type_hard);
-                break;
-        }
-
-        return court_type;
-    }
 
 
 }

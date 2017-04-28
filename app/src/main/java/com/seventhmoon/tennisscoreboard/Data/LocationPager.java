@@ -3,7 +3,7 @@ package com.seventhmoon.tennisscoreboard.Data;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,22 +11,15 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
+
+//import android.widget.TextView;
 
 import com.seventhmoon.tennisscoreboard.FullScreenView;
-import com.seventhmoon.tennisscoreboard.MainActivity;
-import com.seventhmoon.tennisscoreboard.MainMenu;
+
 import com.seventhmoon.tennisscoreboard.R;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import static com.seventhmoon.tennisscoreboard.FindCourtActivity.currentPage;
 import static com.seventhmoon.tennisscoreboard.FindCourtActivity.is_init;
 
 import static com.seventhmoon.tennisscoreboard.FindCourtActivity.is_markOther;
@@ -42,25 +35,25 @@ import static com.seventhmoon.tennisscoreboard.FindCourtActivity.set_count;
 public class LocationPager extends PagerAdapter {
     private static final String TAG = LocationPager.class.getName();
 
-    Context context;
+    private Context context;
     //LayoutInflater inflater;
 
-    private LayoutInflater inflater = null;
+    //private LayoutInflater inflater = null;
 
-    private int layoutResourceId;
+    //private int layoutResourceId;
     private ArrayList<PageItem> items = new ArrayList<>();
-    ArrayList<ShowItem> showItemArrayList = new ArrayList<>();
-    ArrayList<ShowItem> currentArrayList = new ArrayList<>();
-    ArrayList<ShowItem> preArrayList = new ArrayList<>();
-    ArrayList<ShowItem> nextArrayList = new ArrayList<>();
+    private ArrayList<ShowItem> showItemArrayList = new ArrayList<>();
+    private ArrayList<ShowItem> currentArrayList = new ArrayList<>();
+    private ArrayList<ShowItem> preArrayList = new ArrayList<>();
+    private ArrayList<ShowItem> nextArrayList = new ArrayList<>();
 
-    ArrayList<ShowItem> tempArrayList = new ArrayList<>();
+    private ArrayList<ShowItem> tempArrayList = new ArrayList<>();
 
-    ShowItemAdapter prevAdapter;
-    ShowItemAdapter currentAdapter;
-    ShowItemAdapter nextAdapter;
+    private ShowItemAdapter prevAdapter;
+    private ShowItemAdapter currentAdapter;
+    private ShowItemAdapter nextAdapter;
 
-    ShowItemAdapter tempAdapter;
+    private ShowItemAdapter tempAdapter;
 
 
     private ListView currentListView;
@@ -69,19 +62,19 @@ public class LocationPager extends PagerAdapter {
 
     private ListView tempListView;
 
-    private boolean init = false;
+    //private boolean init = false;
     private int prev_position = -1;
     private int direction = 0;
 
     //for marker press
 
-    ArrayList<ShowItem> tempArrayList0 = new ArrayList<>();
-    ArrayList<ShowItem> tempArrayList1 = new ArrayList<>();
-    ArrayList<ShowItem> tempArrayList2 = new ArrayList<>();
+    private ArrayList<ShowItem> tempArrayList0 = new ArrayList<>();
+    private ArrayList<ShowItem> tempArrayList1 = new ArrayList<>();
+    private ArrayList<ShowItem> tempArrayList2 = new ArrayList<>();
 
-    ShowItemAdapter tempAdapter0;
-    ShowItemAdapter tempAdapter1;
-    ShowItemAdapter tempAdapter2;
+    private ShowItemAdapter tempAdapter0;
+    private ShowItemAdapter tempAdapter1;
+    private ShowItemAdapter tempAdapter2;
 
     private ListView tempListView0;
     private ListView tempListView1;
@@ -96,7 +89,7 @@ public class LocationPager extends PagerAdapter {
         this.items = objects;
         //inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        this.init = true;
+        //this.init = true;
     }
 
 
@@ -120,15 +113,15 @@ public class LocationPager extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, final int position) {
         // Declare Variables
         ImageView imgPic;
-        TextView textViewName;
-        TextView textViewCharge;
-        TextView textViewMaintain;
+        //TextView textViewName;
+        //TextView textViewCharge;
+        //TextView textViewMaintain;
         //ListView listView;
 
         Log.d(TAG, "=======================================================");
         Log.i(TAG, "position = "+position+", prev_position = "+prev_position);
 
-        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View itemView = inflater.inflate(R.layout.viewpager_item, container, false);
 
 
@@ -275,18 +268,18 @@ public class LocationPager extends PagerAdapter {
 
                     if (mark_count == 0) {//first time decided the direction {
 
-                        if (position > 0 && position > prev_position) {
-                            Log.d(TAG, "slide ===> ");
-                            direction = Constants.DIRECTION.SLIDE_RIGHT_DIRECTION;
-                        } else if (position == 0 && prev_position == items.size()+1) {
-                            Log.d(TAG, "slide ===> SLIDE_LAST_TO_FIRST");
-                            direction = Constants.DIRECTION.SLIDE_LAST_TO_FIRST;
+                        if (position == items.size()+1 && prev_position == items.size()) {
+                            Log.d(TAG, "slide <=== SLIDE_FIRST_TO_LAST");
+                            direction = Constants.DIRECTION.SLIDE_FIRST_TO_LAST;
                         } else if (prev_position > 0 && position < prev_position) {
                             Log.d(TAG, "slide <=== ");
                             direction = Constants.DIRECTION.SLIDE_LEFT_DIRECTION;
-                        } else if (position == items.size()+1 && prev_position == 0) {
-                            Log.d(TAG, "slide <=== SLIDE_FIRST_TO_LAST");
-                            direction = Constants.DIRECTION.SLIDE_FIRST_TO_LAST;
+                        } else if (position == 0 && prev_position == items.size()+1) {
+                            Log.d(TAG, "slide ===> SLIDE_LAST_TO_FIRST");
+                            direction = Constants.DIRECTION.SLIDE_LAST_TO_FIRST;
+                        } else if (position > 0 && position > prev_position) {
+                            Log.d(TAG, "slide ===> ");
+                            direction = Constants.DIRECTION.SLIDE_RIGHT_DIRECTION;
                         }
 
                         tempArrayList0.clear();
@@ -503,18 +496,18 @@ public class LocationPager extends PagerAdapter {
 
                     if (mark_count == 0) {//first time decided the direction {
 
-                        if (position > 0 && position > prev_position) {
-                            Log.d(TAG, "slide ===> ");
-                            direction = Constants.DIRECTION.SLIDE_RIGHT_DIRECTION;
-                        } else if (position == 0 && prev_position == items.size()+1) {
-                            Log.d(TAG, "slide ===> SLIDE_LAST_TO_FIRST");
-                            direction = Constants.DIRECTION.SLIDE_LAST_TO_FIRST;
+                        if (position == items.size()+1 && prev_position == items.size()) {
+                            Log.d(TAG, "slide <=== SLIDE_FIRST_TO_LAST");
+                            direction = Constants.DIRECTION.SLIDE_FIRST_TO_LAST;
                         } else if (prev_position > 0 && position < prev_position) {
                             Log.d(TAG, "slide <=== ");
                             direction = Constants.DIRECTION.SLIDE_LEFT_DIRECTION;
-                        } else if (position == items.size()+1 && prev_position == 0) {
-                            Log.d(TAG, "slide <=== SLIDE_FIRST_TO_LAST");
-                            direction = Constants.DIRECTION.SLIDE_FIRST_TO_LAST;
+                        } else if (prev_position == items.size()+1) {
+                            Log.d(TAG, "slide ===> SLIDE_LAST_TO_FIRST");
+                            direction = Constants.DIRECTION.SLIDE_LAST_TO_FIRST;
+                        } else if (position > prev_position) {
+                            Log.d(TAG, "slide ===> ");
+                            direction = Constants.DIRECTION.SLIDE_RIGHT_DIRECTION;
                         }
 
                         tempArrayList0.clear();
@@ -811,18 +804,18 @@ public class LocationPager extends PagerAdapter {
 
                     if (mark_count == 0) {//first time decided the direction {
 
-                        if (position > 0 && position > prev_position) {
-                            Log.d(TAG, "slide ===> ");
-                            direction = Constants.DIRECTION.SLIDE_RIGHT_DIRECTION;
-                        } else if (position == 0 && prev_position == items.size()+1) {
-                            Log.d(TAG, "slide ===> SLIDE_LAST_TO_FIRST");
-                            direction = Constants.DIRECTION.SLIDE_LAST_TO_FIRST;
+                        if (position == items.size()+1 && prev_position == items.size()) {
+                            Log.d(TAG, "slide <=== SLIDE_FIRST_TO_LAST");
+                            direction = Constants.DIRECTION.SLIDE_FIRST_TO_LAST;
                         } else if (prev_position > 0 && position < prev_position) {
                             Log.d(TAG, "slide <=== ");
                             direction = Constants.DIRECTION.SLIDE_LEFT_DIRECTION;
-                        } else if (position == items.size()+1 && prev_position == 0) {
-                            Log.d(TAG, "slide <=== SLIDE_FIRST_TO_LAST");
-                            direction = Constants.DIRECTION.SLIDE_FIRST_TO_LAST;
+                        } else if (prev_position == items.size()+1) {
+                            Log.d(TAG, "slide ===> SLIDE_LAST_TO_FIRST");
+                            direction = Constants.DIRECTION.SLIDE_LAST_TO_FIRST;
+                        } else if (position > 0 && position > prev_position) {
+                            Log.d(TAG, "slide ===> ");
+                            direction = Constants.DIRECTION.SLIDE_RIGHT_DIRECTION;
                         }
 
                         tempArrayList0.clear();
@@ -1124,7 +1117,7 @@ public class LocationPager extends PagerAdapter {
 
                     currentAdapter = new ShowItemAdapter(context, R.layout.court_show_item, currentArrayList);
                     currentListView.setAdapter(currentAdapter);
-                    
+
 
                     preArrayList.clear();
                     preArrayList = new ArrayList<>(tempArrayList0);
@@ -1141,6 +1134,39 @@ public class LocationPager extends PagerAdapter {
 
                 } else if (direction == Constants.DIRECTION.SLIDE_FIRST_TO_LAST) {
                     Log.d(TAG, "<SLIDE_FIRST_TO_LAST mark_count = 1>");
+
+                    preArrayList.clear();
+                    preArrayList = new ArrayList<>(currentArrayList);
+
+                    Log.e(TAG, "preArrayList " + preArrayList.get(0).getTextShow());
+
+                    preListView = currentListView;
+                    prevAdapter = currentAdapter;
+
+                    prevAdapter = new ShowItemAdapter(context, R.layout.court_show_item, preArrayList);
+                    preListView.setAdapter(prevAdapter);
+
+                    currentArrayList.clear();
+                    currentArrayList = new ArrayList<>(nextArrayList);
+
+                    Log.e(TAG, "currentArrayList " + currentArrayList.get(0).getTextShow());
+
+                    currentListView = nextListView;
+                    currentAdapter = nextAdapter;
+
+                    currentAdapter = new ShowItemAdapter(context, R.layout.court_show_item, currentArrayList);
+                    currentListView.setAdapter(currentAdapter);
+
+                    nextArrayList.clear();
+                    nextArrayList = new ArrayList<>(tempArrayList0);
+
+                    Log.e(TAG, "nextArrayList " + nextArrayList.get(0).getTextShow());
+
+                    nextListView = tempListView0;
+                    nextAdapter = tempAdapter0;
+
+                    nextAdapter = new ShowItemAdapter(context, R.layout.court_show_item, nextArrayList);
+                    nextListView.setAdapter(nextAdapter);
                 }
 
             } else if (mark_count == 2) {
