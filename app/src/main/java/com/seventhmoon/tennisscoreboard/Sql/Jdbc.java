@@ -1,19 +1,16 @@
 package com.seventhmoon.tennisscoreboard.Sql;
 
 
-import android.content.Context;
-import android.content.Intent;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.support.v4.view.PagerAdapter;
+
 import android.util.Log;
 
-import com.seventhmoon.tennisscoreboard.Data.Constants;
+
 import com.seventhmoon.tennisscoreboard.Data.PageItem;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -22,7 +19,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-//import static com.seventhmoon.tennisscoreboard.FindCourtActivity.getPageAdapter;
+
 import static com.seventhmoon.tennisscoreboard.FindCourtActivity.myCourtList;
 
 import static com.seventhmoon.tennisscoreboard.MainMenu.initData;
@@ -30,9 +27,9 @@ import static com.seventhmoon.tennisscoreboard.MainMenu.initData;
 public class Jdbc {
     private static final String TAG = Jdbc.class.getName();
     private final static String URL = "jdbc:mysql://35.185.153.232/tennis_score_board_db";
-    public final static String USERNAME = "tennis_user";
-    public final static String PASSWORD = "rk19791023";
-    public final static String DRIVER = "com.mysql.jdbc.Driver";
+    private final static String USERNAME = "tennis_user";
+    private final static String PASSWORD = "rk19791023";
+    private final static String DRIVER = "com.mysql.jdbc.Driver";
 
     private static Statement stat = null;
     private static ResultSet rs = null;
@@ -51,12 +48,12 @@ public class Jdbc {
     private static String querydbSQLUserId = "select * from user_id";
 
 
-    private static Context myContext;
+    //private static Context myContext;
 
     private static double longitude = 0.0;
     private static double latitude = 0.0;
 
-    private String macAddress;
+    //private String macAddress;
     public static boolean is_query = false;
     public static boolean is_update = false;
 
@@ -79,10 +76,10 @@ public class Jdbc {
 
     }
 
-    public void setMacAddress(String macAddress) {
+    /*public void setMacAddress(String macAddress) {
         Log.d(TAG, "setMacAddress "+macAddress);
         this.macAddress = macAddress;
-    }
+    }*/
 
     private boolean Connect() {
 
@@ -146,11 +143,11 @@ public class Jdbc {
         }
     }
 
-    public void queryCourtTable(final Context context, final double longitude, final double latitude) {
+    public void queryCourtTable(final double longitude, final double latitude) {
 
 
         if (!is_query) {
-            myContext = context;
+            //myContext = context;
             //myCourtList.clear();
 
             //PagerAdapter pagerAdapter = getPageAdapter();
@@ -309,12 +306,12 @@ public class Jdbc {
         }
     }
 
-    public PageItem queryCourtTableImage(final Context context, final double longitude, final double latitude) {
+    public PageItem queryCourtTableImage(final double longitude, final double latitude) {
 
         PageItem item = null;
 
         if (!is_query) {
-            myContext = context;
+            //myContext = context;
 
             is_query = true;
             //new Thread() {

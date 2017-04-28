@@ -3,11 +3,9 @@ package com.seventhmoon.tennisscoreboard;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
+
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -19,20 +17,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
 
 import static com.seventhmoon.tennisscoreboard.Data.FileOperation.check_file_exist;
 import static com.seventhmoon.tennisscoreboard.Data.FileOperation.clear_record;
-import static com.seventhmoon.tennisscoreboard.Data.FileOperation.init_folder_and_files;
+
 
 
 public class PlayMainActivity extends AppCompatActivity {
     private static final String TAG = PlayMainActivity.class.getName();
 
-    public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
+    //public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
     //private SensorManager mSensorManager;
     //private final int REQUEST_ENABLE_BT = 200;
     //private Context context;
@@ -40,7 +35,7 @@ public class PlayMainActivity extends AppCompatActivity {
     //BroadcastReceiver mReceiver;
     //private boolean isRegister;
 
-    private static MenuItem voiceItem;
+    //private static MenuItem voiceItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -238,7 +233,7 @@ public class PlayMainActivity extends AppCompatActivity {
 
         getMenuInflater().inflate(R.menu.main_menu, menu);
 
-        voiceItem = menu.findItem(R.id.action_lang_support);
+        MenuItem voiceItem = menu.findItem(R.id.action_lang_support);
 
         voiceItem.setVisible(false);
 

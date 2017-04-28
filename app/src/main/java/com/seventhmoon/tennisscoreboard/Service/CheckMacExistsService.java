@@ -7,8 +7,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.seventhmoon.tennisscoreboard.Data.Constants;
-import com.seventhmoon.tennisscoreboard.Data.InitData;
-import com.seventhmoon.tennisscoreboard.MainMenu;
+
 
 import static com.seventhmoon.tennisscoreboard.MainMenu.initData;
 import static com.seventhmoon.tennisscoreboard.Sql.Jdbc.is_query;
@@ -44,11 +43,14 @@ public class CheckMacExistsService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         Log.i(TAG, "onHandleIntent");
 
-        String my_id = intent.getStringExtra("my_id");
+        if (intent != null) {
 
-        if (!is_query) { // not in query
+            String my_id = intent.getStringExtra("my_id");
 
-            initData.jdbc.queryUserIdTable(my_id);
+            if (!is_query) { // not in query
+
+                initData.jdbc.queryUserIdTable(my_id);
+            }
         }
     }
 

@@ -42,15 +42,18 @@ public class CheckCourtTableService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         Log.i(TAG, "onHandleIntent");
 
-        String longitude = intent.getStringExtra("longitude");
-        String latitude = intent.getStringExtra("latitude");
+        if (intent != null) {
 
-        Log.e(TAG, "longitude = "+longitude+", latitude = "+latitude);
+            String longitude = intent.getStringExtra("longitude");
+            String latitude = intent.getStringExtra("latitude");
 
-        if (longitude != null && latitude != null) {
+            Log.e(TAG, "longitude = " + longitude + ", latitude = " + latitude);
 
-            if (!is_query) {// not in query
-                initData.jdbc.queryCourtTable(context, Double.valueOf(longitude), Double.valueOf(latitude));
+            if (longitude != null && latitude != null) {
+
+                if (!is_query) {// not in query
+                    initData.jdbc.queryCourtTable(Double.valueOf(longitude), Double.valueOf(latitude));
+                }
             }
         }
     }

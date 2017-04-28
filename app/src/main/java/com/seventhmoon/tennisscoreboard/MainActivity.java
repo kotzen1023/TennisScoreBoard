@@ -19,12 +19,10 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+
 import android.widget.Toast;
 
-import com.seventhmoon.tennisscoreboard.Data.InitData;
+
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -35,8 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.seventhmoon.tennisscoreboard.Data.FileOperation.check_file_exist;
-import static com.seventhmoon.tennisscoreboard.Data.FileOperation.clear_record;
+
 import static com.seventhmoon.tennisscoreboard.Data.FileOperation.init_folder_and_files;
 
 
@@ -56,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String FILE_NAME = "Preference";
     private static String macAddress;
 
-    private static MenuItem voiceItem;
+    //private static MenuItem voiceItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,11 +218,11 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    public void toast(String message) {
+    /*public void toast(String message) {
         Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL, 0, 0);
         toast.show();
-    }
+    }*/
 
     public void init_setting() {
         Intent intent = new Intent(MainActivity.this, MainMenu.class);
@@ -458,7 +455,7 @@ public class MainActivity extends AppCompatActivity {
 
         getMenuInflater().inflate(R.menu.main_menu, menu);
 
-        voiceItem = menu.findItem(R.id.action_lang_support);
+        MenuItem voiceItem = menu.findItem(R.id.action_lang_support);
 
         voiceItem.setVisible(false);
 

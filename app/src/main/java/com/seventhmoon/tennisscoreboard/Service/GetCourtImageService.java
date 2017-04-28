@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.seventhmoon.tennisscoreboard.Data.Constants;
-import com.seventhmoon.tennisscoreboard.Data.PageItem;
+
 
 import static com.seventhmoon.tennisscoreboard.MainMenu.initData;
 import static com.seventhmoon.tennisscoreboard.Sql.Jdbc.is_query;
@@ -35,16 +35,18 @@ public class GetCourtImageService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         Log.i(TAG, "onHandleIntent");
 
-        String longitude = intent.getStringExtra("longitude");
-        String latitude = intent.getStringExtra("latitude");
+        if (intent != null) {
 
-        Log.e(TAG, "longitude = "+longitude+", latitude = "+latitude);
+            String longitude = intent.getStringExtra("longitude");
+            String latitude = intent.getStringExtra("latitude");
+
+            Log.e(TAG, "longitude = " + longitude + ", latitude = " + latitude);
 
 
+            if (!is_query) { // not in query
 
-        if (!is_query) { // not in query
-
-            pageItem = initData.jdbc.queryCourtTableImage(context, Double.valueOf(longitude), Double.valueOf(latitude));
+                pageItem = initData.jdbc.queryCourtTableImage(Double.valueOf(longitude), Double.valueOf(latitude));
+            }
         }
     }
 

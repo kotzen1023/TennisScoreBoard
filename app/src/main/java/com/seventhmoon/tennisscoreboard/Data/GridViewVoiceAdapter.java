@@ -18,14 +18,14 @@ public class GridViewVoiceAdapter extends ArrayAdapter<ImageBuyItem> {
     private Context context;
     private int layoutResourceId;
     private ArrayList<ImageBuyItem> data = new ArrayList<>();
-    private boolean[] selection;
+    //private boolean[] selection;
 
     public GridViewVoiceAdapter(Context context, int layoutResourceId, ArrayList<ImageBuyItem> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
         this.data = data;
-        selection = new boolean[data.size()];
+        //selection = new boolean[data.size()];
     }
 
     @Override
@@ -183,7 +183,7 @@ public class GridViewVoiceAdapter extends ArrayAdapter<ImageBuyItem> {
         return convertView;
     }
 
-    static class ViewHolder {
+    private class ViewHolder {
         TextView imageTitle;
         ImageView image;
         //CheckBox checkbox;
@@ -195,7 +195,7 @@ public class GridViewVoiceAdapter extends ArrayAdapter<ImageBuyItem> {
         //    return state;
         //}
 
-        public void setState(boolean state)
+        //public void setState(boolean state)
         {
             this.state = state;
         }

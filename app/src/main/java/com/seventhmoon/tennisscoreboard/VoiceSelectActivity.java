@@ -7,9 +7,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
+
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -26,15 +24,12 @@ import com.seventhmoon.tennisscoreboard.Data.GridViewVoiceAdapter;
 import com.seventhmoon.tennisscoreboard.Data.ImageBuyItem;
 import com.seventhmoon.tennisscoreboard.Data.RandomString;
 import com.seventhmoon.tennisscoreboard.util.IabBroadcastReceiver;
-import com.seventhmoon.tennisscoreboard.util.IabException;
+
 import com.seventhmoon.tennisscoreboard.util.IabHelper;
 import com.seventhmoon.tennisscoreboard.util.IabResult;
 import com.seventhmoon.tennisscoreboard.util.Inventory;
 import com.seventhmoon.tennisscoreboard.util.Purchase;
 
-import org.json.JSONException;
-
-import java.io.File;
 import java.util.ArrayList;
 
 

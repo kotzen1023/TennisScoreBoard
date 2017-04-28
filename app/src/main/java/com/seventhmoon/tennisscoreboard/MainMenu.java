@@ -6,44 +6,39 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
+
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
+
 import com.seventhmoon.tennisscoreboard.Data.Constants;
 import com.seventhmoon.tennisscoreboard.Data.InitData;
-import com.seventhmoon.tennisscoreboard.Data.LocationPager;
-import com.seventhmoon.tennisscoreboard.Service.CheckMacExistsService;
-import com.seventhmoon.tennisscoreboard.Sql.Jdbc;
 
-import static com.seventhmoon.tennisscoreboard.Sql.Jdbc.is_query;
+import com.seventhmoon.tennisscoreboard.Service.CheckMacExistsService;
+
 
 
 public class MainMenu extends Activity{
     private static final String TAG = MainMenu.class.getName();
-    public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
+    //public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
 
-    static SharedPreferences pref ;
-    static SharedPreferences.Editor editor;
-    private static final String FILE_NAME = "Preference";
+    //static SharedPreferences pref ;
+    //static SharedPreferences.Editor editor;
+    //private static final String FILE_NAME = "Preference";
     //private  String saveEncryptKey="";
-    private boolean is_initData = false;
+    //private boolean is_initData = false;
 
     public static InitData initData = new InitData();
 
     private static BroadcastReceiver mReceiver = null;
     private static boolean isRegister = false;
 
-    private static String my_id;
+    //private static String my_id;
     private static String id;
     private static String macAddress;
 
@@ -109,7 +104,7 @@ public class MainMenu extends Activity{
         id = Build.MODEL;
         initData.setUpload_remain(0);
 
-        my_id = id +" - "+initData.getWifiMac();
+        String my_id = id +" - "+initData.getWifiMac();
 
         Intent checkIntent = new Intent(MainMenu.this, CheckMacExistsService.class);
         checkIntent.putExtra("my_id", my_id);

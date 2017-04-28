@@ -1,8 +1,7 @@
 package com.seventhmoon.tennisscoreboard.Data;
 
 import android.content.Context;
-import android.os.Build;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 public class ShowItemAdapter extends ArrayAdapter<ShowItem> {
     private static final String TAG = ShowItemAdapter.class.getName();
 
-    LayoutInflater inflater = null;
+    private LayoutInflater inflater = null;
     private int layoutResourceId;
     private ArrayList<ShowItem> items = new ArrayList<>();
 
@@ -124,13 +123,13 @@ public class ShowItemAdapter extends ArrayAdapter<ShowItem> {
         return view;
     }
 
-    class ViewHolder {
+    private class ViewHolder {
         TextView header;
         TextView content;
         RatingBar rating;
 
 
-        public ViewHolder(View view) {
+        private ViewHolder(View view) {
             this.header = (TextView) view.findViewById(R.id.court_show_header);
             this.content = (TextView) view.findViewById(R.id.court_show_msg);
             this.rating = (RatingBar) view.findViewById(R.id.court_show_rating);

@@ -10,8 +10,8 @@ public class InitData {
     public Jdbc jdbc;
     private int upload_remain = 0;
     private String wifiMac;
-    private double current_longitude;
-    private double current_latitude;
+    //private double current_longitude;
+    //private double current_latitude;
     private boolean match_mac;
     //private int current_width;
     //private int current_height;
@@ -20,9 +20,9 @@ public class InitData {
         jdbc = new Jdbc();
     }
 
-    public void setJdbcUserMac(String userMac) {
-        jdbc.setMacAddress(userMac);
-    }
+    //public void setJdbcUserMac(String userMac) {
+    //    jdbc.setMacAddress(userMac);
+    //}
 
     public int getUpload_remain() {
         return upload_remain;
@@ -42,7 +42,7 @@ public class InitData {
         this.wifiMac = wifiMac;
     }
 
-    public double getCurrent_longitude() {
+    /*public double getCurrent_longitude() {
         return current_longitude;
     }
 
@@ -56,7 +56,7 @@ public class InitData {
 
     public void setCurrent_latitude(double current_latitude) {
         this.current_latitude = current_latitude;
-    }
+    }*/
 
     public boolean isMatch_mac() {
         return match_mac;

@@ -155,7 +155,7 @@ public class SetupMain extends AppCompatActivity{
                 boolean is_tiebreak;
                 boolean is_deuce;
                 boolean is_firstServe;
-                boolean is_6game;
+                //boolean is_6game;
 
                 //int is_setLimit;
 
@@ -168,14 +168,14 @@ public class SetupMain extends AppCompatActivity{
                         break;
                 }
 
-                switch (gameSpinner.getSelectedItemPosition()) {
+                /*switch (gameSpinner.getSelectedItemPosition()) {
                     case 0:
                         is_6game = true;
                         break;
                     default:
                         is_6game = false;
                         break;
-                }
+                }*/
 
                 switch (deuceSpinner.getSelectedItemPosition()) {
                     case 0:
