@@ -65,7 +65,7 @@
     <string name="stat_third_set">第三盤</string>
     <string name="stat_forth_set">第四盤</string>
     <string name="stat_fifth_set">第五盤</string>
-    <string name="game_saving">儲存中...</string>
+    <string name="game_saving">儲存中</string>
     <string name="voice_change_purchased">已購買</string>
     <string name="voice_change_ask_to_buy">您想購買此道具嗎?</string>
     <string name="game_voice">語音</string>
@@ -105,12 +105,12 @@
     <string name="add_court_upload_remain">上傳剩餘次數:</string>
     <string name="add_court_help">說明</string>
     <string name="add_court_help_title">分享球場資訊</string>
-    <string name="add_court_help_message">到您最喜歡去的球場拍一張球場照片. 確定您現在在地圖上的位置就是球場的定位, 再填好這張表, 送出這張對於此球場的評論. 便可以分享這個球場的資訊! 您有五次機會來分享不同的球場, 所以別浪費機會. 非常感謝您的分享!</string>
+    <string name="add_court_help_message">到您最喜歡去的球場拍一張球場照片(不要拍人物特寫. 把焦點放在球場). 確定您現在在地圖上的位置就是球場的定位, 再填好這張表, 送出這張對於此球場的評論. 便可以分享這個球場的資訊! 您有五次機會來分享不同的球場, 所以別浪費機會. 非常感謝您的分享!</string>
     <string name="find_court_current_position">目前位置</string>
     <string name="find_court_no_share_courts">目前您附近並無分享的球場資訊. 試著分享一個吧!</string>
-    <string name="loading">讀取中...</string>
+    <string name="loading">讀取中</string>
     <string name="rotate_nighty_degree">90度</string>
-    <string name="uploading">資料上傳...</string>
+    <string name="uploading">資料上傳</string>
     <string name="find_court_help">將顯示您目前定位周圍的所有球場. 如果您的定位是 (經度 30, 緯度 30), 搜尋範圍將會是 (30 +/- 1) 度. 約半徑157公里.</string>
     <string name="find_court_ok">了解</string>
     <string name="find_court_help_title">顯示球場位置</string>

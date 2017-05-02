@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
+    <!--uses-permission android:name="android.permission.CAMERA" /-->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -46,9 +46,9 @@
         <activity android:name=".VoiceSelectActivity"/>
         <activity android:name=".PlayMainActivity"/>
         <activity android:name=".MainMenu"/>
-        <activity android:name=".AddCourt"/>
-        <activity android:name=".FindCourtActivity"/>
-        <activity android:name=".FullScreenView"/>
+        <activity android:name=".AddCourt" android:screenOrientation="portrait"/>
+        <activity android:name=".FindCourtActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".FullScreenView" android:screenOrientation="portrait"/>
 
 
         <service android:name=".Service.CheckMacExistsService"/>

@@ -11,7 +11,7 @@
     <string name="setup_deciding_point">Deciding Point</string>
     <string name="setup_serve_first">Bottom Serve</string>
     <string name="setup_receive">Bottom Receive</string>
-    <string name="setup_confirm">Ok</string>
+    <string name="setup_confirm">OK</string>
     <string name="game_back">Back</string>
     <string name="game_reset">Reset</string>
     <string name="score_up">Score Top</string>
@@ -21,7 +21,7 @@
     <string name="main_wear_mode">Wear Mode</string>
     <string name="game_duration">Duration</string>
     <string name="game_show_result_dalog">Show game result?</string>
-    <string name="dialog_confirm">Ok</string>
+    <string name="dialog_confirm">OK</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="game_save">Save</string>
     <string name="game_load">Load</string>
@@ -64,7 +64,7 @@
     <string name="stat_third_set">Third Set</string>
     <string name="stat_forth_set">Forth Set</string>
     <string name="stat_fifth_set">Fifth Set</string>
-    <string name="game_saving">Saving...</string>
+    <string name="game_saving">Saving</string>
     <string name="voice_change_purchased">Purchased</string>
     <string name="voice_change_ask_to_buy">Do you want to buy this item?</string>
     <string name="game_voice">Voice</string>
@@ -104,14 +104,14 @@
     <string name="add_court_upload_remain">upload remain :</string>
     <string name="add_court_help">Help</string>
     <string name="add_court_help_title">Share court information</string>
-    <string name="add_court_help_message">Go to your favorite court nearby your home and take a great picture of the court. Make sure the mark(Current Position) in the map is really the court location and fill the current form about this court. Submit your comment of this court. Then you can share this good place! You have 5 time to upload different court\'s information. So don\'t waste it. Thanks for your share!</string>
+    <string name="add_court_help_message">Go to your favorite court nearby your home and take a great picture of the court(Do not take a close-up of people. Try to focus on the court). Make sure the mark(Current Position) in the map is really the court location and fill the current form about this court. Submit your comment of this court. Then you can share this good place! You have 5 time to upload different court\'s information. So don\'t waste it. Thanks for your share!</string>
     <string name="find_court_current_position">Current Position</string>
     <string name="find_court_no_share_courts">No court information nearby your current location. Try to share one!</string>
-    <string name="loading">Loading...</string>
+    <string name="loading">Loading</string>
     <string name="rotate_nighty_degree">90 degree</string>
-    <string name="uploading">Uploading...</string>
-    <string name="find_court_help">It shows all courts around your location. If your loaction is (Longitude 30, Latitude 30), the search range will be (30 +/- 1) degree. Approximate radius is 157km. </string>
-    <string name="find_court_ok">Ok</string>
+    <string name="uploading">Uploading</string>
+    <string name="find_court_help">It shows all courts around your location. If your location is (Longitude 30, Latitude 30), the search range will be (30 +/- 1) degree. Approximate radius is 157km. </string>
+    <string name="find_court_ok">OK</string>
     <string name="find_court_help_title">Show court location</string>
     <string name="find_court_permission_msg">You must agree this permission, or you can not use it.</string>
 </resources>

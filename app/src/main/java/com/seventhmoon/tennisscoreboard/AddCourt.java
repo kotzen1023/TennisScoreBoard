@@ -165,7 +165,7 @@ public class AddCourt extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String [] items        = new String [] {getResources().getString(R.string.add_court_camera),
+                final String [] items        = new String [] {
                         getResources().getString(R.string.add_court_gallery)};
                 ArrayAdapter<String> adapter = new ArrayAdapter<> (AddCourt.this, android.R.layout.select_dialog_item,items);
 
@@ -174,7 +174,7 @@ public class AddCourt extends AppCompatActivity {
                 builder.setTitle(getResources().getString(R.string.add_court_select));
                 builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
                     public void onClick( DialogInterface dialog, int item ) { //pick from camer
-                        if (item == 0) {
+                        /*if (item == 0) {
                             if (FileOperation.init_camera_folder()) {
 
                                 Calendar c = Calendar.getInstance();
@@ -202,8 +202,8 @@ public class AddCourt extends AppCompatActivity {
                                 picIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, outputFileUri);
                                 startActivityForResult(picIntent, PICK_FROM_CAMERA);
                             }
-                        } else
-                        if (item == 1) { //pick from file
+                        } else*/
+                        if (item == 0) { //pick from file
                             /*if (Build.VERSION.SDK_INT <19){
                                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                                 intent.setType("image/*");
