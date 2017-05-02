@@ -438,7 +438,14 @@ public class FindCourtActivity extends AppCompatActivity implements
             Log.d(TAG, "registerReceiver mReceiver");
         }
 
-        is_reload = true;
+        //is_reload = true;
+        loadDialog = new ProgressDialog(FindCourtActivity.this);
+        loadDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        loadDialog.setTitle(getResources().getString(R.string.loading));
+        loadDialog.setIndeterminate(false);
+        loadDialog.setCancelable(false);
+
+        loadDialog.show();
     }
 
     @Override
