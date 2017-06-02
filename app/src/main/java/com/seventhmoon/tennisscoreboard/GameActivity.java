@@ -129,6 +129,7 @@ public class GameActivity extends AppCompatActivity{
     //private static boolean is_backhand_volley = false;
     private static byte ace_count = 0;
     private static byte double_faults_count = 0;
+    private static short forced_errors_count = 0;
     private static short unforced_errors_count = 0;
     private static short forehand_winner_count = 0;
     private static short backhand_winner_count = 0;
@@ -485,6 +486,11 @@ public class GameActivity extends AppCompatActivity{
                     new_state.setSet_tiebreak_point_up((byte) 0x5, Byte.valueOf(data[71]));
                     new_state.setSet_tiebreak_point_down((byte) 0x5, Byte.valueOf(data[72]));
 
+                    if (data.length > 73) {
+                        new_state.setForceErrorUp(Short.valueOf(data[73]));
+                        new_state.setForceErrorDown(Short.valueOf(data[74]));
+                    }
+
                     stack.addLast(new_state);
                 }
 
@@ -619,7 +625,7 @@ public class GameActivity extends AppCompatActivity{
                         } else if (top.getSet_point_up(current_set) == 3) {
                             pointUp.setText(String.valueOf(40));
                         } else if (top.getSet_point_up(current_set) == 4) {
-                            String score = String.valueOf(40) + "A";
+                            String score = "Ad";
                             pointUp.setText(score);
                         } else {
                             pointUp.setText("0");
@@ -636,7 +642,7 @@ public class GameActivity extends AppCompatActivity{
                         } else if (top.getSet_point_down(current_set) == 3) {
                             pointDown.setText(String.valueOf(40));
                         } else if (top.getSet_point_down(current_set) == 4) {
-                            String score = String.valueOf(40) + "A";
+                            String score = "Ad";
                             pointDown.setText(score);
                         } else {
                             pointDown.setText("0");
@@ -801,7 +807,7 @@ public class GameActivity extends AppCompatActivity{
                                 } else if (back_state.getSet_point_up(current_set) == 3) {
                                     pointUp.setText(String.valueOf(40));
                                 } else if (back_state.getSet_point_up(current_set) == 4) {
-                                    String msg = String.valueOf(40)+"A";
+                                    String msg = "Ad";
                                     pointUp.setText(msg);
                                 } else {
                                     pointUp.setText("0");
@@ -818,7 +824,7 @@ public class GameActivity extends AppCompatActivity{
                                 } else if (back_state.getSet_point_down(current_set) == 3) {
                                     pointDown.setText(String.valueOf(40));
                                 } else if (back_state.getSet_point_down(current_set) == 4) {
-                                    String msg = String.valueOf(40)+"A";
+                                    String msg = "Ad";
                                     pointDown.setText(msg);
                                 } else {
                                     pointDown.setText("0");
@@ -923,6 +929,7 @@ public class GameActivity extends AppCompatActivity{
                             items.add(getResources().getString(R.string.game_ace));
                             items.add(getResources().getString(R.string.game_double_faults));
                             items.add(getResources().getString(R.string.game_unforced_error));
+                            items.add(getResources().getString(R.string.game_forced_error));
                             items.add(getResources().getString(R.string.game_forehand_winner));
                             items.add(getResources().getString(R.string.game_backhand_winner));
                             items.add(getResources().getString(R.string.game_forehand_volley));
@@ -935,6 +942,7 @@ public class GameActivity extends AppCompatActivity{
                             items.add(getResources().getString(R.string.game_ace));
                             items.add(getResources().getString(R.string.game_second_serve));
                             items.add(getResources().getString(R.string.game_unforced_error));
+                            items.add(getResources().getString(R.string.game_forced_error));
                             items.add(getResources().getString(R.string.game_forehand_winner));
                             items.add(getResources().getString(R.string.game_backhand_winner));
                             items.add(getResources().getString(R.string.game_forehand_volley));
@@ -969,32 +977,36 @@ public class GameActivity extends AppCompatActivity{
                                         unforced_errors_count = 1;
                                         second_serve_lost = 1;
                                         calculateScore(OPPT_SCORE);
-                                    } else if (item == 3) { //forehand winner
+                                    } else if (item == 3) { //forced error
+                                        forced_errors_count = 1;
+                                        second_serve_lost = 1;
+                                        calculateScore(OPPT_SCORE);
+                                    } else if (item == 4) { //forehand winner
                                         forehand_winner_count = 1;
                                         second_serve_won = 1;
                                         calculateScore(YOU_SCORE);
-                                    } else if (item == 4) { //backhand winner
+                                    } else if (item == 5) { //backhand winner
                                         backhand_winner_count = 1;
                                         second_serve_won = 1;
                                         calculateScore(YOU_SCORE);
-                                    } else if (item == 5) { //forehand volley
+                                    } else if (item == 6) { //forehand volley
                                         forehand_volley_count = 1;
                                         second_serve_won = 1;
                                         calculateScore(YOU_SCORE);
-                                    } else if (item == 6) { //backhand volley
+                                    } else if (item == 7) { //backhand volley
                                         backhand_volley_count = 1;
                                         second_serve_won = 1;
                                         calculateScore(YOU_SCORE);
-                                    } else if (item == 7) { //Foul to lose
+                                    } else if (item == 8) { //Foul to lose
                                         foul_to_lose_count = 1;
                                         second_serve_lost = 1;
                                         calculateScore(OPPT_SCORE);
-                                    } else if (item == 8) { //other winner
+                                    } else if (item == 9) { //other winner
                                         second_serve_won = 1;
                                         calculateScore(YOU_SCORE);
-                                    } else if (item == 9) { //net in
+                                    } else if (item == 10) { //net in
                                         calculateScore(YOU_SERVE);
-                                    } else if (item == 10) { //
+                                    } else if (item == 11) { //
                                         is_retire = "2";
                                         calculateScore(YOU_RETIRE);
                                     }
@@ -1015,32 +1027,36 @@ public class GameActivity extends AppCompatActivity{
                                         unforced_errors_count = 1;
                                         first_serve_lost = 1;
                                         calculateScore(OPPT_SCORE);
-                                    } else if (item == 3) { //forehand winner
+                                    } else if (item == 3) { //forced error
+                                        forced_errors_count = 1;
+                                        first_serve_lost = 1;
+                                        calculateScore(OPPT_SCORE);
+                                    } else if (item == 4) { //forehand winner
                                         forehand_winner_count = 1;
                                         first_serve_won = 1;
                                         calculateScore(YOU_SCORE);
-                                    } else if (item == 4) { //backhand winner
+                                    } else if (item == 5) { //backhand winner
                                         backhand_winner_count = 1;
                                         first_serve_won = 1;
                                         calculateScore(YOU_SCORE);
-                                    } else if (item == 5) { //forehand volley
+                                    } else if (item == 6) { //forehand volley
                                         forehand_volley_count = 1;
                                         first_serve_won = 1;
                                         calculateScore(YOU_SCORE);
-                                    } else if (item == 6) { //backhand volley
+                                    } else if (item == 7) { //backhand volley
                                         backhand_volley_count = 1;
                                         first_serve_won = 1;
                                         calculateScore(YOU_SCORE);
-                                    } else if (item == 7) { //Foul to lose
+                                    } else if (item == 8) { //Foul to lose
                                         foul_to_lose_count = 1;
                                         first_serve_lost = 1;
                                         calculateScore(OPPT_SCORE);
-                                    } else if (item == 8) { //other winner
+                                    } else if (item == 9) { //other winner
                                         first_serve_won = 1;
                                         calculateScore(YOU_SCORE);
-                                    } else if (item == 9) { //net in
+                                    } else if (item == 10) { //net in
                                         calculateScore(YOU_SERVE);
-                                    } else if (item == 10) { //retire
+                                    } else if (item == 11) { //retire
                                         is_retire = "2";
                                         calculateScore(YOU_RETIRE);
                                     }
@@ -1050,6 +1066,7 @@ public class GameActivity extends AppCompatActivity{
                         builder.show();
                     } else { //oppt serve
                         items.add(getResources().getString(R.string.game_unforced_error));
+                        items.add(getResources().getString(R.string.game_forced_error));
                         items.add(getResources().getString(R.string.game_forehand_winner));
                         items.add(getResources().getString(R.string.game_backhand_winner));
                         items.add(getResources().getString(R.string.game_forehand_volley));
@@ -1071,30 +1088,34 @@ public class GameActivity extends AppCompatActivity{
                                         unforced_errors_count = 1;
                                         second_serve_won = 1;
                                         calculateScore(OPPT_SCORE);
-                                    } else if (item == 1) { //forehand winner
+                                    } else if (item == 1) { //forced error
+                                        forced_errors_count = 1;
+                                        second_serve_won = 1;
+                                        calculateScore(OPPT_SCORE);
+                                    } else if (item == 2) { //forehand winner
                                         forehand_winner_count = 1;
                                         second_serve_lost = 1;
                                         calculateScore(YOU_SCORE);
-                                    } else if (item == 2) { //backhand winner
+                                    } else if (item == 3) { //backhand winner
                                         backhand_winner_count = 1;
                                         second_serve_lost = 1;
                                         calculateScore(YOU_SCORE);
-                                    } else if (item == 3) { //forehand volley
+                                    } else if (item == 4) { //forehand volley
                                         forehand_volley_count = 1;
                                         second_serve_lost = 1;
                                         calculateScore(YOU_SCORE);
-                                    } else if (item == 4) { //backhand volley
+                                    } else if (item == 5) { //backhand volley
                                         backhand_volley_count = 1;
                                         second_serve_lost = 1;
                                         calculateScore(YOU_SCORE);
-                                    } else if (item == 5) { //Foul to lose
+                                    } else if (item == 6) { //Foul to lose
                                         foul_to_lose_count = 1;
                                         second_serve_won = 1;
                                         calculateScore(OPPT_SCORE);
-                                    } else if (item == 6) { //other winner
+                                    } else if (item == 7) { //other winner
                                         second_serve_lost = 1;
                                         calculateScore(YOU_SCORE);
-                                    } else if (item == 7) { //retire
+                                    } else if (item == 8) { //retire
                                         is_retire = "2";
                                         calculateScore(YOU_RETIRE);
                                     }
@@ -1104,30 +1125,34 @@ public class GameActivity extends AppCompatActivity{
                                         unforced_errors_count = 1;
                                         first_serve_won = 1;
                                         calculateScore(OPPT_SCORE);
-                                    } else if (item == 1) { //forehand winner
+                                    } else if (item == 1) { //forced error
+                                        forced_errors_count = 1;
+                                        first_serve_won = 1;
+                                        calculateScore(OPPT_SCORE);
+                                    } else if (item == 2) { //forehand winner
                                         forehand_winner_count = 1;
                                         first_serve_lost = 1;
                                         calculateScore(YOU_SCORE);
-                                    } else if (item == 2) { //backhand winner
+                                    } else if (item == 3) { //backhand winner
                                         backhand_winner_count = 1;
                                         first_serve_lost = 1;
                                         calculateScore(YOU_SCORE);
-                                    } else if (item == 3) { //forehand volley
+                                    } else if (item == 4) { //forehand volley
                                         forehand_volley_count = 1;
                                         first_serve_lost = 1;
                                         calculateScore(YOU_SCORE);
-                                    } else if (item == 4) { //backhand volley
+                                    } else if (item == 5) { //backhand volley
                                         backhand_volley_count = 1;
                                         first_serve_lost = 1;
                                         calculateScore(YOU_SCORE);
-                                    } else if (item == 5) { //Foul to lose
+                                    } else if (item == 6) { //Foul to lose
                                         foul_to_lose_count = 1;
                                         first_serve_won = 1;
                                         calculateScore(OPPT_SCORE);
-                                    } else if (item == 6) { //other winner
+                                    } else if (item == 7) { //other winner
                                         first_serve_lost = 1;
                                         calculateScore(YOU_SCORE);
-                                    } else if (item == 7) { //retire
+                                    } else if (item == 8) { //retire
                                         is_retire = "2";
                                         calculateScore(YOU_RETIRE);
                                     }
@@ -1157,6 +1182,7 @@ public class GameActivity extends AppCompatActivity{
                             items.add(getResources().getString(R.string.game_ace));
                             items.add(getResources().getString(R.string.game_double_faults));
                             items.add(getResources().getString(R.string.game_unforced_error));
+                            items.add(getResources().getString(R.string.game_forced_error));
                             items.add(getResources().getString(R.string.game_forehand_winner));
                             items.add(getResources().getString(R.string.game_backhand_winner));
                             items.add(getResources().getString(R.string.game_forehand_volley));
@@ -1169,6 +1195,7 @@ public class GameActivity extends AppCompatActivity{
                             items.add(getResources().getString(R.string.game_ace));
                             items.add(getResources().getString(R.string.game_second_serve));
                             items.add(getResources().getString(R.string.game_unforced_error));
+                            items.add(getResources().getString(R.string.game_forced_error));
                             items.add(getResources().getString(R.string.game_forehand_winner));
                             items.add(getResources().getString(R.string.game_backhand_winner));
                             items.add(getResources().getString(R.string.game_forehand_volley));
@@ -1204,32 +1231,36 @@ public class GameActivity extends AppCompatActivity{
                                         unforced_errors_count = 1;
                                         second_serve_lost = 1;
                                         calculateScore(YOU_SCORE);
-                                    } else if (item == 3) { //forehand winner
+                                    } else if (item == 3) { //forced error
+                                        forced_errors_count = 1;
+                                        second_serve_lost = 1;
+                                        calculateScore(YOU_SCORE);
+                                    } else if (item == 4) { //forehand winner
                                         forehand_winner_count = 1;
                                         second_serve_won = 1;
                                         calculateScore(OPPT_SCORE);
-                                    } else if (item == 4) { //backhand winner
+                                    } else if (item == 5) { //backhand winner
                                         backhand_winner_count = 1;
                                         second_serve_won = 1;
                                         calculateScore(OPPT_SCORE);
-                                    } else if (item == 5) { //forehand volley
+                                    } else if (item == 6) { //forehand volley
                                         forehand_volley_count = 1;
                                         second_serve_won = 1;
                                         calculateScore(OPPT_SCORE);
-                                    } else if (item == 6) { //backhand volley
+                                    } else if (item == 7) { //backhand volley
                                         backhand_volley_count = 1;
                                         second_serve_won = 1;
                                         calculateScore(OPPT_SCORE);
-                                    } else if (item == 7) { //Foul to lose
+                                    } else if (item == 8) { //Foul to lose
                                         foul_to_lose_count = 1;
                                         second_serve_lost = 1;
                                         calculateScore(YOU_SCORE);
-                                    } else if (item == 8) { //other winner
+                                    } else if (item == 9) { //other winner
                                         second_serve_won = 1;
                                         calculateScore(OPPT_SCORE);
-                                    } else if (item == 9) { //net in
+                                    } else if (item == 10) { //net in
                                         calculateScore(OPPT_SERVE);
-                                    } else if (item == 10) { //retire
+                                    } else if (item == 11) { //retire
                                         is_retire = "1";
                                         calculateScore(OPPT_RETIRE);
                                     }
@@ -1250,32 +1281,36 @@ public class GameActivity extends AppCompatActivity{
                                         unforced_errors_count = 1;
                                         first_serve_lost = 1;
                                         calculateScore(YOU_SCORE);
-                                    } else if (item == 3) { //forehand winner
+                                    } else if (item == 3) { //forced error
+                                        forced_errors_count = 1;
+                                        first_serve_lost = 1;
+                                        calculateScore(YOU_SCORE);
+                                    } else if (item == 4) { //forehand winner
                                         forehand_winner_count = 1;
                                         first_serve_won = 1;
                                         calculateScore(OPPT_SCORE);
-                                    } else if (item == 4) { //backhand winner
+                                    } else if (item == 5) { //backhand winner
                                         backhand_winner_count = 1;
                                         first_serve_won = 1;
                                         calculateScore(OPPT_SCORE);
-                                    } else if (item == 5) { //forehand volley
+                                    } else if (item == 6) { //forehand volley
                                         forehand_volley_count = 1;
                                         first_serve_won = 1;
                                         calculateScore(OPPT_SCORE);
-                                    } else if (item == 6) { //backhand volley
+                                    } else if (item == 7) { //backhand volley
                                         backhand_volley_count = 1;
                                         first_serve_won = 1;
                                         calculateScore(OPPT_SCORE);
-                                    } else if (item == 7) { //Foul to lose
+                                    } else if (item == 8) { //Foul to lose
                                         foul_to_lose_count = 1;
                                         first_serve_lost = 1;
                                         calculateScore(YOU_SCORE);
-                                    } else if (item == 8) { //other winner
+                                    } else if (item == 9) { //other winner
                                         first_serve_won = 1;
                                         calculateScore(OPPT_SCORE);
-                                    } else if (item == 9) { //net in
+                                    } else if (item == 10) { //net in
                                         calculateScore(OPPT_SERVE);
-                                    } else if (item == 10) { //retire
+                                    } else if (item == 11) { //retire
                                         is_retire = "1";
                                         calculateScore(OPPT_RETIRE);
                                     }
@@ -1285,6 +1320,7 @@ public class GameActivity extends AppCompatActivity{
                         builder.show();
                     } else { //you serve
                         items.add(getResources().getString(R.string.game_unforced_error));
+                        items.add(getResources().getString(R.string.game_forced_error));
                         items.add(getResources().getString(R.string.game_forehand_winner));
                         items.add(getResources().getString(R.string.game_backhand_winner));
                         items.add(getResources().getString(R.string.game_forehand_volley));
@@ -1306,30 +1342,34 @@ public class GameActivity extends AppCompatActivity{
                                         unforced_errors_count = 1;
                                         second_serve_won = 1;
                                         calculateScore(YOU_SCORE);
-                                    } else if (item == 1) { //forehand winner
+                                    } else if (item == 1) { //forced error
+                                        forced_errors_count = 1;
+                                        second_serve_won = 1;
+                                        calculateScore(YOU_SCORE);
+                                    } else if (item == 2) { //forehand winner
                                         forehand_winner_count = 1;
                                         second_serve_lost = 1;
                                         calculateScore(OPPT_SCORE);
-                                    } else if (item == 2) { //backhand winner
+                                    } else if (item == 3) { //backhand winner
                                         backhand_winner_count = 1;
                                         second_serve_lost = 1;
                                         calculateScore(OPPT_SCORE);
-                                    } else if (item == 3) { //forehand volley
+                                    } else if (item == 4) { //forehand volley
                                         forehand_volley_count = 1;
                                         second_serve_lost = 1;
                                         calculateScore(OPPT_SCORE);
-                                    } else if (item == 4) { //backhand volley
+                                    } else if (item == 5) { //backhand volley
                                         backhand_volley_count = 1;
                                         second_serve_lost = 1;
                                         calculateScore(OPPT_SCORE);
-                                    } else if (item == 5) { //Foul to lose
+                                    } else if (item == 6) { //Foul to lose
                                         foul_to_lose_count = 1;
                                         second_serve_won = 1;
                                         calculateScore(YOU_SCORE);
-                                    } else if (item == 6) { //other winner
+                                    } else if (item == 7) { //other winner
                                         second_serve_lost = 1;
                                         calculateScore(OPPT_SCORE);
-                                    } else if (item == 7) { //other winner
+                                    } else if (item == 8) { //other winner
                                         is_retire = "1";
                                         calculateScore(OPPT_RETIRE);
                                     }
@@ -1339,30 +1379,34 @@ public class GameActivity extends AppCompatActivity{
                                         unforced_errors_count = 1;
                                         first_serve_won = 1;
                                         calculateScore(YOU_SCORE);
-                                    } else if (item == 1) { //forehand winner
+                                    } else if (item == 1) { //forced error
+                                        forced_errors_count = 1;
+                                        first_serve_won = 1;
+                                        calculateScore(YOU_SCORE);
+                                    } else if (item == 2) { //forehand winner
                                         forehand_winner_count = 1;
                                         first_serve_lost = 1;
                                         calculateScore(OPPT_SCORE);
-                                    } else if (item == 2) { //backhand winner
+                                    } else if (item == 3) { //backhand winner
                                         backhand_winner_count = 1;
                                         first_serve_lost = 1;
                                         calculateScore(OPPT_SCORE);
-                                    } else if (item == 3) { //forehand volley
+                                    } else if (item == 4) { //forehand volley
                                         forehand_volley_count = 1;
                                         first_serve_lost = 1;
                                         calculateScore(OPPT_SCORE);
-                                    } else if (item == 4) { //backhand volley
+                                    } else if (item == 5) { //backhand volley
                                         backhand_volley_count = 1;
                                         first_serve_lost = 1;
                                         calculateScore(OPPT_SCORE);
-                                    } else if (item == 5) { //Foul to lose
+                                    } else if (item == 6) { //Foul to lose
                                         foul_to_lose_count = 1;
                                         first_serve_won = 1;
                                         calculateScore(YOU_SCORE);
-                                    } else if (item == 6) { //other winner
+                                    } else if (item == 7) { //other winner
                                         first_serve_lost = 1;
                                         calculateScore(OPPT_SCORE);
-                                    } else if (item == 7) { //other winner
+                                    } else if (item == 8) { //other winner
                                         is_retire = "1";
                                         calculateScore(OPPT_RETIRE);
                                     }
@@ -1536,7 +1580,10 @@ public class GameActivity extends AppCompatActivity{
                                         + s.getSet_point_up((byte) 0x5) + ";"
                                         + s.getSet_point_down((byte) 0x5) + ";"
                                         + s.getSet_tiebreak_point_up((byte) 0x5) + ";"
-                                        + s.getSet_tiebreak_point_down((byte) 0x5);
+                                        + s.getSet_tiebreak_point_down((byte) 0x5)
+                                        + s.getForceErrorUp() + ";"
+                                        + s.getForceErrorDown() + ";"
+                                        ;
                                 append_record(append_msg, filename);
                                 i++;
                             }
@@ -1775,6 +1822,7 @@ public class GameActivity extends AppCompatActivity{
                 Log.d(TAG, "second_serve_count = "+second_serve_count);
                 Log.d(TAG, "ace_count = "+ace_count);
                 Log.d(TAG, "unforced_errors_count = "+unforced_errors_count);
+                Log.d(TAG, "forced_errors_count = "+forced_errors_count);
                 Log.d(TAG, "foul_to_lose_count = "+foul_to_lose_count);
                 Log.d(TAG, "double_faults_count = "+double_faults_count);
                 Log.d(TAG, "forehand_winner_count = "+forehand_winner_count);
@@ -1867,6 +1915,8 @@ public class GameActivity extends AppCompatActivity{
                             new_state.setDoubleFaultDown(current_state.getDoubleFaultDown());
                             new_state.setUnforceErrorUp(current_state.getUnforceErrorUp());
                             new_state.setUnforceErrorDown(current_state.getUnforceErrorDown());
+                            new_state.setForceErrorUp(current_state.getForceErrorUp());
+                            new_state.setForceErrorDown(current_state.getForceErrorDown());
                             new_state.setForehandWinnerUp(current_state.getForehandWinnerUp());
                             new_state.setForehandWinnerDown(current_state.getForehandWinnerDown());
                             new_state.setBackhandWinnerUp(current_state.getBackhandWinnerUp());
@@ -1967,6 +2017,8 @@ public class GameActivity extends AppCompatActivity{
                             new_state.setDoubleFaultDown(current_state.getDoubleFaultDown());
                             new_state.setUnforceErrorUp(current_state.getUnforceErrorUp());
                             new_state.setUnforceErrorDown(current_state.getUnforceErrorDown());
+                            new_state.setForceErrorUp(current_state.getForceErrorUp());
+                            new_state.setForceErrorDown(current_state.getForceErrorDown());
                             new_state.setForehandWinnerUp(current_state.getForehandWinnerUp());
                             new_state.setForehandWinnerDown(current_state.getForehandWinnerDown());
                             new_state.setBackhandWinnerUp(current_state.getBackhandWinnerUp());
@@ -2077,6 +2129,8 @@ public class GameActivity extends AppCompatActivity{
                             new_state.setDoubleFaultDown(current_state.getDoubleFaultDown());
                             new_state.setUnforceErrorUp(current_state.getUnforceErrorUp());
                             new_state.setUnforceErrorDown(current_state.getUnforceErrorDown());
+                            new_state.setForceErrorUp(current_state.getForceErrorUp());
+                            new_state.setForceErrorDown(current_state.getForceErrorDown());
                             new_state.setForehandWinnerUp(current_state.getForehandWinnerUp());
                             new_state.setForehandWinnerDown(current_state.getForehandWinnerDown());
                             new_state.setBackhandWinnerUp(current_state.getBackhandWinnerUp());
@@ -2189,6 +2243,8 @@ public class GameActivity extends AppCompatActivity{
                             new_state.setDoubleFaultDown(current_state.getDoubleFaultDown());
                             new_state.setUnforceErrorUp(current_state.getUnforceErrorUp());
                             new_state.setUnforceErrorDown(current_state.getUnforceErrorDown());
+                            new_state.setForceErrorUp(current_state.getForceErrorUp());
+                            new_state.setForceErrorDown(current_state.getForceErrorDown());
                             new_state.setForehandWinnerUp(current_state.getForehandWinnerUp());
                             new_state.setForehandWinnerDown(current_state.getForehandWinnerDown());
                             new_state.setBackhandWinnerUp(current_state.getBackhandWinnerUp());
@@ -2257,6 +2313,7 @@ public class GameActivity extends AppCompatActivity{
                             //oppt lose
                             new_state.setDoubleFaultUp(double_faults_count);
                             new_state.setUnforceErrorUp(unforced_errors_count);
+                            new_state.setForceErrorUp(forced_errors_count);
                             new_state.setFoulToLoseUp(foul_to_lose_count);
 
                             if (new_state.isServe()) //you serve
@@ -2308,6 +2365,8 @@ public class GameActivity extends AppCompatActivity{
                                 new_state.setDoubleFaultDown(current_state.getDoubleFaultDown());
                                 new_state.setUnforceErrorUp(current_state.getUnforceErrorUp());
                                 new_state.setUnforceErrorDown(current_state.getUnforceErrorDown());
+                                new_state.setForceErrorUp(current_state.getForceErrorUp());
+                                new_state.setForceErrorDown(current_state.getForceErrorDown());
                                 new_state.setForehandWinnerUp(current_state.getForehandWinnerUp());
                                 new_state.setForehandWinnerDown(current_state.getForehandWinnerDown());
                                 new_state.setBackhandWinnerUp(current_state.getBackhandWinnerUp());
@@ -2344,7 +2403,8 @@ public class GameActivity extends AppCompatActivity{
                                     new_state.setForehandVolleyDown((short)(new_state.getForehandVolleyDown()+forehand_volley_count));
                                     new_state.setBackhandVolleyDown((short)(new_state.getBackhandVolleyDown()+backhand_volley_count));
                                     //win on oppt lose
-                                    new_state.setUnforceErrorUp((byte)(new_state.getUnforceErrorUp()+unforced_errors_count));
+                                    new_state.setUnforceErrorUp((short)(new_state.getUnforceErrorUp()+unforced_errors_count));
+                                    new_state.setForceErrorUp((short)(new_state.getForceErrorUp()+forced_errors_count));
                                     new_state.setFoulToLoseUp((byte)(new_state.getFoulToLoseUp()+foul_to_lose_count));
                                     //score on first serve or second serve
                                     if (is_second_serve)
@@ -2369,7 +2429,8 @@ public class GameActivity extends AppCompatActivity{
                                     new_state.setBackhandVolleyDown((short)(new_state.getBackhandVolleyDown()+backhand_volley_count));
                                     //win on oppt lose
                                     new_state.setDoubleFaultUp((byte)(new_state.getDoubleFaultUp()+double_faults_count));
-                                    new_state.setUnforceErrorUp((byte)(new_state.getUnforceErrorUp()+unforced_errors_count));
+                                    new_state.setUnforceErrorUp((short)(new_state.getUnforceErrorUp()+unforced_errors_count));
+                                    new_state.setForceErrorUp((short)(new_state.getForceErrorUp()+forced_errors_count));
                                     new_state.setFoulToLoseUp((byte)(new_state.getFoulToLoseUp()+foul_to_lose_count));
                                     if (is_second_serve)
                                         new_state.setSecondServeLostUp((short)(new_state.getSecondServeLostUp()+second_serve_lost));
@@ -2445,6 +2506,7 @@ public class GameActivity extends AppCompatActivity{
                             //win by your lose
                             new_state.setDoubleFaultDown(double_faults_count);
                             new_state.setUnforceErrorDown(unforced_errors_count);
+                            new_state.setForceErrorDown(forced_errors_count);
                             new_state.setFoulToLoseDown(foul_to_lose_count);
 
                             if (new_state.isServe()) //you serve
@@ -2494,6 +2556,8 @@ public class GameActivity extends AppCompatActivity{
                                 new_state.setDoubleFaultDown(current_state.getDoubleFaultDown());
                                 new_state.setUnforceErrorUp(current_state.getUnforceErrorUp());
                                 new_state.setUnforceErrorDown(current_state.getUnforceErrorDown());
+                                new_state.setForceErrorUp(current_state.getForceErrorUp());
+                                new_state.setForceErrorDown(current_state.getForceErrorDown());
                                 new_state.setForehandWinnerUp(current_state.getForehandWinnerUp());
                                 new_state.setForehandWinnerDown(current_state.getForehandWinnerDown());
                                 new_state.setBackhandWinnerUp(current_state.getBackhandWinnerUp());
@@ -2531,7 +2595,8 @@ public class GameActivity extends AppCompatActivity{
                                     new_state.setBackhandVolleyUp((short)(new_state.getBackhandVolleyUp()+backhand_volley_count));
                                     //win on your lose
                                     new_state.setDoubleFaultDown((byte)(new_state.getDoubleFaultDown()+double_faults_count));
-                                    new_state.setUnforceErrorDown((byte)(new_state.getUnforceErrorDown()+unforced_errors_count));
+                                    new_state.setUnforceErrorDown((short) (new_state.getUnforceErrorDown()+unforced_errors_count));
+                                    new_state.setForceErrorDown((short)(new_state.getForceErrorDown()+forced_errors_count));
                                     new_state.setFoulToLoseDown((byte)(new_state.getFoulToLoseDown()+foul_to_lose_count));
 
                                     //you serve, oppt scored
@@ -2557,7 +2622,8 @@ public class GameActivity extends AppCompatActivity{
                                     new_state.setForehandVolleyUp((short)(new_state.getForehandVolleyUp()+forehand_volley_count));
                                     new_state.setBackhandVolleyUp((short)(new_state.getBackhandVolleyUp()+backhand_volley_count));
                                     //win on your lose
-                                    new_state.setUnforceErrorDown((byte)(new_state.getUnforceErrorDown()+unforced_errors_count));
+                                    new_state.setUnforceErrorDown((short)(new_state.getUnforceErrorDown()+unforced_errors_count));
+                                    new_state.setForceErrorDown((short)(new_state.getForceErrorDown()+forced_errors_count));
                                     new_state.setFoulToLoseDown((byte)(new_state.getFoulToLoseDown()+foul_to_lose_count));
 
                                     //oppt serve, oppt scored
@@ -2846,6 +2912,7 @@ public class GameActivity extends AppCompatActivity{
                         new_state.setBackhandVolleyDown(backhand_volley_count);
                         //win on oppt lose
                         new_state.setUnforceErrorUp(unforced_errors_count);
+                        new_state.setForceErrorUp(forced_errors_count);
                         new_state.setFoulToLoseUp(foul_to_lose_count);
 
                         new_state.setFirstServeWonDown(first_serve_won);
@@ -2867,6 +2934,7 @@ public class GameActivity extends AppCompatActivity{
                         //win on oppt lose
                         new_state.setDoubleFaultUp(double_faults_count);
                         new_state.setUnforceErrorUp(unforced_errors_count);
+                        new_state.setForceErrorUp(forced_errors_count);
                         new_state.setFoulToLoseUp(foul_to_lose_count);
 
                         new_state.setFirstServeWonUp(first_serve_won);
@@ -2897,6 +2965,7 @@ public class GameActivity extends AppCompatActivity{
                         //win on you lose
                         new_state.setDoubleFaultDown(double_faults_count);
                         new_state.setUnforceErrorDown(unforced_errors_count);
+                        new_state.setForceErrorDown(forced_errors_count);
                         new_state.setFoulToLoseDown(foul_to_lose_count);
 
                         new_state.setFirstServeWonDown(first_serve_won);
@@ -2918,6 +2987,7 @@ public class GameActivity extends AppCompatActivity{
                         new_state.setBackhandVolleyUp(backhand_volley_count);
                         //win on you lose
                         new_state.setUnforceErrorDown(unforced_errors_count);
+                        new_state.setForceErrorDown(forced_errors_count);
                         new_state.setFoulToLoseDown(foul_to_lose_count);
 
                         new_state.setFirstServeWonUp(first_serve_won);
@@ -3034,6 +3104,7 @@ public class GameActivity extends AppCompatActivity{
         //reset all zero
         ace_count = 0;
         double_faults_count = 0;
+        forced_errors_count = 0;
         unforced_errors_count = 0;
         forehand_winner_count = 0;
         backhand_winner_count = 0;
@@ -3890,7 +3961,10 @@ public class GameActivity extends AppCompatActivity{
                         + s.getSet_point_up((byte) 0x5) + ";"
                         + s.getSet_point_down((byte) 0x5) + ";"
                         + s.getSet_tiebreak_point_up((byte) 0x5) + ";"
-                        + s.getSet_tiebreak_point_down((byte) 0x5);
+                        + s.getSet_tiebreak_point_down((byte) 0x5) + ";"
+                        + s.getForceErrorUp() + ";"
+                        + s.getForceErrorDown() + ";"
+                        ;
                 append_record(append_msg, filename);
                 i++;
             }

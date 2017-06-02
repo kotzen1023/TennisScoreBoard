@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
     }*/
 
     public void init_setting() {
-        Intent intent = new Intent(MainActivity.this, MainMenu.class);
+        Intent intent = new Intent(MainActivity.this, PlayMainActivity.class);
         intent.putExtra("WiFiMac", macAddress);
         startActivity(intent);
         finish();

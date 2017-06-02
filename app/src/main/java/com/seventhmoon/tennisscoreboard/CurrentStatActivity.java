@@ -178,6 +178,11 @@ public class CurrentStatActivity extends AppCompatActivity{
                                 String.valueOf(first_set_stat.getUnforceErrorDown()));
                         currentArray.add(item4);
 
+                        CurrentStatItem item13 = new CurrentStatItem(getResources().getString(R.string.game_forced_error),
+                                String.valueOf(first_set_stat.getForceErrorUp()),
+                                String.valueOf(first_set_stat.getForceErrorDown()));
+                        currentArray.add(item13);
+
                         CurrentStatItem item5 = new CurrentStatItem(getResources().getString(R.string.stat_first_serve), first_set_stat.getFirstServeUp() == 0 ? "0%" :
                                 String.format(current_local, "%.1f", ((float) (first_set_stat.getFirstServeUp() - first_set_stat.getFirstServeMissUp()) / (float) first_set_stat.getFirstServeUp()) * 100) + "%",
                                 first_set_stat.getFirstServeDown() == 0 ? "0%" :
@@ -264,6 +269,9 @@ public class CurrentStatActivity extends AppCompatActivity{
                         CurrentStatItem item4 = new CurrentStatItem(getResources().getString(R.string.stat_unforced_error), "0", "0");
                         currentArray.add(item4);
 
+                        CurrentStatItem item13 = new CurrentStatItem(getResources().getString(R.string.game_forced_error), "0", "0");
+                        currentArray.add(item13);
+
                         CurrentStatItem item5 = new CurrentStatItem(getResources().getString(R.string.stat_first_serve), "0%", "0%");
                         currentArray.add(item5);
 
@@ -305,6 +313,11 @@ public class CurrentStatActivity extends AppCompatActivity{
                                 String.valueOf(second_set_stat.getUnforceErrorUp()-prev_first_set_stat.getUnforceErrorUp()),
                                 String.valueOf(second_set_stat.getUnforceErrorDown()-prev_first_set_stat.getUnforceErrorDown()));
                         currentArray.add(item4);
+
+                        CurrentStatItem item13 = new CurrentStatItem(getResources().getString(R.string.game_forced_error),
+                                String.valueOf(second_set_stat.getForceErrorUp()-prev_first_set_stat.getForceErrorUp()),
+                                String.valueOf(second_set_stat.getForceErrorDown()-prev_first_set_stat.getForceErrorDown()));
+                        currentArray.add(item13);
 
                         CurrentStatItem item5 = new CurrentStatItem(getResources().getString(R.string.stat_first_serve),
                                 (second_set_stat.getFirstServeUp() - prev_first_set_stat.getFirstServeUp()) == 0 ? "0%" :
@@ -396,6 +409,9 @@ public class CurrentStatActivity extends AppCompatActivity{
                         CurrentStatItem item4 = new CurrentStatItem(getResources().getString(R.string.stat_unforced_error), "0", "0");
                         currentArray.add(item4);
 
+                        CurrentStatItem item13 = new CurrentStatItem(getResources().getString(R.string.game_forced_error), "0", "0");
+                        currentArray.add(item13);
+
                         CurrentStatItem item5 = new CurrentStatItem(getResources().getString(R.string.stat_first_serve), "0%", "0%");
                         currentArray.add(item5);
 
@@ -437,6 +453,11 @@ public class CurrentStatActivity extends AppCompatActivity{
                                 String.valueOf(third_set_stat.getUnforceErrorUp()-prev_second_set_stat.getUnforceErrorUp()),
                                 String.valueOf(third_set_stat.getUnforceErrorDown()-prev_second_set_stat.getUnforceErrorDown()));
                         currentArray.add(item4);
+
+                        CurrentStatItem item13 = new CurrentStatItem(getResources().getString(R.string.game_forced_error),
+                                String.valueOf(third_set_stat.getForceErrorUp()-prev_second_set_stat.getForceErrorUp()),
+                                String.valueOf(third_set_stat.getForceErrorDown()-prev_second_set_stat.getForceErrorDown()));
+                        currentArray.add(item13);
 
                         CurrentStatItem item5 = new CurrentStatItem(getResources().getString(R.string.stat_first_serve),
                                 (third_set_stat.getFirstServeUp() - prev_second_set_stat.getFirstServeUp()) == 0 ? "0%" :
@@ -528,6 +549,9 @@ public class CurrentStatActivity extends AppCompatActivity{
                         CurrentStatItem item4 = new CurrentStatItem(getResources().getString(R.string.stat_unforced_error), "0", "0");
                         currentArray.add(item4);
 
+                        CurrentStatItem item13 = new CurrentStatItem(getResources().getString(R.string.game_forced_error), "0", "0");
+                        currentArray.add(item13);
+
                         CurrentStatItem item5 = new CurrentStatItem(getResources().getString(R.string.stat_first_serve), "0%", "0%");
                         currentArray.add(item5);
 
@@ -569,6 +593,11 @@ public class CurrentStatActivity extends AppCompatActivity{
                                 String.valueOf(forth_set_stat.getUnforceErrorUp()-prev_third_set_stat.getUnforceErrorUp()),
                                 String.valueOf(forth_set_stat.getUnforceErrorDown()-prev_third_set_stat.getUnforceErrorDown()));
                         currentArray.add(item4);
+
+                        CurrentStatItem item13 = new CurrentStatItem(getResources().getString(R.string.game_forced_error),
+                                String.valueOf(forth_set_stat.getForceErrorUp()-prev_third_set_stat.getForceErrorUp()),
+                                String.valueOf(forth_set_stat.getForceErrorDown()-prev_third_set_stat.getForceErrorDown()));
+                        currentArray.add(item13);
 
                         CurrentStatItem item5 = new CurrentStatItem(getResources().getString(R.string.stat_first_serve),
                                 (forth_set_stat.getFirstServeUp() - prev_third_set_stat.getFirstServeUp()) == 0 ? "0%" :
@@ -660,6 +689,9 @@ public class CurrentStatActivity extends AppCompatActivity{
                         CurrentStatItem item4 = new CurrentStatItem(getResources().getString(R.string.stat_unforced_error), "0", "0");
                         currentArray.add(item4);
 
+                        CurrentStatItem item13 = new CurrentStatItem(getResources().getString(R.string.game_forced_error), "0", "0");
+                        currentArray.add(item13);
+
                         CurrentStatItem item5 = new CurrentStatItem(getResources().getString(R.string.stat_first_serve), "0%", "0%");
                         currentArray.add(item5);
 
@@ -701,6 +733,11 @@ public class CurrentStatActivity extends AppCompatActivity{
                                 String.valueOf(fifth_set_stat.getUnforceErrorUp()-prev_forth_set_stat.getUnforceErrorUp()),
                                 String.valueOf(fifth_set_stat.getUnforceErrorDown()-prev_forth_set_stat.getUnforceErrorDown()));
                         currentArray.add(item4);
+
+                        CurrentStatItem item13 = new CurrentStatItem(getResources().getString(R.string.game_forced_error),
+                                String.valueOf(fifth_set_stat.getForceErrorUp()-prev_forth_set_stat.getForceErrorUp()),
+                                String.valueOf(fifth_set_stat.getForceErrorDown()-prev_forth_set_stat.getForceErrorDown()));
+                        currentArray.add(item13);
 
                         CurrentStatItem item5 = new CurrentStatItem(getResources().getString(R.string.stat_first_serve),
                                 (fifth_set_stat.getFirstServeUp() - prev_forth_set_stat.getFirstServeUp()) == 0 ? "0%" :
@@ -792,6 +829,9 @@ public class CurrentStatActivity extends AppCompatActivity{
                         CurrentStatItem item4 = new CurrentStatItem(getResources().getString(R.string.stat_unforced_error), "0", "0");
                         currentArray.add(item4);
 
+                        CurrentStatItem item13 = new CurrentStatItem(getResources().getString(R.string.game_forced_error), "0", "0");
+                        currentArray.add(item13);
+
                         CurrentStatItem item5 = new CurrentStatItem(getResources().getString(R.string.stat_first_serve), "0%", "0%");
                         currentArray.add(item5);
 
@@ -834,6 +874,11 @@ public class CurrentStatActivity extends AppCompatActivity{
                                 String.valueOf(current_state.getUnforceErrorUp()),
                                 String.valueOf(current_state.getUnforceErrorDown()));
                         currentArray.add(item4);
+
+                        CurrentStatItem item13 = new CurrentStatItem(getResources().getString(R.string.game_forced_error),
+                                String.valueOf(current_state.getForceErrorUp()),
+                                String.valueOf(current_state.getForceErrorDown()));
+                        currentArray.add(item13);
 
                         CurrentStatItem item5 = new CurrentStatItem(getResources().getString(R.string.stat_first_serve), current_state.getFirstServeUp() == 0 ? "0%" :
                                 String.format(current_local, "%.1f", ((float) (current_state.getFirstServeUp() - current_state.getFirstServeMissUp()) / (float) current_state.getFirstServeUp()) * 100) + "%",
@@ -921,6 +966,9 @@ public class CurrentStatActivity extends AppCompatActivity{
                         CurrentStatItem item4 = new CurrentStatItem(getResources().getString(R.string.stat_unforced_error), "0", "0");
                         currentArray.add(item4);
 
+                        CurrentStatItem item13 = new CurrentStatItem(getResources().getString(R.string.game_forced_error), "0", "0");
+                        currentArray.add(item13);
+
                         CurrentStatItem item5 = new CurrentStatItem(getResources().getString(R.string.stat_first_serve), "0%", "0%");
                         currentArray.add(item5);
 
@@ -977,6 +1025,11 @@ public class CurrentStatActivity extends AppCompatActivity{
                     String.valueOf(current_state.getUnforceErrorUp()),
                     String.valueOf(current_state.getUnforceErrorDown()));
             currentArray.add(item4);
+
+            CurrentStatItem item13 = new CurrentStatItem(getResources().getString(R.string.game_forced_error),
+                    String.valueOf(current_state.getForceErrorUp()),
+                    String.valueOf(current_state.getForceErrorDown()));
+            currentArray.add(item13);
 
             CurrentStatItem item5 = new CurrentStatItem(getResources().getString(R.string.stat_first_serve), current_state.getFirstServeUp() == 0 ? "0%" :
                     String.format(current_local, "%.1f", ((float) (current_state.getFirstServeUp() - current_state.getFirstServeMissUp()) / (float) current_state.getFirstServeUp()) * 100) + "%",
@@ -1063,6 +1116,9 @@ public class CurrentStatActivity extends AppCompatActivity{
 
             CurrentStatItem item4 = new CurrentStatItem(getResources().getString(R.string.stat_unforced_error), "0", "0");
             currentArray.add(item4);
+
+            CurrentStatItem item13 = new CurrentStatItem(getResources().getString(R.string.game_forced_error), "0", "0");
+            currentArray.add(item13);
 
             CurrentStatItem item5 = new CurrentStatItem(getResources().getString(R.string.stat_first_serve), "0%", "0%");
             currentArray.add(item5);

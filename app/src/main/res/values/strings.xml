@@ -114,5 +114,6 @@
     <string name="find_court_ok">OK</string>
     <string name="find_court_help_title">Show court location</string>
     <string name="find_court_permission_msg">You must agree this permission, or you can not use it.</string>
+    <string name="game_forced_error">Forced Error</string>
 </resources>
 

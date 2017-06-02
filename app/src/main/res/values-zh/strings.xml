@@ -115,4 +115,5 @@
     <string name="find_court_ok">了解</string>
     <string name="find_court_help_title">顯示球場位置</string>
     <string name="find_court_permission_msg">您必須同意這些存取權, 否則將無法使用此功能.</string>
+    <string name="game_forced_error">受迫性失誤</string>
 </resources>

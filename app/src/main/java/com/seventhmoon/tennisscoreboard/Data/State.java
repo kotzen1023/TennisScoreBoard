@@ -37,6 +37,10 @@ public class State {
     private byte doubleFaultDown;
     private short unforcedErrorUp;
     private short unforcedErrorDown;
+
+    private short forcedErrorUp;
+    private short forcedErrorDown;
+
     private short forehandWinnerUp;
     private short forehandWinnerDown;
     private short backhandWinnerUp;
@@ -351,6 +355,22 @@ public class State {
 
     public void setUnforceErrorDown(short unforcedErrorDown) {
         this.unforcedErrorDown = unforcedErrorDown;
+    }
+
+    public short getForceErrorUp() {
+        return forcedErrorUp;
+    }
+
+    public void setForceErrorUp(short forcedErrorUp) {
+        this.forcedErrorUp = forcedErrorUp;
+    }
+
+    public short getForceErrorDown() {
+        return forcedErrorDown;
+    }
+
+    public void setForceErrorDown(short forcedErrorDown) {
+        this.forcedErrorDown = forcedErrorDown;
     }
 
     public short getForehandWinnerUp() {
