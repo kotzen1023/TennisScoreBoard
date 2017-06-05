@@ -1580,7 +1580,7 @@ public class GameActivity extends AppCompatActivity{
                                         + s.getSet_point_up((byte) 0x5) + ";"
                                         + s.getSet_point_down((byte) 0x5) + ";"
                                         + s.getSet_tiebreak_point_up((byte) 0x5) + ";"
-                                        + s.getSet_tiebreak_point_down((byte) 0x5)
+                                        + s.getSet_tiebreak_point_down((byte) 0x5) + ";"
                                         + s.getForceErrorUp() + ";"
                                         + s.getForceErrorDown() + ";"
                                         ;

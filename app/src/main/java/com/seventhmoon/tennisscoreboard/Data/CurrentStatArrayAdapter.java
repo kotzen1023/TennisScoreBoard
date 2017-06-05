@@ -3,11 +3,19 @@ package com.seventhmoon.tennisscoreboard.Data;
 
 import android.content.Context;
 
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.seventhmoon.tennisscoreboard.R;
@@ -20,12 +28,14 @@ public class CurrentStatArrayAdapter extends ArrayAdapter<CurrentStatItem> {
     private LayoutInflater inflater = null;
     //SparseBooleanArray mSparseBooleanArray;
     private int layoutResourceId;
+
     private ArrayList<CurrentStatItem> items = new ArrayList<>();
 
     public CurrentStatArrayAdapter(Context context, int textViewResourceId,
                                   ArrayList<CurrentStatItem> objects) {
         super(context, textViewResourceId, objects);
         this.layoutResourceId = textViewResourceId;
+
         this.items = objects;
 
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -49,6 +59,7 @@ public class CurrentStatArrayAdapter extends ArrayAdapter<CurrentStatItem> {
         //Log.e(TAG, "getView = "+ position);
         View view;
 
+
         ViewHolder holder;
         if (convertView == null || convertView.getTag() == null) {
             //Log.e(TAG, "convertView = null");
@@ -58,6 +69,8 @@ public class CurrentStatArrayAdapter extends ArrayAdapter<CurrentStatItem> {
 
             //LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(layoutResourceId, null);
+
+
             holder = new ViewHolder(view);
             //holder.checkbox.setVisibility(View.INVISIBLE);
             view.setTag(holder);
@@ -73,11 +86,38 @@ public class CurrentStatArrayAdapter extends ArrayAdapter<CurrentStatItem> {
 
         CurrentStatItem currentStatItem = items.get(position);
         if (currentStatItem != null) {
-
             holder.title.setText(currentStatItem.getTitle());
+            holder.statUp.setTextColor(Color.rgb(0x0, 0x99, 0xcc));
             holder.statUp.setText(currentStatItem.getStatUp());
+
+            holder.statDown.setTextColor(Color.rgb(0xf1, 0x7a, 0x0a));
             holder.statDown.setText(currentStatItem.getStatDown());
+
+            if (position == 0) {
+                holder.barUp.setProgress(0);
+                holder.barDown.setProgress(0);
+            } else {
+
+                if (currentStatItem.getValueUp() <= 100 &&
+                        currentStatItem.getValueDown() <= 100) {
+                    holder.barUp.setProgress(currentStatItem.getValueUp());
+
+                    holder.barDown.setProgress(currentStatItem.getValueDown());
+                } else if (currentStatItem.getValueUp() > 100 && currentStatItem.getValueUp() <= 200 &&
+                        currentStatItem.getValueDown() > 100 && currentStatItem.getValueDown() <= 200) {
+                    holder.barUp.setProgress(currentStatItem.getValueUp()/2);
+                    holder.barDown.setProgress(currentStatItem.getValueDown()/2);
+                } else if (currentStatItem.getValueUp() > 200 && currentStatItem.getValueUp() <= 300 &&
+                        currentStatItem.getValueDown() > 200 && currentStatItem.getValueDown() <= 300) {
+                    holder.barUp.setProgress(currentStatItem.getValueUp()/3);
+                    holder.barDown.setProgress(currentStatItem.getValueDown()/3);
+                }
+
+            }
         }
+
+
+
         return view;
     }
 
@@ -110,12 +150,17 @@ public class CurrentStatArrayAdapter extends ArrayAdapter<CurrentStatItem> {
         TextView title;
         TextView statUp;
         TextView statDown;
+        ProgressBar barUp;
+        ProgressBar barDown;
 
 
         public ViewHolder(View view) {
             this.title = (TextView) view.findViewById(R.id.textViewStatTitle);
             this.statUp = (TextView) view.findViewById(R.id.textViewStatUp);
             this.statDown = (TextView) view.findViewById(R.id.textViewStatDown);
+            this.barUp = (ProgressBar) view.findViewById(R.id.textViewStatUpBar);
+            this.barDown = (ProgressBar) view.findViewById(R.id.textViewStatDownBar);
+
         }
     }
 }
