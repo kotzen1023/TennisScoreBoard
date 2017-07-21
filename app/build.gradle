@@ -31,4 +31,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:10.2.1'
     testCompile 'junit:junit:4.12'
 
+    dependencies {
+        compile 'com.yahoo.mobile.client.android.util.rangeseekbar:rangeseekbar-library:0.1.0'
+    }
 }
