@@ -22,6 +22,7 @@ import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +32,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.seventhmoon.tennisscoreboard.Data.Constants;
@@ -2764,7 +2766,8 @@ public class GameActivity extends AppCompatActivity{
                         } else if (new_state.getSet_point_up(current_set) == 3) {
                             pointUp.setText(String.valueOf(40));
                         } else if (new_state.getSet_point_up(current_set) == 4) {
-                            String msg = String.valueOf(40)+"A";
+                            //String msg = String.valueOf(40)+"A";
+                            String msg = "Ad";
                             pointUp.setText(msg);
                         } else {
                             pointUp.setText("0");
@@ -2781,7 +2784,8 @@ public class GameActivity extends AppCompatActivity{
                         } else if (new_state.getSet_point_down(current_set) == 3) {
                             pointDown.setText(String.valueOf(40));
                         } else if (new_state.getSet_point_down(current_set) == 4) {
-                            String msg = String.valueOf(40)+"A";
+                            //String msg = String.valueOf(40)+"A";
+                            String msg = "Ad";
                             pointDown.setText(msg);
                         } else {
                             pointDown.setText("0");
@@ -3068,7 +3072,8 @@ public class GameActivity extends AppCompatActivity{
                     } else if (new_state.getSet_point_up(current_set) == 3) {
                         pointUp.setText(String.valueOf(40));
                     } else if (new_state.getSet_point_up(current_set) == 4) {
-                        String msg = String.valueOf(40)+"A";
+                        //String msg = String.valueOf(40)+"A";
+                        String msg = "Ad";
                         pointUp.setText(msg);
                     } else {
                         pointUp.setText("0");
@@ -3085,7 +3090,8 @@ public class GameActivity extends AppCompatActivity{
                     } else if (new_state.getSet_point_down(current_set) == 3) {
                         pointDown.setText(String.valueOf(40));
                     } else if (new_state.getSet_point_down(current_set) == 4) {
-                        String msg = String.valueOf(40)+"A";
+                        //String msg = String.valueOf(40)+"A";
+                        String msg = "Ad";
                         pointDown.setText(msg);
                     } else {
                         pointDown.setText("0");
@@ -3357,7 +3363,9 @@ public class GameActivity extends AppCompatActivity{
                     } else {
                         Log.d(TAG, "Not in break point");
                     }
+
                     is_break_point = false;
+                    new_state.setInBreakPoint(false);
                 } else if (new_state.getSet_point_up(current_set) == 5 &&
                         new_state.getSet_point_down(current_set) == 3) { //40A+ : 40 => oppt win this game
                     //set point clean
@@ -3385,6 +3393,7 @@ public class GameActivity extends AppCompatActivity{
                         new_state.setServe(true);
                     }
                     is_break_point = false;
+                    new_state.setInBreakPoint(false);
                 } else if (new_state.getSet_point_up(current_set) == 3 &&
                         new_state.getSet_point_down(current_set) == 5) { //40 : 40A+ => you win this game
                     Log.d(TAG, "40 : 40A+ => you win this game");
@@ -3412,6 +3421,7 @@ public class GameActivity extends AppCompatActivity{
                         new_state.setServe(true);
                     }
                     is_break_point = false;
+                    new_state.setInBreakPoint(false);
                 } else if (new_state.getSet_point_up(current_set) == 4 &&
                         new_state.getSet_point_down(current_set) <= 2) { //40A : 0, 40A : 15, 40A : 30 => oppt win this game
                     Log.d(TAG, "40A : 0, 40A : 15, 40A : 30 => oppt win this game");
@@ -3439,6 +3449,7 @@ public class GameActivity extends AppCompatActivity{
                         new_state.setServe(true);
                     }
                     is_break_point = false;
+                    new_state.setInBreakPoint(false);
                 } else if (new_state.getSet_point_up(current_set) <=2 &&
                         new_state.getSet_point_down(current_set) == 4) { //0 : 40A, 15 : 40A, 30: 40A => you win this game
                     Log.d(TAG, "0 : 40A, 15 : 40A, 30: 40A => you win this game");
@@ -3466,15 +3477,32 @@ public class GameActivity extends AppCompatActivity{
                         new_state.setServe(true);
                     }
                     is_break_point = false;
+                    new_state.setInBreakPoint(false);
                 }
                 else {
                     Log.d(TAG, "[points change without arrange]");
                     if (new_state.getSet_point_up(current_set) == 3 &&
                             new_state.getSet_point_down(current_set) <= 2 && !is_break_point) { // 40:0, 40:15, 40:30
 
+
+
                         if (new_state.isServe()) {
                             Log.d(TAG, "You serve, Not int break point => In break point");
                             is_break_point = true;
+                            new_state.setInBreakPoint(true);
+
+                            byte num = new_state.getSet_point_down(current_set);
+                            switch (num) {
+                                case 0:
+                                    toast("3 Break Points");
+                                    break;
+                                case 1:
+                                    toast("2 Break Points");
+                                    break;
+                                case 2:
+                                    toast("Break Point");
+                                    break;
+                            }
                         } else {
                             Log.d(TAG, "Oppt serve");
                         }
@@ -3487,6 +3515,20 @@ public class GameActivity extends AppCompatActivity{
                         } else {
                             Log.d(TAG, "Oppt serve, Not int break point => In break point");
                             is_break_point = true;
+                            new_state.setInBreakPoint(true);
+
+                            byte num = new_state.getSet_point_up(current_set);
+                            switch (num) {
+                                case 0:
+                                    toast("3 Break Points");
+                                    break;
+                                case 1:
+                                    toast("2 Break Points");
+                                    break;
+                                case 2:
+                                    toast("Break Point");
+                                    break;
+                            }
                         }
 
                     } else if (new_state.getSet_point_up(current_set) == 4 &&
@@ -3495,6 +3537,9 @@ public class GameActivity extends AppCompatActivity{
                         if (new_state.isServe()) {
                             Log.d(TAG, "You serve, Not int break point => In break point");
                             is_break_point = true;
+                            new_state.setInBreakPoint(true);
+
+                            toast("Break Point");
                         } else {
                             Log.d(TAG, "Oppt serve");
                         }
@@ -3507,6 +3552,9 @@ public class GameActivity extends AppCompatActivity{
                         } else {
                             Log.d(TAG, "Oppt serve, Not int break point => In break point");
                             is_break_point = true;
+                            new_state.setInBreakPoint(true);
+
+                            toast("Break Point");
                         }
 
                     } else if (new_state.getSet_point_up(current_set) == 3 &&
@@ -3525,6 +3573,7 @@ public class GameActivity extends AppCompatActivity{
                         }
 
                         is_break_point = false;
+                        new_state.setInBreakPoint(false);
                     } else { //other point 40:0 => 40:15, 40:15 => 40:30, 0:40=>15:40, 15:40=>30:40
                         if (is_break_point) { //in break point situation
                             Log.d(TAG, "In break point");
@@ -3533,11 +3582,32 @@ public class GameActivity extends AppCompatActivity{
                                 new_state.setBreakPointUp((byte)(new_state.getBreakPointUp()+1));
                                 new_state.setBreakPointMissUp((byte)(new_state.getBreakPointMissUp()+1));
                                 Log.d(TAG, "miss/count ("+new_state.getBreakPointMissUp()+"/"+new_state.getBreakPointMissUp()+")");
+
+                                byte num = new_state.getSet_point_down(current_set);
+                                switch (num) {
+                                    case 1:
+                                        toast("2 Break Points");
+                                        break;
+                                    case 2:
+                                        toast("Break Point");
+                                        break;
+                                }
                             } else { //oppt serve
                                 new_state.setBreakPointDown((byte)(new_state.getBreakPointDown()+1));
                                 new_state.setBreakPointMissDown((byte)(new_state.getBreakPointMissDown()+1));
                                 Log.d(TAG, "miss/count ("+new_state.getBreakPointMissDown()+"/"+new_state.getBreakPointMissDown()+")");
+
+                                byte num = new_state.getSet_point_up(current_set);
+                                switch (num) {
+                                    case 1:
+                                        toast("2 Break Points");
+                                        break;
+                                    case 2:
+                                        toast("Break Point");
+                                        break;
+                                }
                             }
+                            new_state.setInBreakPoint(true);
                         } else {
                             Log.d(TAG, "Not In break point");
                         }
@@ -4006,6 +4076,12 @@ public class GameActivity extends AppCompatActivity{
                 break;
         }
         return true;
+    }
+
+    public void toast(String message) {
+        Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+        toast.show();
     }
 
     /**
