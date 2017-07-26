@@ -8,6 +8,7 @@ import com.seventhmoon.tennisscoreboard.util.Purchase;
 public class ImageBuyItem  {
     private Bitmap image;
     private String title;
+    private String path;
     private Purchase purchase;
     private boolean selected;
     private boolean purchased;
@@ -32,6 +33,14 @@ public class ImageBuyItem  {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public Purchase getPurchase() {

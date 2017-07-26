@@ -18,14 +18,14 @@ public class GridViewVoiceAdapter extends ArrayAdapter<ImageBuyItem> {
     private Context context;
     private int layoutResourceId;
     private ArrayList<ImageBuyItem> data = new ArrayList<>();
-    //private boolean[] selection;
+    private boolean[] selection;
 
     public GridViewVoiceAdapter(Context context, int layoutResourceId, ArrayList<ImageBuyItem> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
         this.data = data;
-        //selection = new boolean[data.size()];
+        selection = new boolean[data.size()];
     }
 
     @Override
@@ -53,9 +53,9 @@ public class GridViewVoiceAdapter extends ArrayAdapter<ImageBuyItem> {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             convertView = inflater.inflate(layoutResourceId, parent, false);
             holder = new ViewHolder();
-            holder.imageTitle = (TextView) convertView.findViewById(R.id.themeText);
+            holder.imageTitle = (TextView) convertView.findViewById(R.id.voiceText);
             //holder.checkbox = (CheckBox) convertView.findViewById(R.id.itemCheckBox);
-            holder.image = (ImageView) convertView.findViewById(R.id.themeImage);
+            holder.image = (ImageView) convertView.findViewById(R.id.voiceImage);
             convertView.setTag(holder);
 
 
@@ -68,12 +68,12 @@ public class GridViewVoiceAdapter extends ArrayAdapter<ImageBuyItem> {
         holder.image.setImageBitmap(item.getImage());
 
         holder.id = position;
-        /*if (item.getSelected())
+        if (item.getSelected())
         {
             holder.setState(true);
 
 
-            switch (Data.current_theme) {
+            /*switch (Data.current_theme) {
                 case 0:
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         holder.image.setBackgroundColor(context.getColor(R.color.inside_select_background_simple));
@@ -129,7 +129,7 @@ public class GridViewVoiceAdapter extends ArrayAdapter<ImageBuyItem> {
                         holder.imageTitle.setTextColor(Color.parseColor("#161616"));
                     }
                     break;
-            }
+            }*/
 
             //holder.image.setBackgroundColor(Color.argb(255, 0x46,0x6e,0x9b));
             //holder.imageTitle.setBackgroundColor(Color.argb(255, 0x46,0x6e,0x9b));
@@ -137,7 +137,7 @@ public class GridViewVoiceAdapter extends ArrayAdapter<ImageBuyItem> {
         }
         else {
             holder.setState(false);
-            holder.image.setBackgroundColor(0x00000000);
+            /*holder.image.setBackgroundColor(0x00000000);
             holder.imageTitle.setBackgroundColor(0x00000000);
 
             switch (Data.current_theme) {
@@ -176,9 +176,9 @@ public class GridViewVoiceAdapter extends ArrayAdapter<ImageBuyItem> {
                         holder.imageTitle.setTextColor(Color.parseColor("#161616"));
                     }
                     break;
-            }
+            }*/
             selection[holder.id] = false;
-        }*/
+        }
 
         return convertView;
     }
@@ -195,7 +195,7 @@ public class GridViewVoiceAdapter extends ArrayAdapter<ImageBuyItem> {
         //    return state;
         //}
 
-        //public void setState(boolean state)
+        public void setState(boolean state)
         {
             this.state = state;
         }

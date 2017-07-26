@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 
@@ -35,6 +36,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.seventhmoon.tennisscoreboard.Audio.VoicePlay;
 import com.seventhmoon.tennisscoreboard.Data.Constants;
 import com.seventhmoon.tennisscoreboard.Data.State;
 import com.seventhmoon.tennisscoreboard.Data.StateAction;
@@ -68,11 +70,12 @@ import static com.seventhmoon.tennisscoreboard.Data.StateAction.YOU_SERVE;
 public class GameActivity extends AppCompatActivity{
     private static final String TAG = GameActivity.class.getName();
 
-    private Context context;
-    //private static final SimpleDateFormat AMBIENT_DATE_FORMAT =
-    //        new SimpleDateFormat("HH:mm", Locale.TAIWAN);
+    static SharedPreferences pref ;
+    static SharedPreferences.Editor editor;
+    private static final String FILE_NAME = "Preference";
 
-    //private BoxInsetLayout mContainerView;
+    private Context context;
+
 
     private TextView gameUp;
     private TextView gameDown;
@@ -150,12 +153,27 @@ public class GameActivity extends AppCompatActivity{
     private static BroadcastReceiver mReceiver = null;
     private static boolean isRegister = false;
 
+    public static VoicePlay  voicePlay;
+
+    private static ArrayList<Integer> voiceList = new ArrayList<>();
+    private static boolean voiceOn = false;
+    private MenuItem voice_item;
+
+    private static int current_voice_select = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_layout);
 
+        pref = getSharedPreferences(FILE_NAME, MODE_PRIVATE);
+        voiceOn = pref.getBoolean("VOICE_ON", false);
+        current_voice_select = pref.getInt("VOICE_SELECT", 0);
+
         context = getBaseContext();
+
+        voicePlay = new VoicePlay(context);
+
         IntentFilter filter;
 
         //for action bar
@@ -3129,6 +3147,7 @@ public class GameActivity extends AppCompatActivity{
 
     private void checkPoint(State new_state) {
         Log.d(TAG, "[Check point Start]");
+        Integer call = 0;
 
         byte current_set = new_state.getCurrent_set();
         if (new_state.isInTiebreak()) { //in tiebreak
@@ -3159,6 +3178,14 @@ public class GameActivity extends AppCompatActivity{
 
                     //leave tiebreak;
                     new_state.setInTiebreak(false);
+                    //add voice
+                    voiceList.clear();
+                    switch (current_voice_select) {
+                        case 0:
+                            call = R.raw.gbr_man_game;
+                            break;
+                    }
+                    voiceList.add(call);
                 } else if (new_state.getSet_point_up(current_set) <= 5 && new_state.getSet_point_down(current_set) == 7) {
                     //0,1,2,3,4,5 : 7 => you win this game
                     //set tiebreak point
@@ -3179,6 +3206,14 @@ public class GameActivity extends AppCompatActivity{
                     }
                     //leave tiebreak;
                     new_state.setInTiebreak(false);
+                    //add voice
+                    voiceList.clear();
+                    switch (current_voice_select) {
+                        case 0:
+                            call = R.raw.gbr_man_game;
+                            break;
+                    }
+                    voiceList.add(call);
                 } else if (new_state.getSet_point_up(current_set) >= 6 &&
                         new_state.getSet_point_down(current_set) >= 6 &&
                         (new_state.getSet_point_up(current_set) - new_state.getSet_point_down(current_set)) == 2) {
@@ -3202,6 +3237,14 @@ public class GameActivity extends AppCompatActivity{
 
                     //leave tiebreak;
                     new_state.setInTiebreak(false);
+                    //add voice
+                    voiceList.clear();
+                    switch (current_voice_select) {
+                        case 0:
+                            call = R.raw.gbr_man_game;
+                            break;
+                    }
+                    voiceList.add(call);
                 } else if (new_state.getSet_point_up(current_set) >= 6 &&
                         new_state.getSet_point_down(current_set) >= 6 &&
                         (new_state.getSet_point_down(current_set) - new_state.getSet_point_up(current_set)) == 2) {
@@ -3225,6 +3268,14 @@ public class GameActivity extends AppCompatActivity{
 
                     //leave tiebreak;
                     new_state.setInTiebreak(false);
+                    //add voice
+                    voiceList.clear();
+                    switch (current_voice_select) {
+                        case 0:
+                            call = R.raw.gbr_man_game;
+                            break;
+                    }
+                    voiceList.add(call);
                 } else {
                     Log.d(TAG, "Other tie break");
 
@@ -3254,6 +3305,14 @@ public class GameActivity extends AppCompatActivity{
 
                     //leave tiebreak;
                     new_state.setInTiebreak(false);
+                    //add voice
+                    voiceList.clear();
+                    switch (current_voice_select) {
+                        case 0:
+                            call = R.raw.gbr_man_game;
+                            break;
+                    }
+                    voiceList.add(call);
                 } else if (new_state.getSet_point_up(current_set) <= 3 && new_state.getSet_point_down(current_set) == 5) {
                     //0,1,2,3,4,5 : 7 => you win this game
                     //set tiebreak point
@@ -3274,6 +3333,14 @@ public class GameActivity extends AppCompatActivity{
                     }
                     //leave tiebreak;
                     new_state.setInTiebreak(false);
+                    //add voice
+                    voiceList.clear();
+                    switch (current_voice_select) {
+                        case 0:
+                            call = R.raw.gbr_man_game;
+                            break;
+                    }
+                    voiceList.add(call);
                 } else if (new_state.getSet_point_up(current_set) >= 4 &&
                         new_state.getSet_point_down(current_set) >= 4 &&
                         (new_state.getSet_point_up(current_set) - new_state.getSet_point_down(current_set)) == 2) {
@@ -3297,6 +3364,14 @@ public class GameActivity extends AppCompatActivity{
 
                     //leave tiebreak;
                     new_state.setInTiebreak(false);
+                    //add voice
+                    voiceList.clear();
+                    switch (current_voice_select) {
+                        case 0:
+                            call = R.raw.gbr_man_game;
+                            break;
+                    }
+                    voiceList.add(call);
                 } else if (new_state.getSet_point_up(current_set) >= 4 &&
                         new_state.getSet_point_down(current_set) >= 4 &&
                         (new_state.getSet_point_down(current_set) - new_state.getSet_point_up(current_set)) == 2) {
@@ -3320,6 +3395,14 @@ public class GameActivity extends AppCompatActivity{
 
                     //leave tiebreak;
                     new_state.setInTiebreak(false);
+                    //add voice
+                    voiceList.clear();
+                    switch (current_voice_select) {
+                        case 0:
+                            call = R.raw.gbr_man_game;
+                            break;
+                    }
+                    voiceList.add(call);
                 } else {
                     Log.d(TAG, "Other tie break");
 
@@ -3366,6 +3449,21 @@ public class GameActivity extends AppCompatActivity{
 
                     is_break_point = false;
                     new_state.setInBreakPoint(false);
+
+                    //add voice
+                    voiceList.clear();
+                    switch (current_voice_select) {
+                        case 0:
+                            call = R.raw.gbr_man_40_40;
+                            break;
+                    }
+                    voiceList.add(call);
+
+                    //play voice
+                    if (voiceOn) {
+                        voicePlay.audioPlayMulti(voiceList);
+                    }
+
                 } else if (new_state.getSet_point_up(current_set) == 5 &&
                         new_state.getSet_point_down(current_set) == 3) { //40A+ : 40 => oppt win this game
                     //set point clean
@@ -3394,6 +3492,14 @@ public class GameActivity extends AppCompatActivity{
                     }
                     is_break_point = false;
                     new_state.setInBreakPoint(false);
+                    //add voice
+                    voiceList.clear();
+                    switch (current_voice_select) {
+                        case 0:
+                            call = R.raw.gbr_man_game;
+                            break;
+                    }
+                    voiceList.add(call);
                 } else if (new_state.getSet_point_up(current_set) == 3 &&
                         new_state.getSet_point_down(current_set) == 5) { //40 : 40A+ => you win this game
                     Log.d(TAG, "40 : 40A+ => you win this game");
@@ -3422,6 +3528,14 @@ public class GameActivity extends AppCompatActivity{
                     }
                     is_break_point = false;
                     new_state.setInBreakPoint(false);
+                    //add voice
+                    voiceList.clear();
+                    switch (current_voice_select) {
+                        case 0:
+                            call = R.raw.gbr_man_game;
+                            break;
+                    }
+                    voiceList.add(call);
                 } else if (new_state.getSet_point_up(current_set) == 4 &&
                         new_state.getSet_point_down(current_set) <= 2) { //40A : 0, 40A : 15, 40A : 30 => oppt win this game
                     Log.d(TAG, "40A : 0, 40A : 15, 40A : 30 => oppt win this game");
@@ -3450,6 +3564,14 @@ public class GameActivity extends AppCompatActivity{
                     }
                     is_break_point = false;
                     new_state.setInBreakPoint(false);
+                    //add voice
+                    voiceList.clear();
+                    switch (current_voice_select) {
+                        case 0:
+                            call = R.raw.gbr_man_game;
+                            break;
+                    }
+                    voiceList.add(call);
                 } else if (new_state.getSet_point_up(current_set) <=2 &&
                         new_state.getSet_point_down(current_set) == 4) { //0 : 40A, 15 : 40A, 30: 40A => you win this game
                     Log.d(TAG, "0 : 40A, 15 : 40A, 30: 40A => you win this game");
@@ -3478,13 +3600,22 @@ public class GameActivity extends AppCompatActivity{
                     }
                     is_break_point = false;
                     new_state.setInBreakPoint(false);
+                    //add voice
+                    voiceList.clear();
+                    switch (current_voice_select) {
+                        case 0:
+                            call = R.raw.gbr_man_game;
+                            break;
+                    }
+                    voiceList.add(call);
                 }
                 else {
                     Log.d(TAG, "[points change without arrange]");
                     if (new_state.getSet_point_up(current_set) == 3 &&
                             new_state.getSet_point_down(current_set) <= 2 && !is_break_point) { // 40:0, 40:15, 40:30
 
-
+                        //add voice
+                        voiceList.clear();
 
                         if (new_state.isServe()) {
                             Log.d(TAG, "You serve, Not int break point => In break point");
@@ -3503,15 +3634,56 @@ public class GameActivity extends AppCompatActivity{
                                     toast("Break Point");
                                     break;
                             }
+
+                            switch (current_voice_select) {
+                                case 0:
+                                    if (new_state.getSet_point_down(current_set) == 0) { //0:40
+                                        call = R.raw.gbr_man_0_40;
+                                    } else if (new_state.getSet_point_down(current_set) == 1) { //15:40
+                                        call = R.raw.gbr_man_15_40;
+                                    } else if (new_state.getSet_point_down(current_set) == 2) { //30:40
+                                        call = R.raw.gbr_man_30_40;
+                                    }
+                                    break;
+                            }
+
                         } else {
                             Log.d(TAG, "Oppt serve");
+
+                            switch (current_voice_select) {
+                                case 0:
+                                    if (new_state.getSet_point_down(current_set) == 0) { //40:0
+                                        call = R.raw.gbr_man_40_0;
+                                    } else if (new_state.getSet_point_down(current_set) == 1) { //40:15
+                                        call = R.raw.gbr_man_40_15;
+                                    } else if (new_state.getSet_point_down(current_set) == 2) { //40:30
+                                        call = R.raw.gbr_man_40_30;
+                                    }
+                                    break;
+                            }
                         }
 
+                        voiceList.add(call);
                     } else if (new_state.getSet_point_up(current_set) <= 2 &&
                             new_state.getSet_point_down(current_set) == 3 && !is_break_point) { // 0:40, 15:40, 30:40
 
+                        //add voice
+                        voiceList.clear();
+
                         if (new_state.isServe()) {
                             Log.d(TAG, "You serve");
+
+                            switch (current_voice_select) {
+                                case 0:
+                                    if (new_state.getSet_point_down(current_set) == 0) { //40:0
+                                        call = R.raw.gbr_man_40_0;
+                                    } else if (new_state.getSet_point_down(current_set) == 1) { //40:15
+                                        call = R.raw.gbr_man_40_15;
+                                    } else if (new_state.getSet_point_down(current_set) == 2) { //40:30
+                                        call = R.raw.gbr_man_40_30;
+                                    }
+                                    break;
+                            }
                         } else {
                             Log.d(TAG, "Oppt serve, Not int break point => In break point");
                             is_break_point = true;
@@ -3529,10 +3701,27 @@ public class GameActivity extends AppCompatActivity{
                                     toast("Break Point");
                                     break;
                             }
+
+                            switch (current_voice_select) {
+                                case 0:
+                                    if (new_state.getSet_point_down(current_set) == 0) { //0:40
+                                        call = R.raw.gbr_man_0_40;
+                                    } else if (new_state.getSet_point_down(current_set) == 1) { //15:40
+                                        call = R.raw.gbr_man_15_40;
+                                    } else if (new_state.getSet_point_down(current_set) == 2) { //30:40
+                                        call = R.raw.gbr_man_30_40;
+                                    }
+                                    break;
+                            }
                         }
 
+                        voiceList.add(call);
                     } else if (new_state.getSet_point_up(current_set) == 4 &&
                             new_state.getSet_point_down(current_set) == 3 && !is_break_point) { // 40A:40
+
+                        //add voice
+                        voiceList.clear();
+
 
                         if (new_state.isServe()) {
                             Log.d(TAG, "You serve, Not int break point => In break point");
@@ -3540,21 +3729,60 @@ public class GameActivity extends AppCompatActivity{
                             new_state.setInBreakPoint(true);
 
                             toast("Break Point");
+                            switch (current_voice_select) {
+                                case 0:
+                                    call = R.raw.gbr_man_ad_recv;
+                                    break;
+                            }
+
                         } else {
                             Log.d(TAG, "Oppt serve");
+                            switch (current_voice_select) {
+                                case 0:
+                                    call = R.raw.gbr_man_ad_serve;
+                                    break;
+                            }
+                        }
+
+                        voiceList.add(call);
+
+                        //play voice
+                        if (voiceOn) {
+                            voicePlay.audioPlayMulti(voiceList);
                         }
 
                     } else if (new_state.getSet_point_up(current_set) == 3 &&
                             new_state.getSet_point_down(current_set) == 4 && !is_break_point) { // 40:40A
 
+                        //add voice
+                        voiceList.clear();
+
                         if (new_state.isServe()) {
                             Log.d(TAG, "You serve");
+
+                            switch (current_voice_select) {
+                                case 0:
+                                    call = R.raw.gbr_man_ad_serve;
+                                    break;
+                            }
                         } else {
                             Log.d(TAG, "Oppt serve, Not int break point => In break point");
                             is_break_point = true;
                             new_state.setInBreakPoint(true);
 
+                            switch (current_voice_select) {
+                                case 0:
+                                    call = R.raw.gbr_man_ad_recv;
+                                    break;
+                            }
+
                             toast("Break Point");
+                        }
+                        voiceList.add(call);
+
+                        //play voice
+                        if (voiceOn) {
+                            voicePlay.audioPlayMulti(voiceList);
                         }
 
                     } else if (new_state.getSet_point_up(current_set) == 3 &&
@@ -3574,6 +3802,22 @@ public class GameActivity extends AppCompatActivity{
 
                         is_break_point = false;
                         new_state.setInBreakPoint(false);
+
+                        //add voice
+                        voiceList.clear();
+
+                        switch (current_voice_select) {
+                            case 0:
+                                call = R.raw.gbr_man_40_40;
+                                break;
+                        }
+                        voiceList.add(call);
+
+                        //play voice
+                        if (voiceOn) {
+                            voicePlay.audioPlayMulti(voiceList);
+                        }
+
                     } else { //other point 40:0 => 40:15, 40:15 => 40:30, 0:40=>15:40, 15:40=>30:40
                         if (is_break_point) { //in break point situation
                             Log.d(TAG, "In break point");
@@ -3610,7 +3854,10 @@ public class GameActivity extends AppCompatActivity{
                             new_state.setInBreakPoint(true);
                         } else {
                             Log.d(TAG, "Not In break point");
+
                         }
+
+
                     }
                 }
             } else { //use deciding point
@@ -3630,6 +3877,14 @@ public class GameActivity extends AppCompatActivity{
                     } else {
                         new_state.setServe(true);
                     }
+                    //add voice
+                    voiceList.clear();
+                    switch (current_voice_select) {
+                        case 0:
+                            call = R.raw.gbr_man_game;
+                            break;
+                    }
+                    voiceList.add(call);
                 } else if (new_state.getSet_point_up(current_set) <= 3 &&
                         new_state.getSet_point_down(current_set) == 4) { //40,30,15,0 : 40A => you win this game
                     //set point clean
@@ -3645,6 +3900,14 @@ public class GameActivity extends AppCompatActivity{
                     } else {
                         new_state.setServe(true);
                     }
+                    //add voice
+                    voiceList.clear();
+                    switch (current_voice_select) {
+                        case 0:
+                            call = R.raw.gbr_man_game;
+                            break;
+                    }
+                    voiceList.add(call);
                 } else {
                     Log.d(TAG, "[points change without arrange]");
                 }
@@ -3664,6 +3927,7 @@ public class GameActivity extends AppCompatActivity{
         byte current_set = new_state.getCurrent_set();
         byte setsWinUp = new_state.getSetsUp();
         byte setsWinDown = new_state.getSetsDown();
+        Integer call = 0, all = 0, tiebreak = 0;
         if (tiebreak.equals("0")) { //use tibreak
             Log.d(TAG, "[Use Tiebreak]");
 
@@ -3673,42 +3937,86 @@ public class GameActivity extends AppCompatActivity{
                 if (new_state.getSet_game_up(current_set) == 6 &&
                         new_state.getSet_game_down(current_set) == 6) {
                     new_state.setInTiebreak(true); //into tiebreak;
+                    //add voice
+
+                    switch (current_voice_select) {
+                        case 0:
+                            call = R.raw.gbr_man_6;
+                            voiceList.add(call);
+                            all = R.raw.gbr_man_all;
+                            voiceList.add(all);
+                            tiebreak = R.raw.gbr_man_tiebreak;
+                            voiceList.add(tiebreak);
+                            break;
+                    }
+
                 } else if (new_state.getSet_game_up(current_set) == 7 &&
                         new_state.getSet_game_down(current_set) == 5) { // 7:5 => oppt win this set
                     //set sets win
                     setsWinUp++;
                     new_state.setSetsUp(setsWinUp);
                     checkSets(new_state);
+
+                    //play voice
+                    if (voiceOn) {
+                        voicePlay.audioPlayMulti(voiceList);
+                    }
+
                 } else if (new_state.getSet_game_up(current_set) == 5 &&
                         new_state.getSet_game_down(current_set) == 7) { // 5:7 => you win this set
                     //set sets win
                     setsWinDown++;
                     new_state.setSetsDown(setsWinDown);
                     checkSets(new_state);
+
+                    //play voice
+                    if (voiceOn) {
+                        voicePlay.audioPlayMulti(voiceList);
+                    }
                 } else if (new_state.getSet_game_up(current_set) == 7 &&
                         new_state.getSet_game_down(current_set) == 6) { // 7:6 => oppt win this set
                     //set sets win
                     setsWinUp++;
                     new_state.setSetsUp(setsWinUp);
                     checkSets(new_state);
+
+                    //play voice
+                    if (voiceOn) {
+                        voicePlay.audioPlayMulti(voiceList);
+                    }
                 } else if (new_state.getSet_game_up(current_set) == 6 &&
                         new_state.getSet_game_down(current_set) == 7) { // 5:7 => you win this set
                     //set sets win
                     setsWinDown++;
                     new_state.setSetsDown(setsWinDown);
                     checkSets(new_state);
+
+                    //play voice
+                    if (voiceOn) {
+                        voicePlay.audioPlayMulti(voiceList);
+                    }
                 } else if (new_state.getSet_game_up(current_set) == 6 &&
                         new_state.getSet_game_down(current_set) <=4 ) { // 6:0,1,2,3,4 => oppt win this set
                     //set sets win
                     setsWinUp++;
                     new_state.setSetsUp(setsWinUp);
                     checkSets(new_state);
+
+                    //play voice
+                    if (voiceOn) {
+                        voicePlay.audioPlayMulti(voiceList);
+                    }
                 } else if (new_state.getSet_game_up(current_set) <= 4 &&
                         new_state.getSet_game_down(current_set) == 6) { // 0,1,2,3,4:6 => you win this set
                     //set sets win
                     setsWinDown++;
                     new_state.setSetsDown(setsWinDown);
                     checkSets(new_state);
+
+                    //play voice
+                    if (voiceOn) {
+                        voicePlay.audioPlayMulti(voiceList);
+                    }
                 }
 
             } else {
@@ -3723,36 +4031,66 @@ public class GameActivity extends AppCompatActivity{
                     setsWinUp++;
                     new_state.setSetsUp(setsWinUp);
                     checkSets(new_state);
+
+                    //play voice
+                    if (voiceOn) {
+                        voicePlay.audioPlayMulti(voiceList);
+                    }
                 } else if (new_state.getSet_game_up(current_set) == 3 &&
                         new_state.getSet_game_down(current_set) == 5) { // 3:5 => you win this set
                     //set sets win
                     setsWinDown++;
                     new_state.setSetsDown(setsWinDown);
                     checkSets(new_state);
+
+                    //play voice
+                    if (voiceOn) {
+                        voicePlay.audioPlayMulti(voiceList);
+                    }
                 } else if (new_state.getSet_game_up(current_set) == 5 &&
                         new_state.getSet_game_down(current_set) == 4) { // 5:4 => oppt win this set
                     //set sets win
                     setsWinUp++;
                     new_state.setSetsUp(setsWinUp);
                     checkSets(new_state);
+
+                    //play voice
+                    if (voiceOn) {
+                        voicePlay.audioPlayMulti(voiceList);
+                    }
                 } else if (new_state.getSet_game_up(current_set) == 4 &&
                         new_state.getSet_game_down(current_set) == 5) { // 4:5 => you win this set
                     //set sets win
                     setsWinDown++;
                     new_state.setSetsDown(setsWinDown);
                     checkSets(new_state);
+
+                    //play voice
+                    if (voiceOn) {
+                        voicePlay.audioPlayMulti(voiceList);
+                    }
                 } else if (new_state.getSet_game_up(current_set) == 4 &&
                         new_state.getSet_game_down(current_set) <=2 ) { // 4:0,1,2 => oppt win this set
                     //set sets win
                     setsWinUp++;
                     new_state.setSetsUp(setsWinUp);
                     checkSets(new_state);
+
+                    //play voice
+                    if (voiceOn) {
+                        voicePlay.audioPlayMulti(voiceList);
+                    }
                 } else if (new_state.getSet_game_up(current_set) <= 2 &&
                         new_state.getSet_game_down(current_set) == 4) { // 0,1,2:6 => you win this set
                     //set sets win
                     setsWinDown++;
                     new_state.setSetsDown(setsWinDown);
                     checkSets(new_state);
+
+                    //play voice
+                    if (voiceOn) {
+                        voicePlay.audioPlayMulti(voiceList);
+                    }
                 }
             }
 
@@ -3768,12 +4106,22 @@ public class GameActivity extends AppCompatActivity{
                     setsWinUp++;
                     new_state.setSetsUp(setsWinUp);
                     checkSets(new_state);
+
+                    //play voice
+                    if (voiceOn) {
+                        voicePlay.audioPlayMulti(voiceList);
+                    }
                 } else if (new_state.getSet_game_up(current_set) <= 5 &&
                         new_state.getSet_game_down(current_set) == 6) { // 5:6 => you win this set
                     //set sets win
                     setsWinDown++;
                     new_state.setSetsDown(setsWinDown);
                     checkSets(new_state);
+
+                    //play voice
+                    if (voiceOn) {
+                        voicePlay.audioPlayMulti(voiceList);
+                    }
                 }
 
             } else {
@@ -3785,12 +4133,22 @@ public class GameActivity extends AppCompatActivity{
                     setsWinUp++;
                     new_state.setSetsUp(setsWinUp);
                     checkSets(new_state);
+
+                    //play voice
+                    if (voiceOn) {
+                        voicePlay.audioPlayMulti(voiceList);
+                    }
                 } else if (new_state.getSet_game_up(current_set) <= 3 &&
                         new_state.getSet_game_down(current_set) == 4) { // 3:4 => you win this set
                     //set sets win
                     setsWinDown++;
                     new_state.setSetsDown(setsWinDown);
                     checkSets(new_state);
+
+                    //play voice
+                    if (voiceOn) {
+                        voicePlay.audioPlayMulti(voiceList);
+                    }
                 }
             }
 
@@ -3852,6 +4210,279 @@ public class GameActivity extends AppCompatActivity{
 
 
         Log.d(TAG, "[Check sets End]");
+    }
+
+    private static void choosePointVoice(boolean down_serve, byte up_point, byte down_point) {
+        switch (current_voice_select) {
+            case 0:
+                
+                break;
+        }
+    }
+
+    private static void chooseGameVoice(byte gameServe,  byte gameRecv) {
+        Integer gameCall, gameCall2;
+        if (gameServe == 0 && gameRecv == 1) {
+            gameCall = R.raw.gbr_man_love;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_1;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 0 && gameRecv == 2) {
+            gameCall = R.raw.gbr_man_love;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_2;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 0 && gameRecv == 3) {
+            gameCall = R.raw.gbr_man_love;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_3;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 0 && gameRecv == 4) {
+            gameCall = R.raw.gbr_man_love;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_4;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 0 && gameRecv == 5) {
+            gameCall = R.raw.gbr_man_love;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_5;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 0 && gameRecv == 6) {
+            gameCall = R.raw.gbr_man_love;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_6;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 1 && gameRecv == 0) {
+            gameCall = R.raw.gbr_man_1;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_love;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 1 && gameRecv == 1) {
+            gameCall = R.raw.gbr_man_1;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_all;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 1 && gameRecv == 2) {
+            gameCall = R.raw.gbr_man_1;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_2;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 1 && gameRecv == 3) {
+            gameCall = R.raw.gbr_man_1;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_3;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 1 && gameRecv == 4) {
+            gameCall = R.raw.gbr_man_1;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_4;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 1 && gameRecv == 5) {
+            gameCall = R.raw.gbr_man_1;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_5;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 1 && gameRecv == 6) {
+            gameCall = R.raw.gbr_man_1;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_6;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 2 && gameRecv == 0) {
+            gameCall = R.raw.gbr_man_2;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_love;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 2 && gameRecv == 1) {
+            gameCall = R.raw.gbr_man_2;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_1;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 2 && gameRecv == 2) {
+            gameCall = R.raw.gbr_man_2;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_all;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 2 && gameRecv == 3) {
+            gameCall = R.raw.gbr_man_2;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_3;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 2 && gameRecv == 4) {
+            gameCall = R.raw.gbr_man_2;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_4;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 2 && gameRecv == 5) {
+            gameCall = R.raw.gbr_man_2;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_5;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 2 && gameRecv == 6) {
+            gameCall = R.raw.gbr_man_2;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_6;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 3 && gameRecv == 0) {
+            gameCall = R.raw.gbr_man_3;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_love;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 3 && gameRecv == 1) {
+            gameCall = R.raw.gbr_man_3;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_1;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 3 && gameRecv == 2) {
+            gameCall = R.raw.gbr_man_3;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_2;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 3 && gameRecv == 3) {
+            gameCall = R.raw.gbr_man_3;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_all;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 3 && gameRecv == 4) {
+            gameCall = R.raw.gbr_man_3;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_4;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 3 && gameRecv == 5) {
+            gameCall = R.raw.gbr_man_3;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_5;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 3 && gameRecv == 6) {
+            gameCall = R.raw.gbr_man_3;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_6;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 4 && gameRecv == 0) {
+            gameCall = R.raw.gbr_man_4;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_love;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 4 && gameRecv == 1) {
+            gameCall = R.raw.gbr_man_4;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_1;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 4 && gameRecv == 2) {
+            gameCall = R.raw.gbr_man_4;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_2;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 4 && gameRecv == 3) {
+            gameCall = R.raw.gbr_man_4;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_3;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 4 && gameRecv == 4) {
+            gameCall = R.raw.gbr_man_4;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_all;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 4 && gameRecv == 5) {
+            gameCall = R.raw.gbr_man_4;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_5;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 4 && gameRecv == 6) {
+            gameCall = R.raw.gbr_man_4;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_6;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 5 && gameRecv == 0) {
+            gameCall = R.raw.gbr_man_5;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_love;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 5 && gameRecv == 1) {
+            gameCall = R.raw.gbr_man_5;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_1;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 5 && gameRecv == 2) {
+            gameCall = R.raw.gbr_man_5;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_2;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 5 && gameRecv == 3) {
+            gameCall = R.raw.gbr_man_5;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_3;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 5 && gameRecv == 4) {
+            gameCall = R.raw.gbr_man_5;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_4;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 5 && gameRecv == 5) {
+            gameCall = R.raw.gbr_man_5;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_all;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 5 && gameRecv == 6) {
+            gameCall = R.raw.gbr_man_5;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_6;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 5 && gameRecv == 7) {
+            gameCall = R.raw.gbr_man_5;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_7;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 6 && gameRecv == 0) {
+            gameCall = R.raw.gbr_man_6;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_love;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 6 && gameRecv == 1) {
+            gameCall = R.raw.gbr_man_6;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_1;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 6 && gameRecv == 2) {
+            gameCall = R.raw.gbr_man_6;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_2;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 6 && gameRecv == 3) {
+            gameCall = R.raw.gbr_man_6;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_3;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 6 && gameRecv == 4) {
+            gameCall = R.raw.gbr_man_6;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_4;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 6 && gameRecv == 5) {
+            gameCall = R.raw.gbr_man_6;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_5;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 6 && gameRecv == 6) {
+            gameCall = R.raw.gbr_man_6;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_6;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 6 && gameRecv == 7) {
+            gameCall = R.raw.gbr_man_6;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_7;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 7 && gameRecv == 5) {
+            gameCall = R.raw.gbr_man_7;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_5;
+            voiceList.add(gameCall2);
+        } else if (gameServe == 7 && gameRecv == 6) {
+            gameCall = R.raw.gbr_man_7;
+            voiceList.add(gameCall);
+            gameCall2 = R.raw.gbr_man_6;
+            voiceList.add(gameCall2);
+        }
     }
 
     private Runnable updateTimer = new Runnable() {
@@ -4048,6 +4679,7 @@ public class GameActivity extends AppCompatActivity{
         getMenuInflater().inflate(R.menu.game_activity_menu, menu);
 
         //item_edit = menu.findItem(R.id.action_edit_group);
+        voice_item = menu.findItem(R.id.action_voice_onOff);
 
         return true;
     }
@@ -4056,6 +4688,28 @@ public class GameActivity extends AppCompatActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
         switch (item.getItemId()) {
+            case R.id.action_voice_onOff:
+
+                if (voiceOn) { //voice is on, set off
+                    voice_item.setIcon(R.drawable.ic_keyboard_voice_white_off_48dp);
+                    voice_item.setTitle(R.string.game_voice_off);
+                    voiceOn = false;
+
+
+
+                } else {
+                    voice_item.setIcon(R.drawable.ic_keyboard_voice_white_48dp);
+                    voice_item.setTitle(R.string.game_voice_on);
+                    voiceOn = true;
+                }
+                editor = pref.edit();
+                editor.putBoolean("VOICE_ON", voiceOn);
+                editor.apply();
+                break;
+            case R.id.action_voice_support:
+                intent = new Intent(GameActivity.this, VoiceSupport.class);
+                startActivity(intent);
+                break;
             case R.id.action_show_stat:
                 intent = new Intent(GameActivity.this, CurrentStatActivity.class);
                 intent.putExtra("PLAYER_UP", playerUp);

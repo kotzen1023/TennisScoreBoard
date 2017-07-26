@@ -1,18 +1,43 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
     <item
-        android:id="@+id/action_file_upload"
-        android:title="@string/game_send_result"
-        android:icon="@drawable/ic_file_upload_white_48dp"
+        android:id="@+id/action_voice_onOff"
+        android:title="@string/game_voice_off"
+        android:icon="@drawable/ic_keyboard_voice_white_off_48dp"
         app:showAsAction="ifRoom|withText" />
 
     <item
-        android:id="@+id/action_show_stat"
-        android:title="@string/menu_setup_stat"
-        android:icon="@drawable/ic_view_headline_white_48dp"
-        app:showAsAction="ifRoom|withText" />
+        android:id="@+id/action_settings"
+        android:title=""
+        android:icon="@drawable/ic_more_vert_white_48dp"
+        app:showAsAction="always">
 
+        <menu>
+            <item
+                android:id="@+id/action_file_upload"
+                android:title="@string/game_send_result"
+                android:icon="@drawable/ic_file_upload_white_48dp"
+                app:showAsAction="ifRoom|withText" />
+
+            <item
+                android:id="@+id/action_show_stat"
+                android:title="@string/menu_setup_stat"
+                android:icon="@drawable/ic_view_headline_white_48dp"
+                app:showAsAction="ifRoom|withText" />
+
+            <item
+                android:id="@+id/action_voice_support"
+                android:title="@string/game_voice"
+                android:icon="@drawable/ic_settings_voice_white_48dp"
+                app:showAsAction="ifRoom|withText" />
+
+            <item
+                android:id="@+id/action_record_voice"
+                android:title="@string/game_record"
+                android:icon="@drawable/ic_record_voice_over_white_48dp"
+                app:showAsAction="ifRoom|withText" />
+        </menu>
+    </item>
 
 </menu>

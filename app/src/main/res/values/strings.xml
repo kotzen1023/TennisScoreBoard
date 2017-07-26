@@ -67,7 +67,7 @@
     <string name="game_saving">Saving</string>
     <string name="voice_change_purchased">Purchased</string>
     <string name="voice_change_ask_to_buy">Do you want to buy this item?</string>
-    <string name="game_voice">Voice</string>
+    <string name="game_voice">Voice Support</string>
     <string name="game_send_result">Send</string>
     <string name="game_import_file">Import score</string>
     <string name="game_retire">Retire from game</string>
@@ -115,5 +115,8 @@
     <string name="find_court_help_title">Show court location</string>
     <string name="find_court_permission_msg">You must agree this permission, or you can not use it.</string>
     <string name="game_forced_error">Forced Error</string>
+    <string name="game_record">Voice Record</string>
+    <string name="game_voice_on">On</string>
+    <string name="game_voice_off">Off</string>
 </resources>
 

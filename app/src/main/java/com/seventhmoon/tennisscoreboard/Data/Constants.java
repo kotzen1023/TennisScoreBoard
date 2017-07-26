@@ -17,4 +17,19 @@ public class Constants {
         Integer SLIDE_LAST_TO_FIRST = 2;
         Integer SLIDE_FIRST_TO_LAST = 3;
     }
+
+    public enum STATE {
+        Created,
+        Idle,
+        Initialized,
+        Preparing,
+        Prepared,
+        Started,
+        Paused,
+        Stopped,
+        PlaybackCompleted,
+        End,
+        Error,
+
+    }
 }

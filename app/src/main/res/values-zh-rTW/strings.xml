@@ -68,7 +68,7 @@
     <string name="game_saving">儲存中</string>
     <string name="voice_change_purchased">已購買</string>
     <string name="voice_change_ask_to_buy">您想購買此道具嗎?</string>
-    <string name="game_voice">語音</string>
+    <string name="game_voice">語音支援</string>
     <string name="game_send_result">傳送</string>
     <string name="game_import_file">匯入比分</string>
     <string name="game_retire">棄賽</string>
@@ -116,4 +116,7 @@
     <string name="find_court_help_title">顯示球場位置</string>
     <string name="find_court_permission_msg">您必須同意這些存取權, 否則將無法使用此功能.</string>
     <string name="game_forced_error">受迫性失誤</string>
+    <string name="game_record">語音錄製</string>
+    <string name="game_voice_on">開啟</string>
+    <string name="game_voice_off">關閉</string>
 </resources>
