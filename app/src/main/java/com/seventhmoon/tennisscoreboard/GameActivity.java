@@ -4215,7 +4215,7 @@ public class GameActivity extends AppCompatActivity{
     private static void choosePointVoice(boolean down_serve, byte up_point, byte down_point) {
         switch (current_voice_select) {
             case 0:
-                
+
                 break;
         }
     }
