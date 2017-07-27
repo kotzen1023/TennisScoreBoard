@@ -197,7 +197,7 @@ public class VoicePlay {
         }
     });
 
-    private static void playing(int res_id){
+    private void playing(int res_id){
         Log.d(TAG, "<playing "+res_id+">");
 
         AssetFileDescriptor afd = context.getResources().openRawResourceFd(res_id);
@@ -278,7 +278,7 @@ public class VoicePlay {
                 current_state = STATE.Initialized;
                 Log.d(TAG, "===>Initialized");
 
-                while (true) {
+                /*while (true) {
                     try {
                         Log.d(TAG, "--->set Prepare");
                         mediaPlayer.prepare();
@@ -288,11 +288,23 @@ public class VoicePlay {
                         e.printStackTrace();
                         //Log.e(TAG, "==== IllegalStateException end====");
                     }
+                }*/
+
+                /*mediaPlayer.seekTo(current_position);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    Log.e(TAG, "set setPlaybackParams");
+                    mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(speed));
                 }
 
+                //set volume
+                mediaPlayer.setVolume(current_volume, current_volume);*/
 
+                mediaPlayer.start();
+                //set state
+                current_state = STATE.Started;
 
-                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                /*mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
 
@@ -324,7 +336,7 @@ public class VoicePlay {
 
 
                     }
-                });
+                });*/
 
 
                 mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -353,7 +365,7 @@ public class VoicePlay {
         Log.d(TAG, "</playing>");
     }
 
-    public static void audioPlayMulti(ArrayList<Integer> res_id) {
+    public void audioPlayMulti(ArrayList<Integer> res_id) {
         //String fileName){
         //Log.e(TAG, "audioPlayer start");
         /*if (mediaPlayer != null && mediaPlayer.isPlaying()) {
@@ -392,14 +404,13 @@ public class VoicePlay {
         //Log.e(TAG, "audioPlayer end");
         for (int i=0;i<res_id.size(); i++) {
 
-            while (mediaPlayer.isPlaying()); //wait for play end
+            while (checkPlay()); //wait for play end
 
-            playing(res_id.get(i));
-
-            /*if (mediaPlayer == null)
+            if (mediaPlayer == null)
                 mediaPlayer = new MediaPlayer();
             else {
-                mediaPlayer.stop();
+                //mediaPlayer.stop();
+                mediaPlayer.reset();
                 mediaPlayer.release();
                 mediaPlayer = null;
                 mediaPlayer = new MediaPlayer();
@@ -418,7 +429,7 @@ public class VoicePlay {
                 //mediaPlayer = null;
             } catch (Exception e) {
                 e.printStackTrace();
-            }*/
+            }
 
         }
 
@@ -426,7 +437,7 @@ public class VoicePlay {
 
     }
 
-    public static boolean checkPlay(Context context) {
+    private boolean checkPlay() {
 
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             return true;
