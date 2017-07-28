@@ -34,6 +34,7 @@ public class VoicePlay {
     private static float current_volume = 0.5f;
     private static int current_position = 0;
     private final static int MAX_VOLUME = 100;
+    private static Thread myThread = null;
 
     public VoicePlay (Context context){
         this.context = context;
@@ -365,53 +366,80 @@ public class VoicePlay {
         Log.d(TAG, "</playing>");
     }
 
-    public void audioPlayMulti(ArrayList<Integer> res_id) {
-        //String fileName){
-        //Log.e(TAG, "audioPlayer start");
-        /*if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-            //Log.d(TAG, "playing!");
+    public void doStopAudioPlayMulti() {
+        Log.d(TAG, "doStopAudioPlayMulti start");
 
+        if (myThread != null) {
+            Log.e(TAG, "myThread.interrupt()");
+            myThread.interrupt();
+            myThread = null;
+        }
 
-        } else {
-            //set up MediaPlayer
-            if (mediaPlayer == null)
-                mediaPlayer = new MediaPlayer();
-            else {
-                mediaPlayer.stop();
-                mediaPlayer.release();
-                mediaPlayer = null;
-                mediaPlayer = new MediaPlayer();
-            }
+        if (mediaPlayer != null) {
 
             try {
-
-                //mediaPlayer.setDataSource(RootDirectory.getAbsolutePath() + "/.tennisVoice/"+fileName);
-                mediaPlayer = MediaPlayer.create(context, res_id);
-
-                //mediaPlayer.prepare();
-
-                mediaPlayer.start();
-
-
-                //mediaPlayer = null;
-            } catch (Exception e) {
+                if (mediaPlayer.isPlaying()) {
+                    Log.e(TAG, "mediaPlayer.stop()");
+                    mediaPlayer.stop();
+                    current_state = STATE.Stopped;
+                }
+            } catch (IllegalStateException e) {
                 e.printStackTrace();
             }
 
-            //is_playing = false;
+            /*if (mediaPlayer.isPlaying()) {
+                Log.e(TAG, "mediaPlayer.stop()");
+                mediaPlayer.stop();
+                current_state = STATE.Stopped;
+            }*/
+            try {
+                Log.e(TAG, "mediaPlayer.reset()");
+                mediaPlayer.reset();
+                current_state = STATE.Idle;
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+            //Log.e(TAG, "mediaPlayer.release()");
+            //mediaPlayer.release();
+            //current_state = STATE.End;
+            //mediaPlayer = null;
+        }
+        Log.d(TAG, "doStopAudioPlayMulti end");
+    }
 
-        }*/
-        //Log.e(TAG, "audioPlayer end");
-        for (int i=0;i<res_id.size(); i++) {
+    public void doRawPlay(ArrayList<Integer> res_id) {
+        for (int i = 0; i < res_id.size(); i++) {
 
-            while (checkPlay()); //wait for play end
+            while (checkPlay()) ; //wait for play end
 
-            if (mediaPlayer == null)
+            if (mediaPlayer == null) {
                 mediaPlayer = new MediaPlayer();
+
+            }
             else {
                 //mediaPlayer.stop();
-                mediaPlayer.reset();
-                mediaPlayer.release();
+                if (mediaPlayer != null && current_state != STATE.Created &&
+                        current_state != STATE.End &&
+                        current_state != STATE.Error) {
+                    try {
+                        mediaPlayer.reset();
+                        current_state = STATE.Idle;
+                    } catch (IllegalStateException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (mediaPlayer != null) {
+                        mediaPlayer.release();
+                        current_state = STATE.End;
+                    }
+
+                } else {
+                    if (mediaPlayer != null) {
+                        mediaPlayer.release();
+                        current_state = STATE.End;
+                    }
+                }
+
                 mediaPlayer = null;
                 mediaPlayer = new MediaPlayer();
             }
@@ -420,10 +448,22 @@ public class VoicePlay {
 
                 //mediaPlayer.setDataSource(RootDirectory.getAbsolutePath() + "/.tennisVoice/"+fileName);
                 mediaPlayer = MediaPlayer.create(context, res_id.get(i));
+                current_state = STATE.Created;
 
                 //mediaPlayer.prepare();
 
                 mediaPlayer.start();
+                current_state = STATE.Started;
+
+                mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                    @Override
+                    public boolean onError(MediaPlayer mp, int what, int extra) {
+
+                        current_state = STATE.Error;
+                        Log.e(TAG, "=====> onError");
+                        return false;
+                    }
+                });
 
 
                 //mediaPlayer = null;
@@ -432,15 +472,41 @@ public class VoicePlay {
             }
 
         }
+    }
+
+    public void audioPlayMulti(final ArrayList<Integer> res_id) {
 
 
+        if (myThread == null) {
+
+            new Thread() {
+                public void run() {
+                    doRawPlay(res_id);
+                }
+            }.start();
+
+        }
 
     }
 
     private boolean checkPlay() {
 
-        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-            return true;
+        if (mediaPlayer != null) {
+
+            if (current_state != STATE.Error && current_state != STATE.End) {
+                try {
+                    if (mediaPlayer.isPlaying()) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } catch (IllegalStateException e) {
+                    e.printStackTrace();
+                    return false;
+                }
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
