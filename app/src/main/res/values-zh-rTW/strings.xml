@@ -119,4 +119,9 @@
     <string name="game_record">語音錄製</string>
     <string name="game_voice_on">開啟</string>
     <string name="game_voice_off">關閉</string>
+    <string name="file_name_enpty">檔案名稱不能為空</string>
+    <string name="confirm">確定</string>
+    <string name="dialog_yes">是</string>
+    <string name="dialog_no">否</string>
+    <string name="file_is_exist_overwrite">檔案 %s 已存在. 要覆寫嗎？</string>
 </resources>

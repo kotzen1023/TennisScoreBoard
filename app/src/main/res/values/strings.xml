@@ -118,5 +118,10 @@
     <string name="game_record">Voice Record</string>
     <string name="game_voice_on">On</string>
     <string name="game_voice_off">Off</string>
+    <string name="file_name_enpty">File name can not be empty.</string>
+    <string name="confirm">Confirm</string>
+    <string name="dialog_yes">Yes</string>
+    <string name="dialog_no">No</string>
+    <string name="file_is_exist_overwrite">File %s is exist. Overwrite it?</string>
 </resources>
 

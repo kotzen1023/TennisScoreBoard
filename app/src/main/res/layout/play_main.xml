@@ -16,20 +16,66 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true">
 
-        <Button
-            android:text="@string/main_menu_new"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:id="@+id/btnNewGame"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
             android:layout_weight="1"
-            android:textSize="50sp"/>
+            android:gravity="center">
 
-        <Button
-            android:text="@string/main_menu_continue"
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_fiber_new_white_24dp"
+                android:layout_gravity="center"
+                android:id="@+id/imgNewGame"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="@string/main_menu_new"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:gravity="center"
+                android:id="@+id/textNewGame"/>
+            <!--Button
+                android:text="@string/main_menu_new"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/btnNewGame"
+                android:layout_gravity="center_vertical"
+                android:textAppearance="?android:attr/textAppearanceLarge"/-->
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:id="@+id/btnContinue"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
             android:layout_weight="1"
-            android:textSize="50sp"/>
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_save_white_48dp"
+                android:layout_gravity="center"
+                android:id="@+id/imgContinue"/>
+
+            <!--Button
+                android:text="@string/main_menu_continue"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/btnContinue"
+                android:layout_gravity="center_vertical"
+                android:textAppearance="?android:attr/textAppearanceLarge"/-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="@string/main_menu_continue"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/textContinue"/>
+        </LinearLayout>
+
+
     </LinearLayout>
 </RelativeLayout>

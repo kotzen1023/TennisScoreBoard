@@ -38,7 +38,7 @@
                     android:layout_height="match_parent"
                     android:id="@+id/textViewPlayerUp"
                     android:layout_weight="1"
-                    android:textSize="22sp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:gravity="center"/>
             </LinearLayout>
 
@@ -61,7 +61,7 @@
                     android:layout_height="match_parent"
                     android:id="@+id/textViewPlayerDown"
                     android:layout_weight="1"
-                    android:textSize="22sp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:gravity="center"/>
             </LinearLayout>
         </LinearLayout>
@@ -272,22 +272,34 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
-                <Button
+                <!--Button
                     android:text="@string/score_action"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/btnOpptScore"
-                    android:textSize="22sp"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
                     android:layout_weight="1"
-                    android:backgroundTint="@android:color/holo_blue_dark" />
+                    android:foregroundTint="@android:color/holo_blue_dark" /-->
+                <TextView
+                    android:layout_margin="5dp"
+                    android:text="@string/score_action"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/textOpptScore"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:background="@android:color/holo_blue_dark"
+                    android:layout_weight="1"
+                    android:gravity="center"/>
+
+
 
                 <Button
                     android:text="@string/game_back"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/btnBack"
-                    android:textSize="22sp"
-                    android:layout_weight="1" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_weight="1"/>
             </LinearLayout>
 
             <LinearLayout
@@ -298,22 +310,34 @@
 
 
 
-                <Button
+                <!--Button
                     android:text="@string/score_action"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/btnYouScore"
                     android:layout_weight="1"
                     android:textSize="22sp"
-                    android:backgroundTint="?android:attr/colorFocusedHighlight" />
+                    android:backgroundTint="?android:attr/colorFocusedHighlight" /-->
+                <TextView
+                    android:layout_margin="5dp"
+                    android:text="@string/score_action"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/textYouScore"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:background="?android:attr/colorFocusedHighlight"
+                    android:layout_weight="1"
+                    android:gravity="center"/>
 
                 <Button
                     android:text="@string/game_reset"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/btnReset"
-                    android:textSize="22sp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_weight="1" />
+
+
             </LinearLayout>
         </LinearLayout>
 
@@ -338,7 +362,7 @@
                     android:id="@+id/currentTime"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:textSize="30sp"/>
+                    android:textAppearance="?android:attr/textAppearanceLarge"/>
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -360,7 +384,7 @@
                         android:id="@+id/gameTime"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:textSize="30sp"/>
+                        android:textAppearance="?android:attr/textAppearanceLarge"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -377,7 +401,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/btnSave"
-                    android:textSize="22sp"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
                     android:layout_weight="1" />
 
                 <Button
@@ -385,7 +409,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/btnLoad"
-                    android:textSize="22sp"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
                     android:layout_weight="1" />
             </LinearLayout>
 

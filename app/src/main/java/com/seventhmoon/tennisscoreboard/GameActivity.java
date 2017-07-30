@@ -205,12 +205,14 @@ public class GameActivity extends AppCompatActivity{
         second_serve_won = 0;
         second_serve_lost = 0;
 
-        Button btnYouScore;
+        //Button btnYouScore;
         Button btnBack;
-        Button btnOpptScore;
+        //Button btnOpptScore;
         Button btnReset;
         Button btnSave;
         Button btnLoad;
+        TextView btnOpptScore;
+        TextView btnYouScore;
 
         LinearLayout nameLayout;
 
@@ -748,8 +750,9 @@ public class GameActivity extends AppCompatActivity{
 
         //mClockView = (TextView) findViewById(R.id.clock);
 
-        btnYouScore = (Button) findViewById(R.id.btnYouScore);
-        btnOpptScore = (Button) findViewById(R.id.btnOpptScore);
+        btnYouScore = (TextView) findViewById(R.id.textYouScore);
+        //btnOpptScore = (Button) findViewById(R.id.btnOpptScore);
+        btnOpptScore = (TextView) findViewById(R.id.textOpptScore);
         btnBack = (Button) findViewById(R.id.btnBack);
         btnReset = (Button) findViewById(R.id.btnReset);
         btnSave = (Button) findViewById(R.id.btnSave);

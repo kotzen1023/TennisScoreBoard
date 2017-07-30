@@ -15,6 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -67,10 +69,16 @@ public class PlayMainActivity extends AppCompatActivity {
 
 
 
-        Button btnNewGame = (Button) findViewById(R.id.btnNewGame);
-        Button btnContinue = (Button) findViewById(R.id.btnContinue);
+        //Button btnNewGame = (Button) findViewById(R.id.btnNewGame);
+        //Button btnContinue = (Button) findViewById(R.id.btnContinue);
 
-        btnNewGame.setOnClickListener(new View.OnClickListener() {
+        ImageView imgNewGame = (ImageView) findViewById(R.id.imgNewGame);
+        ImageView imgContinue = (ImageView) findViewById(R.id.imgContinue);
+
+        TextView textNewGame = (TextView) findViewById(R.id.textNewGame);
+        TextView textContinue = (TextView) findViewById(R.id.textContinue);
+
+        imgNewGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 /*Intent intent = new Intent(MainActivity.this, SetupMain.class);
@@ -80,9 +88,26 @@ public class PlayMainActivity extends AppCompatActivity {
             }
         });
 
-        btnContinue.setOnClickListener(new View.OnClickListener() {
+        textNewGame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showInputDialog();
+            }
+        });
+
+        imgContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(PlayMainActivity.this, LoadGame.class);
+                intent.putExtra("CALL_ACTIVITY", "Main");
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        textContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 Intent intent = new Intent(PlayMainActivity.this, LoadGame.class);
                 intent.putExtra("CALL_ACTIVITY", "Main");
                 startActivity(intent);
@@ -157,18 +182,18 @@ public class PlayMainActivity extends AppCompatActivity {
                 //Log.e(TAG, "input password = " + editText.getText());
 
                 if (editFileName.getText().toString().equals("")) {
-                    toast("file name empty");
+                    toast(getResources().getString(R.string.file_name_enpty));
 
                 } else {
                     //check same file name
                     if (check_file_exist(editFileName.getText().toString()))
                     {
                         AlertDialog.Builder confirmdialog = new AlertDialog.Builder(PlayMainActivity.this);
-                        confirmdialog.setTitle("File "+"\""+editFileName.getText().toString()+"\" is exist, want to overwrite it?");
+                        confirmdialog.setTitle(getResources().getString(R.string.file_is_exist_overwrite, editFileName.getText().toString()));
                         confirmdialog.setIcon(R.drawable.ball_icon);
 
                         confirmdialog.setCancelable(false);
-                        confirmdialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        confirmdialog.setPositiveButton(getResources().getString(R.string.dialog_yes), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 //overwrite
                                 //clear
@@ -191,7 +216,7 @@ public class PlayMainActivity extends AppCompatActivity {
                                 finish();
                             }
                         });
-                        confirmdialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        confirmdialog.setNegativeButton(getResources().getString(R.string.dialog_no), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
 
 
