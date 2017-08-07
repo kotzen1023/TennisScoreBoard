@@ -123,5 +123,8 @@
     <string name="dialog_yes">Yes</string>
     <string name="dialog_no">No</string>
     <string name="file_is_exist_overwrite">File %s is exist. Overwrite it?</string>
+    <string name="load_import">Import</string>
+    <string name="import_select_all">Select All</string>
+    <string name="import_unselect_all">Unselect All</string>
 </resources>
 

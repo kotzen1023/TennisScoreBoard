@@ -9,6 +9,9 @@ public class Constants {
         String GET_COURT_IMAGE_COMPLETE = "com.seventhmoon.GetCourtComplete";
         String INSERT_COURT_INFO_COMPLETE = "com.seventhmoon.InsertCourtInfoComplete";
         String CHECK_MAC_EXIST_COMPLETE = "com.seventhmoon.CheckMacExistComplete";
+
+        String GET_SEARCHLIST_ACTION = "com.seventhmoon.GetSearchListAction";
+        String ADD_FILE_LIST_COMPLETE = "com.seventhmoon.AddFileListComplete";
     }
 
     public interface DIRECTION {

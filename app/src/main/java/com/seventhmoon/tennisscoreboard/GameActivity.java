@@ -15,11 +15,13 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 
+import android.os.Build;
 import android.os.Bundle;
 
 
 import android.os.Handler;
 
+import android.os.StrictMode;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -167,6 +169,13 @@ public class GameActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_layout);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { //for android 7.0+ upload file
+            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder.build());
+        }
+
+
+
         pref = getSharedPreferences(FILE_NAME, MODE_PRIVATE);
         voiceOn = pref.getBoolean("VOICE_ON", false);
         current_voice_select = pref.getInt("VOICE_SELECT", 0);
@@ -313,7 +322,9 @@ public class GameActivity extends AppCompatActivity{
             //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 if (intent.getType().contains("text/")) { //text start
 
+
                     String downFile = intent.getData().getPath();
+                    Log.e(TAG, "downFile path = "+downFile);
                     if (downFile != null) {
                         filename = copy_file(downFile);
                     }

@@ -6,14 +6,19 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 import com.seventhmoon.tennisscoreboard.Data.Constants;
@@ -26,11 +31,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 
+import static com.seventhmoon.tennisscoreboard.Data.FileOperation.get_absolute_path;
 import static com.seventhmoon.tennisscoreboard.Data.FileOperation.remove_file;
 
 
 public class LoadGame extends AppCompatActivity {
     private static final String TAG = LoadGame.class.getName();
+
+    private Context context;
 
     private ListView listView;
 
@@ -46,8 +54,12 @@ public class LoadGame extends AppCompatActivity {
     private static ArrayList<FileChooseItem> dir = new ArrayList<>();
     private static ArrayList<FileChooseItem> fls = new ArrayList<>();
 
+    private MenuItem import_menu;
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        context = getBaseContext();
 
         //for action bar
         ActionBar actionBar = getSupportActionBar();
@@ -201,6 +213,43 @@ public class LoadGame extends AppCompatActivity {
                             call_activity = "Main";
                         }
                     }
+                } else if (intent.getAction().equalsIgnoreCase(Constants.ACTION.ADD_FILE_LIST_COMPLETE)) {
+                    Log.d(TAG, "receive brocast ADD_FILE_LIST_COMPLETE!");
+
+                    dir.clear();
+                    fls.clear();
+
+                    File[] dirs = folder.listFiles();
+
+                    try{
+                        for(File ff: dirs)
+                        {
+                            Date lastModDate = new Date(ff.lastModified());
+                            DateFormat formater = DateFormat.getDateTimeInstance();
+                            String date_modify = formater.format(lastModDate);
+                            //CheckBox checkBox = new CheckBox(getApplicationContext());
+                            if(!ff.isDirectory()){
+
+
+                                char first = ff.getName().charAt(0);
+                                if (first != '.')
+                                    fls.add(new FileChooseItem(ff.getName(), date_modify));
+                            }
+                        }
+                    } catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                    //Collections.sort(dir);
+                    Collections.sort(fls);
+                    dir.addAll(fls);
+
+                    if (fileChooseArrayAdapter == null) {
+                        fileChooseArrayAdapter = new FileChooseArrayAdapter(context, R.layout.file_choose_item, dir);
+                        listView.setAdapter(fileChooseArrayAdapter);
+                    } else {
+                        Log.e(TAG, "notifyDataSetChanged");
+                        fileChooseArrayAdapter.notifyDataSetChanged();
+                    }
                 }
             }
         };
@@ -208,6 +257,7 @@ public class LoadGame extends AppCompatActivity {
         if (!isRegister) {
             filter = new IntentFilter();
             filter.addAction(Constants.ACTION.GAME_DELETE_COMPLETE);
+            filter.addAction(Constants.ACTION.ADD_FILE_LIST_COMPLETE);
             registerReceiver(mReceiver, filter);
             isRegister = true;
             Log.d(TAG, "registerReceiver mReceiver");
@@ -250,5 +300,55 @@ public class LoadGame extends AppCompatActivity {
 
 
         finish();
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.load_menu, menu);
+
+        //item_edit = menu.findItem(R.id.action_edit_group);
+        import_menu = menu.findItem(R.id.action_import);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.action_import:
+
+                intent = new Intent(LoadGame.this, FileImportActivity.class);
+                startActivity(intent);
+                break;
+            /*case R.id.action_show_stat:
+                intent = new Intent(GameActivity.this, CurrentStatActivity.class);
+                intent.putExtra("PLAYER_UP", playerUp);
+                intent.putExtra("PLAYER_DOWN", playerDown);
+                intent.putExtra("TOTAL_SETS", set);
+                startActivity(intent);
+                break;
+            case R.id.action_file_upload:
+                File file = new File(get_absolute_path(filename));
+                intent = new Intent();
+                intent.setAction(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file) );
+                startActivity(intent);
+                break;*/
+            /*case R.id.action_voice_support:
+                intent = new Intent(GameActivity.this, VoiceSupport.class);
+                startActivity(intent);
+                break;*/
+            default:
+                break;
+        }
+        return true;
+    }
+
+    public void toast(String message) {
+        Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+        toast.show();
     }
 }

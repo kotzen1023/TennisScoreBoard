@@ -97,7 +97,7 @@ public class FileOperation {
     }
 
     public static boolean check_file_exist(String fileName) {
-        Log.i(TAG, "append_record --- start ---");
+        Log.i(TAG, "check_file_exist --- start ---");
         boolean ret = false;
 
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
@@ -250,6 +250,49 @@ public class FileOperation {
             Log.d(TAG, "message = "+message);
 
             Log.i(TAG, "read_record() --- end ---");
+        }
+
+
+        return message;
+    }
+
+    public static String read_out_file(String path) {
+
+
+        Log.i(TAG, "read_out_file() --- start ---");
+        /*if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            //path = Environment.getExternalStorageDirectory();
+            RootDirectory = Environment.getExternalStorageDirectory();
+        }*/
+
+        File file = new File(path);
+        String message = "";
+
+        //photo
+        if (!file.exists())
+        {
+            Log.i(TAG, "read_record() "+file.getAbsolutePath()+ " not exist");
+
+            return "";
+        }
+        else {
+            try {
+
+                FileReader fr = new FileReader(file.getAbsolutePath());
+                BufferedReader br = new BufferedReader(fr);
+                while (br.ready()) {
+
+                    message = br.readLine();
+
+                }
+                fr.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Log.d(TAG, "message = "+message);
+
+            Log.i(TAG, "read_out_file() --- end ---");
         }
 
 

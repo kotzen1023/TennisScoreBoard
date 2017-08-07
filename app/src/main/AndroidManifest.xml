@@ -50,6 +50,7 @@
         <activity android:name=".FindCourtActivity" android:screenOrientation="portrait"/>
         <activity android:name=".FullScreenView" android:screenOrientation="portrait"/>
         <activity android:name=".VoiceSupport" />
+        <activity android:name=".FileImportActivity" />
 
 
         <service android:name=".Service.CheckMacExistsService"/>
@@ -57,6 +58,7 @@
         <service android:name=".Service.InertCourtService"/>
         <service android:name=".Service.GetCourtImageService"/>
         <service android:name=".Service.UpdateUploadRemainService"/>
+        <service android:name=".Service.SearchFileService"/>
     </application>
 
 </manifest>
