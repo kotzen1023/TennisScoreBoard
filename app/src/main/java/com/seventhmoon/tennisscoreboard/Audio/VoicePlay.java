@@ -33,7 +33,7 @@ public class VoicePlay {
     private static float speed = 1;
     private static float current_volume = 0.5f;
     //private static int current_position = 0;
-    private final static int MAX_VOLUME = 100;
+    //private final static int MAX_VOLUME = 100;
     private static Thread myThread = null;
 
     public VoicePlay (Context context){
