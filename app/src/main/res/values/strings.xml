@@ -126,5 +126,10 @@
     <string name="load_import">Import</string>
     <string name="import_select_all">Select All</string>
     <string name="import_unselect_all">Unselect All</string>
+    <string name="file_import_help_title">Check box</string>
+    <string name="file_import_help_msg">Long click a file will show checkbox. Or you can click \"select all\" to select all items.</string>
+    <string name="voice_gbr_man">GBR (Man)</string>
+    <string name="voice_gbr_woman">GBR (Woman)</string>
+    <string name="voice_user_record">User Record</string>
 </resources>
 

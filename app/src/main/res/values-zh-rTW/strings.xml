@@ -127,4 +127,9 @@
     <string name="load_import">匯入</string>
     <string name="import_select_all">全選</string>
     <string name="import_unselect_all">全不選</string>
+    <string name="file_import_help_title">核選方塊</string>
+    <string name="file_import_help_msg">長按任一個檔案可顯示核選方塊. 或按\"全選\"來顯示核選方塊.</string>
+    <string name="voice_gbr_man">英國 (男)</string>
+    <string name="voice_gbr_woman">英國 (女)</string>
+    <string name="voice_user_record">使用者錄製</string>
 </resources>

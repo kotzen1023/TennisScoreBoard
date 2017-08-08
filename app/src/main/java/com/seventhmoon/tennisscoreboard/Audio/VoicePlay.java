@@ -23,7 +23,7 @@ public class VoicePlay {
     private static final String TAG = VoicePlay.class.getName();
 
     private static Context context;
-    public static File RootDirectory = new File("/");
+    //public static File RootDirectory = new File("/");
 
     private static MediaPlayer mediaPlayer;
 
@@ -38,6 +38,21 @@ public class VoicePlay {
 
     public VoicePlay (Context context){
         this.context = context;
+    }
+
+    public void doExit() {
+
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+
+        if (myThread != null) {
+            Log.e(TAG, "myThread.interrupt()");
+            myThread.interrupt();
+            myThread = null;
+        }
     }
 
     public static void audioPlayer(Context context, int res_id) {

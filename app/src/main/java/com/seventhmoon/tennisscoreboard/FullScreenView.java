@@ -25,8 +25,6 @@ import android.widget.Toast;
 import com.seventhmoon.tennisscoreboard.Data.Constants;
 import com.seventhmoon.tennisscoreboard.Data.PageItem;
 
-import com.seventhmoon.tennisscoreboard.Service.GetCourtImageService;
-
 
 public class FullScreenView extends AppCompatActivity {
     private static final String TAG = FullScreenView.class.getName();
@@ -220,10 +218,10 @@ public class FullScreenView extends AppCompatActivity {
         if (Double.valueOf(longitude) != 0.0 && Double.valueOf(latitude) != 0.0) {
             //initData.jdbc.queryCourtTable(context, longitude, latitude);
 
-            Intent checkIntent = new Intent(FullScreenView.this, GetCourtImageService.class);
+            /*Intent checkIntent = new Intent(FullScreenView.this, GetCourtImageService.class);
             checkIntent.putExtra("longitude", longitude);
             checkIntent.putExtra("latitude", latitude);
-            startService(checkIntent);
+            startService(checkIntent);*/
         }
 
         loadDialog = new ProgressDialog(FullScreenView.this);

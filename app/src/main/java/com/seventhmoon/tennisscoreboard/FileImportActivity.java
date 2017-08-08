@@ -1,5 +1,7 @@
 package com.seventhmoon.tennisscoreboard;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -187,6 +189,21 @@ public class FileImportActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             // action with ID action_refresh was selected
+            case R.id.action_help:
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(FileImportActivity.this);
+
+                alertDialog.setTitle(R.string.file_import_help_title);
+                alertDialog.setMessage(getResources().getString(R.string.file_import_help_msg));
+                alertDialog.setIcon(android.R.drawable.ic_menu_help);
+                alertDialog.setCancelable(false);
+                alertDialog.setPositiveButton(getResources().getString(R.string.find_court_ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                alertDialog.show();
+                break;
 
             case R.id.action_selectall:
                 if (!FileChooseLongClick) {

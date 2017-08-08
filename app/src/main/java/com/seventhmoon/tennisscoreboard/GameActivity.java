@@ -155,7 +155,7 @@ public class GameActivity extends AppCompatActivity{
     private static BroadcastReceiver mReceiver = null;
     private static boolean isRegister = false;
 
-    public static VoicePlay  voicePlay;
+    public static VoicePlay voicePlay;
 
     private static ArrayList<Integer> voiceList = new ArrayList<>();
     private static boolean voiceOn = false;
@@ -1716,6 +1716,9 @@ public class GameActivity extends AppCompatActivity{
             loadDialog.dismiss();
             loadDialog = null;
         }
+
+        voicePlay.doExit();
+        voicePlay = null;
 
         super.onDestroy();
 
@@ -6727,10 +6730,10 @@ public class GameActivity extends AppCompatActivity{
                 intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file) );
                 startActivity(intent);
                 break;
-            /*case R.id.action_voice_support:
-                intent = new Intent(GameActivity.this, VoiceSupport.class);
+            case R.id.action_voice_support:
+                intent = new Intent(GameActivity.this, VoiceSelectActivity.class);
                 startActivity(intent);
-                break;*/
+                break;
             default:
                 break;
         }

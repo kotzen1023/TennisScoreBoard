@@ -10,5 +10,6 @@
         android:id="@+id/gridViewVoice"
         android:numColumns="2"
         android:layout_weight="1"
-        android:gravity="center_horizontal" />
+        android:gravity="center_horizontal"
+        android:choiceMode="singleChoice"/>
 </LinearLayout>

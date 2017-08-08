@@ -75,7 +75,6 @@ public class SearchFileService extends IntentService {
             }
         }.start();
 
-
         searchFiles();
         is_searching = false;
     }
@@ -165,8 +164,9 @@ public class SearchFileService extends IntentService {
 
             //String[] children = file.list();
             File[] dirs = file.listFiles();
-            current_dir_files = dirs.length;
-            checked_files = 0;
+            current_dir_files = current_dir_files + dirs.length;
+            checked_files++;
+            Log.d(TAG, "===>files("+current_dir_files+"), checked("+checked_files+")");
 
             for (File children : dirs)
             {
@@ -174,6 +174,9 @@ public class SearchFileService extends IntentService {
                 File chk = new File(children.getAbsolutePath());
                 if (chk.exists() && chk.isDirectory()) {
                     Log.e(TAG, "Enter "+chk.getName()+" :");
+
+                    //current_dir_files = current_dir_files + chk.listFiles().length;
+                    //checked_files++;
 
                     search(chk);
                 } else if (chk.isFile()){
@@ -204,6 +207,7 @@ public class SearchFileService extends IntentService {
 
         current_dir_files = searchList.size();
         checked_files = 0;
+        Log.d(TAG, "===>files("+current_dir_files+")");
         for (int i=0; i<searchList.size(); i++) {
             File file = new File(searchList.get(i));
             search(file);

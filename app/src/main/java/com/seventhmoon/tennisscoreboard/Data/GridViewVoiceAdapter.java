@@ -2,6 +2,7 @@ package com.seventhmoon.tennisscoreboard.Data;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,30 +14,41 @@ import com.seventhmoon.tennisscoreboard.R;
 
 import java.util.ArrayList;
 
+import static com.seventhmoon.tennisscoreboard.VoiceSelectActivity.actionBar;
+
 
 public class GridViewVoiceAdapter extends ArrayAdapter<ImageBuyItem> {
-    private Context context;
+    private static final String TAG = GridViewVoiceAdapter.class.getName();
+
+    private LayoutInflater inflater = null;
+
     private int layoutResourceId;
-    private ArrayList<ImageBuyItem> data = new ArrayList<>();
+    private Context context;
+
+    private ArrayList<ImageBuyItem> items = new ArrayList<>();
     private boolean[] selection;
 
-    public GridViewVoiceAdapter(Context context, int layoutResourceId, ArrayList<ImageBuyItem> data) {
-        super(context, layoutResourceId, data);
-        this.layoutResourceId = layoutResourceId;
+    public GridViewVoiceAdapter(Context context, int layoutResourceId, ArrayList<ImageBuyItem> objects) {
+        super(context, layoutResourceId, objects);
         this.context = context;
-        this.data = data;
-        selection = new boolean[data.size()];
+        this.layoutResourceId = layoutResourceId;
+        this.items = objects;
+        this.context = context;
+
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        selection = new boolean[items.size()];
     }
 
     @Override
     public int getCount() {
-        return data.size();
+        return items.size();
 
     }
 
     @Override
     public ImageBuyItem getItem(int position) {
-        return data.get(position);
+        return items.get(position);
     }
 
     @Override
@@ -47,140 +59,75 @@ public class GridViewVoiceAdapter extends ArrayAdapter<ImageBuyItem> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         //View row = convertView;
+        View view;
         ViewHolder holder;
 
-        if (convertView == null) {
-            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-            convertView = inflater.inflate(layoutResourceId, parent, false);
-            holder = new ViewHolder();
-            holder.imageTitle = (TextView) convertView.findViewById(R.id.voiceText);
+        if (convertView == null || convertView.getTag() == null) {
+            //LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+            //convertView = inflater.inflate(layoutResourceId, parent, false);
+            view = inflater.inflate(layoutResourceId, null);
+            holder = new ViewHolder(view);
+            //holder.imageTitle = (TextView) convertView.findViewById(R.id.voiceText);
             //holder.checkbox = (CheckBox) convertView.findViewById(R.id.itemCheckBox);
-            holder.image = (ImageView) convertView.findViewById(R.id.voiceImage);
-            convertView.setTag(holder);
+            //holder.image = (ImageView) convertView.findViewById(R.id.voiceImage);
+            view.setTag(holder);
 
 
         } else {
-            holder = (ViewHolder) convertView.getTag();
+            view = convertView ;
+            holder = (ViewHolder) view.getTag();
         }
 
-        ImageBuyItem item = data.get(position);
-        holder.imageTitle.setText(item.getTitle());
-        holder.image.setImageBitmap(item.getImage());
+        ImageBuyItem item = items.get(position);
+        //holder.imageTitle.setText(item.getTitle());
+        //holder.image.setImageBitmap(item.getImage());
+        if (item != null) {
 
-        holder.id = position;
-        if (item.getSelected())
-        {
-            holder.setState(true);
+            if (item.getImage() != null) {
+                holder.image.setImageBitmap(item.getImage());
+            }
+
+            holder.imageTitle.setText(item.getTitle());
+
+            holder.id = position;
+            if (item.getSelected()) {
+                holder.setState(true);
 
 
-            /*switch (Data.current_theme) {
-                case 0:
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        holder.image.setBackgroundColor(context.getColor(R.color.inside_select_background_simple));
-                        holder.imageTitle.setBackgroundColor(context.getColor(R.color.inside_select_background_simple));
-                        holder.imageTitle.setTextColor(context.getColor(R.color.inside_item_text_simple));
-                    } else {
-                        holder.image.setBackgroundColor(Color.parseColor("#90aadc"));
-                        holder.imageTitle.setBackgroundColor(Color.parseColor("#90aadc"));
-                        holder.imageTitle.setTextColor(Color.parseColor("#161616"));
-                    }
-                    break;
-                case 1:
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        holder.image.setBackgroundColor(context.getColor(R.color.inside_select_background_bear));
-                        holder.imageTitle.setBackgroundColor(context.getColor(R.color.inside_select_background_bear));
-                        holder.imageTitle.setTextColor(context.getColor(R.color.inside_item_text_bear));
-                    } else {
-                        holder.image.setBackgroundColor(Color.parseColor("#90aadc"));
-                        holder.imageTitle.setBackgroundColor(Color.parseColor("#90aadc"));
-                        holder.imageTitle.setTextColor(Color.parseColor("#333333"));
-                    }
-                    break;
-                case 2:
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        holder.image.setBackgroundColor(context.getColor(R.color.inside_select_background_cat));
-                        holder.imageTitle.setBackgroundColor(context.getColor(R.color.inside_select_background_cat));
-                        holder.imageTitle.setTextColor(context.getColor(R.color.inside_item_text_cat));
-                    } else {
-                        holder.image.setBackgroundColor(Color.parseColor("#90aadc"));
-                        holder.imageTitle.setBackgroundColor(Color.parseColor("#90aadc"));
-                        holder.imageTitle.setTextColor(Color.parseColor("#333333"));
-                    }
-                    break;
-                case 3:
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        holder.image.setBackgroundColor(context.getColor(R.color.inside_select_background_classic));
-                        holder.imageTitle.setBackgroundColor(context.getColor(R.color.inside_select_background_classic));
-                        holder.imageTitle.setTextColor(context.getColor(R.color.inside_item_text_selected_classic));
-                    } else {
-                        holder.image.setBackgroundColor(Color.parseColor("#90aadc"));
-                        holder.imageTitle.setBackgroundColor(Color.parseColor("#90aadc"));
-                        holder.imageTitle.setTextColor(Color.parseColor("#333333"));
-                    }
-                    break;
-                default:
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        holder.image.setBackgroundColor(context.getColor(R.color.inside_select_background_bear));
-                        holder.imageTitle.setBackgroundColor(context.getColor(R.color.inside_select_background_bear));
-                        holder.imageTitle.setTextColor(context.getColor(R.color.inside_item_text_bear));
-                    } else {
-                        holder.image.setBackgroundColor(Color.parseColor("#90aadc"));
-                        holder.imageTitle.setBackgroundColor(Color.parseColor("#90aadc"));
-                        holder.imageTitle.setTextColor(Color.parseColor("#161616"));
-                    }
-                    break;
-            }*/
+                switch (position) {
+                    case 0:
+                        actionBar.setHomeAsUpIndicator(R.drawable.uk_flag);
+                        actionBar.setTitle(context.getResources().getString(R.string.voice_gbr_man));
+                        break;
+                    case 1:
+                        actionBar.setHomeAsUpIndicator(R.drawable.uk_flag);
+                        actionBar.setTitle(context.getResources().getString(R.string.voice_gbr_woman));
+                        break;
+                    case 2:
+                        actionBar.setHomeAsUpIndicator(R.drawable.ic_record_voice_over_white_48dp);
+                        actionBar.setTitle(context.getResources().getString(R.string.voice_user_record));
+                        break;
+                    default:
+                        actionBar.setHomeAsUpIndicator(R.drawable.uk_flag);
+                        actionBar.setTitle(context.getResources().getString(R.string.voice_gbr_man));
+                        break;
+                }
 
-            //holder.image.setBackgroundColor(Color.argb(255, 0x46,0x6e,0x9b));
-            //holder.imageTitle.setBackgroundColor(Color.argb(255, 0x46,0x6e,0x9b));
-            selection[holder.id] = true;
-        }
-        else {
-            holder.setState(false);
-            /*holder.image.setBackgroundColor(0x00000000);
-            holder.imageTitle.setBackgroundColor(0x00000000);
+                //holder.image.setBackgroundColor(Color.argb(255, 0x46,0x6e,0x9b));
+                //holder.imageTitle.setBackgroundColor(Color.argb(255, 0x46,0x6e,0x9b));
+                selection[holder.id] = true;
+                view.setBackgroundColor(Color.rgb(0x4d, 0x90, 0xfe));
+            } else {
+                holder.setState(false);
 
-            switch (Data.current_theme) {
-                case 0:
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        holder.imageTitle.setTextColor(context.getColor(R.color.inside_item_text_simple));
-                    } else {
-                        holder.imageTitle.setTextColor(Color.parseColor("#161616"));
-                    }
-                    break;
-                case 1:
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        holder.imageTitle.setTextColor(context.getColor(R.color.inside_item_text_bear));
-                    } else {
-                        holder.imageTitle.setTextColor(Color.parseColor("#333333"));
-                    }
-                    break;
-                case 2:
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        holder.imageTitle.setTextColor(context.getColor(R.color.inside_item_text_cat));
-                    } else {
-                        holder.imageTitle.setTextColor(Color.parseColor("#333333"));
-                    }
-                    break;
-                case 3:
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        holder.imageTitle.setTextColor(context.getColor(R.color.inside_item_text_unselected_classic));
-                    } else {
-                        holder.imageTitle.setTextColor(Color.parseColor("#efefef"));
-                    }
-                    break;
-                default:
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        holder.imageTitle.setTextColor(context.getColor(R.color.inside_item_text_simple));
-                    } else {
-                        holder.imageTitle.setTextColor(Color.parseColor("#161616"));
-                    }
-                    break;
-            }*/
-            selection[holder.id] = false;
+                selection[holder.id] = false;
+                view.setBackgroundColor(Color.TRANSPARENT);
+            }
+
+
         }
 
-        return convertView;
+        return view;
     }
 
     private class ViewHolder {
@@ -194,8 +141,14 @@ public class GridViewVoiceAdapter extends ArrayAdapter<ImageBuyItem> {
         //{
         //    return state;
         //}
+        private ViewHolder(View view) {
+            this.image = (ImageView) view.findViewById(R.id.voiceImage);
+            //this.videoView = (VideoView) view.findViewById(R.id.videoView);
+            this.imageTitle = (TextView) view.findViewById(R.id.voiceText);
+            //this.videotime = (TextView) view.findViewById(R.id.songTime);
+        }
 
-        public void setState(boolean state)
+        private void setState(boolean state)
         {
             this.state = state;
         }
