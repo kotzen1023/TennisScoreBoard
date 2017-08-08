@@ -27,12 +27,12 @@ public class VoicePlay {
 
     private static MediaPlayer mediaPlayer;
 
-    public static boolean is_playing = false;
+    //public static boolean is_playing = false;
 
     private static STATE current_state = STATE.Created;
     private static float speed = 1;
     private static float current_volume = 0.5f;
-    private static int current_position = 0;
+    //private static int current_position = 0;
     private final static int MAX_VOLUME = 100;
     private static Thread myThread = null;
 
@@ -156,7 +156,7 @@ public class VoicePlay {
             Log.e(TAG, "mIncomingHandler: play finished!");
 
             current_state = STATE.PlaybackCompleted;
-            current_position = 0;
+            //current_position = 0;
 
             /*if (isPlayPress) { //if still play, do next step
 
@@ -363,7 +363,7 @@ public class VoicePlay {
 
                         //mIncomingHandler.sendMessage(msg);
                         current_state = STATE.PlaybackCompleted;
-                        current_position = 0;
+                        //current_position = 0;
 
                     }
                 });
