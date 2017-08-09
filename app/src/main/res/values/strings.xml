@@ -67,7 +67,7 @@
     <string name="game_saving">Saving</string>
     <string name="voice_change_purchased">Purchased</string>
     <string name="voice_change_ask_to_buy">Do you want to buy this item?</string>
-    <string name="game_voice">Voice Support</string>
+    <string name="game_voice">Voice</string>
     <string name="game_send_result">Send</string>
     <string name="game_import_file">Import score</string>
     <string name="game_retire">Retire from game</string>
@@ -131,5 +131,8 @@
     <string name="voice_gbr_man">GBR (Man)</string>
     <string name="voice_gbr_woman">GBR (Woman)</string>
     <string name="voice_user_record">User Record</string>
+    <string name="app_exit">Exit from this app?</string>
+    <string name="record_stop">Stop record?</string>
+    <string name="permission_record">If you want to record voice, you must accept record permission.</string>
 </resources>
 

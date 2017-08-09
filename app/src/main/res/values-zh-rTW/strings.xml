@@ -68,7 +68,7 @@
     <string name="game_saving">儲存中</string>
     <string name="voice_change_purchased">已購買</string>
     <string name="voice_change_ask_to_buy">您想購買此道具嗎?</string>
-    <string name="game_voice">語音支援</string>
+    <string name="game_voice">語音</string>
     <string name="game_send_result">傳送</string>
     <string name="game_import_file">匯入比分</string>
     <string name="game_retire">棄賽</string>
@@ -132,4 +132,7 @@
     <string name="voice_gbr_man">英國 (男)</string>
     <string name="voice_gbr_woman">英國 (女)</string>
     <string name="voice_user_record">使用者錄製</string>
+    <string name="app_exit">離開此程式?</string>
+    <string name="record_stop">停止錄音?</string>
+    <string name="permission_record">如果您想錄音, 必須同意錄音的存取權.</string>
 </resources>

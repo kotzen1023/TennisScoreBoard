@@ -283,6 +283,24 @@ public class PlayMainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        finish();
+        AlertDialog.Builder confirmdialog = new AlertDialog.Builder(PlayMainActivity.this);
+        confirmdialog.setTitle(getResources().getString(R.string.app_exit));
+        confirmdialog.setIcon(R.drawable.ball_icon);
+        confirmdialog.setCancelable(false);
+        confirmdialog.setPositiveButton(getResources().getString(R.string.confirm), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+                finish();
+
+            }
+        });
+        confirmdialog.setNegativeButton(getResources().getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+
+            }
+        });
+
+        confirmdialog.show();
     }
 }

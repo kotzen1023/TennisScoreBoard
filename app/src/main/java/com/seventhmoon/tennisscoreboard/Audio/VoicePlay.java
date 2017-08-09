@@ -6,6 +6,7 @@ import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -16,14 +17,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import static com.seventhmoon.tennisscoreboard.Data.Constants.STATE;
-
+import static com.seventhmoon.tennisscoreboard.Data.FileOperation.check_user_voice_exist;
 
 
 public class VoicePlay {
     private static final String TAG = VoicePlay.class.getName();
 
     private static Context context;
-    //public static File RootDirectory = new File("/");
+    public static File RootDirectory = new File("/");
 
     private static MediaPlayer mediaPlayer;
 
@@ -489,6 +490,126 @@ public class VoicePlay {
         }
     }
 
+    public void doFilePlay(ArrayList<String> nameList) {
+
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            //path = Environment.getExternalStorageDirectory();
+            RootDirectory = Environment.getExternalStorageDirectory();
+        }
+
+        for (int i = 0; i < nameList.size(); i++) {
+
+            while (checkPlay()) ; //wait for play end
+
+            if (check_user_voice_exist(nameList.get(i))) {
+
+                if (mediaPlayer == null) {
+                    mediaPlayer = new MediaPlayer();
+
+                } else {
+                    //mediaPlayer.stop();
+                    if (mediaPlayer != null && current_state != STATE.Created &&
+                            current_state != STATE.End &&
+                            current_state != STATE.Error) {
+                        try {
+                            mediaPlayer.reset();
+                            current_state = STATE.Idle;
+                        } catch (IllegalStateException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (mediaPlayer != null) {
+                            mediaPlayer.release();
+                            current_state = STATE.End;
+                        }
+
+                    } else {
+                        if (mediaPlayer != null) {
+                            mediaPlayer.release();
+                            current_state = STATE.End;
+                        }
+                    }
+
+                    mediaPlayer = null;
+                    mediaPlayer = new MediaPlayer();
+                }
+
+                try {
+                    Log.e(TAG, "filename = "+nameList.get(i));
+                    mediaPlayer.setDataSource(RootDirectory.getAbsolutePath() + "/.tennisScoredBoard/user/" + nameList.get(i));
+                    //mediaPlayer = MediaPlayer.create(context, res_id.get(i));
+                    //set state
+                    current_state = STATE.Initialized;
+
+                    while (true) {
+                        try {
+                            Log.d(TAG, "--->set Prepare");
+                            mediaPlayer.prepare();
+                            break;
+                        } catch (IllegalStateException e) {
+                            //Log.e(TAG, "==== IllegalStateException start ====");
+                            e.printStackTrace();
+                            //Log.e(TAG, "==== IllegalStateException end====");
+                        }
+                    }
+
+                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer mp) {
+
+                            Log.e(TAG, "===>onPrepared");
+
+                            //set state
+                            current_state = STATE.Prepared;
+
+                            //set looping
+                            /*mediaPlayer.setLooping(looping);
+
+                            mediaPlayer.seekTo(current_position);
+
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                Log.e(TAG, "set setPlaybackParams");
+                                mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(speed));
+                            }
+
+                            //set volume
+                            mediaPlayer.setVolume(current_volume, current_volume);*/
+
+                            mediaPlayer.start();
+                            //set state
+                            current_state = STATE.Started;
+
+                        }
+                    });
+
+
+                    mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                            Log.d(TAG, "setOnCompletionListener");
+                            //Message msg = new Message();
+
+                            //mIncomingHandler.sendMessage(msg);
+
+
+                        }
+                    });
+
+
+                    //mediaPlayer = null;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+
+        Log.d(TAG, "doFilePlay end");
+
+        Intent newNotifyIntent = new Intent(Constants.ACTION.PLAY_MULTIFILES_COMPLETE);
+        context.sendBroadcast(newNotifyIntent);
+    }
+
     public void audioPlayMulti(final ArrayList<Integer> res_id) {
 
 
@@ -497,6 +618,21 @@ public class VoicePlay {
             new Thread() {
                 public void run() {
                     doRawPlay(res_id);
+                }
+            }.start();
+
+        }
+
+    }
+
+    public void audioPlayMultiFile(final ArrayList<String> nameList) {
+
+
+        if (myThread == null) {
+
+            new Thread() {
+                public void run() {
+                    doFilePlay(nameList);
                 }
             }.start();
 

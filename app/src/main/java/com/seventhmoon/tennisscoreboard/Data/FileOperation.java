@@ -115,6 +115,26 @@ public class FileOperation {
         return ret;
     }
 
+    public static boolean check_user_voice_exist(String fileName) {
+        Log.i(TAG, "check_user_voice_exist --- start ---");
+        boolean ret = false;
+
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            //path = Environment.getExternalStorageDirectory();
+            RootDirectory = Environment.getExternalStorageDirectory();
+        }
+
+        File file = new File(RootDirectory.getAbsolutePath() + "/.tennisScoredBoard/user/"+fileName);
+
+        if(file.exists()) {
+            Log.i(TAG, "file exist");
+            ret = true;
+        }
+
+        Log.i(TAG, "check_user_voice_exist --- end ---");
+        return ret;
+    }
+
     public static boolean clear_record(String fileName) {
         boolean ret = true;
 

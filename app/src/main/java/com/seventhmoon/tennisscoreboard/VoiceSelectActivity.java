@@ -65,6 +65,8 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Log.e(TAG, "onCreate");
+
         setContentView(R.layout.voice_select);
 
         actionBar = getSupportActionBar();
@@ -309,6 +311,8 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
                 imageBuyItems.get(i).setSelected(false);
             }
         }
+
+
 
         return imageBuyItems;
     }
@@ -598,12 +602,19 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
+        //Log.e(TAG, "onCreateOptionsMenu");
 
         getMenuInflater().inflate(R.menu.voice_select_menu, menu);
 
         item_record = menu.findItem(R.id.action_record);
 
-        item_record.setVisible(false);
+        if (current_voice == 2) {//user
+            item_record.setVisible(true);
+        } else {
+            item_record.setVisible(false);
+        }
+
+
 
         return true;
     }
@@ -617,7 +628,8 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
                 startActivity(intent);
                 break;
             case R.id.action_record:
-
+                intent = new Intent(VoiceSelectActivity.this, VoiceRecordActivity.class);
+                startActivity(intent);
                 break;
             default:
                 break;

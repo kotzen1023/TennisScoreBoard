@@ -12,6 +12,11 @@ public class Constants {
 
         String GET_SEARCHLIST_ACTION = "com.seventhmoon.GetSearchListAction";
         String ADD_FILE_LIST_COMPLETE = "com.seventhmoon.AddFileListComplete";
+
+        String SAVE_CURRENT_STATE_ACTION = "com.seventhmoon.SaveCurrentStateAction";
+        String SAVE_CURRENT_STATE_COMPLETE = "com.seventhmoon.SaveCurrentStateComplete";
+
+        String PLAY_MULTIFILES_COMPLETE = "com.seventhmoon.PlayMultiFilesComplete";
     }
 
     public interface DIRECTION {
