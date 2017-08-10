@@ -24,7 +24,7 @@ public class VoicePlay {
     private static final String TAG = VoicePlay.class.getName();
 
     private static Context context;
-    public static File RootDirectory = new File("/");
+    private static File RootDirectory = new File("/");
 
     private static MediaPlayer mediaPlayer;
 
@@ -36,6 +36,8 @@ public class VoicePlay {
     //private static int current_position = 0;
     //private final static int MAX_VOLUME = 100;
     private static Thread myThread = null;
+    private static int total_files = 0;
+    private static int current_play = 0;
 
     public VoicePlay (Context context){
         this.context = context;
@@ -157,230 +159,18 @@ public class VoicePlay {
             Log.e(TAG, "mIncomingHandler: play finished!");
 
             current_state = STATE.PlaybackCompleted;
-            //current_position = 0;
 
-            /*if (isPlayPress) { //if still play, do next step
-
-                if (current_mode == 2) { //single repeat
-                    Log.e(TAG, "Looping, do nothing!");
-
-
-                } else {
-
-                    //taskDone = true;
-                    //set state
-                    current_state = STATE.PlaybackCompleted;
-
-
-                    current_position = 0; //play complete, set position = 0
-
-
-                    Intent newNotifyIntent = new Intent(Constants.ACTION.GET_PLAY_COMPLETE);
-                    context.sendBroadcast(newNotifyIntent);
-
-                    switch (current_play_mode) {
-                        case 0: //play all
-                            doNext();
-                            break;
-                        case 1: //play shuffle
-                            doShuffle();
-                            break;
-                        case 2: //single repeat
-                            doSingleRepeat();
-                            break;
-                        case 3: //an loop
-                            doABLoop();
-                            break;
-                    }
-
-                }
-            } else { //isPlayPress is set as false, stop proceed
-                //taskDone = true;
-                //set state
-
-                current_state = STATE.PlaybackCompleted;
-
-
-                current_position = 0; //play complete, set position = 0
-
-
-
-                Intent newNotifyIntent = new Intent(Constants.ACTION.GET_PLAY_COMPLETE);
+            if (current_play == (total_files - 1)) {
+                Log.d(TAG, "Last file played, send finished");
+                Intent newNotifyIntent = new Intent(Constants.ACTION.PLAY_MULTIFILES_COMPLETE);
                 context.sendBroadcast(newNotifyIntent);
-
-            }*/
+            }
 
             return true;
         }
     });
 
-    private void playing(int res_id){
-        Log.d(TAG, "<playing "+res_id+">");
 
-        AssetFileDescriptor afd = context.getResources().openRawResourceFd(res_id);
-        //int bitRate = mf.getInteger(MediaFormat.KEY_BIT_RATE);
-        //int sampleRate = mf.getInteger(MediaFormat.KEY_SAMPLE_RATE);
-
-        //Log.d(TAG, "bitRate = "+bitRate+", sampleRate = "+sampleRate);
-
-        if (mediaPlayer != null) {
-            Log.e(TAG, "mediaPlayer != null");
-
-            if (current_state == Constants.STATE.Paused) { // if current state is paused,
-                Log.d(TAG, "State: "+STATE.Paused);
-
-                //set looping
-                //mediaPlayer.setLooping(looping);
-
-                //set speed
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    Log.e(TAG, "set setPlaybackParams");
-                    mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(speed));
-                }
-
-                //set volume
-                mediaPlayer.setVolume(current_volume, current_volume);
-
-                mediaPlayer.start();
-                //set state
-                current_state = STATE.Started;
-
-
-
-                /*if (taskDone) {
-                    taskDone = false;
-                    goodTask = new playtask();
-                    goodTask.execute(10);
-
-                }*/
-
-                //Intent newNotifyIntent = new Intent(Constants.ACTION.MEDIAPLAYER_STATE_PLAYED);
-                //context.sendBroadcast(newNotifyIntent);
-            } else {
-                /*mediaPlayer.release();
-                //set state
-                current_state = STATE.End;
-                mediaPlayer = null;*/
-
-                mediaPlayer.reset();
-                //set state
-                current_state = STATE.Idle;
-                Log.d(TAG, "===>Idle");
-            }
-        }
-
-        if (mediaPlayer == null) {
-            Log.e(TAG, "*** mediaPlayer == null (start)****");
-
-            mediaPlayer = new MediaPlayer();
-            //set state
-            current_state = STATE.Created;
-            Log.d(TAG, "===>Created");
-
-            mediaPlayer.reset();
-            //set state
-            current_state = STATE.Idle;
-            Log.d(TAG, "===>Idle");
-
-            Log.e(TAG, "*** mediaPlayer == null (end)****");
-        }
-
-
-        if (current_state == STATE.Idle) {
-            try {
-
-                //mediaPlayer.setDataSource(songPath);
-                mediaPlayer.setDataSource(afd.getFileDescriptor());
-                //set state
-                current_state = STATE.Initialized;
-                Log.d(TAG, "===>Initialized");
-
-                /*while (true) {
-                    try {
-                        Log.d(TAG, "--->set Prepare");
-                        mediaPlayer.prepare();
-                        break;
-                    } catch (IllegalStateException e) {
-                        //Log.e(TAG, "==== IllegalStateException start ====");
-                        e.printStackTrace();
-                        //Log.e(TAG, "==== IllegalStateException end====");
-                    }
-                }*/
-
-                /*mediaPlayer.seekTo(current_position);
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    Log.e(TAG, "set setPlaybackParams");
-                    mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(speed));
-                }
-
-                //set volume
-                mediaPlayer.setVolume(current_volume, current_volume);*/
-
-                mediaPlayer.start();
-                //set state
-                current_state = STATE.Started;
-
-                /*mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mp) {
-
-                        Log.e(TAG, "===>onPrepared");
-
-                        //set state
-                        current_state = STATE.Prepared;
-
-                        //set looping
-                        //mediaPlayer.setLooping(looping);
-
-                        mediaPlayer.seekTo(current_position);
-
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            Log.e(TAG, "set setPlaybackParams");
-                            mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(speed));
-                        }
-
-                        //set volume
-                        mediaPlayer.setVolume(current_volume, current_volume);
-
-                        mediaPlayer.start();
-                        //set state
-                        current_state = STATE.Started;
-
-
-                        //Intent newNotifyIntent = new Intent(Constants.ACTION.MEDIAPLAYER_STATE_PLAYED);
-                        //context.sendBroadcast(newNotifyIntent);
-
-
-                    }
-                });*/
-
-
-                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mp) {
-                        Log.d(TAG, "setOnCompletionListener");
-                        //Message msg = new Message();
-
-                        //mIncomingHandler.sendMessage(msg);
-                        current_state = STATE.PlaybackCompleted;
-                        //current_position = 0;
-
-                    }
-                });
-
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                //Intent newNotifyIntent = new Intent(Constants.ACTION.GET_PLAY_COMPLETE);
-                //context.sendBroadcast(newNotifyIntent);
-            }
-        }
-
-
-        Log.d(TAG, "</playing>");
-    }
 
     public void doStopAudioPlayMulti() {
         Log.d(TAG, "doStopAudioPlayMulti start");
@@ -490,124 +280,108 @@ public class VoicePlay {
         }
     }
 
+    private void singleplaying(String songPath){
+        Log.d(TAG, "<singleplaying "+songPath+">");
+
+        //int bitRate = mf.getInteger(MediaFormat.KEY_BIT_RATE);
+        //int sampleRate = mf.getInteger(MediaFormat.KEY_SAMPLE_RATE);
+
+        //Log.d(TAG, "bitRate = "+bitRate+", sampleRate = "+sampleRate);
+
+        if (mediaPlayer != null) {
+            Log.e(TAG, "mediaPlayer != null");
+
+            mediaPlayer.reset();
+            //set state
+            current_state = STATE.Idle;
+            Log.d(TAG, "===>Idle");
+        }
+
+        if (mediaPlayer == null) {
+            Log.e(TAG, "*** mediaPlayer == null (start)****");
+
+            mediaPlayer = new MediaPlayer();
+            //set state
+            current_state = STATE.Created;
+            Log.d(TAG, "===>Created");
+
+            mediaPlayer.reset();
+            //set state
+            current_state = STATE.Idle;
+            Log.d(TAG, "===>Idle");
+
+            Log.e(TAG, "*** mediaPlayer == null (end)****");
+        }
+
+
+        if (current_state == STATE.Idle) {
+            try {
+
+                mediaPlayer.setDataSource(songPath);
+
+                //set state
+                current_state = STATE.Initialized;
+                Log.d(TAG, "===>Initialized");
+
+                Log.d(TAG, "--->set Prepare");
+                mediaPlayer.prepare();
+                current_state = STATE.Prepared;
+
+                mediaPlayer.start();
+                //set state
+                current_state = STATE.Started;
+
+
+                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        Log.d(TAG, "setOnCompletionListener");
+                        Message msg = new Message();
+
+                        mIncomingHandler.sendMessage(msg);
+
+
+                    }
+                });
+
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                //Intent newNotifyIntent = new Intent(Constants.ACTION.GET_PLAY_COMPLETE);
+                //context.sendBroadcast(newNotifyIntent);
+            }
+        }
+
+
+        Log.d(TAG, "</singleplaying>");
+    }
+
     public void doFilePlay(ArrayList<String> nameList) {
+        Log.d(TAG, "doFilePlay start");
 
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             //path = Environment.getExternalStorageDirectory();
             RootDirectory = Environment.getExternalStorageDirectory();
         }
 
+        total_files = nameList.size();
+
         for (int i = 0; i < nameList.size(); i++) {
 
             while (checkPlay()) ; //wait for play end
 
             if (check_user_voice_exist(nameList.get(i))) {
-
-                if (mediaPlayer == null) {
-                    mediaPlayer = new MediaPlayer();
-
-                } else {
-                    //mediaPlayer.stop();
-                    if (mediaPlayer != null && current_state != STATE.Created &&
-                            current_state != STATE.End &&
-                            current_state != STATE.Error) {
-                        try {
-                            mediaPlayer.reset();
-                            current_state = STATE.Idle;
-                        } catch (IllegalStateException e) {
-                            e.printStackTrace();
-                        }
-
-                        if (mediaPlayer != null) {
-                            mediaPlayer.release();
-                            current_state = STATE.End;
-                        }
-
-                    } else {
-                        if (mediaPlayer != null) {
-                            mediaPlayer.release();
-                            current_state = STATE.End;
-                        }
-                    }
-
-                    mediaPlayer = null;
-                    mediaPlayer = new MediaPlayer();
-                }
-
-                try {
-                    Log.e(TAG, "filename = "+nameList.get(i));
-                    mediaPlayer.setDataSource(RootDirectory.getAbsolutePath() + "/.tennisScoredBoard/user/" + nameList.get(i));
-                    //mediaPlayer = MediaPlayer.create(context, res_id.get(i));
-                    //set state
-                    current_state = STATE.Initialized;
-
-                    while (true) {
-                        try {
-                            Log.d(TAG, "--->set Prepare");
-                            mediaPlayer.prepare();
-                            break;
-                        } catch (IllegalStateException e) {
-                            //Log.e(TAG, "==== IllegalStateException start ====");
-                            e.printStackTrace();
-                            //Log.e(TAG, "==== IllegalStateException end====");
-                        }
-                    }
-
-                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                        @Override
-                        public void onPrepared(MediaPlayer mp) {
-
-                            Log.e(TAG, "===>onPrepared");
-
-                            //set state
-                            current_state = STATE.Prepared;
-
-                            //set looping
-                            /*mediaPlayer.setLooping(looping);
-
-                            mediaPlayer.seekTo(current_position);
-
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                Log.e(TAG, "set setPlaybackParams");
-                                mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(speed));
-                            }
-
-                            //set volume
-                            mediaPlayer.setVolume(current_volume, current_volume);*/
-
-                            mediaPlayer.start();
-                            //set state
-                            current_state = STATE.Started;
-
-                        }
-                    });
-
-
-                    mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                        @Override
-                        public void onCompletion(MediaPlayer mp) {
-                            Log.d(TAG, "setOnCompletionListener");
-                            //Message msg = new Message();
-
-                            //mIncomingHandler.sendMessage(msg);
-
-
-                        }
-                    });
-
-
-                    //mediaPlayer = null;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                String path = RootDirectory.getAbsolutePath() + "/.tennisScoredBoard/user/"+nameList.get(i);
+                singleplaying(path);
+                current_play = i;
             }
 
         }
 
         Log.d(TAG, "doFilePlay end");
 
-        Intent newNotifyIntent = new Intent(Constants.ACTION.PLAY_MULTIFILES_COMPLETE);
-        context.sendBroadcast(newNotifyIntent);
+
     }
 
     public void audioPlayMulti(final ArrayList<Integer> res_id) {

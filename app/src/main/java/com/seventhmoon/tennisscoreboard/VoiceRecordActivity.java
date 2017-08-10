@@ -19,6 +19,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -45,6 +46,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import static com.seventhmoon.tennisscoreboard.Data.FileOperation.check_user_voice_exist;
 import static com.seventhmoon.tennisscoreboard.GameActivity.voicePlay;
 
 
@@ -172,11 +174,174 @@ public class VoiceRecordActivity extends AppCompatActivity {
     }
 
     private void initItems() {
-        RecordItem item0 = new RecordItem("0 : 15", "user_0_15.m4a");
+
+        RecordItem item0 = new RecordItem("0", "user_love.m4a");
         recordList.add(item0);
 
-        RecordItem item1 = new RecordItem("0 : 30", "user_0_30.m4a");
+        RecordItem item1 = new RecordItem("1", "user_1.m4a");
         recordList.add(item1);
+
+        RecordItem item2 = new RecordItem("2", "user_2.m4a");
+        recordList.add(item2);
+
+        RecordItem item3 = new RecordItem("3", "user_3.m4a");
+        recordList.add(item3);
+
+        RecordItem item4 = new RecordItem("4", "user_4.m4a");
+        recordList.add(item4);
+
+        RecordItem item5 = new RecordItem("5", "user_5.m4a");
+        recordList.add(item5);
+
+        RecordItem item6 = new RecordItem("6", "user_6.m4a");
+        recordList.add(item6);
+
+        RecordItem item7 = new RecordItem("7", "user_7.m4a");
+        recordList.add(item7);
+
+        RecordItem item8 = new RecordItem("8", "user_8.m4a");
+        recordList.add(item8);
+
+        RecordItem item9 = new RecordItem("9", "user_9.m4a");
+        recordList.add(item9);
+
+        RecordItem item10 = new RecordItem("10", "user_10.m4a");
+        recordList.add(item10);
+
+        RecordItem item11 = new RecordItem("11", "user_11.m4a");
+        recordList.add(item11);
+
+        RecordItem item12 = new RecordItem("12", "user_12.m4a");
+        recordList.add(item12);
+
+        RecordItem item13 = new RecordItem("13", "user_13.m4a");
+        recordList.add(item13);
+
+        RecordItem item14 = new RecordItem("14", "user_14.m4a");
+        recordList.add(item14);
+
+        RecordItem item15 = new RecordItem("15", "user_15.m4a");
+        recordList.add(item15);
+
+        RecordItem item16 = new RecordItem("16", "user_16.m4a");
+        recordList.add(item16);
+
+        RecordItem item17 = new RecordItem("17", "user_17.m4a");
+        recordList.add(item17);
+
+        RecordItem item18 = new RecordItem("18", "user_18.m4a");
+        recordList.add(item18);
+
+        RecordItem item19 = new RecordItem("19", "user_19.m4a");
+        recordList.add(item19);
+
+        RecordItem item20 = new RecordItem("20", "user_20.m4a");
+        recordList.add(item20);
+
+        RecordItem item21 = new RecordItem("30", "user_30.m4a");
+        recordList.add(item21);
+
+        RecordItem item22 = new RecordItem("40", "user_40.m4a");
+        recordList.add(item22);
+
+        RecordItem item23 = new RecordItem("50", "user_50.m4a");
+        recordList.add(item23);
+
+        RecordItem item24 = new RecordItem("60", "user_60.m4a");
+        recordList.add(item24);
+
+        RecordItem item25 = new RecordItem("70", "user_70.m4a");
+        recordList.add(item25);
+
+        RecordItem item26 = new RecordItem("80", "user_80.m4a");
+        recordList.add(item26);
+
+        RecordItem item27 = new RecordItem("90", "user_90.m4a");
+        recordList.add(item27);
+
+        RecordItem item28 = new RecordItem("0 : 15", "user_0_15.m4a");
+        recordList.add(item28);
+
+        RecordItem item29 = new RecordItem("0 : 30", "user_0_30.m4a");
+        recordList.add(item29);
+
+        RecordItem item30 = new RecordItem("0 : 40", "user_0_40.m4a");
+        recordList.add(item30);
+
+        RecordItem item31 = new RecordItem("15 : 0", "user_15_0.m4a");
+        recordList.add(item31);
+
+        RecordItem item32 = new RecordItem("15 : 15", "user_15_15.m4a");
+        recordList.add(item32);
+
+        RecordItem item33 = new RecordItem("15 : 30", "user_15_30.m4a");
+        recordList.add(item33);
+
+        RecordItem item34 = new RecordItem("15 : 40", "user_15_40.m4a");
+        recordList.add(item34);
+
+        RecordItem item35 = new RecordItem("30 : 0", "user_30_0.m4a");
+        recordList.add(item35);
+
+        RecordItem item36 = new RecordItem("30 : 15", "user_30_15.m4a");
+        recordList.add(item36);
+
+        RecordItem item37 = new RecordItem("30 : 30", "user_30_30.m4a");
+        recordList.add(item37);
+
+        RecordItem item38 = new RecordItem("30 : 40", "user_30_40.m4a");
+        recordList.add(item38);
+
+        RecordItem item39 = new RecordItem("40 : 0", "user_40_0.m4a");
+        recordList.add(item39);
+
+        RecordItem item40 = new RecordItem("40 : 15", "user_40_15.m4a");
+        recordList.add(item40);
+
+        RecordItem item41 = new RecordItem("40 : 30", "user_40_30.m4a");
+        recordList.add(item41);
+
+        RecordItem item42 = new RecordItem("40 : 40", "user_40_40.m4a");
+        recordList.add(item42);
+
+        RecordItem item43 = new RecordItem("Advantage", "user_ad.m4a");
+        recordList.add(item43);
+
+        RecordItem item44 = new RecordItem("All", "user_all.m4a");
+        recordList.add(item44);
+
+        RecordItem item45 = new RecordItem("Deciding Point", "user_deciding_point.m4a");
+        recordList.add(item45);
+
+        RecordItem item46 = new RecordItem("First Set", "user_first_set.m4a");
+        recordList.add(item46);
+
+        RecordItem item47 = new RecordItem("Second Set", "user_second_set.m4a");
+        recordList.add(item47);
+
+        RecordItem item48 = new RecordItem("Third Set", "user_third_set.m4a");
+        recordList.add(item48);
+
+        RecordItem item49 = new RecordItem("Forth Set", "user_forth_set.m4a");
+        recordList.add(item49);
+
+        RecordItem item50 = new RecordItem("Game", "user_game.m4a");
+        recordList.add(item50);
+
+        RecordItem item51 = new RecordItem("Set", "user_set.m4a");
+        recordList.add(item51);
+
+        RecordItem item52 = new RecordItem("Match", "user_match.m4a");
+        recordList.add(item52);
+
+        RecordItem item53 = new RecordItem("Tiebreak", "user_tiebreak.m4a");
+        recordList.add(item53);
+
+        RecordItem item54 = new RecordItem("(Player1's Name)", "user_player_up.m4a");
+        recordList.add(item54);
+
+        RecordItem item55 = new RecordItem("(Player2's Name)", "user_player_down.m4a");
+        recordList.add(item55);
 
         recordArrayAdapter = new RecordArrayAdapter(VoiceRecordActivity.this, R.layout.voice_record_item, recordList);
         listView.setAdapter(recordArrayAdapter);
@@ -190,9 +355,12 @@ public class VoiceRecordActivity extends AppCompatActivity {
 
                     if (i == position) {
                         item.setSelected(true);
+                        Log.e(TAG, "set select: "+item.getFilename());
                         currentSelectedName = item.getFilename();
                         recordPlayList.clear();
-                        recordPlayList.add(currentSelectedName);
+                        if (check_user_voice_exist(currentSelectedName)) { //if file exist, add
+                            recordPlayList.add(currentSelectedName);
+                        }
                     } else {
                         item.setSelected(false);
                     }
@@ -215,21 +383,21 @@ public class VoiceRecordActivity extends AppCompatActivity {
 
                     if (!is_recording) {
 
-                        imgPlayStop.setImageResource(R.drawable.ic_stop_white_48dp);
-                        is_playing = true;
-
-
-                        if (voicePlay != null) {
-                            voicePlay.doStopAudioPlayMulti();
-                            voicePlay.audioPlayMultiFile(recordPlayList);
+                        if (recordPlayList.size() > 0) {
+                            imgPlayStop.setImageResource(R.drawable.ic_stop_white_48dp);
+                            is_playing = true;
+                            startVoicePlaying();
                         } else {
-                            recordPlay.doStopAudioPlayMulti();
-                            recordPlay.audioPlayMultiFile(recordPlayList);
+                            toast("File not exist!");
                         }
 
                     } else { //recording ->
                         if (mRecorder != null) {
                             stopRecording(true);
+                            recordPlayList.clear();
+                            if (check_user_voice_exist(currentSelectedName)) { //if file exist, add
+                                recordPlayList.add(currentSelectedName);
+                            }
                         }
                         imgRecord.setImageResource(R.drawable.ic_fiber_manual_record_white_48dp);
                         imgPlayStop.setImageResource(R.drawable.ic_play_arrow_white_48dp);
@@ -250,19 +418,20 @@ public class VoiceRecordActivity extends AppCompatActivity {
 
                     if (!is_recording) {
 
-                        imgPlayStop.setImageResource(R.drawable.ic_stop_white_48dp);
-                        is_playing = true;
-
-                        if (voicePlay != null) {
-                            voicePlay.doStopAudioPlayMulti();
-                            voicePlay.audioPlayMultiFile(recordPlayList);
+                        if (recordPlayList.size() > 0) {
+                            imgPlayStop.setImageResource(R.drawable.ic_stop_white_48dp);
+                            is_playing = true;
+                            startVoicePlaying();
                         } else {
-                            recordPlay.doStopAudioPlayMulti();
-                            recordPlay.audioPlayMultiFile(recordPlayList);
+                            toast("File not exist!");
                         }
                     } else { //recording -> stop
                         if (mRecorder != null) {
                             stopRecording(true);
+                            recordPlayList.clear();
+                            if (check_user_voice_exist(currentSelectedName)) { //if file exist, add
+                                recordPlayList.add(currentSelectedName);
+                            }
                         }
 
                         imgRecord.setImageResource(R.drawable.ic_fiber_manual_record_white_48dp);
@@ -326,6 +495,7 @@ public class VoiceRecordActivity extends AppCompatActivity {
                     Log.e(TAG, "receive PLAY_MULTIFILES_COMPLETE");
                     imgPlayStop.setImageResource(R.drawable.ic_play_arrow_white_48dp);
                     is_playing = false;
+                    stopVoicePlaying();
                 }
             }
         };
@@ -348,6 +518,26 @@ public class VoiceRecordActivity extends AppCompatActivity {
         }
     };
 
+    private void startVoicePlaying() {
+        if (voicePlay != null) {
+            voicePlay.doStopAudioPlayMulti();
+            voicePlay.audioPlayMultiFile(recordPlayList);
+
+        } else {
+            recordPlay.doStopAudioPlayMulti();
+            recordPlay.audioPlayMultiFile(recordPlayList);
+        }
+
+        //handler
+        mStartTime = SystemClock.elapsedRealtime();
+        mHandler.postDelayed(mTickExecutor, 100);
+    }
+
+    private void stopVoicePlaying() {
+        mStartTime = 0;
+        mHandler.removeCallbacks(mTickExecutor);
+    }
+
     private void startRecording() {
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -359,7 +549,7 @@ public class VoiceRecordActivity extends AppCompatActivity {
             mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
             mRecorder.setAudioEncodingBitRate(64000);
         }
-        mRecorder.setAudioSamplingRate(16000);
+        mRecorder.setAudioSamplingRate(44100);
         mOutputFile = getOutputFile();
         mOutputFile.getParentFile().mkdirs();
         mRecorder.setOutputFile(mOutputFile.getAbsolutePath());
@@ -537,4 +727,10 @@ public class VoiceRecordActivity extends AppCompatActivity {
                 .create()
                 .show();
     }
+    public void toast(String message) {
+        Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL, 0, 0);
+        toast.show();
+    }
+
 }

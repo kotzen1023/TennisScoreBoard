@@ -125,6 +125,7 @@ public class FileOperation {
         }
 
         File file = new File(RootDirectory.getAbsolutePath() + "/.tennisScoredBoard/user/"+fileName);
+        Log.d(TAG, "File filename = "+fileName);
 
         if(file.exists()) {
             Log.i(TAG, "file exist");
