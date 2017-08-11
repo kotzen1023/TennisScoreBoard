@@ -76,11 +76,19 @@ public class RecordArrayAdapter extends ArrayAdapter<RecordItem> {
             holder.imgRecord.setImageResource(R.drawable.ic_album_white_48dp);
             holder.title.setText(recordItem.getTitle());
 
+            if (recordItem.isFileExist()) {
+                holder.imgCheck.setImageResource(R.drawable.ic_check_white_48dp);
+            } else {
+                holder.imgCheck.setImageResource(R.drawable.ic_clear_white_48dp);
+            }
+
             if (recordItem.isSelected()) {
                 view.setBackgroundColor(Color.rgb(0x4d, 0x90, 0xfe));
             } else {
                 view.setBackgroundColor(Color.TRANSPARENT);
             }
+
+
             //holder.play.setImageResource(R.drawable.ic_play_arrow_white_48dp);
             //holder.stop.setImageResource(R.drawable.ic_stop_white_48dp);
             //holder.record.setImageResource(R.drawable.ic_fiber_manual_record_white_48dp);
@@ -125,6 +133,7 @@ public class RecordArrayAdapter extends ArrayAdapter<RecordItem> {
     private class ViewHolder {
         ImageView imgRecord;
         TextView title;
+        ImageView imgCheck;
         //ImageView play;
         //ImageView stop;
         //ImageView record;
@@ -133,6 +142,7 @@ public class RecordArrayAdapter extends ArrayAdapter<RecordItem> {
         private ViewHolder(View view) {
             this.imgRecord = (ImageView) view.findViewById(R.id.imgRecord);
             this.title = (TextView) view.findViewById(R.id.recordFileName);
+            this.imgCheck = (ImageView) view.findViewById(R.id.imgCheck);
             //this.play = (ImageView) view.findViewById(R.id.imgPlay);
             //this.stop = (ImageView) view.findViewById(R.id.imgStop);
             //this.record = (ImageView) view.findViewById(R.id.imgRecord);

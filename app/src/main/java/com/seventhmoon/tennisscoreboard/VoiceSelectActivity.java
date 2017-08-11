@@ -79,7 +79,7 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
         }
 
         pref = getSharedPreferences(FILE_NAME, MODE_PRIVATE);
-        current_voice = pref.getInt("CURRENT_VOICE", 0);
+        current_voice = pref.getInt("VOICE_SELECT", 0);
 
         //in-app billing
 
@@ -248,7 +248,7 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
                                     }
                                     //save current position
                                     editor = pref.edit();
-                                    editor.putInt("CURRENT_VOICE", previous_select);
+                                    editor.putInt("VOICE_SELECT", previous_select);
                                     editor.apply();
 
                                     gridView.invalidateViews();
@@ -258,7 +258,7 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
                         } else { //you have buy this one
                             //save current position
                             editor = pref.edit();
-                            editor.putInt("CURRENT_VOICE", position);
+                            editor.putInt("VOICE_SELECT", position);
                             editor.apply();
 
                             previous_select = position;
@@ -266,7 +266,7 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
                     } else { //position == 0
                         //save current position
                         editor = pref.edit();
-                        editor.putInt("CURRENT_VOICE", position);
+                        editor.putInt("VOICE_SELECT", position);
                         editor.apply();
 
                         previous_select = position;
@@ -278,9 +278,11 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
                         item_record.setVisible(false);
                     }
 
+                    Log.e(TAG, "voice change to "+position);
+
                     //save current position
                     editor = pref.edit();
-                    editor.putInt("CURRENT_VOICE", position);
+                    editor.putInt("VOICE_SELECT", position);
                     editor.apply();
 
                     previous_select = position;
@@ -502,7 +504,7 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
 
             //save current position
             editor = pref.edit();
-            editor.putInt("CURRENT_VOICE", select);
+            editor.putInt("VOICE_SELECT", select);
             editor.apply();
 
             gridView.invalidateViews();

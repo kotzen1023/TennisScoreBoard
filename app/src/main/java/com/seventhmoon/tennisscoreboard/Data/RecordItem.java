@@ -5,6 +5,7 @@ package com.seventhmoon.tennisscoreboard.Data;
 public class RecordItem {
     private String title;
     private String filename;
+    private boolean fileExist;
     private boolean selected;
 
     public RecordItem(String title, String filename) {
@@ -26,6 +27,14 @@ public class RecordItem {
 
     public void setFilename(String filename) {
         this.filename = filename;
+    }
+
+    public boolean isFileExist() {
+        return fileExist;
+    }
+
+    public void setFileExist(boolean fileExist) {
+        this.fileExist = fileExist;
     }
 
     public boolean isSelected() {

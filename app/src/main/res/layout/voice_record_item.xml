@@ -26,5 +26,10 @@
             android:layout_weight="1">
         </TextView>
 
+        <ImageView
+            android:id="@+id/imgCheck"
+            android:layout_width="60dip"
+            android:layout_height="60dip" >
+        </ImageView>
     </LinearLayout>
 </LinearLayout>

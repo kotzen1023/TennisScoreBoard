@@ -133,6 +133,8 @@
     <string name="voice_gbr_woman">英國 (女)</string>
     <string name="voice_user_record">使用者錄製</string>
     <string name="app_exit">離開此程式?</string>
-    <string name="record_stop">停止錄音?</string>
+    <string name="record_stop">離開使用者錄音?</string>
     <string name="permission_record">如果您想錄音, 必須同意錄音的存取權.</string>
+    <string name="voice_listen">試聽</string>
+    <string name="voice_record">錄音</string>
 </resources>

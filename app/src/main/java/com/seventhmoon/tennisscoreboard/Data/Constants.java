@@ -40,4 +40,10 @@ public class Constants {
         Error,
 
     }
+
+    public enum VOICE_TYPE {
+        GBR_MAN,
+        GBR_WOMAN,
+        USER_RECORD,
+    }
 }

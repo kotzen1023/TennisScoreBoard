@@ -132,7 +132,9 @@
     <string name="voice_gbr_woman">GBR (Woman)</string>
     <string name="voice_user_record">User Record</string>
     <string name="app_exit">Exit from this app?</string>
-    <string name="record_stop">Stop record?</string>
+    <string name="record_stop">Exit from user voice recording?</string>
     <string name="permission_record">If you want to record voice, you must accept record permission.</string>
+    <string name="voice_listen">Listen</string>
+    <string name="voice_record">Record</string>
 </resources>
 

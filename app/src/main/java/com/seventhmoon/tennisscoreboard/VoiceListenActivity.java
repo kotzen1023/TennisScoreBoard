@@ -56,8 +56,8 @@ public class VoiceListenActivity extends AppCompatActivity {
         ListenChooseItem item1 = new ListenChooseItem(getResources().getString(R.string.voice_gbr_woman));
         listenList.add(item1);
 
-        ListenChooseItem item2 = new ListenChooseItem(getResources().getString(R.string.voice_user_record));
-        listenList.add(item2);
+        //ListenChooseItem item2 = new ListenChooseItem(getResources().getString(R.string.voice_user_record));
+        //listenList.add(item2);
 
         listenChooseArrayAdapter = new ListenChooseArrayAdapter(VoiceListenActivity.this, R.layout.voice_listen_choose_item, listenList);
         listView.setAdapter(listenChooseArrayAdapter);
