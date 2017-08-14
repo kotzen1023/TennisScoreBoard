@@ -136,5 +136,6 @@
     <string name="permission_record">If you want to record voice, you must accept record permission.</string>
     <string name="voice_listen">Listen</string>
     <string name="voice_record">Record</string>
+    <string name="file_load_error">Error(s) happened while loading file. It shows the state before broken data.</string>
 </resources>
 

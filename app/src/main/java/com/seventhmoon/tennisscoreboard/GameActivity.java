@@ -164,7 +164,7 @@ public class GameActivity extends AppCompatActivity{
     private static ArrayList<Integer> voiceList = new ArrayList<>();
     private static ArrayList<String> voiceUserList = new ArrayList<>();
     private static boolean voiceOn = false;
-    private MenuItem voice_item;
+    private MenuItem voice_item, voice_support_item;
 
     //private static int current_voice_select = 0;
     private static boolean is_current_game_over = false;
@@ -396,27 +396,43 @@ public class GameActivity extends AppCompatActivity{
                         nameLayout.setVisibility(View.GONE);
                 }
 
-                if (Boolean.valueOf(info[2])) { //tiebreak
-                    tiebreak = "0";
-                } else {
-                    tiebreak = "1";
+                tiebreak = "0"; //init value
+                try {
+                    boolean ret = Boolean.valueOf(info[2]);
+                    if (!ret) { //tiebreak
+                        tiebreak = "1";
+                    }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
                 }
 
-                if (Boolean.valueOf(info[3])) { //deuce
-                    deuce = "0";
-                } else {
-                    deuce = "1";
+
+                deuce = "0";
+                try {
+                    boolean ret = Boolean.valueOf(info[3]);
+                    if (!ret) { //deuce
+                        deuce = "1";
+                    }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
                 }
 
-                if (Boolean.valueOf(info[4])) { //first serve
-                    serve = "0";
-                    imgServeUp.setVisibility(View.INVISIBLE);
-                    imgServeDown.setVisibility(View.VISIBLE);
-                } else {
-                    serve = "1";
-                    imgServeUp.setVisibility(View.VISIBLE);
-                    imgServeDown.setVisibility(View.INVISIBLE);
+                serve = "0";
+                imgServeUp.setVisibility(View.INVISIBLE);
+                imgServeDown.setVisibility(View.VISIBLE);
+                try {
+                    boolean ret = Boolean.valueOf(info[4]);
+                    if (!ret) { //first serve
+                        serve = "1";
+                        imgServeUp.setVisibility(View.VISIBLE);
+                        imgServeDown.setVisibility(View.INVISIBLE);
+                    }
+                } catch (NumberFormatException e) {
+
+                    e.printStackTrace();
                 }
+
+
 
                 //set
                 set = info[5];
@@ -451,162 +467,119 @@ public class GameActivity extends AppCompatActivity{
                     String data[] = s.split(";");
                     State new_state = new State();
 
-                    new_state.setCurrent_set(Byte.valueOf(data[0]));
-                    new_state.setServe(Boolean.valueOf(data[1]));
-                    new_state.setInTiebreak(Boolean.valueOf(data[2]));
-                    new_state.setFinish(Boolean.valueOf(data[3]));
-                    new_state.setSecondServe(Boolean.valueOf(data[4]));
-                    new_state.setInBreakPoint(Boolean.valueOf(data[5]));
-                    new_state.setSetsUp(Byte.valueOf(data[6]));
-                    new_state.setSetsDown(Byte.valueOf(data[7]));
-                    new_state.setDuration(Long.valueOf(data[8]));
+                    try {
+                        new_state.setCurrent_set(Byte.valueOf(data[0]));
+                        new_state.setServe(Boolean.valueOf(data[1]));
+                        new_state.setInTiebreak(Boolean.valueOf(data[2]));
+                        new_state.setFinish(Boolean.valueOf(data[3]));
+                        new_state.setSecondServe(Boolean.valueOf(data[4]));
+                        new_state.setInBreakPoint(Boolean.valueOf(data[5]));
+                        new_state.setSetsUp(Byte.valueOf(data[6]));
+                        new_state.setSetsDown(Byte.valueOf(data[7]));
+                        new_state.setDuration(Long.valueOf(data[8]));
 
-                    //ace
-                    new_state.setAceCountUp(Byte.valueOf(data[9]));
-                    new_state.setAceCountDown(Byte.valueOf(data[10]));
-                    //first serve
-                    new_state.setFirstServeUp(Short.valueOf(data[11]));
-                    new_state.setFirstServeDown(Short.valueOf(data[12]));
-                    //first serve miss
-                    new_state.setFirstServeMissUp(Short.valueOf(data[13]));
-                    new_state.setFirstServeMissDown(Short.valueOf(data[14]));
-                    //second serve
-                    new_state.setSecondServeUp(Short.valueOf(data[15]));
-                    new_state.setSecondServeDown(Short.valueOf(data[16]));
-                    //break point
-                    new_state.setBreakPointUp(Byte.valueOf(data[17]));
-                    new_state.setBreakPointDown(Byte.valueOf(data[18]));
-                    //break point miss
-                    new_state.setBreakPointMissUp(Byte.valueOf(data[19]));
-                    new_state.setBreakPointMissDown(Byte.valueOf(data[20]));
-                    //first serve won
-                    new_state.setFirstServeWonUp(Short.valueOf(data[21]));
-                    //first serve lost
-                    new_state.setFirstServeLostUp(Short.valueOf(data[23]));
-                    new_state.setFirstServeLostDown(Short.valueOf(data[24]));
-                    //second serve won
-                    new_state.setSecondServeWonUp(Short.valueOf(data[25]));
-                    new_state.setSecondServeWonDown(Short.valueOf(data[26]));
-                    //second serve lost
-                    new_state.setSecondServeLostUp(Short.valueOf(data[27]));
-                    new_state.setSecondServeLostDown(Short.valueOf(data[28]));
-                    //double faults
-                    new_state.setDoubleFaultUp(Byte.valueOf(data[29]));
-                    new_state.setFirstServeWonDown(Short.valueOf(data[22]));
-                    new_state.setDoubleFaultDown(Byte.valueOf(data[30]));
-                    //unforced error
-                    new_state.setUnforceErrorUp(Byte.valueOf(data[31]));
-                    new_state.setUnforceErrorDown(Byte.valueOf(data[32]));
-                    //forehand winner
-                    new_state.setForehandWinnerUp(Byte.valueOf(data[33]));
-                    new_state.setForehandWinnerDown(Byte.valueOf(data[34]));
-                    //backhand winner
-                    new_state.setBackhandWinnerUp(Byte.valueOf(data[35]));
-                    new_state.setBackhandWinnerDown(Byte.valueOf(data[36]));
-                    //forehand volley
-                    new_state.setForehandVolleyUp(Byte.valueOf(data[37]));
-                    new_state.setForehandVolleyDown(Byte.valueOf(data[38]));
-                    new_state.setBackhandVolleyUp(Byte.valueOf(data[39]));
-                    new_state.setBackhandVolleyDown(Byte.valueOf(data[40]));
-                    //foul to lose
-                    new_state.setFoulToLoseUp(Byte.valueOf(data[41]));
-                    new_state.setFoulToLoseDown(Byte.valueOf(data[42]));
+                        //ace
+                        new_state.setAceCountUp(Byte.valueOf(data[9]));
+                        new_state.setAceCountDown(Byte.valueOf(data[10]));
+                        //first serve
+                        new_state.setFirstServeUp(Short.valueOf(data[11]));
+                        new_state.setFirstServeDown(Short.valueOf(data[12]));
+                        //first serve miss
+                        new_state.setFirstServeMissUp(Short.valueOf(data[13]));
+                        new_state.setFirstServeMissDown(Short.valueOf(data[14]));
+                        //second serve
+                        new_state.setSecondServeUp(Short.valueOf(data[15]));
+                        new_state.setSecondServeDown(Short.valueOf(data[16]));
+                        //break point
+                        new_state.setBreakPointUp(Byte.valueOf(data[17]));
+                        new_state.setBreakPointDown(Byte.valueOf(data[18]));
+                        //break point miss
+                        new_state.setBreakPointMissUp(Byte.valueOf(data[19]));
+                        new_state.setBreakPointMissDown(Byte.valueOf(data[20]));
+                        //first serve won
+                        new_state.setFirstServeWonUp(Short.valueOf(data[21]));
+                        //first serve lost
+                        new_state.setFirstServeLostUp(Short.valueOf(data[23]));
+                        new_state.setFirstServeLostDown(Short.valueOf(data[24]));
+                        //second serve won
+                        new_state.setSecondServeWonUp(Short.valueOf(data[25]));
+                        new_state.setSecondServeWonDown(Short.valueOf(data[26]));
+                        //second serve lost
+                        new_state.setSecondServeLostUp(Short.valueOf(data[27]));
+                        new_state.setSecondServeLostDown(Short.valueOf(data[28]));
+                        //double faults
+                        new_state.setDoubleFaultUp(Byte.valueOf(data[29]));
+                        new_state.setFirstServeWonDown(Short.valueOf(data[22]));
+                        new_state.setDoubleFaultDown(Byte.valueOf(data[30]));
+                        //unforced error
+                        new_state.setUnforceErrorUp(Byte.valueOf(data[31]));
+                        new_state.setUnforceErrorDown(Byte.valueOf(data[32]));
+                        //forehand winner
+                        new_state.setForehandWinnerUp(Byte.valueOf(data[33]));
+                        new_state.setForehandWinnerDown(Byte.valueOf(data[34]));
+                        //backhand winner
+                        new_state.setBackhandWinnerUp(Byte.valueOf(data[35]));
+                        new_state.setBackhandWinnerDown(Byte.valueOf(data[36]));
+                        //forehand volley
+                        new_state.setForehandVolleyUp(Byte.valueOf(data[37]));
+                        new_state.setForehandVolleyDown(Byte.valueOf(data[38]));
+                        new_state.setBackhandVolleyUp(Byte.valueOf(data[39]));
+                        new_state.setBackhandVolleyDown(Byte.valueOf(data[40]));
+                        //foul to lose
+                        new_state.setFoulToLoseUp(Byte.valueOf(data[41]));
+                        new_state.setFoulToLoseDown(Byte.valueOf(data[42]));
 
-                    new_state.setSet_game_up((byte) 0x1, Byte.valueOf(data[43]));
-                    new_state.setSet_game_down((byte) 0x1, Byte.valueOf(data[44]));
-                    new_state.setSet_point_up((byte) 0x1, Byte.valueOf(data[45]));
-                    new_state.setSet_point_down((byte) 0x1, Byte.valueOf(data[46]));
-                    new_state.setSet_tiebreak_point_up((byte) 0x1, Byte.valueOf(data[47]));
-                    new_state.setSet_tiebreak_point_down((byte) 0x1, Byte.valueOf(data[48]));
+                        new_state.setSet_game_up((byte) 0x1, Byte.valueOf(data[43]));
+                        new_state.setSet_game_down((byte) 0x1, Byte.valueOf(data[44]));
+                        new_state.setSet_point_up((byte) 0x1, Byte.valueOf(data[45]));
+                        new_state.setSet_point_down((byte) 0x1, Byte.valueOf(data[46]));
+                        new_state.setSet_tiebreak_point_up((byte) 0x1, Byte.valueOf(data[47]));
+                        new_state.setSet_tiebreak_point_down((byte) 0x1, Byte.valueOf(data[48]));
 
-                    new_state.setSet_game_up((byte) 0x2, Byte.valueOf(data[49]));
-                    new_state.setSet_game_down((byte) 0x2, Byte.valueOf(data[50]));
-                    new_state.setSet_point_up((byte) 0x2, Byte.valueOf(data[51]));
-                    new_state.setSet_point_down((byte) 0x2, Byte.valueOf(data[52]));
-                    new_state.setSet_tiebreak_point_up((byte) 0x2, Byte.valueOf(data[53]));
-                    new_state.setSet_tiebreak_point_down((byte) 0x2, Byte.valueOf(data[54]));
+                        new_state.setSet_game_up((byte) 0x2, Byte.valueOf(data[49]));
+                        new_state.setSet_game_down((byte) 0x2, Byte.valueOf(data[50]));
+                        new_state.setSet_point_up((byte) 0x2, Byte.valueOf(data[51]));
+                        new_state.setSet_point_down((byte) 0x2, Byte.valueOf(data[52]));
+                        new_state.setSet_tiebreak_point_up((byte) 0x2, Byte.valueOf(data[53]));
+                        new_state.setSet_tiebreak_point_down((byte) 0x2, Byte.valueOf(data[54]));
 
-                    new_state.setSet_game_up((byte) 0x3, Byte.valueOf(data[55]));
-                    new_state.setSet_game_down((byte) 0x3, Byte.valueOf(data[56]));
-                    new_state.setSet_point_up((byte) 0x3, Byte.valueOf(data[57]));
-                    new_state.setSet_point_down((byte) 0x3, Byte.valueOf(data[58]));
-                    new_state.setSet_tiebreak_point_up((byte) 0x3, Byte.valueOf(data[59]));
-                    new_state.setSet_tiebreak_point_down((byte) 0x3, Byte.valueOf(data[60]));
+                        new_state.setSet_game_up((byte) 0x3, Byte.valueOf(data[55]));
+                        new_state.setSet_game_down((byte) 0x3, Byte.valueOf(data[56]));
+                        new_state.setSet_point_up((byte) 0x3, Byte.valueOf(data[57]));
+                        new_state.setSet_point_down((byte) 0x3, Byte.valueOf(data[58]));
+                        new_state.setSet_tiebreak_point_up((byte) 0x3, Byte.valueOf(data[59]));
+                        new_state.setSet_tiebreak_point_down((byte) 0x3, Byte.valueOf(data[60]));
 
-                    new_state.setSet_game_up((byte) 0x4, Byte.valueOf(data[61]));
-                    new_state.setSet_game_down((byte) 0x4, Byte.valueOf(data[62]));
-                    new_state.setSet_point_up((byte) 0x4, Byte.valueOf(data[63]));
-                    new_state.setSet_point_down((byte) 0x4, Byte.valueOf(data[64]));
-                    new_state.setSet_tiebreak_point_up((byte) 0x4, Byte.valueOf(data[65]));
-                    new_state.setSet_tiebreak_point_down((byte) 0x4, Byte.valueOf(data[66]));
+                        new_state.setSet_game_up((byte) 0x4, Byte.valueOf(data[61]));
+                        new_state.setSet_game_down((byte) 0x4, Byte.valueOf(data[62]));
+                        new_state.setSet_point_up((byte) 0x4, Byte.valueOf(data[63]));
+                        new_state.setSet_point_down((byte) 0x4, Byte.valueOf(data[64]));
+                        new_state.setSet_tiebreak_point_up((byte) 0x4, Byte.valueOf(data[65]));
+                        new_state.setSet_tiebreak_point_down((byte) 0x4, Byte.valueOf(data[66]));
 
-                    new_state.setSet_game_up((byte) 0x5, Byte.valueOf(data[67]));
-                    new_state.setSet_game_down((byte) 0x5, Byte.valueOf(data[68]));
-                    new_state.setSet_point_up((byte) 0x5, Byte.valueOf(data[69]));
-                    new_state.setSet_point_down((byte) 0x5, Byte.valueOf(data[70]));
-                    new_state.setSet_tiebreak_point_up((byte) 0x5, Byte.valueOf(data[71]));
-                    new_state.setSet_tiebreak_point_down((byte) 0x5, Byte.valueOf(data[72]));
+                        new_state.setSet_game_up((byte) 0x5, Byte.valueOf(data[67]));
+                        new_state.setSet_game_down((byte) 0x5, Byte.valueOf(data[68]));
+                        new_state.setSet_point_up((byte) 0x5, Byte.valueOf(data[69]));
+                        new_state.setSet_point_down((byte) 0x5, Byte.valueOf(data[70]));
+                        new_state.setSet_tiebreak_point_up((byte) 0x5, Byte.valueOf(data[71]));
+                        new_state.setSet_tiebreak_point_down((byte) 0x5, Byte.valueOf(data[72]));
 
-                    if (data.length > 73) {
-                        new_state.setForceErrorUp(Short.valueOf(data[73]));
-                        new_state.setForceErrorDown(Short.valueOf(data[74]));
+                        if (data.length > 73) {
+                            new_state.setForceErrorUp(Short.valueOf(data[73]));
+                            new_state.setForceErrorDown(Short.valueOf(data[74]));
+                        }
+
+                        stack.addLast(new_state);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                        toast(getResources().getString(R.string.file_load_error));
+                        break;
                     }
 
-                    stack.addLast(new_state);
+
                 }
 
-                /*for (int i = 0; i < stat.length; i++) {
-                    String data[] = stat[i].split(";");
-                    State new_state = new State();
-                    new_state.setCurrent_set(Byte.valueOf(data[0]));
-                    new_state.setServe(Boolean.valueOf(data[1]));
-                    new_state.setInTiebreak(Boolean.valueOf(data[2]));
-                    new_state.setFinish(Boolean.valueOf(data[3]));
-                    //new_state.setDeuce(Boolean.valueOf(data[4]));
-                    //new_state.setFirstServe(Boolean.valueOf(data[5]));
-                    //new_state.setSetLimit(Byte.valueOf(data[6]));
-                    new_state.setSetsUp(Byte.valueOf(data[4]));
-                    new_state.setSetsDown(Byte.valueOf(data[5]));
-                    new_state.setDuration(Long.valueOf(data[6]));
 
-                    new_state.setSet_game_up((byte) 0x1, Byte.valueOf(data[7]));
-                    new_state.setSet_game_down((byte) 0x1, Byte.valueOf(data[8]));
-                    new_state.setSet_point_up((byte) 0x1, Byte.valueOf(data[9]));
-                    new_state.setSet_point_down((byte) 0x1, Byte.valueOf(data[10]));
-                    new_state.setSet_tiebreak_point_up((byte) 0x1, Byte.valueOf(data[11]));
-                    new_state.setSet_tiebreak_point_down((byte) 0x1, Byte.valueOf(data[12]));
-
-                    new_state.setSet_game_up((byte) 0x2, Byte.valueOf(data[13]));
-                    new_state.setSet_game_down((byte) 0x2, Byte.valueOf(data[14]));
-                    new_state.setSet_point_up((byte) 0x2, Byte.valueOf(data[15]));
-                    new_state.setSet_point_down((byte) 0x2, Byte.valueOf(data[16]));
-                    new_state.setSet_tiebreak_point_up((byte) 0x2, Byte.valueOf(data[17]));
-                    new_state.setSet_tiebreak_point_down((byte) 0x2, Byte.valueOf(data[18]));
-
-                    new_state.setSet_game_up((byte) 0x3, Byte.valueOf(data[19]));
-                    new_state.setSet_game_down((byte) 0x3, Byte.valueOf(data[20]));
-                    new_state.setSet_point_up((byte) 0x3, Byte.valueOf(data[21]));
-                    new_state.setSet_point_down((byte) 0x3, Byte.valueOf(data[22]));
-                    new_state.setSet_tiebreak_point_up((byte) 0x3, Byte.valueOf(data[23]));
-                    new_state.setSet_tiebreak_point_down((byte) 0x3, Byte.valueOf(data[24]));
-
-                    new_state.setSet_game_up((byte) 0x4, Byte.valueOf(data[25]));
-                    new_state.setSet_game_down((byte) 0x4, Byte.valueOf(data[26]));
-                    new_state.setSet_point_up((byte) 0x4, Byte.valueOf(data[27]));
-                    new_state.setSet_point_down((byte) 0x4, Byte.valueOf(data[28]));
-                    new_state.setSet_tiebreak_point_up((byte) 0x4, Byte.valueOf(data[29]));
-                    new_state.setSet_tiebreak_point_down((byte) 0x4, Byte.valueOf(data[30]));
-
-                    new_state.setSet_game_up((byte) 0x5, Byte.valueOf(data[31]));
-                    new_state.setSet_game_down((byte) 0x5, Byte.valueOf(data[32]));
-                    new_state.setSet_point_up((byte) 0x5, Byte.valueOf(data[33]));
-                    new_state.setSet_point_down((byte) 0x5, Byte.valueOf(data[34]));
-                    new_state.setSet_tiebreak_point_up((byte) 0x5, Byte.valueOf(data[35]));
-                    new_state.setSet_tiebreak_point_down((byte) 0x5, Byte.valueOf(data[36]));
-
-                    stack.addLast(new_state);
-
-                }*/
 
                 //get top
 
@@ -8460,6 +8433,9 @@ public class GameActivity extends AppCompatActivity{
 
         //item_edit = menu.findItem(R.id.action_edit_group);
         voice_item = menu.findItem(R.id.action_voice_onOff);
+        voice_support_item = menu.findItem(R.id.action_voice_support);
+
+        voice_support_item.setVisible(true);
 
         if (voice_item != null) {
             if (voiceOn) {

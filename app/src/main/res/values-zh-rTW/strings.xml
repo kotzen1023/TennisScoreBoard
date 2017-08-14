@@ -137,4 +137,5 @@
     <string name="permission_record">如果您想錄音, 必須同意錄音的存取權.</string>
     <string name="voice_listen">試聽</string>
     <string name="voice_record">錄音</string>
+    <string name="file_load_error">讀取檔案過程錯誤. 顯示的狀態為損壞的資料之前.</string>
 </resources>
