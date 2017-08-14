@@ -137,5 +137,9 @@
     <string name="voice_listen">Listen</string>
     <string name="voice_record">Record</string>
     <string name="file_load_error">Error(s) happened while loading file. It shows the state before broken data.</string>
+    <string name="record_file_not_exist">File is not exist. Try to record a new one correspond with the word.</string>
+    <string name="record_file_is_exist_over_write">File exist. Overwrite it?</string>
+    <string name="record_clear_all">Clear</string>
+    <string name="record_clear_all_msg">Clear all voices?</string>
 </resources>
 

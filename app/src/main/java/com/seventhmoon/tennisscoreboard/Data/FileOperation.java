@@ -383,4 +383,31 @@ public class FileOperation {
 
         return ret;
     }
+
+    public static void clear_all_voice() {
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            //path = Environment.getExternalStorageDirectory();
+            RootDirectory = Environment.getExternalStorageDirectory();
+        }
+
+        //check folder
+        File folder = new File(RootDirectory.getAbsolutePath() + "/.tennisScoredBoard/user");
+
+        if (folder.exists() && folder.isDirectory())
+        {
+            String[] children = folder.list();
+            //for (int i = 0; i < children.length; i++)
+            for (String s : children)
+            {
+                //new File(del_data, children[i]).delete();
+                File file_del = new File(folder, s);
+                if (!file_del.delete())
+                    Log.e(TAG, "Failed to delete "+file_del.getName());
+                else
+                    Log.d(TAG, "delete "+file_del.getName());
+            }
+
+
+        }
+    }
 }

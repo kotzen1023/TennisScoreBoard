@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,9 +18,13 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -47,6 +52,8 @@ import java.util.Locale;
 import java.util.Map;
 
 import static com.seventhmoon.tennisscoreboard.Data.FileOperation.check_user_voice_exist;
+import static com.seventhmoon.tennisscoreboard.Data.FileOperation.clear_all_voice;
+import static com.seventhmoon.tennisscoreboard.Data.FileOperation.get_absolute_path;
 import static com.seventhmoon.tennisscoreboard.GameActivity.voicePlay;
 
 
@@ -87,13 +94,23 @@ public class VoiceRecordActivity extends AppCompatActivity {
 
     private static BroadcastReceiver mReceiver = null;
     private static boolean isRegister = false;
+    //private ActionBar actionBar;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.voice_record_activity);
-
         context = getBaseContext();
+
+        ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+
+            actionBar.setDisplayUseLogoEnabled(true);
+            //actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(getResources().getString(R.string.voice_user_record));
+        }
 
         if (voicePlay == null) {
             recordPlay = new VoicePlay(context);
@@ -446,15 +463,35 @@ public class VoiceRecordActivity extends AppCompatActivity {
             item53.setFileExist(true);
         recordList.add(item53);
 
-        RecordItem item54 = new RecordItem("(Player1's Name)", "user_player_up.m4a");
-        if (check_user_voice_exist("user_player_up.m4a"))
+        RecordItem item54 = new RecordItem("Game to", "user_game_to.m4a");
+        if (check_user_voice_exist("user_game_to.m4a"))
             item54.setFileExist(true);
         recordList.add(item54);
 
-        RecordItem item55 = new RecordItem("(Player2's Name)", "user_player_down.m4a");
-        if (check_user_voice_exist("user_player_down.m4a"))
+        RecordItem item55 = new RecordItem("Games to", "user_games_to.m4a");
+        if (check_user_voice_exist("user_games_to.m4a"))
             item55.setFileExist(true);
         recordList.add(item55);
+
+        RecordItem item56 = new RecordItem("Game all", "user_game_all.m4a");
+        if (check_user_voice_exist("user_game_all.m4a"))
+            item56.setFileExist(true);
+        recordList.add(item56);
+
+        RecordItem item57 = new RecordItem("Games all", "user_games_all.m4a");
+        if (check_user_voice_exist("user_games_all.m4a"))
+            item57.setFileExist(true);
+        recordList.add(item57);
+
+        RecordItem item58 = new RecordItem("(Player1's Name)", "user_player_up.m4a");
+        if (check_user_voice_exist("user_player_up.m4a"))
+            item58.setFileExist(true);
+        recordList.add(item58);
+
+        RecordItem item59 = new RecordItem("(Player2's Name)", "user_player_down.m4a");
+        if (check_user_voice_exist("user_player_down.m4a"))
+            item59.setFileExist(true);
+        recordList.add(item59);
 
         recordArrayAdapter = new RecordArrayAdapter(VoiceRecordActivity.this, R.layout.voice_record_item, recordList);
         listView.setAdapter(recordArrayAdapter);
@@ -502,7 +539,7 @@ public class VoiceRecordActivity extends AppCompatActivity {
                             is_playing = true;
                             startVoicePlaying();
                         } else {
-                            toast("File not exist!");
+                            toast(getResources().getString(R.string.record_file_not_exist));
                         }
 
                     } else { //recording ->
@@ -567,12 +604,44 @@ public class VoiceRecordActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!is_recording) {
                     if (!is_playing) { //not record->recording
-                        imgPlayStop.setImageResource(R.drawable.ic_stop_white_48dp);
-                        imgRecord.setImageResource(R.drawable.ic_fiber_manual_record_red_48dp);
-                        is_recording = true;
 
-                        Log.d(TAG, "output: " + getOutputFile());
-                        startRecording();
+                        if (check_user_voice_exist(currentSelectedName)) { //if file exist, add
+                            AlertDialog.Builder confirmdialog = new AlertDialog.Builder(VoiceRecordActivity.this);
+                            confirmdialog.setTitle(getResources().getString(R.string.record_file_is_exist_over_write));
+                            confirmdialog.setIcon(R.drawable.ball_icon);
+                            confirmdialog.setCancelable(false);
+                            confirmdialog.setPositiveButton(getResources().getString(R.string.confirm), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    imgPlayStop.setImageResource(R.drawable.ic_stop_white_48dp);
+                                    imgRecord.setImageResource(R.drawable.ic_fiber_manual_record_red_48dp);
+                                    is_recording = true;
+
+                                    Log.d(TAG, "output: " + getOutputFile());
+                                    startRecording();
+
+
+                                }
+                            });
+                            confirmdialog.setNegativeButton(getResources().getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+
+                                }
+                            });
+
+                            confirmdialog.show();
+                        } else {
+                            imgPlayStop.setImageResource(R.drawable.ic_stop_white_48dp);
+                            imgRecord.setImageResource(R.drawable.ic_fiber_manual_record_red_48dp);
+                            is_recording = true;
+
+                            Log.d(TAG, "output: " + getOutputFile());
+                            startRecording();
+                        }
+
+
+
+
                     } else {
                         imgPlayStop.setImageResource(R.drawable.ic_play_arrow_white_48dp);
                         imgRecord.setImageResource(R.drawable.ic_fiber_manual_record_white_48dp);
@@ -848,5 +917,53 @@ public class VoiceRecordActivity extends AppCompatActivity {
         toast.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL, 0, 0);
         toast.show();
     }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.record_menu, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_clear_all:
+                AlertDialog.Builder confirmdialog = new AlertDialog.Builder(VoiceRecordActivity.this);
+                confirmdialog.setTitle(getResources().getString(R.string.record_clear_all_msg));
+                confirmdialog.setIcon(R.drawable.ball_icon);
+                confirmdialog.setCancelable(false);
+                confirmdialog.setPositiveButton(getResources().getString(R.string.confirm), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        clear_all_voice();
+                        for (int i=0; i<recordList.size(); i++) {
+                            recordList.get(i).setFileExist(false);
+                        }
+                        if (recordArrayAdapter != null)
+                            recordArrayAdapter.notifyDataSetChanged();
+
+                    }
+                });
+                confirmdialog.setNegativeButton(getResources().getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                    }
+                });
+
+                confirmdialog.show();
+
+                break;
+
+            case android.R.id.home:
+                finish();
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
 
 }

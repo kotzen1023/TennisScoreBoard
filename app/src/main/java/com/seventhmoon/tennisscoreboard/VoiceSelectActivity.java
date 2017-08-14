@@ -60,7 +60,7 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
     private int previous_select = 0;
     private int current_voice;
     public static ActionBar actionBar;
-    private MenuItem item_record;
+    private MenuItem item_record, item_listen;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,9 +74,11 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
         if (actionBar != null) {
 
             actionBar.setDisplayUseLogoEnabled(true);
-            //actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+
 
         pref = getSharedPreferences(FILE_NAME, MODE_PRIVATE);
         current_voice = pref.getInt("VOICE_SELECT", 0);
@@ -170,16 +172,7 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
 
-        //for action bar
-        ActionBar actionBar = getSupportActionBar();
 
-        if (actionBar != null) {
-
-            actionBar.setDisplayUseLogoEnabled(true);
-            //actionBar.setDisplayShowHomeEnabled(true);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.ball_icon);
-        }
 
 
 
@@ -274,8 +267,10 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
                 } else {
                     if (position == 2) { //user record
                         item_record.setVisible(true);
+                        item_listen.setVisible(false);
                     } else {
                         item_record.setVisible(false);
+                        item_listen.setVisible(true);
                     }
 
                     Log.e(TAG, "voice change to "+position);
@@ -609,11 +604,14 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
         getMenuInflater().inflate(R.menu.voice_select_menu, menu);
 
         item_record = menu.findItem(R.id.action_record);
+        item_listen = menu.findItem(R.id.action_listen);
 
         if (current_voice == 2) {//user
             item_record.setVisible(true);
+            item_listen.setVisible(false);
         } else {
             item_record.setVisible(false);
+            item_listen.setVisible(true);
         }
 
 
@@ -632,6 +630,9 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
             case R.id.action_record:
                 intent = new Intent(VoiceSelectActivity.this, VoiceRecordActivity.class);
                 startActivity(intent);
+                break;
+            case android.R.id.home:
+                finish();
                 break;
             default:
                 break;

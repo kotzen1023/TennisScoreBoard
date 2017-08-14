@@ -5669,7 +5669,7 @@ public class GameActivity extends AppCompatActivity{
 
     private void chooseGameVoice(boolean down_serve, boolean is_tiebreak, byte gameUp,  byte gameDown) {
         Integer gameCall, gameCall2, gameCall3;
-        String fileName0, fileName1, fileName2;
+        String fileName0, fileName1, fileName2, fileName3;
         Log.d(TAG, "[chooseGameVoice start]");
         if (is_tiebreak) { //enter tiebreak
             Log.d(TAG, "in tiebreak");
@@ -5686,7 +5686,7 @@ public class GameActivity extends AppCompatActivity{
                     case USER_RECORD:
                         fileName0 = "user_6.m4a";
                         voiceUserList.add(fileName0);
-                        fileName1 = "user_all.m4a";
+                        fileName1 = "user_games_all.m4a";
                         voiceUserList.add(fileName1);
                         fileName2 = "user_tiebreak.m4a";
                         voiceUserList.add(fileName2);
@@ -5705,7 +5705,7 @@ public class GameActivity extends AppCompatActivity{
                     case USER_RECORD:
                         fileName0 = "user_4.m4a";
                         voiceUserList.add(fileName0);
-                        fileName1 = "user_all.m4a";
+                        fileName1 = "user_games_all.m4a";
                         voiceUserList.add(fileName1);
                         fileName2 = "user_tiebreak.m4a";
                         voiceUserList.add(fileName2);
@@ -5729,8 +5729,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_1.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_love.m4a";
+                            fileName1 = "user_game_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_love.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -5745,8 +5747,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_love.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_1.m4a";
+                            fileName1 = "user_game_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_1.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -5763,8 +5767,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_2.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_love.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_love.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -5779,8 +5785,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_love.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_2.m4a";
+                            fileName1 = "user_game_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_2.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -5797,8 +5805,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_3.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_love.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_love.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -5813,8 +5823,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_love.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_3.m4a";
+                            fileName1 = "user_game_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_3.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -5831,8 +5843,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_4.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_love.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_love.m4a";
+                            voiceUserList.add(fileName2);
                             break;
 
                     }
@@ -5848,8 +5862,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_love.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_4.m4a";
+                            fileName1 = "user_game_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_4.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -5866,8 +5882,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_5.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_love.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_love.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -5882,8 +5900,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_love.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_5.m4a";
+                            fileName1 = "user_game_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_5.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -5900,8 +5920,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_6.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_love.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_love.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -5916,8 +5938,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_love.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_6.m4a";
+                            fileName1 = "user_game_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_6.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -5934,8 +5958,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_love.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_1.m4a";
+                            fileName1 = "user_game_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_1.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -5950,8 +5976,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_1.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_love.m4a";
+                            fileName1 = "user_game_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_love.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -5967,8 +5995,10 @@ public class GameActivity extends AppCompatActivity{
                     case USER_RECORD:
                         fileName0 = "user_1.m4a";
                         voiceUserList.add(fileName0);
-                        fileName1 = "user_all.m4a";
+                        fileName1 = "user_game_all.m4a";
                         voiceUserList.add(fileName1);
+                        fileName2 = "user_all.m4a";
+                        voiceUserList.add(fileName2);
                         break;
                 }
             } else if (gameUp == 1 && gameDown == 2) { //1:2
@@ -5983,8 +6013,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_2.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_1.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_1.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -5999,8 +6031,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_1.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_2.m4a";
+                            fileName1 = "user_game_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_2.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6017,8 +6051,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_3.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_1.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_1.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6033,8 +6069,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_1.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_3.m4a";
+                            fileName1 = "user_game_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_3.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6051,8 +6089,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_4.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_1.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_1.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6067,8 +6107,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_1.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_4.m4a";
+                            fileName1 = "user_game_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_4.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6085,8 +6127,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_5.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_1.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_1.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6099,10 +6143,12 @@ public class GameActivity extends AppCompatActivity{
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
-                            fileName0 = "user_5.m4a";
+                            fileName0 = "user_1.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_1.m4a";
+                            fileName1 = "user_game_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_5.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6119,8 +6165,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_6.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_1.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_1.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6135,8 +6183,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_1.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_6.m4a";
+                            fileName1 = "user_game_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_6.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6153,8 +6203,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_love.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_2.m4a";
+                            fileName1 = "user_game_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_2.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6169,8 +6221,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_2.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_love.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_love.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6187,8 +6241,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_1.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_2.m4a";
+                            fileName1 = "user_game_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_2.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6203,8 +6259,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_2.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_1.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_1.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6220,7 +6278,7 @@ public class GameActivity extends AppCompatActivity{
                     case USER_RECORD:
                         fileName0 = "user_2.m4a";
                         voiceUserList.add(fileName0);
-                        fileName1 = "user_all.m4a";
+                        fileName1 = "user_games_all.m4a";
                         voiceUserList.add(fileName1);
                         break;
                 }
@@ -6236,8 +6294,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_3.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_2.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_2.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6252,8 +6312,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_2.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_3.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_3.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6270,8 +6332,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_4.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_2.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_2.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6286,8 +6350,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_2.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_4.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_4.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6304,8 +6370,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_5.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_2.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_2.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6320,8 +6388,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_2.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_5.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_5.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6338,8 +6408,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_6.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_2.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_2.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6354,8 +6426,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_2.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_6.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_6.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6372,8 +6446,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_love.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_3.m4a";
+                            fileName1 = "user_game_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_3.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6388,8 +6464,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_3.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_love.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_love.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6406,8 +6484,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_1.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_3.m4a";
+                            fileName1 = "user_game_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_3.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6422,8 +6502,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_3.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_1.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_1.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6440,8 +6522,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_2.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_3.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_3.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6456,8 +6540,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_3.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_2.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_2.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6473,7 +6559,7 @@ public class GameActivity extends AppCompatActivity{
                     case USER_RECORD:
                         fileName0 = "user_3.m4a";
                         voiceUserList.add(fileName0);
-                        fileName1 = "user_all.m4a";
+                        fileName1 = "user_games_all.m4a";
                         voiceUserList.add(fileName1);
                         break;
                 }
@@ -6489,8 +6575,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_4.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_3.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_3.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6505,8 +6593,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_3.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_4.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_4.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6523,8 +6613,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_5.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_3.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_3.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6539,8 +6631,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_3.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_5.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_5.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6557,8 +6651,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_6.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_3.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_3.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6573,8 +6669,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_3.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_6.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_6.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6591,8 +6689,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_love.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_4.m4a";
+                            fileName1 = "user_game_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_4.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6607,8 +6707,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_4.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_love.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_love.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6625,8 +6727,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_1.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_4.m4a";
+                            fileName1 = "user_game_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_4.m4a";
+                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -6641,8 +6745,10 @@ public class GameActivity extends AppCompatActivity{
                         case USER_RECORD:
                             fileName0 = "user_4.m4a";
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_1.m4a";
+                            fileName1 = "user_games_to.m4a";
                             voiceUserList.add(fileName1);
+                            fileName2 = "user_1.m4a";
+                            voiceUserList.add(fileName2);
                             break;
 
                     }

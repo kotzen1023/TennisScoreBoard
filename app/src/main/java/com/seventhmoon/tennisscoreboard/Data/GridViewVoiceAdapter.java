@@ -96,19 +96,19 @@ public class GridViewVoiceAdapter extends ArrayAdapter<ImageBuyItem> {
 
                 switch (position) {
                     case 0:
-                        actionBar.setHomeAsUpIndicator(R.drawable.uk_flag);
+                        //actionBar.setHomeAsUpIndicator(R.drawable.uk_flag);
                         actionBar.setTitle(context.getResources().getString(R.string.voice_gbr_man));
                         break;
                     case 1:
-                        actionBar.setHomeAsUpIndicator(R.drawable.uk_flag);
+                        //actionBar.setHomeAsUpIndicator(R.drawable.uk_flag);
                         actionBar.setTitle(context.getResources().getString(R.string.voice_gbr_woman));
                         break;
                     case 2:
-                        actionBar.setHomeAsUpIndicator(R.drawable.ic_record_voice_over_white_48dp);
+                        //actionBar.setHomeAsUpIndicator(R.drawable.ic_record_voice_over_white_48dp);
                         actionBar.setTitle(context.getResources().getString(R.string.voice_user_record));
                         break;
                     default:
-                        actionBar.setHomeAsUpIndicator(R.drawable.uk_flag);
+                        //actionBar.setHomeAsUpIndicator(R.drawable.uk_flag);
                         actionBar.setTitle(context.getResources().getString(R.string.voice_gbr_man));
                         break;
                 }

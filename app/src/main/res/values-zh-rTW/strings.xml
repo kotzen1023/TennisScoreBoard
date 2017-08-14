@@ -138,4 +138,8 @@
     <string name="voice_listen">試聽</string>
     <string name="voice_record">錄音</string>
     <string name="file_load_error">讀取檔案過程錯誤. 顯示的狀態為損壞的資料之前.</string>
+    <string name="record_file_not_exist">檔案不存在. 請試著錄下符合此文字的語音.</string>
+    <string name="record_file_is_exist_over_write">檔案已存在. 複寫它嗎?</string>
+    <string name="record_clear_all">清除</string>
+    <string name="record_clear_all_msg">清除所有錄音?</string>
 </resources>
