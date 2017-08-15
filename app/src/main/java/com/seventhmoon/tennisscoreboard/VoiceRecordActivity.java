@@ -483,15 +483,20 @@ public class VoiceRecordActivity extends AppCompatActivity {
             item57.setFileExist(true);
         recordList.add(item57);
 
-        RecordItem item58 = new RecordItem("(Player1's Name)", "user_player_up.m4a");
-        if (check_user_voice_exist("user_player_up.m4a"))
+        RecordItem item58 = new RecordItem("To", "user_to.m4a");
+        if (check_user_voice_exist("user_to.m4a"))
             item58.setFileExist(true);
         recordList.add(item58);
 
-        RecordItem item59 = new RecordItem("(Player2's Name)", "user_player_down.m4a");
-        if (check_user_voice_exist("user_player_down.m4a"))
+        RecordItem item59 = new RecordItem("(Player1's Name)", "user_player_up.m4a");
+        if (check_user_voice_exist("user_player_up.m4a"))
             item59.setFileExist(true);
         recordList.add(item59);
+
+        RecordItem item60= new RecordItem("(Player2's Name)", "user_player_down.m4a");
+        if (check_user_voice_exist("user_player_down.m4a"))
+            item60.setFileExist(true);
+        recordList.add(item60);
 
         recordArrayAdapter = new RecordArrayAdapter(VoiceRecordActivity.this, R.layout.voice_record_item, recordList);
         listView.setAdapter(recordArrayAdapter);
