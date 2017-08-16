@@ -260,7 +260,7 @@ public class PlayMainActivity extends AppCompatActivity {
 
         MenuItem voiceItem = menu.findItem(R.id.action_lang_support);
 
-        voiceItem.setVisible(true);
+        voiceItem.setVisible(false);
 
         return true;
     }

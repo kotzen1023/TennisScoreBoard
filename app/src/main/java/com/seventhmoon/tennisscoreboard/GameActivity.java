@@ -175,6 +175,8 @@ public class GameActivity extends AppCompatActivity{
 
     public static VOICE_TYPE current_voice_type = GBR_MAN;
 
+    private static boolean am_I_Tiebreak_First_Serve = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -683,6 +685,31 @@ public class GameActivity extends AppCompatActivity{
                         }
                     } else {
                         pointDown.setText(String.valueOf(top.getSet_point_down(current_set)));
+                    }
+
+                    if (top.isInTiebreak()) { //in tiebreak
+                        Log.e(TAG, "<In tiebreak>");
+                        int plus = top.getSet_point_up(current_set)+top.getSet_point_down(current_set);
+                        Log.e(TAG, "plus = "+plus+"");
+                        if (top.isServe()) { //I serve
+                            Log.d(TAG, "===> I serve");
+                            if (plus % 4 == 1 || plus % 4 == 2) {
+                                am_I_Tiebreak_First_Serve = false;
+                            } else {
+                                am_I_Tiebreak_First_Serve = true;
+                            }
+                            Log.e(TAG, "am_I_Tiebreak_First_Serve = "+am_I_Tiebreak_First_Serve);
+                        } else { //oppt serve
+                            Log.d(TAG, "===> Oppt serve");
+                            if (plus % 4 == 1 || plus % 4 == 2) {
+                                am_I_Tiebreak_First_Serve = true;
+                            } else {
+                                am_I_Tiebreak_First_Serve = false;
+                            }
+                            Log.e(TAG, "am_I_Tiebreak_First_Serve = "+am_I_Tiebreak_First_Serve);
+                        }
+
+                        Log.e(TAG, "<In tiebreak>");
                     }
 
                     //get back duration
@@ -3247,7 +3274,8 @@ public class GameActivity extends AppCompatActivity{
                     game++;
                     new_state.setSet_game_up(current_set, game);
                     //change serve
-                    if (new_state.isServe()) {
+                    //if (new_state.isServe()) {
+                    if (am_I_Tiebreak_First_Serve) {
                         new_state.setServe(false);
                     } else {
                         new_state.setServe(true);
@@ -3276,7 +3304,8 @@ public class GameActivity extends AppCompatActivity{
                     game++;
                     new_state.setSet_game_down(current_set, game);
                     //change serve
-                    if (new_state.isServe()) {
+                    //if (new_state.isServe()) {
+                    if (am_I_Tiebreak_First_Serve) {
                         new_state.setServe(false);
                     } else {
                         new_state.setServe(true);
@@ -3306,7 +3335,8 @@ public class GameActivity extends AppCompatActivity{
                     game++;
                     new_state.setSet_game_up(current_set, game);
                     //change serve
-                    if (new_state.isServe()) {
+                    //if (new_state.isServe()) {
+                    if (am_I_Tiebreak_First_Serve) {
                         new_state.setServe(false);
                     } else {
                         new_state.setServe(true);
@@ -3337,7 +3367,8 @@ public class GameActivity extends AppCompatActivity{
                     game++;
                     new_state.setSet_game_down(current_set, game);
                     //change serve
-                    if (new_state.isServe()) {
+                    //if (new_state.isServe()) {
+                    if (am_I_Tiebreak_First_Serve) {
                         new_state.setServe(false);
                     } else {
                         new_state.setServe(true);
@@ -3406,7 +3437,8 @@ public class GameActivity extends AppCompatActivity{
                     game++;
                     new_state.setSet_game_up(current_set, game);
                     //change serve
-                    if (new_state.isServe()) {
+                    //if (new_state.isServe()) {
+                    if (am_I_Tiebreak_First_Serve) {
                         new_state.setServe(false);
                     } else {
                         new_state.setServe(true);
@@ -3435,7 +3467,8 @@ public class GameActivity extends AppCompatActivity{
                     game++;
                     new_state.setSet_game_down(current_set, game);
                     //change serve
-                    if (new_state.isServe()) {
+                    //if (new_state.isServe()) {
+                    if (am_I_Tiebreak_First_Serve) {
                         new_state.setServe(false);
                     } else {
                         new_state.setServe(true);
@@ -3465,7 +3498,8 @@ public class GameActivity extends AppCompatActivity{
                     game++;
                     new_state.setSet_game_up(current_set, game);
                     //change serve
-                    if (new_state.isServe()) {
+                    //if (new_state.isServe()) {
+                    if (am_I_Tiebreak_First_Serve) {
                         new_state.setServe(false);
                     } else {
                         new_state.setServe(true);
@@ -3496,7 +3530,8 @@ public class GameActivity extends AppCompatActivity{
                     game++;
                     new_state.setSet_game_down(current_set, game);
                     //change serve
-                    if (new_state.isServe()) {
+                    //if (new_state.isServe()) {
+                    if (am_I_Tiebreak_First_Serve) {
                         new_state.setServe(false);
                     } else {
                         new_state.setServe(true);
@@ -3974,7 +4009,7 @@ public class GameActivity extends AppCompatActivity{
                     //voiceList.add(call);
                 } else {
                     Log.d(TAG, "[points change without arrange]");
-                    is_current_game_over = true;
+                    is_current_game_over = false;
                     //do stop play
                     voicePlay.doStopAudioPlayMulti();
                     //add voice
@@ -4011,6 +4046,14 @@ public class GameActivity extends AppCompatActivity{
                 if (new_state.getSet_game_up(current_set) == 6 &&
                         new_state.getSet_game_down(current_set) == 6) {
                     new_state.setInTiebreak(true); //into tiebreak;
+
+                    //am I(down) first serve?
+                    if (new_state.isServe()) {
+                        am_I_Tiebreak_First_Serve = true;
+                    } else {
+                        am_I_Tiebreak_First_Serve = false;
+                    }
+
                     //add voice
 
                     if(is_current_game_over)
@@ -4147,6 +4190,14 @@ public class GameActivity extends AppCompatActivity{
                 if (new_state.getSet_game_up(current_set) == 4 &&
                         new_state.getSet_game_down(current_set) == 4) {
                     new_state.setInTiebreak(true); //into tiebreak;
+
+                    //am I(down) first serve?
+                    if (new_state.isServe()) {
+                        am_I_Tiebreak_First_Serve = true;
+                    } else {
+                        am_I_Tiebreak_First_Serve = false;
+                    }
+
                     //add voice
                     if(is_current_game_over)
                         chooseGameVoice(new_state.isServe(), new_state.isInTiebreak(), new_state.getSet_game_up(current_set), new_state.getSet_game_down(current_set));
@@ -8707,7 +8758,7 @@ public class GameActivity extends AppCompatActivity{
         voice_item = menu.findItem(R.id.action_voice_onOff);
         voice_support_item = menu.findItem(R.id.action_voice_support);
 
-        voice_support_item.setVisible(true);
+        voice_support_item.setVisible(false);
 
         if (voice_item != null) {
             if (voiceOn) {
