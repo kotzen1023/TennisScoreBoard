@@ -3424,7 +3424,7 @@ public class GameActivity extends AppCompatActivity{
             } else {
                 Log.d(TAG, "[4 games in a set]"); //4:4 => tiebreak
 
-                if (new_state.getSet_point_up(current_set) == 5 && new_state.getSet_point_down(current_set) <= 5) {
+                if (new_state.getSet_point_up(current_set) == 5 && new_state.getSet_point_down(current_set) <= 3) {
                     //7 : 0,1,2,3,4,5 => oppt win this game
                     //set tiebreak point
                     new_state.setSet_tiebreak_point_up(current_set, new_state.getSet_point_up(current_set));
