@@ -5008,10 +5008,10 @@ public class GameActivity extends AppCompatActivity{
                     if (down_serve) { //you serve
                         switch (current_voice_type) {
                             case GBR_MAN:
-                                call = getPointByNum(down_point);
+                                call = getPointByNumStart(down_point);
                                 voiceList.add(call);
 
-                                call2 = getPointByNum((byte)0); //0
+                                call2 = getPointByNumEnd((byte)0); //0
                                 voiceList.add(call2);
                                 break;
                             case USER_RECORD:
@@ -5029,10 +5029,10 @@ public class GameActivity extends AppCompatActivity{
                     } else { //oppt serve
                         switch (current_voice_type) {
                             case GBR_MAN:
-                                call = getPointByNum((byte)0); //0
+                                call = getPointByNumStart((byte)0); //0
                                 voiceList.add(call);
 
-                                call2 = getPointByNum(down_point);
+                                call2 = getPointByNumEnd(down_point);
                                 voiceList.add(call2);
                                 break;
                             case USER_RECORD:
@@ -5052,13 +5052,13 @@ public class GameActivity extends AppCompatActivity{
                     if (down_serve) { //you serve
                         switch (current_voice_type) {
                             case GBR_MAN:
-                                call = getPointByNum(down_point);
+                                call = getPointByNumStart(down_point);
                                 voiceList.add(call);
 
                                 if (down_point == 1)
-                                    call2 = getPointByNum((byte)100); //all
+                                    call2 = getPointByNumEnd((byte)100); //all
                                 else
-                                    call2 = getPointByNum(up_point); //1
+                                    call2 = getPointByNumEnd(up_point); //1
                                 voiceList.add(call2);
                                 break;
                             case USER_RECORD:
@@ -5083,13 +5083,13 @@ public class GameActivity extends AppCompatActivity{
                     } else { //oppt serve
                         switch (current_voice_type) {
                             case GBR_MAN:
-                                call = getPointByNum(up_point); //1
+                                call = getPointByNumStart(up_point); //1
                                 voiceList.add(call);
 
                                 if (down_point == 1)  //1:1
-                                    call2 = getPointByNum((byte)100); //all
+                                    call2 = getPointByNumEnd((byte)100); //all
                                 else
-                                    call2 = getPointByNum(down_point);
+                                    call2 = getPointByNumEnd(down_point);
 
                                 voiceList.add(call2);
                                 break;
@@ -5117,13 +5117,13 @@ public class GameActivity extends AppCompatActivity{
                     if (down_serve) { //you serve
                         switch (current_voice_type) {
                             case GBR_MAN:
-                                call = getPointByNum(down_point);
+                                call = getPointByNumStart(down_point);
                                 voiceList.add(call);
 
                                 if (down_point == 2)
-                                    call2 = getPointByNum((byte)100); //all
+                                    call2 = getPointByNumEnd((byte)100); //all
                                 else
-                                    call2 = getPointByNum(up_point); //2
+                                    call2 = getPointByNumEnd(up_point); //2
                                 voiceList.add(call2);
                                 break;
                             case USER_RECORD:
@@ -5147,13 +5147,13 @@ public class GameActivity extends AppCompatActivity{
                     } else { //oppt serve
                         switch (current_voice_type) {
                             case GBR_MAN:
-                                call = getPointByNum(up_point); //2
+                                call = getPointByNumStart(up_point); //2
                                 voiceList.add(call);
 
                                 if (down_point == 2)  //2:2
-                                    call2 = getPointByNum((byte)100); //all
+                                    call2 = getPointByNumEnd((byte)100); //all
                                 else
-                                    call2 = getPointByNum(down_point);
+                                    call2 = getPointByNumEnd(down_point);
 
                                 voiceList.add(call2);
                                 break;
@@ -5180,13 +5180,13 @@ public class GameActivity extends AppCompatActivity{
                     if (down_serve) { //you serve
                         switch (current_voice_type) {
                             case GBR_MAN:
-                                call = getPointByNum(down_point);
+                                call = getPointByNumStart(down_point);
                                 voiceList.add(call);
 
                                 if (down_point == 3)
-                                    call2 = getPointByNum((byte)100); //all
+                                    call2 = getPointByNumEnd((byte)100); //all
                                 else
-                                    call2 = getPointByNum(up_point); //3
+                                    call2 = getPointByNumEnd(up_point); //3
                                 voiceList.add(call2);
                                 break;
                             case USER_RECORD:
@@ -5210,13 +5210,13 @@ public class GameActivity extends AppCompatActivity{
                     } else { //oppt serve
                         switch (current_voice_type) {
                             case GBR_MAN:
-                                call = getPointByNum(up_point); //3
+                                call = getPointByNumStart(up_point); //3
                                 voiceList.add(call);
 
                                 if (down_point == 3) { //3:3
-                                    call2 = getPointByNum((byte)100); //all
+                                    call2 = getPointByNumEnd((byte)100); //all
                                 } else {
-                                    call2 = getPointByNum(down_point);
+                                    call2 = getPointByNumEnd(down_point);
                                 }
                                 voiceList.add(call2);
                                 break;
@@ -5243,13 +5243,13 @@ public class GameActivity extends AppCompatActivity{
                     if (down_serve) { //you serve
                         switch (current_voice_type) {
                             case GBR_MAN:
-                                call = getPointByNum(down_point);
+                                call = getPointByNumStart(down_point);
                                 voiceList.add(call);
 
                                 if (down_point == 4)
-                                    call2 = getPointByNum((byte)100); //all
+                                    call2 = getPointByNumEnd((byte)100); //all
                                 else
-                                    call2 = getPointByNum(up_point); //4
+                                    call2 = getPointByNumEnd(up_point); //4
                                 voiceList.add(call2);
                                 break;
                             case USER_RECORD:
@@ -5273,13 +5273,13 @@ public class GameActivity extends AppCompatActivity{
                     } else { //oppt serve
                         switch (current_voice_type) {
                             case GBR_MAN:
-                                call = getPointByNum(up_point); //4
+                                call = getPointByNumStart(up_point); //4
                                 voiceList.add(call);
 
                                 if (down_point == 4) { //4:4
-                                    call2 = getPointByNum((byte)100); //all
+                                    call2 = getPointByNumEnd((byte)100); //all
                                 } else {
-                                    call2 = getPointByNum(down_point);
+                                    call2 = getPointByNumEnd(down_point);
                                 }
                                 voiceList.add(call2);
                                 break;
@@ -5306,13 +5306,13 @@ public class GameActivity extends AppCompatActivity{
                     if (down_serve) { //you serve
                         switch (current_voice_type) {
                             case GBR_MAN:
-                                call = getPointByNum(down_point);
+                                call = getPointByNumStart(down_point);
                                 voiceList.add(call);
 
                                 if (down_point == 5)
-                                    call2 = getPointByNum((byte)100); //all
+                                    call2 = getPointByNumEnd((byte)100); //all
                                 else
-                                    call2 = getPointByNum(up_point); //5
+                                    call2 = getPointByNumEnd(up_point); //5
                                 voiceList.add(call2);
                                 break;
                             case USER_RECORD:
@@ -5336,13 +5336,13 @@ public class GameActivity extends AppCompatActivity{
                     } else { //oppt serve
                         switch (current_voice_type) {
                             case GBR_MAN:
-                                call = getPointByNum(up_point); //5
+                                call = getPointByNumStart(up_point); //5
                                 voiceList.add(call);
 
                                 if (down_point == 5) { //5:5
-                                    call2 = getPointByNum((byte)100); //all
+                                    call2 = getPointByNumEnd((byte)100); //all
                                 } else {
-                                    call2 = getPointByNum(down_point);
+                                    call2 = getPointByNumEnd(down_point);
                                 }
                                 voiceList.add(call2);
                                 break;
@@ -5369,13 +5369,13 @@ public class GameActivity extends AppCompatActivity{
                     if (down_serve) { //you serve
                         switch (current_voice_type) {
                             case GBR_MAN:
-                                call = getPointByNum(down_point);
+                                call = getPointByNumStart(down_point);
                                 voiceList.add(call);
 
                                 if (down_point == 6)
-                                    call2 = getPointByNum((byte)100); //all
+                                    call2 = getPointByNumEnd((byte)100); //all
                                 else
-                                    call2 = getPointByNum(up_point); //6
+                                    call2 = getPointByNumEnd(up_point); //6
                                 voiceList.add(call2);
                                 break;
                             case USER_RECORD:
@@ -5400,13 +5400,13 @@ public class GameActivity extends AppCompatActivity{
                     } else { //oppt serve
                         switch (current_voice_type) {
                             case GBR_MAN:
-                                call = getPointByNum(up_point); //6
+                                call = getPointByNumStart(up_point); //6
                                 voiceList.add(call);
 
                                 if (down_point == 6) { //6:6
-                                    call2 = getPointByNum((byte)100); //all
+                                    call2 = getPointByNumEnd((byte)100); //all
                                 } else {
-                                    call2 = getPointByNum(down_point);
+                                    call2 = getPointByNumEnd(down_point);
                                 }
                                 voiceList.add(call2);
                                 break;
@@ -5438,9 +5438,9 @@ public class GameActivity extends AppCompatActivity{
                         if (up_point <= 20) {
                             switch (current_voice_type) {
                                 case GBR_MAN:
-                                    call = getPointByNum(up_point);
+                                    call = getPointByNumStart(up_point);
                                     voiceList.add(call);
-                                    call2 = getPointByNum((byte)100);
+                                    call2 = getPointByNumEnd((byte)100);
                                     voiceList.add(call2);
                                     break;
                                 case USER_RECORD:
@@ -5456,15 +5456,15 @@ public class GameActivity extends AppCompatActivity{
                             switch (current_voice_type) {
                                 case GBR_MAN:
                                     if (up_point % 10 == 0) { //30, 40, 50, 60, 70, 80, 90
-                                        call = getPointByNum(up_point);
+                                        call = getPointByNumStart(up_point);
                                         voiceList.add(call);
                                     } else {
-                                        call = getPointByNum((byte)(up_point/10*10));
+                                        call = getPointByNumStart((byte)(up_point/10*10));
                                         voiceList.add(call);
-                                        call2 = getPointByNum((byte)(up_point%10));
+                                        call2 = getPointByNumStart((byte)(up_point%10));
                                         voiceList.add(call2);
                                     }
-                                    call3 = getPointByNum((byte)100);
+                                    call3 = getPointByNumEnd((byte)100);
                                     voiceList.add(call3);
                                     break;
                                 case USER_RECORD:
@@ -5487,9 +5487,9 @@ public class GameActivity extends AppCompatActivity{
                             if (down_serve) { //you serve
                                 switch (current_voice_type) {
                                     case GBR_MAN:
-                                        call = getPointByNum(down_point);
+                                        call = getPointByNumStart(down_point);
                                         voiceList.add(call);
-                                        call2 = getPointByNum(up_point);
+                                        call2 = getPointByNumEnd(up_point);
                                         voiceList.add(call2);
                                         break;
                                     case USER_RECORD:
@@ -5505,9 +5505,9 @@ public class GameActivity extends AppCompatActivity{
                             } else { //oppt serve
                                 switch (current_voice_type) {
                                     case GBR_MAN:
-                                        call = getPointByNum(up_point);
+                                        call = getPointByNumStart(up_point);
                                         voiceList.add(call);
-                                        call2 = getPointByNum(down_point);
+                                        call2 = getPointByNumEnd(down_point);
                                         voiceList.add(call2);
                                         break;
                                     case USER_RECORD:
@@ -5525,18 +5525,22 @@ public class GameActivity extends AppCompatActivity{
                             if (down_serve) { //you serve
                                 switch (current_voice_type) {
                                     case GBR_MAN:
-                                        call = getPointByNum((byte)(down_point/10*10));
+                                        call = getPointByNumStart((byte)(down_point/10*10));
                                         voiceList.add(call);
                                         if (down_point%10 > 0) {
-                                            call2 = getPointByNum((byte) (down_point % 10));
+                                            call2 = getPointByNumStart((byte) (down_point % 10));
                                             voiceList.add(call2);
                                         }
 
-                                        call3 = getPointByNum((byte)(up_point/10*10));
-                                        voiceList.add(call3);
+
                                         if (up_point%10 > 0) {
-                                            call4 = getPointByNum((byte) (up_point % 10));
+                                            call3 = getPointByNumStart((byte)(up_point/10*10));
+                                            voiceList.add(call3);
+                                            call4 = getPointByNumEnd((byte) (up_point % 10));
                                             voiceList.add(call4);
+                                        } else {
+                                            call3 = getPointByNumEnd((byte)(up_point/10*10));
+                                            voiceList.add(call3);
                                         }
                                         break;
                                     case USER_RECORD:
@@ -5562,18 +5566,21 @@ public class GameActivity extends AppCompatActivity{
                             } else { //oppt serve
                                 switch (current_voice_type) {
                                     case GBR_MAN:
-                                        call = getPointByNum((byte)(up_point/10*10));
+                                        call = getPointByNumStart((byte)(up_point/10*10));
                                         voiceList.add(call);
                                         if (up_point%10 > 0) {
-                                            call2 = getPointByNum((byte) (up_point % 10));
+                                            call2 = getPointByNumStart((byte) (up_point % 10));
                                             voiceList.add(call2);
                                         }
 
-                                        call3 = getPointByNum((byte)(down_point/10*10));
-                                        voiceList.add(call3);
                                         if (down_point%10 > 0) {
-                                            call4 = getPointByNum((byte) (down_point % 10));
+                                            call3 = getPointByNumStart((byte)(down_point/10*10));
+                                            voiceList.add(call3);
+                                            call4 = getPointByNumEnd((byte) (down_point % 10));
                                             voiceList.add(call4);
+                                        } else {
+                                            call3 = getPointByNumEnd((byte)(down_point/10*10));
+                                            voiceList.add(call3);
                                         }
                                         break;
                                     case USER_RECORD:
@@ -5612,93 +5619,189 @@ public class GameActivity extends AppCompatActivity{
         return call;
     }
 
-    private static int getPointByNum(byte num) {
+    private static int getPointByNumStart(byte num) {
         int call = 0;
 
         switch (num) {
             case 0:
-                call = R.raw.gbr_man_love;
+                call = R.raw.gbr_man_start_love;
                 break;
             case 1:
-                call = R.raw.gbr_man_1;
+                call = R.raw.gbr_man_start_1;
                 break;
             case 2:
-                call = R.raw.gbr_man_2;
+                call = R.raw.gbr_man_start_2;
                 break;
             case 3:
-                call = R.raw.gbr_man_3;
+                call = R.raw.gbr_man_start_3;
                 break;
             case 4:
-                call = R.raw.gbr_man_4;
+                call = R.raw.gbr_man_start_4;
                 break;
             case 5:
-                call = R.raw.gbr_man_5;
+                call = R.raw.gbr_man_start_5;
                 break;
             case 6:
-                call = R.raw.gbr_man_6;
+                call = R.raw.gbr_man_start_6;
                 break;
             case 7:
-                call = R.raw.gbr_man_7;
+                call = R.raw.gbr_man_start_7;
                 break;
             case 8:
-                call = R.raw.gbr_man_8;
+                call = R.raw.gbr_man_start_8;
                 break;
             case 9:
-                call = R.raw.gbr_man_9;
+                call = R.raw.gbr_man_start_9;
                 break;
             case 10:
-                call = R.raw.gbr_man_10;
+                call = R.raw.gbr_man_start_10;
                 break;
             case 11:
-                call = R.raw.gbr_man_11;
+                call = R.raw.gbr_man_start_11;
                 break;
             case 12:
-                call = R.raw.gbr_man_12;
+                call = R.raw.gbr_man_start_12;
                 break;
             case 13:
-                call = R.raw.gbr_man_13;
+                call = R.raw.gbr_man_start_13;
                 break;
             case 14:
-                call = R.raw.gbr_man_14;
+                call = R.raw.gbr_man_start_14;
                 break;
             case 15:
-                call = R.raw.gbr_man_15;
+                call = R.raw.gbr_man_start_15;
                 break;
             case 16:
-                call = R.raw.gbr_man_16;
+                call = R.raw.gbr_man_start_16;
                 break;
             case 17:
-                call = R.raw.gbr_man_17;
+                call = R.raw.gbr_man_start_17;
                 break;
             case 18:
-                call = R.raw.gbr_man_18;
+                call = R.raw.gbr_man_start_18;
                 break;
             case 19:
-                call = R.raw.gbr_man_19;
+                call = R.raw.gbr_man_start_19;
                 break;
             case 20:
-                call = R.raw.gbr_man_20;
+                call = R.raw.gbr_man_start_20;
                 break;
             case 30:
-                call = R.raw.gbr_man_30;
+                call = R.raw.gbr_man_start_30;
                 break;
             case 40:
-                call = R.raw.gbr_man_40;
+                call = R.raw.gbr_man_start_40;
                 break;
             case 50:
-                call = R.raw.gbr_man_50;
+                call = R.raw.gbr_man_start_50;
                 break;
             case 60:
-                call = R.raw.gbr_man_60;
+                call = R.raw.gbr_man_start_60;
                 break;
             case 70:
-                call = R.raw.gbr_man_70;
+                call = R.raw.gbr_man_start_70;
                 break;
             case 80:
-                call = R.raw.gbr_man_80;
+                call = R.raw.gbr_man_start_80;
                 break;
             case 90:
-                call = R.raw.gbr_man_90;
+                call = R.raw.gbr_man_start_90;
+                break;
+            //case 100:
+            //    call = R.raw.gbr_man_all;
+            //    break;
+        }
+
+        return call;
+    }
+
+    private static int getPointByNumEnd(byte num) {
+        int call = 0;
+
+        switch (num) {
+            case 0:
+                call = R.raw.gbr_man_end_love;
+                break;
+            case 1:
+                call = R.raw.gbr_man_end_1;
+                break;
+            case 2:
+                call = R.raw.gbr_man_end_2;
+                break;
+            case 3:
+                call = R.raw.gbr_man_end_3;
+                break;
+            case 4:
+                call = R.raw.gbr_man_end_4;
+                break;
+            case 5:
+                call = R.raw.gbr_man_end_5;
+                break;
+            case 6:
+                call = R.raw.gbr_man_end_6;
+                break;
+            case 7:
+                call = R.raw.gbr_man_end_7;
+                break;
+            case 8:
+                call = R.raw.gbr_man_end_8;
+                break;
+            case 9:
+                call = R.raw.gbr_man_end_9;
+                break;
+            case 10:
+                call = R.raw.gbr_man_end_10;
+                break;
+            case 11:
+                call = R.raw.gbr_man_end_11;
+                break;
+            case 12:
+                call = R.raw.gbr_man_end_12;
+                break;
+            case 13:
+                call = R.raw.gbr_man_end_13;
+                break;
+            case 14:
+                call = R.raw.gbr_man_end_14;
+                break;
+            case 15:
+                call = R.raw.gbr_man_end_15;
+                break;
+            case 16:
+                call = R.raw.gbr_man_end_16;
+                break;
+            case 17:
+                call = R.raw.gbr_man_end_17;
+                break;
+            case 18:
+                call = R.raw.gbr_man_end_18;
+                break;
+            case 19:
+                call = R.raw.gbr_man_end_19;
+                break;
+            case 20:
+                call = R.raw.gbr_man_end_20;
+                break;
+            case 30:
+                call = R.raw.gbr_man_end_30;
+                break;
+            case 40:
+                call = R.raw.gbr_man_end_40;
+                break;
+            case 50:
+                call = R.raw.gbr_man_end_50;
+                break;
+            case 60:
+                call = R.raw.gbr_man_end_60;
+                break;
+            case 70:
+                call = R.raw.gbr_man_end_70;
+                break;
+            case 80:
+                call = R.raw.gbr_man_end_80;
+                break;
+            case 90:
+                call = R.raw.gbr_man_end_90;
                 break;
             case 100:
                 call = R.raw.gbr_man_all;
@@ -5813,7 +5916,7 @@ public class GameActivity extends AppCompatActivity{
             if (games.equals("0")) { //6 game in a set
                 switch (current_voice_type) {
                     case GBR_MAN:
-                        gameCall = R.raw.gbr_man_6;
+                        gameCall = R.raw.gbr_man_start_6;
                         voiceList.add(gameCall);
                         gameCall2 = R.raw.gbr_man_all;
                         voiceList.add(gameCall2);
@@ -5832,7 +5935,7 @@ public class GameActivity extends AppCompatActivity{
             } else { //4 game in a set
                 switch (current_voice_type) {
                     case GBR_MAN:
-                        gameCall = R.raw.gbr_man_4;
+                        gameCall = R.raw.gbr_man_start_4;
                         voiceList.add(gameCall);
                         gameCall2 = R.raw.gbr_man_all;
                         voiceList.add(gameCall2);
@@ -5858,9 +5961,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_1;
+                            gameCall = R.raw.gbr_man_start_1;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_love;
+                            gameCall2 = R.raw.gbr_man_end_love;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -5876,9 +5979,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_love;
+                            gameCall = R.raw.gbr_man_start_love;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_1;
+                            gameCall2 = R.raw.gbr_man_end_1;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -5896,9 +5999,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_2;
+                            gameCall = R.raw.gbr_man_start_2;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_love;
+                            gameCall2 = R.raw.gbr_man_end_love;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -5914,9 +6017,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_love;
+                            gameCall = R.raw.gbr_man_start_love;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_2;
+                            gameCall2 = R.raw.gbr_man_end_2;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -5934,9 +6037,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_3;
+                            gameCall = R.raw.gbr_man_start_3;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_love;
+                            gameCall2 = R.raw.gbr_man_end_love;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -5952,9 +6055,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_love;
+                            gameCall = R.raw.gbr_man_start_love;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_3;
+                            gameCall2 = R.raw.gbr_man_end_3;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -5972,9 +6075,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_4;
+                            gameCall = R.raw.gbr_man_start_4;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_love;
+                            gameCall2 = R.raw.gbr_man_end_love;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -5991,9 +6094,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_love;
+                            gameCall = R.raw.gbr_man_start_love;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_4;
+                            gameCall2 = R.raw.gbr_man_end_4;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6011,9 +6114,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_5;
+                            gameCall = R.raw.gbr_man_start_5;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_love;
+                            gameCall2 = R.raw.gbr_man_end_love;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6029,9 +6132,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_love;
+                            gameCall = R.raw.gbr_man_start_love;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_5;
+                            gameCall2 = R.raw.gbr_man_end_5;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6049,9 +6152,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_6;
+                            gameCall = R.raw.gbr_man_start_6;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_love;
+                            gameCall2 = R.raw.gbr_man_end_love;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6067,9 +6170,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_love;
+                            gameCall = R.raw.gbr_man_start_love;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_6;
+                            gameCall2 = R.raw.gbr_man_end_6;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6087,9 +6190,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_love;
+                            gameCall = R.raw.gbr_man_start_love;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_1;
+                            gameCall2 = R.raw.gbr_man_end_1;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6105,9 +6208,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_1;
+                            gameCall = R.raw.gbr_man_start_1;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_love;
+                            gameCall2 = R.raw.gbr_man_end_love;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6124,7 +6227,7 @@ public class GameActivity extends AppCompatActivity{
             } else if (gameUp == 1 && gameDown == 1) { //1:1
                 switch (current_voice_type) {
                     case GBR_MAN:
-                        gameCall = R.raw.gbr_man_1;
+                        gameCall = R.raw.gbr_man_start_1;
                         voiceList.add(gameCall);
                         gameCall2 = R.raw.gbr_man_all;
                         voiceList.add(gameCall2);
@@ -6142,9 +6245,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_2;
+                            gameCall = R.raw.gbr_man_start_2;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_1;
+                            gameCall2 = R.raw.gbr_man_end_1;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6160,9 +6263,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_1;
+                            gameCall = R.raw.gbr_man_start_1;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_2;
+                            gameCall2 = R.raw.gbr_man_end_2;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6180,9 +6283,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_3;
+                            gameCall = R.raw.gbr_man_start_3;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_1;
+                            gameCall2 = R.raw.gbr_man_end_1;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6198,9 +6301,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_1;
+                            gameCall = R.raw.gbr_man_start_1;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_3;
+                            gameCall2 = R.raw.gbr_man_end_3;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6218,9 +6321,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_4;
+                            gameCall = R.raw.gbr_man_start_4;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_1;
+                            gameCall2 = R.raw.gbr_man_end_1;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6236,9 +6339,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_1;
+                            gameCall = R.raw.gbr_man_start_1;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_4;
+                            gameCall2 = R.raw.gbr_man_end_4;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6256,9 +6359,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_5;
+                            gameCall = R.raw.gbr_man_start_5;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_1;
+                            gameCall2 = R.raw.gbr_man_end_1;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6274,9 +6377,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_1;
+                            gameCall = R.raw.gbr_man_start_1;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_5;
+                            gameCall2 = R.raw.gbr_man_end_5;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6294,9 +6397,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_6;
+                            gameCall = R.raw.gbr_man_start_6;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_1;
+                            gameCall2 = R.raw.gbr_man_end_1;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6312,9 +6415,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_1;
+                            gameCall = R.raw.gbr_man_start_1;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_6;
+                            gameCall2 = R.raw.gbr_man_end_6;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6332,9 +6435,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_love;
+                            gameCall = R.raw.gbr_man_start_love;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_2;
+                            gameCall2 = R.raw.gbr_man_end_2;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6350,9 +6453,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_2;
+                            gameCall = R.raw.gbr_man_start_2;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_love;
+                            gameCall2 = R.raw.gbr_man_end_love;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6370,9 +6473,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_1;
+                            gameCall = R.raw.gbr_man_start_1;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_2;
+                            gameCall2 = R.raw.gbr_man_end_2;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6388,9 +6491,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_2;
+                            gameCall = R.raw.gbr_man_start_2;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_1;
+                            gameCall2 = R.raw.gbr_man_end_1;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6407,7 +6510,7 @@ public class GameActivity extends AppCompatActivity{
             } else if (gameUp == 2 && gameDown == 2) { //2:2
                 switch (current_voice_type) {
                     case GBR_MAN:
-                        gameCall = R.raw.gbr_man_2;
+                        gameCall = R.raw.gbr_man_start_2;
                         voiceList.add(gameCall);
                         gameCall2 = R.raw.gbr_man_all;
                         voiceList.add(gameCall2);
@@ -6423,9 +6526,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_3;
+                            gameCall = R.raw.gbr_man_start_3;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_2;
+                            gameCall2 = R.raw.gbr_man_end_2;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6441,9 +6544,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_2;
+                            gameCall = R.raw.gbr_man_start_2;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_3;
+                            gameCall2 = R.raw.gbr_man_end_3;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6461,9 +6564,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_4;
+                            gameCall = R.raw.gbr_man_start_4;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_2;
+                            gameCall2 = R.raw.gbr_man_end_2;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6479,9 +6582,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_2;
+                            gameCall = R.raw.gbr_man_start_2;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_4;
+                            gameCall2 = R.raw.gbr_man_end_4;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6499,9 +6602,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_5;
+                            gameCall = R.raw.gbr_man_start_5;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_2;
+                            gameCall2 = R.raw.gbr_man_end_2;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6517,9 +6620,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_2;
+                            gameCall = R.raw.gbr_man_start_2;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_5;
+                            gameCall2 = R.raw.gbr_man_end_5;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6537,9 +6640,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_6;
+                            gameCall = R.raw.gbr_man_start_6;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_2;
+                            gameCall2 = R.raw.gbr_man_end_2;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6555,9 +6658,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_2;
+                            gameCall = R.raw.gbr_man_start_2;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_6;
+                            gameCall2 = R.raw.gbr_man_end_6;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6575,9 +6678,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_love;
+                            gameCall = R.raw.gbr_man_start_love;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_3;
+                            gameCall2 = R.raw.gbr_man_end_3;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6593,9 +6696,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_3;
+                            gameCall = R.raw.gbr_man_start_3;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_love;
+                            gameCall2 = R.raw.gbr_man_end_love;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6613,9 +6716,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_1;
+                            gameCall = R.raw.gbr_man_start_1;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_3;
+                            gameCall2 = R.raw.gbr_man_end_3;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6631,9 +6734,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_3;
+                            gameCall = R.raw.gbr_man_start_3;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_1;
+                            gameCall2 = R.raw.gbr_man_end_1;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6651,9 +6754,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_2;
+                            gameCall = R.raw.gbr_man_start_2;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_3;
+                            gameCall2 = R.raw.gbr_man_end_3;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6669,9 +6772,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_3;
+                            gameCall = R.raw.gbr_man_start_3;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_2;
+                            gameCall2 = R.raw.gbr_man_end_2;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6688,7 +6791,7 @@ public class GameActivity extends AppCompatActivity{
             } else if (gameUp == 3 && gameDown == 3) { //3:3
                 switch (current_voice_type) {
                     case GBR_MAN:
-                        gameCall = R.raw.gbr_man_3;
+                        gameCall = R.raw.gbr_man_start_3;
                         voiceList.add(gameCall);
                         gameCall2 = R.raw.gbr_man_all;
                         voiceList.add(gameCall2);
@@ -6704,9 +6807,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_4;
+                            gameCall = R.raw.gbr_man_start_4;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_3;
+                            gameCall2 = R.raw.gbr_man_end_3;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6722,9 +6825,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_3;
+                            gameCall = R.raw.gbr_man_start_3;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_4;
+                            gameCall2 = R.raw.gbr_man_end_4;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6742,9 +6845,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_5;
+                            gameCall = R.raw.gbr_man_start_5;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_3;
+                            gameCall2 = R.raw.gbr_man_end_3;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6760,9 +6863,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_3;
+                            gameCall = R.raw.gbr_man_start_3;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_5;
+                            gameCall2 = R.raw.gbr_man_end_5;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6780,9 +6883,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_6;
+                            gameCall = R.raw.gbr_man_start_6;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_3;
+                            gameCall2 = R.raw.gbr_man_end_3;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6798,9 +6901,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_3;
+                            gameCall = R.raw.gbr_man_start_3;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_6;
+                            gameCall2 = R.raw.gbr_man_end_6;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6818,9 +6921,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_love;
+                            gameCall = R.raw.gbr_man_start_love;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_4;
+                            gameCall2 = R.raw.gbr_man_end_4;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6836,9 +6939,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_4;
+                            gameCall = R.raw.gbr_man_start_4;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_love;
+                            gameCall2 = R.raw.gbr_man_end_love;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6856,9 +6959,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_1;
+                            gameCall = R.raw.gbr_man_start_1;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_4;
+                            gameCall2 = R.raw.gbr_man_end_4;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6874,9 +6977,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_4;
+                            gameCall = R.raw.gbr_man_start_4;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_1;
+                            gameCall2 = R.raw.gbr_man_end_1;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6895,9 +6998,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_2;
+                            gameCall = R.raw.gbr_man_start_2;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_4;
+                            gameCall2 = R.raw.gbr_man_end_4;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6913,9 +7016,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_4;
+                            gameCall = R.raw.gbr_man_start_4;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_2;
+                            gameCall2 = R.raw.gbr_man_end_2;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6933,9 +7036,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_3;
+                            gameCall = R.raw.gbr_man_start_3;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_4;
+                            gameCall2 = R.raw.gbr_man_end_4;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6951,9 +7054,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_4;
+                            gameCall = R.raw.gbr_man_start_4;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_3;
+                            gameCall2 = R.raw.gbr_man_end_3;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6970,7 +7073,7 @@ public class GameActivity extends AppCompatActivity{
             } else if (gameUp == 4 && gameDown == 4) { //4:4
                 switch (current_voice_type) {
                     case GBR_MAN:
-                        gameCall = R.raw.gbr_man_4;
+                        gameCall = R.raw.gbr_man_start_4;
                         voiceList.add(gameCall);
                         gameCall2 = R.raw.gbr_man_all;
                         voiceList.add(gameCall2);
@@ -6987,9 +7090,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_5;
+                            gameCall = R.raw.gbr_man_start_5;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_4;
+                            gameCall2 = R.raw.gbr_man_end_4;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7006,9 +7109,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_4;
+                            gameCall = R.raw.gbr_man_start_4;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_5;
+                            gameCall2 = R.raw.gbr_man_end_5;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7026,9 +7129,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_6;
+                            gameCall = R.raw.gbr_man_start_6;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_4;
+                            gameCall2 = R.raw.gbr_man_end_4;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7044,9 +7147,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_4;
+                            gameCall = R.raw.gbr_man_start_4;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_6;
+                            gameCall2 = R.raw.gbr_man_end_6;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7064,9 +7167,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_love;
+                            gameCall = R.raw.gbr_man_start_love;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_5;
+                            gameCall2 = R.raw.gbr_man_end_5;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7082,9 +7185,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_5;
+                            gameCall = R.raw.gbr_man_start_5;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_love;
+                            gameCall2 = R.raw.gbr_man_end_love;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7102,9 +7205,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_1;
+                            gameCall = R.raw.gbr_man_start_1;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_5;
+                            gameCall2 = R.raw.gbr_man_end_5;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7120,9 +7223,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_5;
+                            gameCall = R.raw.gbr_man_start_5;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_1;
+                            gameCall2 = R.raw.gbr_man_end_1;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7140,9 +7243,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_2;
+                            gameCall = R.raw.gbr_man_start_2;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_5;
+                            gameCall2 = R.raw.gbr_man_end_5;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7158,9 +7261,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_5;
+                            gameCall = R.raw.gbr_man_start_5;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_2;
+                            gameCall2 = R.raw.gbr_man_end_2;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7178,9 +7281,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_3;
+                            gameCall = R.raw.gbr_man_start_3;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_5;
+                            gameCall2 = R.raw.gbr_man_end_5;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7196,9 +7299,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_5;
+                            gameCall = R.raw.gbr_man_start_5;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_3;
+                            gameCall2 = R.raw.gbr_man_end_3;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7216,9 +7319,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_4;
+                            gameCall = R.raw.gbr_man_start_4;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_5;
+                            gameCall2 = R.raw.gbr_man_end_5;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7234,9 +7337,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_5;
+                            gameCall = R.raw.gbr_man_start_5;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_4;
+                            gameCall2 = R.raw.gbr_man_end_4;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7253,7 +7356,7 @@ public class GameActivity extends AppCompatActivity{
             } else if (gameUp == 5 && gameDown == 5) { //5:5
                 switch (current_voice_type) {
                     case GBR_MAN:
-                        gameCall = R.raw.gbr_man_5;
+                        gameCall = R.raw.gbr_man_start_5;
                         voiceList.add(gameCall);
                         gameCall2 = R.raw.gbr_man_all;
                         voiceList.add(gameCall2);
@@ -7269,9 +7372,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_6;
+                            gameCall = R.raw.gbr_man_start_6;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_5;
+                            gameCall2 = R.raw.gbr_man_end_5;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7287,9 +7390,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_5;
+                            gameCall = R.raw.gbr_man_start_5;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_6;
+                            gameCall2 = R.raw.gbr_man_end_6;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7307,9 +7410,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_7;
+                            gameCall = R.raw.gbr_man_start_7;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_5;
+                            gameCall2 = R.raw.gbr_man_end_5;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7325,9 +7428,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_5;
+                            gameCall = R.raw.gbr_man_start_5;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_7;
+                            gameCall2 = R.raw.gbr_man_start_7;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7345,9 +7448,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_love;
+                            gameCall = R.raw.gbr_man_start_love;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_6;
+                            gameCall2 = R.raw.gbr_man_end_6;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7364,9 +7467,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_6;
+                            gameCall = R.raw.gbr_man_start_6;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_love;
+                            gameCall2 = R.raw.gbr_man_end_love;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7384,9 +7487,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_1;
+                            gameCall = R.raw.gbr_man_start_1;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_6;
+                            gameCall2 = R.raw.gbr_man_end_6;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7402,9 +7505,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_6;
+                            gameCall = R.raw.gbr_man_start_6;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_1;
+                            gameCall2 = R.raw.gbr_man_end_1;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7422,9 +7525,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_2;
+                            gameCall = R.raw.gbr_man_start_2;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_6;
+                            gameCall2 = R.raw.gbr_man_end_6;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7439,9 +7542,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_6;
+                            gameCall = R.raw.gbr_man_start_6;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_2;
+                            gameCall2 = R.raw.gbr_man_end_2;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7459,7 +7562,7 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_3;
+                            gameCall = R.raw.gbr_man_start_3;
                             voiceList.add(gameCall);
                             gameCall2 = R.raw.gbr_man_6;
                             voiceList.add(gameCall2);
@@ -7477,9 +7580,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_6;
+                            gameCall = R.raw.gbr_man_start_6;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_3;
+                            gameCall2 = R.raw.gbr_man_end_3;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7497,9 +7600,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_4;
+                            gameCall = R.raw.gbr_man_start_4;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_6;
+                            gameCall2 = R.raw.gbr_man_end_6;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7515,9 +7618,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_6;
+                            gameCall = R.raw.gbr_man_start_6;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_4;
+                            gameCall2 = R.raw.gbr_man_end_4;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7535,9 +7638,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_5;
+                            gameCall = R.raw.gbr_man_start_5;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_6;
+                            gameCall2 = R.raw.gbr_man_end_6;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7553,9 +7656,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_6;
+                            gameCall = R.raw.gbr_man_start_6;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_5;
+                            gameCall2 = R.raw.gbr_man_end_5;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7572,7 +7675,7 @@ public class GameActivity extends AppCompatActivity{
             } else if (gameUp == 6 && gameDown == 6) { //6:6
                 switch (current_voice_type) {
                     case GBR_MAN:
-                        gameCall = R.raw.gbr_man_6;
+                        gameCall = R.raw.gbr_man_start_6;
                         voiceList.add(gameCall);
                         gameCall2 = R.raw.gbr_man_all;
                         voiceList.add(gameCall2);
@@ -7588,9 +7691,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_7;
+                            gameCall = R.raw.gbr_man_start_7;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_6;
+                            gameCall2 = R.raw.gbr_man_end_6;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7606,9 +7709,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_6;
+                            gameCall = R.raw.gbr_man_start_6;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_7;
+                            gameCall2 = R.raw.gbr_man_end_7;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7626,9 +7729,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_5;
+                            gameCall = R.raw.gbr_man_start_5;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_7;
+                            gameCall2 = R.raw.gbr_man_end_7;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7643,9 +7746,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_7;
+                            gameCall = R.raw.gbr_man_start_7;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_5;
+                            gameCall2 = R.raw.gbr_man_end_5;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7663,9 +7766,9 @@ public class GameActivity extends AppCompatActivity{
                 if (down_serve) { //down serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_6;
+                            gameCall = R.raw.gbr_man_start_6;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_7;
+                            gameCall2 = R.raw.gbr_man_end_7;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7681,9 +7784,9 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_7;
+                            gameCall = R.raw.gbr_man_start_7;
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_6;
+                            gameCall2 = R.raw.gbr_man_end_6;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -8758,7 +8861,7 @@ public class GameActivity extends AppCompatActivity{
         voice_item = menu.findItem(R.id.action_voice_onOff);
         voice_support_item = menu.findItem(R.id.action_voice_support);
 
-        voice_support_item.setVisible(false);
+        voice_support_item.setVisible(true);
 
         if (voice_item != null) {
             if (voiceOn) {
