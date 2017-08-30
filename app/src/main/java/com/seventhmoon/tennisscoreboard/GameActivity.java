@@ -8861,7 +8861,7 @@ public class GameActivity extends AppCompatActivity{
         voice_item = menu.findItem(R.id.action_voice_onOff);
         voice_support_item = menu.findItem(R.id.action_voice_support);
 
-        voice_support_item.setVisible(true);
+        voice_support_item.setVisible(false);
 
         if (voice_item != null) {
             if (voiceOn) {
