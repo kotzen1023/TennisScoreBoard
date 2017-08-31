@@ -50,10 +50,12 @@ public class CurrentStatActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.statistics_current);
 
+        //String set = "0";
+
         Intent intent = getIntent();
         final String playerUp = intent.getStringExtra("PLAYER_UP");
         final String playerDown = intent.getStringExtra("PLAYER_DOWN");
-        final String set = intent.getStringExtra("TOTAL_SETS");
+        String set = intent.getStringExtra("TOTAL_SETS");
 
         currentArray.clear();
 
@@ -66,67 +68,72 @@ public class CurrentStatActivity extends AppCompatActivity{
 
         byte thisSet = 6;
 
+        if (set != null) {
 
-        switch (set) {
-            case "0": // 1 set
-                first_set_stat = stack.peek();
-                break;
-            case "1": //3 set
-                for(State s : stack) {
+            switch (set) {
+                case "0": // 1 set
+                    first_set_stat = stack.peek();
+                    break;
+                case "1": //3 set
+                    for (State s : stack) {
 
-                    if (s.getCurrent_set() < thisSet ) {
-                        Log.d(TAG, "set "+thisSet+" -> set "+s.getCurrent_set());
-                        if (s.getCurrent_set() == 3) {
-                            third_set_stat = s;
-                        } else if (s.getCurrent_set() == 2) {
-                            second_set_stat = s;
+                        if (s.getCurrent_set() < thisSet) {
+                            Log.d(TAG, "set " + thisSet + " -> set " + s.getCurrent_set());
+                            if (s.getCurrent_set() == 3) {
+                                third_set_stat = s;
+                            } else if (s.getCurrent_set() == 2) {
+                                second_set_stat = s;
+                            } else {
+                                first_set_stat = s;
+                            }
                         } else {
-                            first_set_stat = s;
+                            Log.d(TAG, "current_set = " + s.getCurrent_set());
+                            if (s.getCurrent_set() == 2) {
+                                prev_first_set_stat = s;
+                            } else if (s.getCurrent_set() == 3) {
+                                prev_second_set_stat = s;
+                            }
                         }
-                    } else {
-                        Log.d(TAG, "current_set = "+s.getCurrent_set());
-                        if (s.getCurrent_set() == 2) {
-                            prev_first_set_stat = s;
-                        } else if (s.getCurrent_set() == 3) {
-                            prev_second_set_stat = s;
-                        }
+                        thisSet = s.getCurrent_set();
                     }
-                    thisSet = s.getCurrent_set();
-                }
-                break;
-            case "2": // 5 set
-                for(State s : stack) {
+                    break;
+                case "2": // 5 set
+                    for (State s : stack) {
 
-                    if (s.getCurrent_set() < thisSet ) {
-                        Log.d(TAG, "set "+thisSet+" -> set "+s.getCurrent_set());
-                        if (s.getCurrent_set() == 5) {
-                            fifth_set_stat = s;
-                        } else if (s.getCurrent_set() == 4) {
-                            forth_set_stat = s;
-                        } else if (s.getCurrent_set() == 3) {
-                            third_set_stat = s;
-                        } else if (s.getCurrent_set() == 2) {
-                            second_set_stat = s;
+                        if (s.getCurrent_set() < thisSet) {
+                            Log.d(TAG, "set " + thisSet + " -> set " + s.getCurrent_set());
+                            if (s.getCurrent_set() == 5) {
+                                fifth_set_stat = s;
+                            } else if (s.getCurrent_set() == 4) {
+                                forth_set_stat = s;
+                            } else if (s.getCurrent_set() == 3) {
+                                third_set_stat = s;
+                            } else if (s.getCurrent_set() == 2) {
+                                second_set_stat = s;
+                            } else {
+                                first_set_stat = s;
+                            }
                         } else {
-                            first_set_stat = s;
+                            Log.d(TAG, "current_set = " + s.getCurrent_set());
+                            if (s.getCurrent_set() == 2) {
+                                prev_first_set_stat = s;
+                            } else if (s.getCurrent_set() == 3) {
+                                prev_second_set_stat = s;
+                            } else if (s.getCurrent_set() == 4) {
+                                prev_third_set_stat = s;
+                            } else if (s.getCurrent_set() == 5) {
+                                prev_forth_set_stat = s;
+                            }
                         }
-                    } else {
-                        Log.d(TAG, "current_set = "+s.getCurrent_set());
-                        if (s.getCurrent_set() == 2) {
-                            prev_first_set_stat = s;
-                        } else if (s.getCurrent_set() == 3) {
-                            prev_second_set_stat = s;
-                        } else if (s.getCurrent_set() == 4) {
-                            prev_third_set_stat = s;
-                        } else if (s.getCurrent_set() == 5) {
-                            prev_forth_set_stat = s;
-                        }
+                        thisSet = s.getCurrent_set();
                     }
-                    thisSet = s.getCurrent_set();
-                }
-                break;
-            default:
-                break;
+                    break;
+                default:
+                    first_set_stat = stack.peek();
+                    break;
+            }
+        } else {
+            first_set_stat = stack.peek();
         }
 
 
