@@ -1781,8 +1781,12 @@ public class GameActivity extends AppCompatActivity{
             loadDialog = null;
         }
 
-        voicePlay.doExit();
-        voicePlay = null;
+        if (voicePlay != null) {
+            voicePlay.doExit();
+            voicePlay = null;
+        }
+
+
 
         super.onDestroy();
 
@@ -8704,29 +8708,54 @@ public class GameActivity extends AppCompatActivity{
                         boolean is_deuce;
                         boolean is_firstServe;
 
-                        switch (tiebreak) {
-                            case "0":
-                                is_tiebreak = true;
-                                break;
-                            default:
-                                is_tiebreak = false;
+                        if (tiebreak != null) {
+
+                            switch (tiebreak) {
+                                case "0":
+                                    is_tiebreak = true;
+                                    break;
+                                case "1":
+                                    is_tiebreak = false;
+                                    break;
+                                default:
+                                    is_tiebreak = true;
+                                    break;
+                            }
+                        } else {
+                            is_tiebreak = true;
                         }
 
-
-                        switch (deuce) {
-                            case "0":
-                                is_deuce = true;
-                                break;
-                            default:
-                                is_deuce = false;
+                        if (deuce != null) {
+                            switch (deuce) {
+                                case "0":
+                                    is_deuce = true;
+                                    break;
+                                case "1":
+                                    is_deuce = false;
+                                    break;
+                                default:
+                                    is_deuce = true;
+                                    break;
+                            }
+                        } else {
+                            is_deuce = true;
                         }
 
-                        switch (serve) {
-                            case "0":
-                                is_firstServe = true;
-                                break;
-                            default:
-                                is_firstServe = false;
+                        if (serve != null) {
+
+                            switch (serve) {
+                                case "0":
+                                    is_firstServe = true;
+                                    break;
+                                case "1":
+                                    is_firstServe = false;
+                                    break;
+                                default:
+                                    is_firstServe = true;
+                                    break;
+                            }
+                        } else {
+                            is_firstServe = true;
                         }
 
 
