@@ -5927,6 +5927,14 @@ public class GameActivity extends AppCompatActivity{
                         gameCall3 = R.raw.gbr_man_tiebreak;
                         voiceList.add(gameCall3);
                         break;
+                    case GBR_WOMAN:
+                        gameCall = R.raw.gbr_woman_start_6;
+                        voiceList.add(gameCall);
+                        gameCall2 = R.raw.gbr_woman_all;
+                        voiceList.add(gameCall2);
+                        gameCall3 = R.raw.gbr_woman_tiebreak;
+                        voiceList.add(gameCall3);
+                        break;
                     case USER_RECORD:
                         fileName0 = "user_6.m4a";
                         voiceUserList.add(fileName0);
@@ -5944,6 +5952,14 @@ public class GameActivity extends AppCompatActivity{
                         gameCall2 = R.raw.gbr_man_all;
                         voiceList.add(gameCall2);
                         gameCall3 = R.raw.gbr_man_tiebreak;
+                        voiceList.add(gameCall3);
+                        break;
+                    case GBR_WOMAN:
+                        gameCall = R.raw.gbr_woman_start_4;
+                        voiceList.add(gameCall);
+                        gameCall2 = R.raw.gbr_woman_all;
+                        voiceList.add(gameCall2);
+                        gameCall3 = R.raw.gbr_woman_tiebreak;
                         voiceList.add(gameCall3);
                         break;
                     case USER_RECORD:
@@ -5970,6 +5986,12 @@ public class GameActivity extends AppCompatActivity{
                             gameCall2 = R.raw.gbr_man_end_love;
                             voiceList.add(gameCall2);
                             break;
+                        case GBR_WOMAN:
+                            gameCall = R.raw.gbr_woman_start_1;
+                            voiceList.add(gameCall);
+                            gameCall2 = R.raw.gbr_woman_end_love;
+                            voiceList.add(gameCall2);
+                            break;
                         case USER_RECORD:
                             fileName0 = "user_1.m4a";
                             voiceUserList.add(fileName0);
@@ -5986,6 +6008,12 @@ public class GameActivity extends AppCompatActivity{
                             gameCall = R.raw.gbr_man_start_love;
                             voiceList.add(gameCall);
                             gameCall2 = R.raw.gbr_man_end_1;
+                            voiceList.add(gameCall2);
+                            break;
+                        case GBR_WOMAN:
+                            gameCall = R.raw.gbr_woman_start_love;
+                            voiceList.add(gameCall);
+                            gameCall2 = R.raw.gbr_woman_end_1;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6008,6 +6036,12 @@ public class GameActivity extends AppCompatActivity{
                             gameCall2 = R.raw.gbr_man_end_love;
                             voiceList.add(gameCall2);
                             break;
+                        case GBR_WOMAN:
+                            gameCall = R.raw.gbr_woman_start_love;
+                            voiceList.add(gameCall);
+                            gameCall2 = R.raw.gbr_woman_end_2;
+                            voiceList.add(gameCall2);
+                            break;
                         case USER_RECORD:
                             fileName0 = "user_2.m4a";
                             voiceUserList.add(fileName0);
@@ -6024,6 +6058,12 @@ public class GameActivity extends AppCompatActivity{
                             gameCall = R.raw.gbr_man_start_love;
                             voiceList.add(gameCall);
                             gameCall2 = R.raw.gbr_man_end_2;
+                            voiceList.add(gameCall2);
+                            break;
+                        case GBR_WOMAN:
+                            gameCall = R.raw.gbr_woman_start_love;
+                            voiceList.add(gameCall);
+                            gameCall2 = R.raw.gbr_woman_end_2;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6046,6 +6086,12 @@ public class GameActivity extends AppCompatActivity{
                             gameCall2 = R.raw.gbr_man_end_love;
                             voiceList.add(gameCall2);
                             break;
+                        case GBR_WOMAN:
+                            gameCall = R.raw.gbr_woman_start_3;
+                            voiceList.add(gameCall);
+                            gameCall2 = R.raw.gbr_woman_end_love;
+                            voiceList.add(gameCall2);
+                            break;
                         case USER_RECORD:
                             fileName0 = "user_3.m4a";
                             voiceUserList.add(fileName0);
@@ -6062,6 +6108,12 @@ public class GameActivity extends AppCompatActivity{
                             gameCall = R.raw.gbr_man_start_love;
                             voiceList.add(gameCall);
                             gameCall2 = R.raw.gbr_man_end_3;
+                            voiceList.add(gameCall2);
+                            break;
+                        case GBR_WOMAN:
+                            gameCall = R.raw.gbr_woman_start_love;
+                            voiceList.add(gameCall);
+                            gameCall2 = R.raw.gbr_woman_end_3;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6084,6 +6136,12 @@ public class GameActivity extends AppCompatActivity{
                             gameCall2 = R.raw.gbr_man_end_love;
                             voiceList.add(gameCall2);
                             break;
+                        case GBR_WOMAN:
+                            gameCall = R.raw.gbr_woman_start_4;
+                            voiceList.add(gameCall);
+                            gameCall2 = R.raw.gbr_woman_end_love;
+                            voiceList.add(gameCall2);
+                            break;
                         case USER_RECORD:
                             fileName0 = "user_4.m4a";
                             voiceUserList.add(fileName0);
@@ -6101,6 +6159,12 @@ public class GameActivity extends AppCompatActivity{
                             gameCall = R.raw.gbr_man_start_love;
                             voiceList.add(gameCall);
                             gameCall2 = R.raw.gbr_man_end_4;
+                            voiceList.add(gameCall2);
+                            break;
+                        case GBR_WOMAN:
+                            gameCall = R.raw.gbr_woman_start_love;
+                            voiceList.add(gameCall);
+                            gameCall2 = R.raw.gbr_woman_end_4;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6123,6 +6187,12 @@ public class GameActivity extends AppCompatActivity{
                             gameCall2 = R.raw.gbr_man_end_love;
                             voiceList.add(gameCall2);
                             break;
+                        case GBR_WOMAN:
+                            gameCall = R.raw.gbr_woman_start_5;
+                            voiceList.add(gameCall);
+                            gameCall2 = R.raw.gbr_woman_end_love;
+                            voiceList.add(gameCall2);
+                            break;
                         case USER_RECORD:
                             fileName0 = "user_5.m4a";
                             voiceUserList.add(fileName0);
@@ -6139,6 +6209,12 @@ public class GameActivity extends AppCompatActivity{
                             gameCall = R.raw.gbr_man_start_love;
                             voiceList.add(gameCall);
                             gameCall2 = R.raw.gbr_man_end_5;
+                            voiceList.add(gameCall2);
+                            break;
+                        case GBR_WOMAN:
+                            gameCall = R.raw.gbr_woman_start_love;
+                            voiceList.add(gameCall);
+                            gameCall2 = R.raw.gbr_woman_end_5;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6161,6 +6237,12 @@ public class GameActivity extends AppCompatActivity{
                             gameCall2 = R.raw.gbr_man_end_love;
                             voiceList.add(gameCall2);
                             break;
+                        case GBR_WOMAN:
+                            gameCall = R.raw.gbr_woman_start_6;
+                            voiceList.add(gameCall);
+                            gameCall2 = R.raw.gbr_woman_end_love;
+                            voiceList.add(gameCall2);
+                            break;
                         case USER_RECORD:
                             fileName0 = "user_6.m4a";
                             voiceUserList.add(fileName0);
@@ -6177,6 +6259,12 @@ public class GameActivity extends AppCompatActivity{
                             gameCall = R.raw.gbr_man_start_love;
                             voiceList.add(gameCall);
                             gameCall2 = R.raw.gbr_man_end_6;
+                            voiceList.add(gameCall2);
+                            break;
+                        case GBR_WOMAN:
+                            gameCall = R.raw.gbr_woman_start_love;
+                            voiceList.add(gameCall);
+                            gameCall2 = R.raw.gbr_woman_end_6;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6199,6 +6287,12 @@ public class GameActivity extends AppCompatActivity{
                             gameCall2 = R.raw.gbr_man_end_1;
                             voiceList.add(gameCall2);
                             break;
+                        case GBR_WOMAN:
+                            gameCall = R.raw.gbr_woman_start_love;
+                            voiceList.add(gameCall);
+                            gameCall2 = R.raw.gbr_woman_end_1;
+                            voiceList.add(gameCall2);
+                            break;
                         case USER_RECORD:
                             fileName0 = "user_love.m4a";
                             voiceUserList.add(fileName0);
@@ -6215,6 +6309,12 @@ public class GameActivity extends AppCompatActivity{
                             gameCall = R.raw.gbr_man_start_1;
                             voiceList.add(gameCall);
                             gameCall2 = R.raw.gbr_man_end_love;
+                            voiceList.add(gameCall2);
+                            break;
+                        case GBR_WOMAN:
+                            gameCall = R.raw.gbr_woman_start_1;
+                            voiceList.add(gameCall);
+                            gameCall2 = R.raw.gbr_woman_end_love;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6236,6 +6336,12 @@ public class GameActivity extends AppCompatActivity{
                         gameCall2 = R.raw.gbr_man_all;
                         voiceList.add(gameCall2);
                         break;
+                    case GBR_WOMAN:
+                        gameCall = R.raw.gbr_woman_start_1;
+                        voiceList.add(gameCall);
+                        gameCall2 = R.raw.gbr_woman_all;
+                        voiceList.add(gameCall2);
+                        break;
                     case USER_RECORD:
                         fileName0 = "user_1.m4a";
                         voiceUserList.add(fileName0);
@@ -6254,6 +6360,12 @@ public class GameActivity extends AppCompatActivity{
                             gameCall2 = R.raw.gbr_man_end_1;
                             voiceList.add(gameCall2);
                             break;
+                        case GBR_WOMAN:
+                            gameCall = R.raw.gbr_woman_start_2;
+                            voiceList.add(gameCall);
+                            gameCall2 = R.raw.gbr_woman_end_1;
+                            voiceList.add(gameCall2);
+                            break;
                         case USER_RECORD:
                             fileName0 = "user_2.m4a";
                             voiceUserList.add(fileName0);
@@ -6270,6 +6382,12 @@ public class GameActivity extends AppCompatActivity{
                             gameCall = R.raw.gbr_man_start_1;
                             voiceList.add(gameCall);
                             gameCall2 = R.raw.gbr_man_end_2;
+                            voiceList.add(gameCall2);
+                            break;
+                        case GBR_WOMAN:
+                            gameCall = R.raw.gbr_woman_start_1;
+                            voiceList.add(gameCall);
+                            gameCall2 = R.raw.gbr_woman_end_2;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6292,6 +6410,12 @@ public class GameActivity extends AppCompatActivity{
                             gameCall2 = R.raw.gbr_man_end_1;
                             voiceList.add(gameCall2);
                             break;
+                        case GBR_WOMAN:
+                            gameCall = R.raw.gbr_woman_start_3;
+                            voiceList.add(gameCall);
+                            gameCall2 = R.raw.gbr_woman_end_1;
+                            voiceList.add(gameCall2);
+                            break;
                         case USER_RECORD:
                             fileName0 = "user_3.m4a";
                             voiceUserList.add(fileName0);
@@ -6308,6 +6432,12 @@ public class GameActivity extends AppCompatActivity{
                             gameCall = R.raw.gbr_man_start_1;
                             voiceList.add(gameCall);
                             gameCall2 = R.raw.gbr_man_end_3;
+                            voiceList.add(gameCall2);
+                            break;
+                        case GBR_WOMAN:
+                            gameCall = R.raw.gbr_woman_start_1;
+                            voiceList.add(gameCall);
+                            gameCall2 = R.raw.gbr_woman_end_3;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6330,6 +6460,12 @@ public class GameActivity extends AppCompatActivity{
                             gameCall2 = R.raw.gbr_man_end_1;
                             voiceList.add(gameCall2);
                             break;
+                        case GBR_WOMAN:
+                            gameCall = R.raw.gbr_woman_start_4;
+                            voiceList.add(gameCall);
+                            gameCall2 = R.raw.gbr_woman_end_1;
+                            voiceList.add(gameCall2);
+                            break;
                         case USER_RECORD:
                             fileName0 = "user_4.m4a";
                             voiceUserList.add(fileName0);
@@ -6346,6 +6482,12 @@ public class GameActivity extends AppCompatActivity{
                             gameCall = R.raw.gbr_man_start_1;
                             voiceList.add(gameCall);
                             gameCall2 = R.raw.gbr_man_end_4;
+                            voiceList.add(gameCall2);
+                            break;
+                        case GBR_WOMAN:
+                            gameCall = R.raw.gbr_woman_start_1;
+                            voiceList.add(gameCall);
+                            gameCall2 = R.raw.gbr_woman_end_4;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -6368,6 +6510,12 @@ public class GameActivity extends AppCompatActivity{
                             gameCall2 = R.raw.gbr_man_end_1;
                             voiceList.add(gameCall2);
                             break;
+                        case GBR_WOMAN:
+                            gameCall = R.raw.gbr_woman_start_5;
+                            voiceList.add(gameCall);
+                            gameCall2 = R.raw.gbr_woman_end_1;
+                            voiceList.add(gameCall2);
+                            break;
                         case USER_RECORD:
                             fileName0 = "user_5.m4a";
                             voiceUserList.add(fileName0);
@@ -6384,6 +6532,12 @@ public class GameActivity extends AppCompatActivity{
                             gameCall = R.raw.gbr_man_start_1;
                             voiceList.add(gameCall);
                             gameCall2 = R.raw.gbr_man_end_5;
+                            voiceList.add(gameCall2);
+                            break;
+                        case GBR_WOMAN:
+                            gameCall = R.raw.gbr_woman_start_1;
+                            voiceList.add(gameCall);
+                            gameCall2 = R.raw.gbr_woman_end_5;
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
@@ -7825,6 +7979,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall2 = R.raw.gbr_man_1;
                     voiceList.add(gameCall2);
                     break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_love;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_1;
+                    voiceList.add(gameCall2);
+                    break;
                 case USER_RECORD:
                     fileName0 = "user_love.m4a";
                     voiceUserList.add(fileName0);
@@ -7840,6 +8000,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall = R.raw.gbr_man_love;
                     voiceList.add(gameCall);
                     gameCall2 = R.raw.gbr_man_2;
+                    voiceList.add(gameCall2);
+                    break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_love;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_2;
                     voiceList.add(gameCall2);
                     break;
                 case USER_RECORD:
@@ -7858,6 +8024,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall2 = R.raw.gbr_man_3;
                     voiceList.add(gameCall2);
                     break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_love;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_3;
+                    voiceList.add(gameCall2);
+                    break;
                 case USER_RECORD:
                     fileName0 = "user_love.m4a";
                     voiceUserList.add(fileName0);
@@ -7871,6 +8043,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall = R.raw.gbr_man_love;
                     voiceList.add(gameCall);
                     gameCall2 = R.raw.gbr_man_4;
+                    voiceList.add(gameCall2);
+                    break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_love;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_4;
                     voiceList.add(gameCall2);
                     break;
                 case USER_RECORD:
@@ -7888,6 +8066,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall2 = R.raw.gbr_man_5;
                     voiceList.add(gameCall2);
                     break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_love;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_5;
+                    voiceList.add(gameCall2);
+                    break;
                 case USER_RECORD:
                     fileName0 = "user_love.m4a";
                     voiceUserList.add(fileName0);
@@ -7903,6 +8087,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall2 = R.raw.gbr_man_6;
                     voiceList.add(gameCall2);
                     break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_love;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_6;
+                    voiceList.add(gameCall2);
+                    break;
                 case USER_RECORD:
                     fileName0 = "user_love.m4a";
                     voiceUserList.add(fileName0);
@@ -7916,6 +8106,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall = R.raw.gbr_man_1;
                     voiceList.add(gameCall);
                     gameCall2 = R.raw.gbr_man_love;
+                    voiceList.add(gameCall2);
+                    break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_1;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_love;
                     voiceList.add(gameCall2);
                     break;
                 case USER_RECORD:
@@ -7934,6 +8130,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall2 = R.raw.gbr_man_all;
                     voiceList.add(gameCall2);
                     break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_1;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_all;
+                    voiceList.add(gameCall2);
+                    break;
                 case USER_RECORD:
                     fileName0 = "user_1.m4a";
                     voiceUserList.add(fileName0);
@@ -7948,6 +8150,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall = R.raw.gbr_man_1;
                     voiceList.add(gameCall);
                     gameCall2 = R.raw.gbr_man_2;
+                    voiceList.add(gameCall2);
+                    break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_1;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_2;
                     voiceList.add(gameCall2);
                     break;
                 case USER_RECORD:
@@ -7966,6 +8174,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall2 = R.raw.gbr_man_3;
                     voiceList.add(gameCall2);
                     break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_1;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_3;
+                    voiceList.add(gameCall2);
+                    break;
                 case USER_RECORD:
                     fileName0 = "user_1.m4a";
                     voiceUserList.add(fileName0);
@@ -7980,6 +8194,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall = R.raw.gbr_man_1;
                     voiceList.add(gameCall);
                     gameCall2 = R.raw.gbr_man_4;
+                    voiceList.add(gameCall2);
+                    break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_1;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_4;
                     voiceList.add(gameCall2);
                     break;
                 case USER_RECORD:
@@ -7998,6 +8218,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall2 = R.raw.gbr_man_5;
                     voiceList.add(gameCall2);
                     break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_1;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_5;
+                    voiceList.add(gameCall2);
+                    break;
                 case USER_RECORD:
                     fileName0 = "user_1.m4a";
                     voiceUserList.add(fileName0);
@@ -8012,6 +8238,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall = R.raw.gbr_man_1;
                     voiceList.add(gameCall);
                     gameCall2 = R.raw.gbr_man_6;
+                    voiceList.add(gameCall2);
+                    break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_1;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_6;
                     voiceList.add(gameCall2);
                     break;
                 case USER_RECORD:
@@ -8031,6 +8263,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall2 = R.raw.gbr_man_love;
                     voiceList.add(gameCall2);
                     break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_2;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_love;
+                    voiceList.add(gameCall2);
+                    break;
                 case USER_RECORD:
                     fileName0 = "user_2e.m4a";
                     voiceUserList.add(fileName0);
@@ -8045,6 +8283,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall = R.raw.gbr_man_2;
                     voiceList.add(gameCall);
                     gameCall2 = R.raw.gbr_man_1;
+                    voiceList.add(gameCall2);
+                    break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_2;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_1;
                     voiceList.add(gameCall2);
                     break;
                 case USER_RECORD:
@@ -8064,6 +8308,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall2 = R.raw.gbr_man_all;
                     voiceList.add(gameCall2);
                     break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_2;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_all;
+                    voiceList.add(gameCall2);
+                    break;
                 case USER_RECORD:
                     fileName0 = "user_2.m4a";
                     voiceUserList.add(fileName0);
@@ -8078,6 +8328,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall = R.raw.gbr_man_2;
                     voiceList.add(gameCall);
                     gameCall2 = R.raw.gbr_man_3;
+                    voiceList.add(gameCall2);
+                    break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_2;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_3;
                     voiceList.add(gameCall2);
                     break;
                 case USER_RECORD:
@@ -8096,6 +8352,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall2 = R.raw.gbr_man_4;
                     voiceList.add(gameCall2);
                     break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_2;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_4;
+                    voiceList.add(gameCall2);
+                    break;
                 case USER_RECORD:
                     fileName0 = "user_2.m4a";
                     voiceUserList.add(fileName0);
@@ -8110,6 +8372,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall = R.raw.gbr_man_2;
                     voiceList.add(gameCall);
                     gameCall2 = R.raw.gbr_man_5;
+                    voiceList.add(gameCall2);
+                    break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_2;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_5;
                     voiceList.add(gameCall2);
                     break;
                 case USER_RECORD:
@@ -8128,6 +8396,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall2 = R.raw.gbr_man_6;
                     voiceList.add(gameCall2);
                     break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_2;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_6;
+                    voiceList.add(gameCall2);
+                    break;
                 case USER_RECORD:
                     fileName0 = "user_2.m4a";
                     voiceUserList.add(fileName0);
@@ -8142,6 +8416,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall = R.raw.gbr_man_3;
                     voiceList.add(gameCall);
                     gameCall2 = R.raw.gbr_man_love;
+                    voiceList.add(gameCall2);
+                    break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_3;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_love;
                     voiceList.add(gameCall2);
                     break;
                 case USER_RECORD:
@@ -8160,6 +8440,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall2 = R.raw.gbr_man_1;
                     voiceList.add(gameCall2);
                     break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_3;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_1;
+                    voiceList.add(gameCall2);
+                    break;
                 case USER_RECORD:
                     fileName0 = "user_3.m4a";
                     voiceUserList.add(fileName0);
@@ -8174,6 +8460,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall = R.raw.gbr_man_3;
                     voiceList.add(gameCall);
                     gameCall2 = R.raw.gbr_man_2;
+                    voiceList.add(gameCall2);
+                    break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_3;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_2;
                     voiceList.add(gameCall2);
                     break;
                 case USER_RECORD:
@@ -8192,6 +8484,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall2 = R.raw.gbr_man_all;
                     voiceList.add(gameCall2);
                     break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_3;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_all;
+                    voiceList.add(gameCall2);
+                    break;
                 case USER_RECORD:
                     fileName0 = "user_3.m4a";
                     voiceUserList.add(fileName0);
@@ -8206,6 +8504,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall = R.raw.gbr_man_3;
                     voiceList.add(gameCall);
                     gameCall2 = R.raw.gbr_man_4;
+                    voiceList.add(gameCall2);
+                    break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_3;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_love;
                     voiceList.add(gameCall2);
                     break;
                 case USER_RECORD:
@@ -8224,6 +8528,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall2 = R.raw.gbr_man_5;
                     voiceList.add(gameCall2);
                     break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_3;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_5;
+                    voiceList.add(gameCall2);
+                    break;
                 case USER_RECORD:
                     fileName0 = "user_3.m4a";
                     voiceUserList.add(fileName0);
@@ -8238,6 +8548,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall = R.raw.gbr_man_3;
                     voiceList.add(gameCall);
                     gameCall2 = R.raw.gbr_man_6;
+                    voiceList.add(gameCall2);
+                    break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_3;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_6;
                     voiceList.add(gameCall2);
                     break;
                 case USER_RECORD:
@@ -8256,6 +8572,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall2 = R.raw.gbr_man_love;
                     voiceList.add(gameCall2);
                     break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_4;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_love;
+                    voiceList.add(gameCall2);
+                    break;
                 case USER_RECORD:
                     fileName0 = "user_4.m4a";
                     voiceUserList.add(fileName0);
@@ -8270,6 +8592,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall = R.raw.gbr_man_4;
                     voiceList.add(gameCall);
                     gameCall2 = R.raw.gbr_man_1;
+                    voiceList.add(gameCall2);
+                    break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_4;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_1;
                     voiceList.add(gameCall2);
                     break;
                 case USER_RECORD:
@@ -8288,6 +8616,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall2 = R.raw.gbr_man_2;
                     voiceList.add(gameCall2);
                     break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_4;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_2;
+                    voiceList.add(gameCall2);
+                    break;
                 case USER_RECORD:
                     fileName0 = "user_4.m4a";
                     voiceUserList.add(fileName0);
@@ -8302,6 +8636,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall = R.raw.gbr_man_4;
                     voiceList.add(gameCall);
                     gameCall2 = R.raw.gbr_man_3;
+                    voiceList.add(gameCall2);
+                    break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_4;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_3;
                     voiceList.add(gameCall2);
                     break;
                 case USER_RECORD:
@@ -8320,6 +8660,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall2 = R.raw.gbr_man_all;
                     voiceList.add(gameCall2);
                     break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_4;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_all;
+                    voiceList.add(gameCall2);
+                    break;
                 case USER_RECORD:
                     fileName0 = "user_4.m4a";
                     voiceUserList.add(fileName0);
@@ -8334,6 +8680,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall = R.raw.gbr_man_4;
                     voiceList.add(gameCall);
                     gameCall2 = R.raw.gbr_man_5;
+                    voiceList.add(gameCall2);
+                    break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_4;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_5;
                     voiceList.add(gameCall2);
                     break;
                 case USER_RECORD:
@@ -8352,6 +8704,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall2 = R.raw.gbr_man_6;
                     voiceList.add(gameCall2);
                     break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_4;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_6;
+                    voiceList.add(gameCall2);
+                    break;
                 case USER_RECORD:
                     fileName0 = "user_4.m4a";
                     voiceUserList.add(fileName0);
@@ -8366,6 +8724,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall = R.raw.gbr_man_5;
                     voiceList.add(gameCall);
                     gameCall2 = R.raw.gbr_man_love;
+                    voiceList.add(gameCall2);
+                    break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_5;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_love;
                     voiceList.add(gameCall2);
                     break;
                 case USER_RECORD:
@@ -8384,6 +8748,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall2 = R.raw.gbr_man_1;
                     voiceList.add(gameCall2);
                     break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_5;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_1;
+                    voiceList.add(gameCall2);
+                    break;
                 case USER_RECORD:
                     fileName0 = "user_5.m4a";
                     voiceUserList.add(fileName0);
@@ -8398,6 +8768,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall = R.raw.gbr_man_5;
                     voiceList.add(gameCall);
                     gameCall2 = R.raw.gbr_man_2;
+                    voiceList.add(gameCall2);
+                    break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_5;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_2;
                     voiceList.add(gameCall2);
                     break;
                 case USER_RECORD:
@@ -8416,6 +8792,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall2 = R.raw.gbr_man_3;
                     voiceList.add(gameCall2);
                     break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_5;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_3;
+                    voiceList.add(gameCall2);
+                    break;
                 case USER_RECORD:
                     fileName0 = "user_5.m4a";
                     voiceUserList.add(fileName0);
@@ -8430,6 +8812,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall = R.raw.gbr_man_5;
                     voiceList.add(gameCall);
                     gameCall2 = R.raw.gbr_man_4;
+                    voiceList.add(gameCall2);
+                    break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_5;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_4;
                     voiceList.add(gameCall2);
                     break;
                 case USER_RECORD:
@@ -8448,6 +8836,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall2 = R.raw.gbr_man_all;
                     voiceList.add(gameCall2);
                     break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_5;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_all;
+                    voiceList.add(gameCall2);
+                    break;
                 case USER_RECORD:
                     fileName0 = "user_5.m4a";
                     voiceUserList.add(fileName0);
@@ -8462,6 +8856,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall = R.raw.gbr_man_5;
                     voiceList.add(gameCall);
                     gameCall2 = R.raw.gbr_man_6;
+                    voiceList.add(gameCall2);
+                    break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_5;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_6;
                     voiceList.add(gameCall2);
                     break;
                 case USER_RECORD:
@@ -8480,6 +8880,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall2 = R.raw.gbr_man_7;
                     voiceList.add(gameCall2);
                     break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_5;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_7;
+                    voiceList.add(gameCall2);
+                    break;
                 case USER_RECORD:
                     fileName0 = "user_5.m4a";
                     voiceUserList.add(fileName0);
@@ -8494,6 +8900,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall = R.raw.gbr_man_6;
                     voiceList.add(gameCall);
                     gameCall2 = R.raw.gbr_man_love;
+                    voiceList.add(gameCall2);
+                    break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_6;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_love;
                     voiceList.add(gameCall2);
                     break;
                 case USER_RECORD:
@@ -8512,6 +8924,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall2 = R.raw.gbr_man_1;
                     voiceList.add(gameCall2);
                     break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_6;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_1;
+                    voiceList.add(gameCall2);
+                    break;
                 case USER_RECORD:
                     fileName0 = "user_6.m4a";
                     voiceUserList.add(fileName0);
@@ -8526,6 +8944,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall = R.raw.gbr_man_6;
                     voiceList.add(gameCall);
                     gameCall2 = R.raw.gbr_man_2;
+                    voiceList.add(gameCall2);
+                    break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_6;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_2;
                     voiceList.add(gameCall2);
                     break;
                 case USER_RECORD:
@@ -8544,6 +8968,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall2 = R.raw.gbr_man_3;
                     voiceList.add(gameCall2);
                     break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_6;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_3;
+                    voiceList.add(gameCall2);
+                    break;
                 case USER_RECORD:
                     fileName0 = "user_6.m4a";
                     voiceUserList.add(fileName0);
@@ -8558,6 +8988,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall = R.raw.gbr_man_6;
                     voiceList.add(gameCall);
                     gameCall2 = R.raw.gbr_man_4;
+                    voiceList.add(gameCall2);
+                    break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_6;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_4;
                     voiceList.add(gameCall2);
                     break;
                 case USER_RECORD:
@@ -8576,6 +9012,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall2 = R.raw.gbr_man_5;
                     voiceList.add(gameCall2);
                     break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_6;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_5;
+                    voiceList.add(gameCall2);
+                    break;
                 case USER_RECORD:
                     fileName0 = "user_6.m4a";
                     voiceUserList.add(fileName0);
@@ -8590,6 +9032,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall = R.raw.gbr_man_6;
                     voiceList.add(gameCall);
                     gameCall2 = R.raw.gbr_man_all;
+                    voiceList.add(gameCall2);
+                    break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_6;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_6;
                     voiceList.add(gameCall2);
                     break;
                 case USER_RECORD:
@@ -8608,6 +9056,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall2 = R.raw.gbr_man_7;
                     voiceList.add(gameCall2);
                     break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_6;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_7;
+                    voiceList.add(gameCall2);
+                    break;
                 case USER_RECORD:
                     fileName0 = "user_6.m4a";
                     voiceUserList.add(fileName0);
@@ -8624,6 +9078,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall2 = R.raw.gbr_man_5;
                     voiceList.add(gameCall2);
                     break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_7;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_5;
+                    voiceList.add(gameCall2);
+                    break;
                 case USER_RECORD:
                     fileName0 = "user_7.m4a";
                     voiceUserList.add(fileName0);
@@ -8638,6 +9098,12 @@ public class GameActivity extends AppCompatActivity{
                     gameCall = R.raw.gbr_man_7;
                     voiceList.add(gameCall);
                     gameCall2 = R.raw.gbr_man_6;
+                    voiceList.add(gameCall2);
+                    break;
+                case GBR_WOMAN:
+                    gameCall = R.raw.gbr_woman_start_7;
+                    voiceList.add(gameCall);
+                    gameCall2 = R.raw.gbr_woman_end_6;
                     voiceList.add(gameCall2);
                     break;
                 case USER_RECORD:
