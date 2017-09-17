@@ -4075,7 +4075,11 @@ public class GameActivity extends AppCompatActivity{
 
                     //play voice
                     if (voiceOn) {
-                        voicePlay.audioPlayMulti(voiceList);
+                        if (current_voice_type == USER_RECORD) {
+                            voicePlay.audioPlayMultiFile(voiceUserList);
+                        } else {
+                            voicePlay.audioPlayMulti(voiceList);
+                        }
                     }
 
                 } else if (new_state.getSet_game_up(current_set) == 7 &&
@@ -4093,7 +4097,11 @@ public class GameActivity extends AppCompatActivity{
 
                     //play voice
                     if (voiceOn) {
-                        voicePlay.audioPlayMulti(voiceList);
+                        if (current_voice_type == USER_RECORD) {
+                            voicePlay.audioPlayMultiFile(voiceUserList);
+                        } else {
+                            voicePlay.audioPlayMulti(voiceList);
+                        }
                     }
 
                 } else if (new_state.getSet_game_up(current_set) == 5 &&
@@ -4110,7 +4118,11 @@ public class GameActivity extends AppCompatActivity{
 
                     //play voice
                     if (voiceOn) {
-                        voicePlay.audioPlayMulti(voiceList);
+                        if (current_voice_type == USER_RECORD) {
+                            voicePlay.audioPlayMultiFile(voiceUserList);
+                        } else {
+                            voicePlay.audioPlayMulti(voiceList);
+                        }
                     }
                 } else if (new_state.getSet_game_up(current_set) == 7 &&
                         new_state.getSet_game_down(current_set) == 6) { // 7:6 => oppt win this set
@@ -4126,7 +4138,11 @@ public class GameActivity extends AppCompatActivity{
 
                     //play voice
                     if (voiceOn) {
-                        voicePlay.audioPlayMulti(voiceList);
+                        if (current_voice_type == USER_RECORD) {
+                            voicePlay.audioPlayMultiFile(voiceUserList);
+                        } else {
+                            voicePlay.audioPlayMulti(voiceList);
+                        }
                     }
                 } else if (new_state.getSet_game_up(current_set) == 6 &&
                         new_state.getSet_game_down(current_set) == 7) { // 5:7 => you win this set
@@ -4142,7 +4158,11 @@ public class GameActivity extends AppCompatActivity{
 
                     //play voice
                     if (voiceOn) {
-                        voicePlay.audioPlayMulti(voiceList);
+                        if (current_voice_type == USER_RECORD) {
+                            voicePlay.audioPlayMultiFile(voiceUserList);
+                        } else {
+                            voicePlay.audioPlayMulti(voiceList);
+                        }
                     }
                 } else if (new_state.getSet_game_up(current_set) == 6 &&
                         new_state.getSet_game_down(current_set) <=4 ) { // 6:0,1,2,3,4 => oppt win this set
@@ -4158,7 +4178,11 @@ public class GameActivity extends AppCompatActivity{
 
                     //play voice
                     if (voiceOn) {
-                        voicePlay.audioPlayMulti(voiceList);
+                        if (current_voice_type == USER_RECORD) {
+                            voicePlay.audioPlayMultiFile(voiceUserList);
+                        } else {
+                            voicePlay.audioPlayMulti(voiceList);
+                        }
                     }
                 } else if (new_state.getSet_game_up(current_set) <= 4 &&
                         new_state.getSet_game_down(current_set) == 6) { // 0,1,2,3,4:6 => you win this set
@@ -4174,7 +4198,11 @@ public class GameActivity extends AppCompatActivity{
 
                     //play voice
                     if (voiceOn) {
-                        voicePlay.audioPlayMulti(voiceList);
+                        if (current_voice_type == USER_RECORD) {
+                            voicePlay.audioPlayMultiFile(voiceUserList);
+                        } else {
+                            voicePlay.audioPlayMulti(voiceList);
+                        }
                     }
                 } else {
                     Log.d(TAG, "set "+current_set+" game: up = "+new_state.getSet_game_up(current_set)+", down = "+new_state.getSet_game_down(current_set));
@@ -4183,7 +4211,11 @@ public class GameActivity extends AppCompatActivity{
                         chooseGameVoice(new_state.isServe(), new_state.isInTiebreak(), new_state.getSet_game_up(current_set), new_state.getSet_game_down(current_set));
                     //play voice
                     if (voiceOn) {
-                        voicePlay.audioPlayMulti(voiceList);
+                        if (current_voice_type == USER_RECORD) {
+                            voicePlay.audioPlayMultiFile(voiceUserList);
+                        } else {
+                            voicePlay.audioPlayMulti(voiceList);
+                        }
                     }
                 }
 
@@ -4208,7 +4240,11 @@ public class GameActivity extends AppCompatActivity{
 
                     //play voice
                     if (voiceOn) {
-                        voicePlay.audioPlayMulti(voiceList);
+                        if (current_voice_type == USER_RECORD) {
+                            voicePlay.audioPlayMultiFile(voiceUserList);
+                        } else {
+                            voicePlay.audioPlayMulti(voiceList);
+                        }
                     }
                 } else if (new_state.getSet_game_up(current_set) == 5 &&
                         new_state.getSet_game_down(current_set) == 3) { // 5:3 => oppt win this set
@@ -4225,7 +4261,11 @@ public class GameActivity extends AppCompatActivity{
 
                     //play voice
                     if (voiceOn) {
-                        voicePlay.audioPlayMulti(voiceList);
+                        if (current_voice_type == USER_RECORD) {
+                            voicePlay.audioPlayMultiFile(voiceUserList);
+                        } else {
+                            voicePlay.audioPlayMulti(voiceList);
+                        }
                     }
                 } else if (new_state.getSet_game_up(current_set) == 3 &&
                         new_state.getSet_game_down(current_set) == 5) { // 3:5 => you win this set
@@ -4242,7 +4282,11 @@ public class GameActivity extends AppCompatActivity{
 
                     //play voice
                     if (voiceOn) {
-                        voicePlay.audioPlayMulti(voiceList);
+                        if (current_voice_type == USER_RECORD) {
+                            voicePlay.audioPlayMultiFile(voiceUserList);
+                        } else {
+                            voicePlay.audioPlayMulti(voiceList);
+                        }
                     }
                 } else if (new_state.getSet_game_up(current_set) == 5 &&
                         new_state.getSet_game_down(current_set) == 4) { // 5:4 => oppt win this set
@@ -4259,7 +4303,11 @@ public class GameActivity extends AppCompatActivity{
 
                     //play voice
                     if (voiceOn) {
-                        voicePlay.audioPlayMulti(voiceList);
+                        if (current_voice_type == USER_RECORD) {
+                            voicePlay.audioPlayMultiFile(voiceUserList);
+                        } else {
+                            voicePlay.audioPlayMulti(voiceList);
+                        }
                     }
                 } else if (new_state.getSet_game_up(current_set) == 4 &&
                         new_state.getSet_game_down(current_set) == 5) { // 4:5 => you win this set
@@ -4276,7 +4324,11 @@ public class GameActivity extends AppCompatActivity{
 
                     //play voice
                     if (voiceOn) {
-                        voicePlay.audioPlayMulti(voiceList);
+                        if (current_voice_type == USER_RECORD) {
+                            voicePlay.audioPlayMultiFile(voiceUserList);
+                        } else {
+                            voicePlay.audioPlayMulti(voiceList);
+                        }
                     }
                 } else if (new_state.getSet_game_up(current_set) == 4 &&
                         new_state.getSet_game_down(current_set) <=2 ) { // 4:0,1,2 => oppt win this set
@@ -4293,7 +4345,11 @@ public class GameActivity extends AppCompatActivity{
 
                     //play voice
                     if (voiceOn) {
-                        voicePlay.audioPlayMulti(voiceList);
+                        if (current_voice_type == USER_RECORD) {
+                            voicePlay.audioPlayMultiFile(voiceUserList);
+                        } else {
+                            voicePlay.audioPlayMulti(voiceList);
+                        }
                     }
                 } else if (new_state.getSet_game_up(current_set) <= 2 &&
                         new_state.getSet_game_down(current_set) == 4) { // 0,1,2:6 => you win this set
@@ -4310,7 +4366,11 @@ public class GameActivity extends AppCompatActivity{
 
                     //play voice
                     if (voiceOn) {
-                        voicePlay.audioPlayMulti(voiceList);
+                        if (current_voice_type == USER_RECORD) {
+                            voicePlay.audioPlayMultiFile(voiceUserList);
+                        } else {
+                            voicePlay.audioPlayMulti(voiceList);
+                        }
                     }
                 } else {
                     Log.d(TAG, "set "+current_set+" game: up = "+new_state.getSet_game_up(current_set)+", down = "+new_state.getSet_game_down(current_set));
@@ -4319,7 +4379,11 @@ public class GameActivity extends AppCompatActivity{
                         chooseGameVoice(new_state.isServe(), new_state.isInTiebreak(), new_state.getSet_game_up(current_set), new_state.getSet_game_down(current_set));
                     //play voice
                     if (voiceOn) {
-                        voicePlay.audioPlayMulti(voiceList);
+                        if (current_voice_type == USER_RECORD) {
+                            voicePlay.audioPlayMultiFile(voiceUserList);
+                        } else {
+                            voicePlay.audioPlayMulti(voiceList);
+                        }
                     }
                 }
                 Log.d(TAG, "[4 game in a set end]");
@@ -4346,7 +4410,11 @@ public class GameActivity extends AppCompatActivity{
 
                     //play voice
                     if (voiceOn) {
-                        voicePlay.audioPlayMulti(voiceList);
+                        if (current_voice_type == USER_RECORD) {
+                            voicePlay.audioPlayMultiFile(voiceUserList);
+                        } else {
+                            voicePlay.audioPlayMulti(voiceList);
+                        }
                     }
                 } else if (new_state.getSet_game_up(current_set) <= 5 &&
                         new_state.getSet_game_down(current_set) == 6) { // 5:6 => you win this set
@@ -4363,7 +4431,11 @@ public class GameActivity extends AppCompatActivity{
 
                     //play voice
                     if (voiceOn) {
-                        voicePlay.audioPlayMulti(voiceList);
+                        if (current_voice_type == USER_RECORD) {
+                            voicePlay.audioPlayMultiFile(voiceUserList);
+                        } else {
+                            voicePlay.audioPlayMulti(voiceList);
+                        }
                     }
                 } else {
                     Log.d(TAG, "set "+current_set+" game: up = "+new_state.getSet_game_up(current_set)+", down = "+new_state.getSet_game_down(current_set));
@@ -4372,7 +4444,11 @@ public class GameActivity extends AppCompatActivity{
                         chooseGameVoice(new_state.isServe(), new_state.isInTiebreak(), new_state.getSet_game_up(current_set), new_state.getSet_game_down(current_set));
                     //play voice
                     if (voiceOn) {
-                        voicePlay.audioPlayMulti(voiceList);
+                        if (current_voice_type == USER_RECORD) {
+                            voicePlay.audioPlayMultiFile(voiceUserList);
+                        } else {
+                            voicePlay.audioPlayMulti(voiceList);
+                        }
                     }
                 }
                 Log.d(TAG, "[6 game in a set end]");
@@ -4393,7 +4469,11 @@ public class GameActivity extends AppCompatActivity{
                     //}
                     //play voice
                     if (voiceOn) {
-                        voicePlay.audioPlayMulti(voiceList);
+                        if (current_voice_type == USER_RECORD) {
+                            voicePlay.audioPlayMultiFile(voiceUserList);
+                        } else {
+                            voicePlay.audioPlayMulti(voiceList);
+                        }
                     }
                 } else if (new_state.getSet_game_up(current_set) <= 3 &&
                         new_state.getSet_game_down(current_set) == 4) { // 3:4 => you win this set
@@ -4409,7 +4489,11 @@ public class GameActivity extends AppCompatActivity{
                     //}
                     //play voice
                     if (voiceOn) {
-                        voicePlay.audioPlayMulti(voiceList);
+                        if (current_voice_type == USER_RECORD) {
+                            voicePlay.audioPlayMultiFile(voiceUserList);
+                        } else {
+                            voicePlay.audioPlayMulti(voiceList);
+                        }
                     }
                 } else {
                     Log.d(TAG, "set "+current_set+" game: up = "+new_state.getSet_game_up(current_set)+", down = "+new_state.getSet_game_down(current_set));
@@ -4418,7 +4502,11 @@ public class GameActivity extends AppCompatActivity{
                         chooseGameVoice(new_state.isServe(), new_state.isInTiebreak(), new_state.getSet_game_up(current_set), new_state.getSet_game_down(current_set));
                     //play voice
                     if (voiceOn) {
-                        voicePlay.audioPlayMulti(voiceList);
+                        if (current_voice_type == USER_RECORD) {
+                            voicePlay.audioPlayMultiFile(voiceUserList);
+                        } else {
+                            voicePlay.audioPlayMulti(voiceList);
+                        }
                     }
                 }
                 Log.d(TAG, "[4 game in a set end]");
@@ -4591,6 +4679,10 @@ public class GameActivity extends AppCompatActivity{
             switch (current_voice_type) {
                 case GBR_MAN:
                     call = R.raw.gbr_man_game;
+                    voiceList.add(call);
+                    break;
+                case GBR_WOMAN:
+                    call = R.raw.gbr_woman_game;
                     voiceList.add(call);
                     break;
                 case USER_RECORD:
@@ -10296,7 +10388,7 @@ public class GameActivity extends AppCompatActivity{
         voice_item = menu.findItem(R.id.action_voice_onOff);
         voice_support_item = menu.findItem(R.id.action_voice_support);
 
-        voice_support_item.setVisible(false);
+        voice_support_item.setVisible(true);
 
         if (voice_item != null) {
             if (voiceOn) {
