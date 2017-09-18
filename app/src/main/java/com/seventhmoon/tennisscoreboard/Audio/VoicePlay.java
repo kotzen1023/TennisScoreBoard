@@ -371,10 +371,14 @@ public class VoicePlay {
 
             while (checkPlay()) ; //wait for play end
 
-            if (check_user_voice_exist(nameList.get(i))) {
-                String path = RootDirectory.getAbsolutePath() + "/.tennisScoredBoard/user/"+nameList.get(i);
-                singleplaying(path);
-                current_play = i;
+            try {
+                if (check_user_voice_exist(nameList.get(i))) {
+                    String path = RootDirectory.getAbsolutePath() + "/.tennisScoredBoard/user/" + nameList.get(i);
+                    singleplaying(path);
+                    current_play = i;
+                }
+            } catch (IndexOutOfBoundsException e) {
+                e.printStackTrace();
             }
 
         }

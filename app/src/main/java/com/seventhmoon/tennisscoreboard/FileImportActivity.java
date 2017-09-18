@@ -3,6 +3,7 @@ package com.seventhmoon.tennisscoreboard;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.ActionBar;
@@ -19,7 +20,8 @@ import android.widget.ListView;
 import com.seventhmoon.tennisscoreboard.Data.Constants;
 import com.seventhmoon.tennisscoreboard.Data.FileImportArrayAdapter;
 import com.seventhmoon.tennisscoreboard.Data.FileImportItem;
-import com.seventhmoon.tennisscoreboard.Service.SearchFileService;
+import com.seventhmoon.tennisscoreboard.Service.FileImportService;
+
 
 import java.io.File;
 import java.text.DateFormat;
@@ -44,13 +46,24 @@ public class FileImportActivity extends AppCompatActivity {
 
     public static ArrayList<String> searchList = new ArrayList<>();
 
-    //AudioOperation audioOperation;
+    static SharedPreferences pref ;
+    static SharedPreferences.Editor editor;
+    private static final String FILE_NAME = "Preference";
+
+    private String lastImportPath;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.file_import_list);
 
+        pref = getSharedPreferences(FILE_NAME, MODE_PRIVATE);
+        lastImportPath = pref.getString("LAST_IMPORT_PATH", "");
+
+        Intent intent = getIntent();
+        final String destFilename = intent.getStringExtra("filename");
+
+        Log.e(TAG, "Dest filename = "+destFilename);
         //Context context = getBaseContext();
 
         //audioOperation = new AudioOperation(context);
@@ -61,34 +74,43 @@ public class FileImportActivity extends AppCompatActivity {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                searchList.clear();
+                //searchList.clear();
+                FileImportItem fileImportItem = null;
 
                 for (int i = 0; i < listView.getCount(); i++) {
                     if (fileImportArrayAdapter.mSparseBooleanArray.get(i)) {
-                        FileImportItem fileImportItem = fileImportArrayAdapter.getItem(i);
+                        fileImportItem = fileImportArrayAdapter.getItem(i);
 
                         if (fileImportItem != null) {
 
                             Log.e(TAG, "select : " + fileImportItem.getPath());
-                            searchList.add(fileImportItem.getPath());
+                            //searchList.add(fileImportItem.getPath());
                         }
                     }
 
                 }
 
 
-                Intent saveintent = new Intent(FileImportActivity.this, SearchFileService.class);
-                saveintent.setAction(Constants.ACTION.GET_SEARCHLIST_ACTION);
-                startService(saveintent);
+                if (fileImportItem != null) {
+                    Intent importIntent = new Intent(FileImportActivity.this, FileImportService.class);
+                    importIntent.setAction(Constants.ACTION.IMPORT_FILE_ACTION);
+                    importIntent.putExtra("FILEPATH", fileImportItem.getPath());
+                    importIntent.putExtra("DEST_FILE_PATH", destFilename);
+                    startService(importIntent);
+                }
 
                 //searchFiles();
                 finish();
             }
         });
 
-        currentDir = new File(Environment.getExternalStorageDirectory().getPath());
+        if (!lastImportPath.equals("")) {
+            currentDir = new File(lastImportPath);
+        } else {
+            currentDir = new File(Environment.getExternalStorageDirectory().getPath());
+        }
+
         Log.e(TAG, "currentDir = "+Environment.getExternalStorageDirectory().getPath());
-        //fileChooseArrayAdapter = new FileChooseArrayAdapter(this, R.layout.file_choose_in_row, );
         fill(currentDir);
     }
 
@@ -112,7 +134,7 @@ public class FileImportActivity extends AppCompatActivity {
     }
 
     public void onBackPressed() {
-        if (FileChooseLongClick) {
+        /*if (FileChooseLongClick) {
             MenuItem menuItem = actionmenu.findItem(R.id.action_selectall);
 
             FileChooseLongClick = false;
@@ -167,7 +189,8 @@ public class FileImportActivity extends AppCompatActivity {
                 finish();
             }
 
-        }
+        }*/
+        finish();
     }
 
     @Override
@@ -177,9 +200,9 @@ public class FileImportActivity extends AppCompatActivity {
 
         MenuItem item_all;
 
-        item_all = menu.findItem(R.id.action_selectall);
+        //item_all = menu.findItem(R.id.action_selectall);
 
-        item_all.setVisible(true);
+        //item_all.setVisible(true);
 
         actionmenu = menu;
         return true;
@@ -205,7 +228,7 @@ public class FileImportActivity extends AppCompatActivity {
                 alertDialog.show();
                 break;
 
-            case R.id.action_selectall:
+            /*case R.id.action_selectall:
                 if (!FileChooseLongClick) {
                     FileChooseLongClick = true;
 
@@ -326,6 +349,7 @@ public class FileImportActivity extends AppCompatActivity {
 
 
                 break;
+                */
 
             case android.R.id.home:
 
@@ -345,6 +369,11 @@ public class FileImportActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(f.getAbsolutePath());
+            lastImportPath = f.getAbsolutePath();
+
+            editor = pref.edit();
+            editor.putString("LAST_IMPORT_PATH", lastImportPath);
+            editor.apply();
         }
         //txtCurrentDir.setText(f.getAbsolutePath());
 
@@ -395,7 +424,7 @@ public class FileImportActivity extends AppCompatActivity {
         }
         fileImportArrayAdapter = new FileImportArrayAdapter(FileImportActivity.this,R.layout.file_import_in_row,dir);
         listView.setAdapter(fileImportArrayAdapter);
-        listView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
+        listView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 
 
 
@@ -410,11 +439,11 @@ public class FileImportActivity extends AppCompatActivity {
                         currentDir = new File(o.getPath());
                         fill(currentDir);
 
-                        MenuItem menuItem = actionmenu.findItem(R.id.action_selectall);
+                        //MenuItem menuItem = actionmenu.findItem(R.id.action_selectall);
 
                         FileChooseLongClick = false;
                         FileChooseSelectAll = false;
-                        menuItem.setTitle("Select all");
+                        //menuItem.setTitle("Select all");
 
 
                         for (int i = 0; i < listView.getCount(); i++) {
@@ -438,7 +467,7 @@ public class FileImportActivity extends AppCompatActivity {
             }
         });
 
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        /*listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 //Log.e(TAG, "position = " + position + ", size = " + listView.getCount());
@@ -466,6 +495,6 @@ public class FileImportActivity extends AppCompatActivity {
 
                 return false;
             }
-        });
+        });*/
     }
 }

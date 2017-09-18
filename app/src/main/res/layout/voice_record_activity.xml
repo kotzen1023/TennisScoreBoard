@@ -27,6 +27,20 @@
             android:layout_weight="1">
 
             <LinearLayout
+                android:id="@+id/layoutRecordImport"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/imgRecordImport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_insert_drive_file_white_48dp"/>
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/layoutRecordPlayStop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

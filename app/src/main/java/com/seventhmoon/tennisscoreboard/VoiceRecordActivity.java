@@ -27,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -69,6 +70,7 @@ public class VoiceRecordActivity extends AppCompatActivity {
     private LinearLayout layoutRecordRecord;
     private ListView listView;
 
+    private ImageView btnImport;
     private ImageView imgPlayStop;
     private ImageView imgRecord;
     private TextView textViewTime;
@@ -94,6 +96,8 @@ public class VoiceRecordActivity extends AppCompatActivity {
 
     private static BroadcastReceiver mReceiver = null;
     private static boolean isRegister = false;
+
+
     //private ActionBar actionBar;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -122,6 +126,7 @@ public class VoiceRecordActivity extends AppCompatActivity {
         layoutRecord = (LinearLayout) findViewById(R.id.layoutRecord);
         lauoutPlayStop = (LinearLayout) findViewById(R.id.layoutRecordPlayStop);
         layoutRecordRecord = (LinearLayout) findViewById(R.id.layoutRecordRecord);
+        btnImport = (ImageView) findViewById(R.id.imgRecordImport);
         imgPlayStop = (ImageView) findViewById(R.id.imgRecordPlayStop);
         imgRecord = (ImageView) findViewById(R.id.imgRecordRecord);
         textViewTime = (TextView) findViewById(R.id.textViewTime);
@@ -532,6 +537,15 @@ public class VoiceRecordActivity extends AppCompatActivity {
             }
         });
 
+        btnImport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent  = new Intent(VoiceRecordActivity.this, FileImportActivity.class);
+                intent.putExtra("filename", currentSelectedName);
+                startActivity(intent);
+            }
+        });
+
         imgPlayStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -686,6 +700,13 @@ public class VoiceRecordActivity extends AppCompatActivity {
                     imgPlayStop.setImageResource(R.drawable.ic_play_arrow_white_48dp);
                     is_playing = false;
                     stopVoicePlaying();
+                } else if (intent.getAction().equalsIgnoreCase(Constants.ACTION.IMPORT_FILE_COMPLETE)) {
+                    if (check_user_voice_exist(currentSelectedName)) { //if file exist, add
+                        recordPlayList.clear();
+                        recordPlayList.add(currentSelectedName);
+                        recordList.get(record_select).setFileExist(true);
+                        recordArrayAdapter.notifyDataSetChanged();
+                    }
                 }
             }
         };
@@ -694,6 +715,7 @@ public class VoiceRecordActivity extends AppCompatActivity {
         if (!isRegister) {
             filter = new IntentFilter();
             filter.addAction(Constants.ACTION.PLAY_MULTIFILES_COMPLETE);
+            filter.addAction(Constants.ACTION.IMPORT_FILE_COMPLETE);
             registerReceiver(mReceiver, filter);
             isRegister = true;
             Log.d(TAG, "registerReceiver mReceiver");

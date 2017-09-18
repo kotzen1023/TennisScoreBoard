@@ -61,6 +61,9 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
     private int current_voice;
     public static ActionBar actionBar;
     private MenuItem item_record, item_listen;
+    //buying save
+    private static boolean voice_support_gbr_woman = false;
+    private static boolean voice_support_gbr_user_record = false;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +85,10 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
 
         pref = getSharedPreferences(FILE_NAME, MODE_PRIVATE);
         current_voice = pref.getInt("VOICE_SELECT", 0);
+
+        //load buying
+        voice_support_gbr_woman = pref.getBoolean("VOICE_SUPPORT_GBR_WOMAN", false);
+        voice_support_gbr_user_record = pref.getBoolean("VOICE_SUPPORT_USER_RECORD", false);
 
         //in-app billing
 
@@ -207,54 +214,60 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
                 if (!debug) {
 
                     if (position > 0) {
-                        if (!imageBuyItems.get(position).getPurchased()) //buy items
-                        {
-                            AlertDialog.Builder dialog = new AlertDialog.Builder(VoiceSelectActivity.this);
-                            dialog.setTitle(getResources().getString(R.string.voice_change_ask_to_buy));
-                            dialog.setIcon(R.drawable.ball_icon);
-                            dialog.setCancelable(false);
 
-                            dialog.setPositiveButton(getResources().getString(R.string.dialog_confirm), new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                    //buy it
-                                    do_buy_theme(position);
-                                }
-                            });
+                        if (!getPurchasedWithoutInternet(position)) {
 
-                            dialog.setNegativeButton(getResources().getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                    //don't buy it
+                            if (!imageBuyItems.get(position).getPurchased()) //buy items
+                            {
+                                AlertDialog.Builder dialog = new AlertDialog.Builder(VoiceSelectActivity.this);
+                                dialog.setTitle(getResources().getString(R.string.voice_change_ask_to_buy));
+                                dialog.setIcon(R.drawable.ball_icon);
+                                dialog.setCancelable(false);
 
-                                    for (int i = 0; i < imageBuyItems.size(); i++) {
-                                        ImageBuyItem item = imageBuyItems.get(i);
-
-                                        if (i == previous_select) {
-                                            selected[previous_select] = true;
-                                            item.setSelected(true);
-                                        } else {
-                                            selected[previous_select] = false;
-                                            item.setSelected(false);
-                                        }
-
+                                dialog.setPositiveButton(getResources().getString(R.string.dialog_confirm), new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        //buy it
+                                        do_buy_theme(position);
                                     }
-                                    //save current position
-                                    editor = pref.edit();
-                                    editor.putInt("VOICE_SELECT", previous_select);
-                                    editor.apply();
+                                });
 
-                                    gridView.invalidateViews();
-                                }
-                            });
-                            dialog.show();
-                        } else { //you have buy this one
-                            //save current position
-                            editor = pref.edit();
-                            editor.putInt("VOICE_SELECT", position);
-                            editor.apply();
+                                dialog.setNegativeButton(getResources().getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        //don't buy it
 
-                            previous_select = position;
+                                        for (int i = 0; i < imageBuyItems.size(); i++) {
+                                            ImageBuyItem item = imageBuyItems.get(i);
+
+                                            if (i == previous_select) {
+                                                selected[previous_select] = true;
+                                                item.setSelected(true);
+                                            } else {
+                                                selected[previous_select] = false;
+                                                item.setSelected(false);
+                                            }
+
+                                        }
+                                        //save current position
+                                        editor = pref.edit();
+                                        editor.putInt("VOICE_SELECT", previous_select);
+                                        editor.apply();
+
+                                        gridView.invalidateViews();
+                                    }
+                                });
+                                dialog.show();
+                            } else { //you have buy this one
+                                //save current position
+                                editor = pref.edit();
+                                editor.putInt("VOICE_SELECT", position);
+                                editor.apply();
+
+                                previous_select = position;
+                            }
+                        } else {
+                            Log.d(TAG, "You have bought this item, we don't have to check this with internet");
                         }
                     } else { //position == 0
                         //save current position
@@ -412,6 +425,10 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
                     else
                         imageBuyItems.get(1).setTitle(getResources().getString(R.string.voice_gbr_woman)+"\n" + getResources().getString(R.string.voice_change_purchased));
                     imageBuyItems.get(1).setPurchased(true);
+
+                    editor = pref.edit();
+                    editor.putBoolean("VOICE_SUPPORT_GBR_WOMAN", true);
+                    editor.apply();
                 }
             } else {
                 Log.e(TAG, "inventory.getPurchase = null");
@@ -446,6 +463,10 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
                     else
                         imageBuyItems.get(2).setTitle(getResources().getString(R.string.voice_user_record)+"\n" + getResources().getString(R.string.voice_change_purchased));
                     imageBuyItems.get(2).setPurchased(true);
+
+                    editor = pref.edit();
+                    editor.putBoolean("VOICE_SUPPORT_USER_RECORD", true);
+                    editor.apply();
                 }
             } else {
                 Log.e(TAG, "inventory.getPurchase = null");
@@ -638,5 +659,34 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
                 break;
         }
         return true;
+    }
+
+    private boolean getPurchasedWithoutInternet(int position) {
+        boolean ret;
+
+        switch (position) {
+            case 0: //gbr man, always true
+                ret = true;
+                break;
+            case 1: //gbr woman
+                if (voice_support_gbr_woman)
+                    ret = true;
+                else
+                    ret = false;
+                break;
+            case 2: //user record
+                if (voice_support_gbr_user_record)
+                    ret = true;
+                else
+                    ret = false;
+                break;
+            default:
+                ret = false;
+                break;
+
+
+        }
+
+        return ret;
     }
 }

@@ -17,6 +17,9 @@ public class Constants {
         String SAVE_CURRENT_STATE_COMPLETE = "com.seventhmoon.SaveCurrentStateComplete";
 
         String PLAY_MULTIFILES_COMPLETE = "com.seventhmoon.PlayMultiFilesComplete";
+
+        String IMPORT_FILE_ACTION = "com.seventhmoon.ImportFileAction";
+        String IMPORT_FILE_COMPLETE = "com.seventhmoon.ImportFileComplete";
     }
 
     public interface DIRECTION {

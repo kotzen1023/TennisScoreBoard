@@ -30,7 +30,8 @@ public class FileImportArrayAdapter extends ArrayAdapter<FileImportItem> {
     public SparseBooleanArray mSparseBooleanArray;
     private int layoutResourceId;
     private ArrayList<FileImportItem> items = new ArrayList<>();
-    private int count = 0;
+    //private int count = 0;
+    private static int previous_check;
 
     public FileImportArrayAdapter(Context context, int textViewResourceId,
                                   ArrayList<FileImportItem> objects) {
@@ -40,6 +41,15 @@ public class FileImportArrayAdapter extends ArrayAdapter<FileImportItem> {
 
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mSparseBooleanArray = new SparseBooleanArray();
+
+
+        mSparseBooleanArray.clear();
+        for (int i=0; i<items.size(); i++) {
+            mSparseBooleanArray.put(i, false);
+        }
+
+        //Log.e(TAG, "mSparseBooleanArray.size = "+mSparseBooleanArray.size());
+        previous_check = 0;
     }
 
     @Override
@@ -93,11 +103,13 @@ public class FileImportArrayAdapter extends ArrayAdapter<FileImportItem> {
                        /* Take the ImageView from layout and set the city's image */
 
             fileChooseItem.setCheckBox(ck);
-            ck.setVisibility(View.INVISIBLE);
+            ck.setVisibility(View.VISIBLE);
+            //ck.setVisibility(View.INVISIBLE);
 
-            if (FileChooseLongClick) {
-                ck.setVisibility(View.VISIBLE);
-            }
+            //if (FileChooseLongClick) {
+            //    ck.setVisibility(View.VISIBLE);
+            //}
+            //Log.d(TAG, "getview "+position+ " mSparseBooleanArray = "+mSparseBooleanArray.get(position));
 
             if (mSparseBooleanArray.get(position))
             {
@@ -132,14 +144,17 @@ public class FileImportArrayAdapter extends ArrayAdapter<FileImportItem> {
                 if (file.isDirectory()) {
                     if (fileChooseItem.getName().equals("..")) {
                         bitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.up);
-                        ck.setVisibility(View.INVISIBLE);
+                        //ck.setVisibility(View.INVISIBLE);
                     } else {
                         bitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.folder);
                     }
+                    ck.setVisibility(View.INVISIBLE);
                 } else if (file.isFile()) {
                     bitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.file);
+                    //ck.setVisibility(View.VISIBLE);
                 } else {
                     bitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.folder);
+                    ck.setVisibility(View.INVISIBLE);
                 }
                 bm = Bitmap.createScaledBitmap(bitmap, 50, 50, true);
                 ImageView imageCity = (ImageView) view.findViewById(R.id.fd_Icon1);
@@ -160,28 +175,92 @@ public class FileImportArrayAdapter extends ArrayAdapter<FileImportItem> {
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            int position = (int)buttonView.getTag();
             Log.i(TAG, "switch " + buttonView.getTag() + " checked = " + isChecked);
             //int idx = (Integer) buttonView.getTag();
 
             //if(isChecked == true) {
             FileImportItem fileImportItem = items.get((Integer) buttonView.getTag());
 
+
+
             if (fileImportItem.getCheckBox() != null) {
 
                 if (!fileImportItem.getName().equals("..")) {
-                    mSparseBooleanArray.put((Integer) buttonView.getTag(), isChecked);
-                    if (isChecked)
-                        count++;
+
+
+                    /*for (int i= 0; i<mSparseBooleanArray.size(); i++) {
+                        if (isChecked) {
+                            if (i == position) {
+                                mSparseBooleanArray.put(position, true);
+                                items.get(position).getCheckBox().setChecked(true);
+                            } else {
+
+                                mSparseBooleanArray.put(i, false);
+                                if (items.get(i).getCheckBox() != null)
+                                    items.get(i).getCheckBox().setChecked(false);
+                            }
+                        } else {
+                            if (i == position) {
+                                mSparseBooleanArray.put(position, false);
+                                items.get(position).getCheckBox().setChecked(false);
+                            } else {
+
+                                mSparseBooleanArray.put(i, false);
+                                if (items.get(i).getCheckBox() != null)
+                                    items.get(i).getCheckBox().setChecked(false);
+                            }
+                        }
+
+
+
+                    }*/
+
+                    if (position != previous_check) {
+                        //Log.e(TAG, "position != previous_check");
+
+                        if (isChecked) {
+                            mSparseBooleanArray.put(position, true);
+                            items.get(position).getCheckBox().setChecked(true);
+                            //set previous false
+                            mSparseBooleanArray.put(previous_check, false);
+                            if (items.get(previous_check).getCheckBox() != null)
+                                items.get(previous_check).getCheckBox().setChecked(false);
+
+                            previous_check = position;
+                        }
+                    } else { //position == previous_check
+                        //Log.e(TAG, "position == previous_check, ischeck = "+isChecked);
+                        mSparseBooleanArray.put(position, isChecked);
+                        items.get(position).getCheckBox().setChecked(isChecked);
+
+                        previous_check = position;
+                    }
+
+
+
+
+
+                    boolean found = false;
+                    for (int j = 0; j<mSparseBooleanArray.size(); j++) {
+                        if (mSparseBooleanArray.get(j)) {
+                            //Log.e(TAG, "found =====> "+j);
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (found)
+                        confirm.setVisibility(View.VISIBLE);
                     else
-                        count--;
+                        confirm.setVisibility(View.GONE);
                 }
                 else {
-                    fileImportItem.getCheckBox().setChecked(false);
-                    fileImportItem.getCheckBox().setVisibility(View.INVISIBLE);
-                    mSparseBooleanArray.put((Integer) buttonView.getTag(), false);
-                    count--;
+                    Log.e(TAG, "item = ..");
                 }
             }
+
+
             //}
             /*int count = 0;
 
@@ -193,11 +272,11 @@ public class FileImportArrayAdapter extends ArrayAdapter<FileImportItem> {
 
             //Log.e(TAG, "Count = "+count);
 
-            if (count > 0) {
+            /*if (count > 0) {
                 confirm.setVisibility(View.VISIBLE);
             } else  {
                 confirm.setVisibility(View.GONE);
-            }
+            }*/
         }
     };
 

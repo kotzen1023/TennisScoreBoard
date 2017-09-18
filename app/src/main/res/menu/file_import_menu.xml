@@ -7,9 +7,9 @@
         android:icon="@drawable/ic_help_outline_white_24dp"
         app:showAsAction="ifRoom|withText" />
 
-    <item
+    <!--item
         android:id="@+id/action_selectall"
         android:title="@string/import_select_all"
         android:icon="@drawable/ic_select_all_white_24dp"
-        app:showAsAction="ifRoom|withText" />
+        app:showAsAction="ifRoom|withText" /-->
 </menu>

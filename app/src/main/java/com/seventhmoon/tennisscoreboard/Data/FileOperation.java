@@ -410,4 +410,34 @@ public class FileOperation {
 
         }
     }
+
+    public static void importFileToSelect(String src_filePath, String destFileName) {
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            //path = Environment.getExternalStorageDirectory();
+            RootDirectory = Environment.getExternalStorageDirectory();
+        }
+
+        File src_file = new File(src_filePath);
+        File dest_file = new File(RootDirectory.getAbsolutePath() + "/.tennisScoredBoard/user/" + destFileName);
+
+        if (!src_file.getAbsolutePath().equals(dest_file.getAbsolutePath())) {
+
+            try {
+
+                InputStream in = new FileInputStream(src_file);
+                OutputStream out = new FileOutputStream(dest_file);
+
+                // Transfer bytes from in to out
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+                in.close();
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

@@ -53,6 +53,7 @@
 
 
         <service android:name=".Service.SearchFileService"/>
+        <service android:name=".Service.FileImportService"/>
     </application>
 
 </manifest>
