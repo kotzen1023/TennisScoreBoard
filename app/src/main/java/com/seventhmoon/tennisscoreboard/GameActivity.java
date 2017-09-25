@@ -4544,6 +4544,10 @@ public class GameActivity extends AppCompatActivity{
                             match = R.raw.gbr_man_match;
                             voiceList.add(match);
                             break;
+                        case GBR_WOMAN:
+                            match = R.raw.gbr_woman_match;
+                            voiceList.add(match);
+                            break;
                         case USER_RECORD:
                             fileName = "user_match.m4a";
                             voiceUserList.add(fileName);
@@ -4572,8 +4576,22 @@ public class GameActivity extends AppCompatActivity{
                     imgPlayOrPause.setVisibility(View.GONE);
 
                     //voice
-                    match = R.raw.gbr_man_match;
-                    voiceList.add(match);
+                    //voice
+                    switch (current_voice_type) {
+                        case GBR_MAN:
+                            match = R.raw.gbr_man_match;
+                            voiceList.add(match);
+                            break;
+                        case GBR_WOMAN:
+                            match = R.raw.gbr_woman_match;
+                            voiceList.add(match);
+                            break;
+                        case USER_RECORD:
+                            fileName = "user_match.m4a";
+                            voiceUserList.add(fileName);
+                            break;
+
+                    }
                     //match and play all
                     for (int i =1; i<=current_set; i++) {
                         if (setsWinUp > setsWinDown) {
@@ -4615,8 +4633,22 @@ public class GameActivity extends AppCompatActivity{
                     imgPlayOrPause.setVisibility(View.GONE);
 
                     //voice
-                    match = R.raw.gbr_man_match;
-                    voiceList.add(match);
+                    //voice
+                    switch (current_voice_type) {
+                        case GBR_MAN:
+                            match = R.raw.gbr_man_match;
+                            voiceList.add(match);
+                            break;
+                        case GBR_WOMAN:
+                            match = R.raw.gbr_woman_match;
+                            voiceList.add(match);
+                            break;
+                        case USER_RECORD:
+                            fileName = "user_match.m4a";
+                            voiceUserList.add(fileName);
+                            break;
+
+                    }
                     //match and play all
                     for (int i =1; i<=current_set; i++) {
                         if (setsWinUp > setsWinDown) {
@@ -4638,8 +4670,22 @@ public class GameActivity extends AppCompatActivity{
                     imgPlayOrPause.setVisibility(View.GONE);
 
                     //voice
-                    match = R.raw.gbr_man_match;
-                    voiceList.add(match);
+                    //voice
+                    switch (current_voice_type) {
+                        case GBR_MAN:
+                            match = R.raw.gbr_man_match;
+                            voiceList.add(match);
+                            break;
+                        case GBR_WOMAN:
+                            match = R.raw.gbr_woman_match;
+                            voiceList.add(match);
+                            break;
+                        case USER_RECORD:
+                            fileName = "user_match.m4a";
+                            voiceUserList.add(fileName);
+                            break;
+
+                    }
 
                     //match and play all
                     for (int i =1; i<=current_set; i++) {
