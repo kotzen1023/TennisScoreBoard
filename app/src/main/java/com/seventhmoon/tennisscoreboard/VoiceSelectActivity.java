@@ -54,7 +54,7 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
     // Provides purchase notification while this app is running
     IabBroadcastReceiver mBroadcastReceiver;
 
-    private static boolean debug = true;
+    private static boolean debug = false;
     private Window window;
     ArrayList<String> additionalSkuList = new ArrayList<>();
     private int previous_select = 0;

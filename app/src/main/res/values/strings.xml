@@ -142,5 +142,16 @@
     <string name="record_clear_all">Clear</string>
     <string name="record_clear_all_msg">Clear all voices?</string>
     <string name="voice_import">Import</string>
+    <string name="game_voice_off_message">Voice Off</string>
+    <string name="game_voice_on_message">Voice On</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="privacy_msg_1">In order to protect your privacy, please read carefully the Privacy Policy of Tennis Score Board Applications listed below.</string>
+    <string name="privacy_msg_2">I. Collection, Use and Modification of Personal Information</string>
+    <string name="privacy_msg_3">\n1.Collection of Personal Information\n   You must provide device permission , include camera ,album storage. in order to save statistics as files. And you must also provide the record permission to record your sounds.  </string>
+    <string name="privacy_msg_4">\n2.Use of Personal Information\n   Files saved and sounds recorded in this app are processed and stored only in your personal device and will not be uploaded to any other location. </string>
+    <string name="privacy_msg_5">\n3.Modification of Personal Information\n   You can delete all files and sounds in this app.</string>
+    <string name="privacy_msg_6">II. Disclosure of your personal information</string>
+    <string name="privacy_msg_7">\nTennis Score Board APP would not collect any personal information or uploaded any personal information of your device.</string>
+    <string name="agree_privacy_policy">I agree to the term of services and privacy policy.</string>
 </resources>
 

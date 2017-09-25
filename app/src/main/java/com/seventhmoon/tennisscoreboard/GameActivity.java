@@ -10460,12 +10460,14 @@ public class GameActivity extends AppCompatActivity{
                     voice_item.setTitle(R.string.game_voice_off);
                     voiceOn = false;
 
-
+                    toast(getResources().getString(R.string.game_voice_off_message));
 
                 } else {
                     voice_item.setIcon(R.drawable.ic_keyboard_voice_white_48dp);
                     voice_item.setTitle(R.string.game_voice_on);
                     voiceOn = true;
+
+                    toast(getResources().getString(R.string.game_voice_on_message));
                 }
                 editor = pref.edit();
                 editor.putBoolean("VOICE_ON", voiceOn);

@@ -143,4 +143,15 @@
     <string name="record_clear_all">清除</string>
     <string name="record_clear_all_msg">清除所有錄音?</string>
     <string name="voice_import">匯入檔案</string>
+    <string name="game_voice_off_message">語音關閉</string>
+    <string name="game_voice_on_message">語音開啟</string>
+    <string name="privacy_policy">隱私權政策</string>
+    <string name="privacy_msg_1">為保護您的隱私權，請您詳細閱讀以下有關  網球記分板 App之「隱私權政策」。</string>
+    <string name="privacy_msg_2">一、個人資料蒐集、處理、利用及修改</string>
+    <string name="privacy_msg_3">\n1.個人資料之蒐集與目的\n  當您安裝並啟動  網球記分板 App 時，需允許存取裝置中的相片、媒體和檔案，才能將您紀錄的比數與統計資料存檔. 需允許錄音，才能錄製個人的聲音。</string>
+    <string name="privacy_msg_4">\n2.個人資料之處理及利用\n  您紀錄的檔案以及錄製僅限於處理並儲存於您個人裝置內，將不會透過任何形式上傳至他處使用。 </string>
+    <string name="privacy_msg_5">\n3.個人資料之刪除\n  您可以刪除紀錄的檔案或任何錄製的聲音。</string>
+    <string name="privacy_msg_6">二、個人資訊的揭露</string>
+    <string name="privacy_msg_7">\n網球記分板 App不會蒐集任何個人資料或上傳任何裝置內的個人資料。</string>
+    <string name="agree_privacy_policy">我同意上述的隱私權聲明</string>
 </resources>

@@ -15,11 +15,17 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 
 import android.view.Menu;
 import android.view.MenuItem;
 
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -52,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
     static SharedPreferences.Editor editor;
     private static final String FILE_NAME = "Preference";
     private static String macAddress;
+    private TextView textViewPrivacy;
+    private boolean privacy;
 
     //private static MenuItem voiceItem;
 
@@ -73,9 +81,51 @@ public class MainActivity extends AppCompatActivity {
 
         //InitData initData = new InitData();
 
+
         //get wifi mac
         pref = getSharedPreferences(FILE_NAME, MODE_PRIVATE);
         macAddress = pref.getString("WIFIMAC", "");
+        privacy = pref.getBoolean("PRIVACY", false);
+
+        CheckBox checkBox = (CheckBox) findViewById(R.id.checkboxAgree);
+        final Button btnPolicyConfirm = (Button) findViewById(R.id.btnPolicyConfirm);
+
+        btnPolicyConfirm.setEnabled(false);
+
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    Log.e(TAG, "true");
+                    btnPolicyConfirm.setEnabled(true);
+                } else {
+                    Log.e(TAG, "false");
+                    btnPolicyConfirm.setEnabled(false);
+                }
+            }
+        });
+
+        btnPolicyConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                privacy = true;
+                editor = pref.edit();
+                editor.putBoolean("PRIVACY", privacy);
+                editor.apply();
+
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                    init_folder_and_files();
+                    init_setting();
+                } else {
+                    if (checkAndRequestPermissions()) {
+                        // carry on the normal flow, as the case of  permissions  granted.
+
+                        init_folder_and_files();
+                        init_setting();
+                    }
+                }
+            }
+        });
 
         if (macAddress.equals("")) {
             boolean mobileDataEnabled = false; // Assume disabled
@@ -135,15 +185,18 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            init_folder_and_files();
-            init_setting();
-        } else {
-            if(checkAndRequestPermissions()) {
-                // carry on the normal flow, as the case of  permissions  granted.
+        if (privacy) {
 
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                 init_folder_and_files();
                 init_setting();
+            } else {
+                if (checkAndRequestPermissions()) {
+                    // carry on the normal flow, as the case of  permissions  granted.
+
+                    init_folder_and_files();
+                    init_setting();
+                }
             }
         }
 
@@ -151,26 +204,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        /*Button btnNewGame = (Button) findViewById(R.id.btnNewGame);
-        Button btnContinue = (Button) findViewById(R.id.btnContinue);
 
-        btnNewGame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                showInputDialog();
-            }
-        });
-
-        btnContinue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LoadGame.class);
-                intent.putExtra("CALL_ACTIVITY", "Main");
-                startActivity(intent);
-                finish();
-            }
-        });*/
 
 
 
