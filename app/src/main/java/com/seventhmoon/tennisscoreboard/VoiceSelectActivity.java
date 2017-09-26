@@ -401,82 +401,76 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
 
             Log.d(TAG, "Query inventory was successful.");
 
-            //gbr woman
+
             if (inventory != null) {
-                imageBuyItems.get(1).setPurchase(inventory.getPurchase("sku_voice_support_gbr_woman"));
-            }
+                //gbr woman
+                if (inventory.getPurchase("sku_voice_support_gbr_woman") != null) {
+                    imageBuyItems.get(1).setPurchase(inventory.getPurchase("sku_voice_support_gbr_woman"));
 
-            if (inventory.getPurchase("sku_voice_support_gbr_woman") != null) {
-
-
-                Log.i(TAG, "sku_voice_support_gbr_woman = " + inventory.getSkuDetails("sku_voice_support_gbr_woman").getPriceCurrencyCode() + " " +
-                        inventory.getSkuDetails("sku_voice_support_gbr_woman").getPrice() + "purchase " + inventory.getPurchase("sku_voice_support_gbr_woman"));
+                    Log.i(TAG, "sku_voice_support_gbr_woman = " + inventory.getSkuDetails("sku_voice_support_gbr_woman").getPriceCurrencyCode() + " " +
+                            inventory.getSkuDetails("sku_voice_support_gbr_woman").getPrice() + "purchase " + inventory.getPurchase("sku_voice_support_gbr_woman"));
 
 
-                if (inventory.getPurchase("sku_voice_support_gbr_woman") == null) { //not buy yet
+                    if (inventory.getPurchase("sku_voice_support_gbr_woman") == null) { //not buy yet
+                        if (debug)
+                            imageBuyItems.get(1).setTitle(getResources().getString(R.string.voice_gbr_woman));
+                        else
+                            imageBuyItems.get(1).setTitle(getResources().getString(R.string.voice_gbr_woman)+"\n" + inventory.getSkuDetails("sku_voice_support_gbr_woman").getPrice());
+                        imageBuyItems.get(1).setPurchased(false);
+                    } else {
+                        if (debug)
+                            imageBuyItems.get(1).setTitle(getResources().getString(R.string.voice_gbr_woman));
+                        else
+                            imageBuyItems.get(1).setTitle(getResources().getString(R.string.voice_gbr_woman)+"\n" + getResources().getString(R.string.voice_change_purchased));
+                        imageBuyItems.get(1).setPurchased(true);
+
+                        editor = pref.edit();
+                        editor.putBoolean("VOICE_SUPPORT_GBR_WOMAN", true);
+                        editor.apply();
+                    }
+                } else {
+                    Log.e(TAG, "inventory.getPurchase = null");
                     if (debug)
                         imageBuyItems.get(1).setTitle(getResources().getString(R.string.voice_gbr_woman));
                     else
                         imageBuyItems.get(1).setTitle(getResources().getString(R.string.voice_gbr_woman)+"\n" + inventory.getSkuDetails("sku_voice_support_gbr_woman").getPrice());
                     imageBuyItems.get(1).setPurchased(false);
-                } else {
-                    if (debug)
-                        imageBuyItems.get(1).setTitle(getResources().getString(R.string.voice_gbr_woman));
-                    else
-                        imageBuyItems.get(1).setTitle(getResources().getString(R.string.voice_gbr_woman)+"\n" + getResources().getString(R.string.voice_change_purchased));
-                    imageBuyItems.get(1).setPurchased(true);
-
-                    editor = pref.edit();
-                    editor.putBoolean("VOICE_SUPPORT_GBR_WOMAN", true);
-                    editor.apply();
                 }
-            } else {
-                Log.e(TAG, "inventory.getPurchase = null");
-                if (debug)
-                    imageBuyItems.get(1).setTitle(getResources().getString(R.string.voice_gbr_woman));
-                else
-                    imageBuyItems.get(1).setTitle(getResources().getString(R.string.voice_gbr_woman)+"\n" + inventory.getSkuDetails("sku_voice_support_gbr_woman").getPrice());
-                imageBuyItems.get(1).setPurchased(false);
-            }
 
-            //user record
-            if (inventory != null) {
-                imageBuyItems.get(2).setPurchase(inventory.getPurchase("sku_voice_support_user_record"));
-            }
+                //user record
+                if (inventory.getPurchase("sku_voice_support_user_record") != null) {
+                    imageBuyItems.get(2).setPurchase(inventory.getPurchase("sku_voice_support_user_record"));
 
-            if (inventory.getPurchase("sku_voice_support_user_record") != null) {
+                    Log.i(TAG, "sku_voice_support_user_record = " + inventory.getSkuDetails("sku_voice_support_user_record").getPriceCurrencyCode() + " " +
+                            inventory.getSkuDetails("sku_voice_support_user_record").getPrice() + "purchase " + inventory.getPurchase("sku_voice_support_user_record"));
 
 
-                Log.i(TAG, "sku_voice_support_user_record = " + inventory.getSkuDetails("sku_voice_support_user_record").getPriceCurrencyCode() + " " +
-                        inventory.getSkuDetails("sku_voice_support_user_record").getPrice() + "purchase " + inventory.getPurchase("sku_voice_support_user_record"));
+                    if (inventory.getPurchase("sku_voice_support_user_record") == null) { //not buy yet
+                        if (debug)
+                            imageBuyItems.get(2).setTitle(getResources().getString(R.string.voice_user_record));
+                        else
+                            imageBuyItems.get(2).setTitle(getResources().getString(R.string.voice_user_record)+"\n" + inventory.getSkuDetails("sku_voice_support_user_record").getPrice());
+                        imageBuyItems.get(2).setPurchased(false);
+                    } else {
+                        if (debug)
+                            imageBuyItems.get(2).setTitle(getResources().getString(R.string.voice_user_record));
+                        else
+                            imageBuyItems.get(2).setTitle(getResources().getString(R.string.voice_user_record)+"\n" + getResources().getString(R.string.voice_change_purchased));
+                        imageBuyItems.get(2).setPurchased(true);
 
-
-                if (inventory.getPurchase("sku_voice_support_user_record") == null) { //not buy yet
+                        editor = pref.edit();
+                        editor.putBoolean("VOICE_SUPPORT_USER_RECORD", true);
+                        editor.apply();
+                    }
+                } else {
+                    Log.e(TAG, "inventory.getPurchase = null");
                     if (debug)
                         imageBuyItems.get(2).setTitle(getResources().getString(R.string.voice_user_record));
                     else
                         imageBuyItems.get(2).setTitle(getResources().getString(R.string.voice_user_record)+"\n" + inventory.getSkuDetails("sku_voice_support_user_record").getPrice());
                     imageBuyItems.get(2).setPurchased(false);
-                } else {
-                    if (debug)
-                        imageBuyItems.get(2).setTitle(getResources().getString(R.string.voice_user_record));
-                    else
-                        imageBuyItems.get(2).setTitle(getResources().getString(R.string.voice_user_record)+"\n" + getResources().getString(R.string.voice_change_purchased));
-                    imageBuyItems.get(2).setPurchased(true);
-
-                    editor = pref.edit();
-                    editor.putBoolean("VOICE_SUPPORT_USER_RECORD", true);
-                    editor.apply();
                 }
-            } else {
-                Log.e(TAG, "inventory.getPurchase = null");
-                if (debug)
-                    imageBuyItems.get(2).setTitle(getResources().getString(R.string.voice_user_record));
-                else
-                    imageBuyItems.get(2).setTitle(getResources().getString(R.string.voice_user_record)+"\n" + inventory.getSkuDetails("sku_voice_support_user_record").getPrice());
-                imageBuyItems.get(2).setPurchased(false);
             }
-
 
             gridViewVoiceAdapter.notifyDataSetChanged();
 
