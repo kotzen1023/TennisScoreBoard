@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,6 +47,7 @@ public class SetupMain extends AppCompatActivity{
 
     //private MenuItem item_edit;
     private static ArrayList<String> serveList = new ArrayList<>();
+    private static ArrayList<String> tiebreakList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +90,12 @@ public class SetupMain extends AppCompatActivity{
         String[] gameList = {getResources().getString(R.string.setup_six_games),
                 getResources().getString(R.string.setup_four_games)};
 
-        final String[] tiebreakList = {getResources().getString(R.string.setup_tiebreak), getResources().getString(R.string.setup_deciding_game)};
+        //final String[] tiebreakList = {getResources().getString(R.string.setup_tiebreak), getResources().getString(R.string.setup_deciding_game)};
+
+        tiebreakList.clear();
+
+        tiebreakList.add(getResources().getString(R.string.setup_tiebreak));
+        tiebreakList.add(getResources().getString(R.string.setup_deciding_game));
 
         String[] deuceList = {getResources().getString(R.string.setup_deuce), getResources().getString(R.string.setup_deciding_point)};
 
@@ -123,6 +130,37 @@ public class SetupMain extends AppCompatActivity{
 
         setAdapter = new ArrayAdapter<>(SetupMain.this, R.layout.myspinner, setList);
         setSpinner.setAdapter(setAdapter);
+
+        setSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "select "+position);
+
+                if (gameSpinner.getSelectedItemPosition() == 0) { //only 6 games in a set
+
+                    if (position >= 1) { //3,5 sets
+                        //String item = getResources().getString(R.string.setup_supertiebreak);
+                        tiebreakList.add(getResources().getString(R.string.setup_supertiebreak));
+                        tiebreakAdapter.notifyDataSetChanged();
+                    } else {
+                        if (tiebreakList.size() == 3) {
+                            tiebreakList.remove(2);
+                            tiebreakAdapter.notifyDataSetChanged();
+                        }
+                    }
+                } else {
+                    if (tiebreakList.size() == 3) {
+                        tiebreakList.remove(2);
+                        tiebreakAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         gameAdapter = new ArrayAdapter<>(SetupMain.this, R.layout.myspinner, gameList);
         gameSpinner.setAdapter(gameAdapter);
@@ -253,6 +291,22 @@ public class SetupMain extends AppCompatActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
+            case R.id.action_help:
+                AlertDialog.Builder helpdialog = new AlertDialog.Builder(this);
+                helpdialog.setIcon(R.mipmap.ic_launcher);
+                helpdialog.setTitle(getResources().getString(R.string.setup_help));
+                helpdialog.setMessage(getResources().getString(R.string.setup_help_msg_deciding_game)+"\n"+
+                        getResources().getString(R.string.setup_help_msg_super_tiebreak)+"\n"+
+                        getResources().getString(R.string.setup_help_msg_deciding_point));
+                helpdialog.setPositiveButton(getResources().getString(R.string.confirm), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                    }
+                });
+                helpdialog.show();
+                break;
+
             case R.id.action_edit_group:
 
                 showInputDialog();

@@ -8,7 +8,7 @@
     <string name="setup_four_games">4 局</string>
     <string name="setup_tiebreak">搶7(tiebreak)</string>
     <string name="setup_deuce">Deuce</string>
-    <string name="setup_deciding_game">搶尾局</string>
+    <string name="setup_deciding_game">決勝局</string>
     <string name="setup_deciding_point">決勝分</string>
     <string name="setup_serve_first">發球(下方)</string>
     <string name="setup_receive">接發球(下方)</string>
@@ -154,4 +154,9 @@
     <string name="privacy_msg_6">二、個人資訊的揭露</string>
     <string name="privacy_msg_7">\n網球記分板 App不會蒐集任何個人資料或上傳任何裝置內的個人資料。</string>
     <string name="agree_privacy_policy">我同意上述的隱私權聲明</string>
+    <string name="setup_supertiebreak">Super Tiebreak</string>
+    <string name="setup_help">協助</string>
+    <string name="setup_help_msg_deciding_game">決勝局: 一盤六局的比賽, 先贏六局的贏得該盤</string>
+    <string name="setup_help_msg_super_tiebreak">Super tiebreak: Super tiebreak是決勝盤只搶10分的規則, 為的是讓比賽的節奏加快.</string>
+    <string name="setup_help_msg_deciding_point">決勝分: 比數來到40:40時, 先贏下一分者將贏得這局.</string>
 </resources>

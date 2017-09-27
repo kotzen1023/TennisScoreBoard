@@ -153,5 +153,10 @@
     <string name="privacy_msg_6">II. Disclosure of your personal information</string>
     <string name="privacy_msg_7">\nTennis Score Board APP would not collect any personal information or uploaded any personal information of your device.</string>
     <string name="agree_privacy_policy">I agree to the term of services and privacy policy.</string>
+    <string name="setup_supertiebreak">Super Tiebreak</string>
+    <string name="setup_help">Help</string>
+    <string name="setup_help_msg_deciding_game">Deciding Game: In a set of 6 games, win 6 games first will win this set.</string>
+    <string name="setup_help_msg_super_tiebreak">Super Tiebreak: Super Tiebreak is a 10 points set in final set. In order to make the game goes more quickly.</string>
+    <string name="setup_help_msg_deciding_point">Deciding Point: When a game comes to 40:40, who win next point will win this game.</string>
 </resources>
 
