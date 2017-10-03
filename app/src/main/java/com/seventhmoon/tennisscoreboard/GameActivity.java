@@ -3318,7 +3318,13 @@ public class GameActivity extends AppCompatActivity{
                         new_state.setInTiebreak(false);
                         is_current_game_over = true;
                         //do stop play
-                        voicePlay.doStopAudioPlayMulti();
+                        if (voiceOn) {
+                            if (voicePlay == null) {
+                                initVoicePlay();
+                            }
+                            voicePlay.doStopAudioPlayMulti();
+                        }
+
                         //add voice
                         voiceList.clear();
                         voiceUserList.clear();
@@ -3347,7 +3353,12 @@ public class GameActivity extends AppCompatActivity{
                         new_state.setInTiebreak(false);
                         is_current_game_over = true;
                         //do stop play
-                        voicePlay.doStopAudioPlayMulti();
+                        if (voiceOn) {
+                            if (voicePlay == null) {
+                                initVoicePlay();
+                            }
+                            voicePlay.doStopAudioPlayMulti();
+                        }
                         //add voice
                         voiceList.clear();
                         voiceUserList.clear();
@@ -3379,7 +3390,12 @@ public class GameActivity extends AppCompatActivity{
                         new_state.setInTiebreak(false);
                         is_current_game_over = true;
                         //do stop play
-                        voicePlay.doStopAudioPlayMulti();
+                        if (voiceOn) {
+                            if (voicePlay == null) {
+                                initVoicePlay();
+                            }
+                            voicePlay.doStopAudioPlayMulti();
+                        }
                         //add voice
                         voiceList.clear();
                         voiceUserList.clear();
@@ -3411,7 +3427,12 @@ public class GameActivity extends AppCompatActivity{
                         new_state.setInTiebreak(false);
                         is_current_game_over = true;
                         //do stop play
-                        voicePlay.doStopAudioPlayMulti();
+                        if (voiceOn) {
+                            if (voicePlay == null) {
+                                initVoicePlay();
+                            }
+                            voicePlay.doStopAudioPlayMulti();
+                        }
                         //add voice
                         voiceList.clear();
                         voiceUserList.clear();
@@ -3438,14 +3459,24 @@ public class GameActivity extends AppCompatActivity{
                                 new_state.getSet_point_down(current_set) > 99) { //point > 99, don't play voice
                             toast("The voice will not support while points more than 99");
                             //do stop play
-                            voicePlay.doStopAudioPlayMulti();
+                            if (voiceOn) {
+                                if (voicePlay == null) {
+                                    initVoicePlay();
+                                }
+                                voicePlay.doStopAudioPlayMulti();
+                            }
                             //add voice
                             voiceList.clear();
                             voiceUserList.clear();
                         } else {
 
                             //do stop play
-                            voicePlay.doStopAudioPlayMulti();
+                            if (voiceOn) {
+                                if (voicePlay == null) {
+                                    initVoicePlay();
+                                }
+                                voicePlay.doStopAudioPlayMulti();
+                            }
                             //add voice
                             voiceList.clear();
                             voiceUserList.clear();
@@ -3484,7 +3515,12 @@ public class GameActivity extends AppCompatActivity{
                         new_state.setInTiebreak(false);
                         is_current_game_over = true;
                         //do stop play
-                        voicePlay.doStopAudioPlayMulti();
+                        if (voiceOn) {
+                            if (voicePlay == null) {
+                                initVoicePlay();
+                            }
+                            voicePlay.doStopAudioPlayMulti();
+                        }
                         //add voice
                         voiceList.clear();
                         voiceUserList.clear();
@@ -3513,7 +3549,12 @@ public class GameActivity extends AppCompatActivity{
                         new_state.setInTiebreak(false);
                         is_current_game_over = true;
                         //do stop play
-                        voicePlay.doStopAudioPlayMulti();
+                        if (voiceOn) {
+                            if (voicePlay == null) {
+                                initVoicePlay();
+                            }
+                            voicePlay.doStopAudioPlayMulti();
+                        }
                         //add voice
                         voiceList.clear();
                         voiceUserList.clear();
@@ -3545,7 +3586,12 @@ public class GameActivity extends AppCompatActivity{
                         new_state.setInTiebreak(false);
                         is_current_game_over = true;
                         //do stop play
-                        voicePlay.doStopAudioPlayMulti();
+                        if (voiceOn) {
+                            if (voicePlay == null) {
+                                initVoicePlay();
+                            }
+                            voicePlay.doStopAudioPlayMulti();
+                        }
                         //add voice
                         voiceList.clear();
                         voiceUserList.clear();
@@ -3577,7 +3623,12 @@ public class GameActivity extends AppCompatActivity{
                         new_state.setInTiebreak(false);
                         is_current_game_over = true;
                         //do stop play
-                        voicePlay.doStopAudioPlayMulti();
+                        if (voiceOn) {
+                            if (voicePlay == null) {
+                                initVoicePlay();
+                            }
+                            voicePlay.doStopAudioPlayMulti();
+                        }
                         //add voice
                         voiceList.clear();
                         voiceUserList.clear();
@@ -3604,14 +3655,24 @@ public class GameActivity extends AppCompatActivity{
                                 new_state.getSet_point_down(current_set) > 99) { //point > 99, don't play voice
                             toast("The voice will not support while points more than 99");
                             //do stop play
-                            voicePlay.doStopAudioPlayMulti();
+                            if (voiceOn) {
+                                if (voicePlay == null) {
+                                    initVoicePlay();
+                                }
+                                voicePlay.doStopAudioPlayMulti();
+                            }
                             //add voice
                             voiceList.clear();
                             voiceUserList.clear();
                         } else {
 
                             //do stop play
-                            voicePlay.doStopAudioPlayMulti();
+                            if (voiceOn) {
+                                if (voicePlay == null) {
+                                    initVoicePlay();
+                                }
+                                voicePlay.doStopAudioPlayMulti();
+                            }
                             //add voice
                             voiceList.clear();
                             voiceUserList.clear();
@@ -3647,7 +3708,12 @@ public class GameActivity extends AppCompatActivity{
                         new_state.setInTiebreak(false);
                         is_current_game_over = true;
                         //do stop play
-                        voicePlay.doStopAudioPlayMulti();
+                        if (voiceOn) {
+                            if (voicePlay == null) {
+                                initVoicePlay();
+                            }
+                            voicePlay.doStopAudioPlayMulti();
+                        }
                         //add voice
                         voiceList.clear();
                         voiceUserList.clear();
@@ -3676,7 +3742,12 @@ public class GameActivity extends AppCompatActivity{
                         new_state.setInTiebreak(false);
                         is_current_game_over = true;
                         //do stop play
-                        voicePlay.doStopAudioPlayMulti();
+                        if (voiceOn) {
+                            if (voicePlay == null) {
+                                initVoicePlay();
+                            }
+                            voicePlay.doStopAudioPlayMulti();
+                        }
                         //add voice
                         voiceList.clear();
                         voiceUserList.clear();
@@ -3708,7 +3779,12 @@ public class GameActivity extends AppCompatActivity{
                         new_state.setInTiebreak(false);
                         is_current_game_over = true;
                         //do stop play
-                        voicePlay.doStopAudioPlayMulti();
+                        if (voiceOn) {
+                            if (voicePlay == null) {
+                                initVoicePlay();
+                            }
+                            voicePlay.doStopAudioPlayMulti();
+                        }
                         //add voice
                         voiceList.clear();
                         voiceUserList.clear();
@@ -3740,7 +3816,12 @@ public class GameActivity extends AppCompatActivity{
                         new_state.setInTiebreak(false);
                         is_current_game_over = true;
                         //do stop play
-                        voicePlay.doStopAudioPlayMulti();
+                        if (voiceOn) {
+                            if (voicePlay == null) {
+                                initVoicePlay();
+                            }
+                            voicePlay.doStopAudioPlayMulti();
+                        }
                         //add voice
                         voiceList.clear();
                         voiceUserList.clear();
@@ -3769,14 +3850,24 @@ public class GameActivity extends AppCompatActivity{
                                 new_state.getSet_point_down(current_set) > 99) { //point > 99, don't play voice
                             toast("The voice will not support while points more than 99");
                             //do stop play
-                            voicePlay.doStopAudioPlayMulti();
+                            if (voiceOn) {
+                                if (voicePlay == null) {
+                                    initVoicePlay();
+                                }
+                                voicePlay.doStopAudioPlayMulti();
+                            }
                             //add voice
                             voiceList.clear();
                             voiceUserList.clear();
                         } else {
 
                             //do stop play
-                            voicePlay.doStopAudioPlayMulti();
+                            if (voiceOn) {
+                                if (voicePlay == null) {
+                                    initVoicePlay();
+                                }
+                                voicePlay.doStopAudioPlayMulti();
+                            }
                             //add voice
                             voiceList.clear();
                             voiceUserList.clear();
@@ -3816,7 +3907,12 @@ public class GameActivity extends AppCompatActivity{
                     new_state.setInBreakPoint(false);
                     is_current_game_over = false;
                     //do stop play
-                    voicePlay.doStopAudioPlayMulti();
+                    if (voiceOn) {
+                        if (voicePlay == null) {
+                            initVoicePlay();
+                        }
+                        voicePlay.doStopAudioPlayMulti();
+                    }
                     //add voice
                     voiceList.clear();
                     voiceUserList.clear();
@@ -3853,7 +3949,12 @@ public class GameActivity extends AppCompatActivity{
                     new_state.setInBreakPoint(false);
                     is_current_game_over = true;
                     //do stop play
-                    voicePlay.doStopAudioPlayMulti();
+                    if (voiceOn) {
+                        if (voicePlay == null) {
+                            initVoicePlay();
+                        }
+                        voicePlay.doStopAudioPlayMulti();
+                    }
                     //add voice
                     voiceList.clear();
                     voiceUserList.clear();
@@ -3889,7 +3990,12 @@ public class GameActivity extends AppCompatActivity{
                     new_state.setInBreakPoint(false);
                     is_current_game_over = true;
                     //do stop play
-                    voicePlay.doStopAudioPlayMulti();
+                    if (voiceOn) {
+                        if (voicePlay == null) {
+                            initVoicePlay();
+                        }
+                        voicePlay.doStopAudioPlayMulti();
+                    }
                     //add voice
                     voiceList.clear();
                     voiceUserList.clear();
@@ -3925,7 +4031,12 @@ public class GameActivity extends AppCompatActivity{
                     new_state.setInBreakPoint(false);
                     is_current_game_over = true;
                     //do stop play
-                    voicePlay.doStopAudioPlayMulti();
+                    if (voiceOn) {
+                        if (voicePlay == null) {
+                            initVoicePlay();
+                        }
+                        voicePlay.doStopAudioPlayMulti();
+                    }
                     //add voice
                     voiceList.clear();
                     voiceUserList.clear();
@@ -3961,7 +4072,12 @@ public class GameActivity extends AppCompatActivity{
                     new_state.setInBreakPoint(false);
                     is_current_game_over = true;
                     //do stop play
-                    voicePlay.doStopAudioPlayMulti();
+                    if (voiceOn) {
+                        if (voicePlay == null) {
+                            initVoicePlay();
+                        }
+                        voicePlay.doStopAudioPlayMulti();
+                    }
                     //add voice
                     voiceList.clear();
                     voiceUserList.clear();
@@ -3997,7 +4113,12 @@ public class GameActivity extends AppCompatActivity{
                         }
                         is_current_game_over = false;
                         //do stop play
-                        voicePlay.doStopAudioPlayMulti();
+                        if (voiceOn) {
+                            if (voicePlay == null) {
+                                initVoicePlay();
+                            }
+                            voicePlay.doStopAudioPlayMulti();
+                        }
                         //add voice
                         voiceList.clear();
                         voiceUserList.clear();
@@ -4030,7 +4151,12 @@ public class GameActivity extends AppCompatActivity{
                         }
                         is_current_game_over = false;
                         //do stop play
-                        voicePlay.doStopAudioPlayMulti();
+                        if (voiceOn) {
+                            if (voicePlay == null) {
+                                initVoicePlay();
+                            }
+                            voicePlay.doStopAudioPlayMulti();
+                        }
                         //add voice
                         voiceList.clear();
                         voiceUserList.clear();
@@ -4051,7 +4177,12 @@ public class GameActivity extends AppCompatActivity{
                         }
                         is_current_game_over = false;
                         //do stop play
-                        voicePlay.doStopAudioPlayMulti();
+                        if (voiceOn) {
+                            if (voicePlay == null) {
+                                initVoicePlay();
+                            }
+                            voicePlay.doStopAudioPlayMulti();
+                        }
                         //add voice
                         voiceList.clear();
                         voiceUserList.clear();
@@ -4073,7 +4204,12 @@ public class GameActivity extends AppCompatActivity{
                         }
                         is_current_game_over = false;
                         //do stop play
-                        voicePlay.doStopAudioPlayMulti();
+                        if (voiceOn) {
+                            if (voicePlay == null) {
+                                initVoicePlay();
+                            }
+                            voicePlay.doStopAudioPlayMulti();
+                        }
                         //add voice
                         voiceList.clear();
                         voiceUserList.clear();
@@ -4099,7 +4235,12 @@ public class GameActivity extends AppCompatActivity{
                         new_state.setInBreakPoint(false);
                         is_current_game_over = false;
                         //do stop play
-                        voicePlay.doStopAudioPlayMulti();
+                        if (voiceOn) {
+                            if (voicePlay == null) {
+                                initVoicePlay();
+                            }
+                            voicePlay.doStopAudioPlayMulti();
+                        }
                         //add voice
                         voiceList.clear();
                         voiceUserList.clear();
@@ -4146,7 +4287,12 @@ public class GameActivity extends AppCompatActivity{
                         }
                         is_current_game_over = false;
                         //do stop play
-                        voicePlay.doStopAudioPlayMulti();
+                        if (voiceOn) {
+                            if (voicePlay == null) {
+                                initVoicePlay();
+                            }
+                            voicePlay.doStopAudioPlayMulti();
+                        }
                         //add voice
                         voiceList.clear();
                         voiceUserList.clear();
@@ -4175,7 +4321,12 @@ public class GameActivity extends AppCompatActivity{
                     }
                     is_current_game_over = true;
                     //do stop play
-                    voicePlay.doStopAudioPlayMulti();
+                    if (voiceOn) {
+                        if (voicePlay == null) {
+                            initVoicePlay();
+                        }
+                        voicePlay.doStopAudioPlayMulti();
+                    }
                     //add voice
                     voiceList.clear();
                     voiceUserList.clear();
@@ -4198,7 +4349,12 @@ public class GameActivity extends AppCompatActivity{
                     }
                     is_current_game_over = true;
                     //do stop play
-                    voicePlay.doStopAudioPlayMulti();
+                    if (voiceOn) {
+                        if (voicePlay == null) {
+                            initVoicePlay();
+                        }
+                        voicePlay.doStopAudioPlayMulti();
+                    }
                     //add voice
                     voiceList.clear();
                     voiceUserList.clear();
@@ -4208,7 +4364,12 @@ public class GameActivity extends AppCompatActivity{
                     Log.d(TAG, "[points change without arrange]");
                     is_current_game_over = false;
                     //do stop play
-                    voicePlay.doStopAudioPlayMulti();
+                    if (voiceOn) {
+                        if (voicePlay == null) {
+                            initVoicePlay();
+                        }
+                        voicePlay.doStopAudioPlayMulti();
+                    }
                     //add voice
                     voiceList.clear();
                     voiceUserList.clear();
@@ -10824,6 +10985,10 @@ public class GameActivity extends AppCompatActivity{
         Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
         toast.show();
+    }
+
+    private void initVoicePlay() {
+        voicePlay = new VoicePlay(context);
     }
 
     /**
