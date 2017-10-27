@@ -158,5 +158,7 @@
     <string name="setup_help_msg_deciding_game">Deciding Game: In a set of 6 games, win 6 games first will win this set.</string>
     <string name="setup_help_msg_super_tiebreak">Super Tiebreak: Super Tiebreak is a 10 points set in final set. In order to make the game goes more quickly.</string>
     <string name="setup_help_msg_deciding_point">Deciding Point: When a game comes to 40:40, who win next point will win this game.</string>
+    <string name="setup_long_game">Long Game</string>
+    <string name="setup_help_msg_long_game">Long Game: Long Game is the deciding set that games comes to 5:5. Who take two straight games will win this match.</string>
 </resources>
 

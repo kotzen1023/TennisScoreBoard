@@ -49,6 +49,9 @@ public class SetupMain extends AppCompatActivity{
     private static ArrayList<String> serveList = new ArrayList<>();
     private static ArrayList<String> tiebreakList = new ArrayList<>();
 
+    private int set_choose = 0;
+    private int game_choose = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,24 +139,22 @@ public class SetupMain extends AppCompatActivity{
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.d(TAG, "select "+position);
 
+                tiebreakList.clear();
+                tiebreakList.add(getResources().getString(R.string.setup_tiebreak));
+                tiebreakList.add(getResources().getString(R.string.setup_deciding_game));
                 if (gameSpinner.getSelectedItemPosition() == 0) { //only 6 games in a set
 
                     if (position >= 1) { //3,5 sets
                         //String item = getResources().getString(R.string.setup_supertiebreak);
+
                         tiebreakList.add(getResources().getString(R.string.setup_supertiebreak));
-                        tiebreakAdapter.notifyDataSetChanged();
-                    } else {
-                        if (tiebreakList.size() == 3) {
-                            tiebreakList.remove(2);
-                            tiebreakAdapter.notifyDataSetChanged();
-                        }
-                    }
-                } else {
-                    if (tiebreakList.size() == 3) {
-                        tiebreakList.remove(2);
-                        tiebreakAdapter.notifyDataSetChanged();
+                        tiebreakList.add(getResources().getString(R.string.setup_long_game));
+
+
+                        //tiebreakAdapter.notifyDataSetChanged();
                     }
                 }
+                tiebreakAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -164,6 +165,31 @@ public class SetupMain extends AppCompatActivity{
 
         gameAdapter = new ArrayAdapter<>(SetupMain.this, R.layout.myspinner, gameList);
         gameSpinner.setAdapter(gameAdapter);
+
+        gameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                tiebreakList.clear();
+                tiebreakList.add(getResources().getString(R.string.setup_tiebreak));
+                tiebreakList.add(getResources().getString(R.string.setup_deciding_game));
+                if (setSpinner.getSelectedItemPosition() >= 1) { //3,5 sets
+
+                    if (position == 0) { //6 games in a set
+                        //String item = getResources().getString(R.string.setup_supertiebreak);
+
+                        tiebreakList.add(getResources().getString(R.string.setup_supertiebreak));
+                        tiebreakList.add(getResources().getString(R.string.setup_long_game));
+
+                    }
+                }
+                tiebreakAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         tiebreakAdapter = new ArrayAdapter<>(SetupMain.this, R.layout.myspinner, tiebreakList);
         tiebreakSpinner.setAdapter(tiebreakAdapter);
@@ -297,7 +323,8 @@ public class SetupMain extends AppCompatActivity{
                 helpdialog.setTitle(getResources().getString(R.string.setup_help));
                 helpdialog.setMessage(getResources().getString(R.string.setup_help_msg_deciding_game)+"\n"+
                         getResources().getString(R.string.setup_help_msg_super_tiebreak)+"\n"+
-                        getResources().getString(R.string.setup_help_msg_deciding_point));
+                        getResources().getString(R.string.setup_help_msg_deciding_point)+"\n"+
+                        getResources().getString(R.string.setup_help_msg_long_game));
                 helpdialog.setPositiveButton(getResources().getString(R.string.confirm), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 

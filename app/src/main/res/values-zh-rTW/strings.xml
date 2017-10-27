@@ -6,7 +6,7 @@
     <string name="setup_five_set">5 盤</string>
     <string name="setup_six_games">6 局</string>
     <string name="setup_four_games">4 局</string>
-    <string name="setup_tiebreak">搶7(tiebreak)</string>
+    <string name="setup_tiebreak">搶7決勝局(tiebreak)</string>
     <string name="setup_deuce">Deuce</string>
     <string name="setup_deciding_game">決勝局</string>
     <string name="setup_deciding_point">決勝分</string>
@@ -159,4 +159,6 @@
     <string name="setup_help_msg_deciding_game">決勝局: 一盤六局的比賽, 先贏六局的贏得該盤</string>
     <string name="setup_help_msg_super_tiebreak">Super tiebreak: Super tiebreak是決勝盤只搶10分的規則, 為的是讓比賽的節奏加快.</string>
     <string name="setup_help_msg_deciding_point">決勝分: 比數來到40:40時, 先贏下一分者將贏得這局.</string>
+    <string name="setup_long_game">Long Game</string>
+    <string name="setup_help_msg_long_game">Long Game: 指比賽到決勝盤5:5時, 先連贏2局者將贏得這場比賽.</string>
 </resources>

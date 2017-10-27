@@ -43,7 +43,7 @@ import com.seventhmoon.tennisscoreboard.Audio.VoicePlay;
 import com.seventhmoon.tennisscoreboard.Data.Constants;
 import com.seventhmoon.tennisscoreboard.Data.State;
 import com.seventhmoon.tennisscoreboard.Data.StateAction;
-import com.seventhmoon.tennisscoreboard.Service.SearchFileService;
+
 
 import java.io.File;
 import java.text.DecimalFormat;
@@ -177,6 +177,7 @@ public class GameActivity extends AppCompatActivity{
 
     private static boolean am_I_Tiebreak_First_Serve = false;
     private static boolean is_In_SuperTiebreak = false;
+    private static boolean is_In_LongGame = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -414,6 +415,9 @@ public class GameActivity extends AppCompatActivity{
                             } else if (ret == 2) {
                                 tiebreak = "2"; //super tiebreak;
 
+                            } else if (ret == 3) {
+                                tiebreak = "3"; //long game;
+
                             } else {
                                 tiebreak = "0";
                             }
@@ -477,6 +481,17 @@ public class GameActivity extends AppCompatActivity{
                         }
                     }
 
+                    is_In_LongGame = false;
+                    if (info.length > 9) {
+                        try {
+                            is_In_LongGame = Boolean.valueOf(info[9]);
+
+                        } catch (NumberFormatException e) {
+
+                            e.printStackTrace();
+                        }
+                    }
+
                 } else {
                     playerUp = "Player1";
                     playerDown = "Player2";
@@ -528,6 +543,7 @@ public class GameActivity extends AppCompatActivity{
                             new_state.setBreakPointMissDown(Byte.valueOf(data[20]));
                             //first serve won
                             new_state.setFirstServeWonUp(Short.valueOf(data[21]));
+                            new_state.setFirstServeWonDown(Short.valueOf(data[22]));
                             //first serve lost
                             new_state.setFirstServeLostUp(Short.valueOf(data[23]));
                             new_state.setFirstServeLostDown(Short.valueOf(data[24]));
@@ -539,7 +555,6 @@ public class GameActivity extends AppCompatActivity{
                             new_state.setSecondServeLostDown(Short.valueOf(data[28]));
                             //double faults
                             new_state.setDoubleFaultUp(Byte.valueOf(data[29]));
-                            new_state.setFirstServeWonDown(Short.valueOf(data[22]));
                             new_state.setDoubleFaultDown(Byte.valueOf(data[30]));
                             //unforced error
                             new_state.setUnforceErrorUp(Byte.valueOf(data[31]));
@@ -1591,7 +1606,7 @@ public class GameActivity extends AppCompatActivity{
                                 break;
                         }
 
-                        String msg = playerUp + ";" + playerDown + ";" + tiebreak + ";" + is_deuce + ";" + is_firstserve + ";" + set + ";" + is_retire+ ";" + games + "|";
+                        String msg = playerUp + ";" + playerDown + ";" + tiebreak + ";" + is_deuce + ";" + is_firstserve + ";" + set + ";" + is_retire+ ";" + games + ";" + is_In_SuperTiebreak + ";" + is_In_LongGame + "|";
                         append_record(msg, filename);
 
                         com.seventhmoon.tennisscoreboard.Data.State top = stack.peek();
@@ -4398,7 +4413,7 @@ public class GameActivity extends AppCompatActivity{
 
         Log.e(TAG, "tiebreak = "+tiebreak);
 
-        if (tiebreak.equals("0") || tiebreak.equals("2")) { //use tiebreak or super tiebreak
+        if (tiebreak.equals("0") || tiebreak.equals("2") || tiebreak.equals("3")) { //use tiebreak or super tiebreak or long game
             Log.d(TAG, "[Use Tiebreak start]");
 
             if (games.equals("0")) { //6 game in a set
@@ -4461,7 +4476,69 @@ public class GameActivity extends AppCompatActivity{
                         }
                     }
                     Log.d(TAG, "[In SuperTiebreak end]");
-                } else {
+                } else if (is_In_LongGame) {
+                    Log.d(TAG, "[Check Long Game start");
+
+                    if (new_state.getSet_game_up(current_set) >= 5 &&
+                            new_state.getSet_game_down(current_set) >= 5 &&
+                            (new_state.getSet_game_up(current_set) - new_state.getSet_game_down(current_set)) == 2) { // x+2:x => oppt win this set
+                        //set sets win
+                        setsWinUp++;
+                        new_state.setSetsUp(setsWinUp);
+                        checkSets(new_state);
+                        //add voice
+                        //if (!new_state.isFinish()) { //game is not finish, add game
+                        //    if(is_current_game_over)
+                        //        chooseGameVoice(new_state.isServe(), new_state.isInTiebreak(), new_state.getSet_game_up(current_set), new_state.getSet_game_down(current_set));
+                        //}
+
+
+                        //play voice
+                        if (voiceOn) {
+                            if (current_voice_type == USER_RECORD) {
+                                voicePlay.audioPlayMultiFile(voiceUserList);
+                            } else {
+                                voicePlay.audioPlayMulti(voiceList);
+                            }
+                        }
+
+                    } else if (new_state.getSet_game_up(current_set) >= 5 &&
+                            new_state.getSet_game_down(current_set) >= 5 &&
+                            ( new_state.getSet_game_down(current_set) - new_state.getSet_game_up(current_set)) == 2) { // x:x+2 => you win this set
+                        //set sets win
+                        setsWinDown++;
+                        new_state.setSetsDown(setsWinDown);
+                        checkSets(new_state);
+                        //add voice
+                        //if (!new_state.isFinish()) { //game is not finish, add game
+                        //    if(is_current_game_over)
+                        //        chooseGameVoice(new_state.isServe(), new_state.isInTiebreak(), new_state.getSet_game_up(current_set), new_state.getSet_game_down(current_set));
+                        //}
+
+                        //play voice
+                        if (voiceOn) {
+                            if (current_voice_type == USER_RECORD) {
+                                voicePlay.audioPlayMultiFile(voiceUserList);
+                            } else {
+                                voicePlay.audioPlayMulti(voiceList);
+                            }
+                        }
+                    } else {
+                        Log.d(TAG, "set "+current_set+" game: up = "+new_state.getSet_game_up(current_set)+", down = "+new_state.getSet_game_down(current_set));
+                        //add voice
+                        if(is_current_game_over)
+                            chooseGameVoice(new_state.isServe(), new_state.isInTiebreak(), new_state.getSet_game_up(current_set), new_state.getSet_game_down(current_set));
+                        //play voice
+                        if (voiceOn) {
+                            if (current_voice_type == USER_RECORD) {
+                                voicePlay.audioPlayMultiFile(voiceUserList);
+                            } else {
+                                voicePlay.audioPlayMulti(voiceList);
+                            }
+                        }
+                    }
+                    Log.d(TAG, "[Check Long Game end");
+                } else { //Not in super tiebreak or in long game
                     if (new_state.getSet_game_up(current_set) == 6 &&
                             new_state.getSet_game_down(current_set) == 6) {
                         new_state.setInTiebreak(true); //into tiebreak;
@@ -5024,13 +5101,20 @@ public class GameActivity extends AppCompatActivity{
                         if (tiebreak.equals("2")) { //super tiebreak
                             new_state.setInTiebreak(true);
                             is_In_SuperTiebreak = true;
+                            is_In_LongGame = false;
+                        } else if (tiebreak.equals("3")) { //long game
+                            new_state.setInTiebreak(false);
+                            is_In_SuperTiebreak = false;
+                            is_In_LongGame = true;
                         } else {
                             new_state.setInTiebreak(false);
                             is_In_SuperTiebreak = false;
+                            is_In_LongGame = false;
                         }
                     } else {
                         new_state.setInTiebreak(false);
                         is_In_SuperTiebreak = false;
+                        is_In_LongGame = false;
                     }
 
                     //voice
@@ -5094,13 +5178,20 @@ public class GameActivity extends AppCompatActivity{
                         if (tiebreak.equals("2")) { //super tiebreak
                             new_state.setInTiebreak(true);
                             is_In_SuperTiebreak = true;
+                            is_In_LongGame = false;
+                        } else if (tiebreak.equals("3")) { //long game
+                            new_state.setInTiebreak(false);
+                            is_In_SuperTiebreak = false;
+                            is_In_LongGame = true;
                         } else {
                             new_state.setInTiebreak(false);
                             is_In_SuperTiebreak = false;
+                            is_In_LongGame = false;
                         }
                     } else {
                         new_state.setInTiebreak(false);
                         is_In_SuperTiebreak = false;
+                        is_In_LongGame = false;
                     }
 
 
@@ -7022,8 +7113,8 @@ public class GameActivity extends AppCompatActivity{
     }
 
     private void chooseGameVoice(boolean down_serve, boolean is_tiebreak, byte gameUp,  byte gameDown) {
-        Integer gameCall, gameCall2, gameCall3;
-        String fileName0, fileName1, fileName2, fileName3;
+        Integer gameCall, gameCall2, gameCall3, gameCall4;
+        String fileName0, fileName1, fileName2, fileName3, fileName4;
         Log.d(TAG, "[chooseGameVoice start]");
         if (is_tiebreak) { //enter tiebreak
             Log.d(TAG, "in tiebreak");
@@ -7087,27 +7178,25 @@ public class GameActivity extends AppCompatActivity{
         } else {
             Log.d(TAG, "Not in tiebreak, gameUp = "+gameUp+" : gameDown = "+gameDown);
 
-            if (gameUp == 0 && gameDown == 1) { //0:1
-                if (down_serve) { //down serve
+            if (gameUp == 0 && gameDown <= 6) { //0:1,2,3,4,5,6
+                if (down_serve) { //you serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_1;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_love;
-                            voiceList.add(gameCall2);
-                            break;
                         case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_1;
+                            gameCall = getPointByNumStart(gameDown);
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_love;
+
+                            gameCall2 = getPointByNumEnd((byte)0); //0
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
-                            fileName0 = "user_1.m4a";
+                            fileName0 = getPointByNumString(gameDown);
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_game_to.m4a";
+
+                            fileName1 = "user_to.m4a";
                             voiceUserList.add(fileName1);
-                            fileName2 = "user_love.m4a";
+
+                            fileName2 = getPointByNumString((byte)0);
                             voiceUserList.add(fileName2);
                             break;
                     }
@@ -7115,1961 +7204,382 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_love;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_1;
-                            voiceList.add(gameCall2);
-                            break;
                         case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_love;
+                            gameCall = getPointByNumStart((byte)0); //0
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_1;
+
+                            gameCall2 = getPointByNumEnd(gameDown);
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
-                            fileName0 = "user_love.m4a";
+                            fileName0 = getPointByNumString((byte)0); //0
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_game_to.m4a";
+
+                            fileName1 = "user_to.m4a";
                             voiceUserList.add(fileName1);
-                            fileName2 = "user_1.m4a";
+
+                            fileName2 = getPointByNumString(gameDown);
                             voiceUserList.add(fileName2);
                             break;
                     }
 
                 }
-            } else if (gameUp == 0 && gameDown == 2) { //0:2
-                if (down_serve) { //down serve
+            } else if (gameUp == 1 && gameDown <= 6) { //1:1,2,3,4,5,6
+                if (down_serve) { //you serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_2;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_love;
-                            voiceList.add(gameCall2);
-                            break;
                         case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_love;
+                            gameCall = getPointByNumStart(gameDown);
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_2;
+
+                            if (gameDown == 1)
+                                gameCall2 = getPointByNumEnd((byte)100); //all
+                            else
+                                gameCall2 = getPointByNumEnd(gameUp); //1
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
-                            fileName0 = "user_2.m4a";
+                            fileName0 = getPointByNumString(gameDown);
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_love.m4a";
-                            voiceUserList.add(fileName2);
+
+                            if (gameDown == 1) {
+                                fileName1 = "user_all.m4a"; //all
+                                voiceUserList.add(fileName1);
+                            } else {
+                                fileName1 = "user_to.m4a";
+                                voiceUserList.add(fileName1);
+
+                                fileName2= getPointByNumString(gameUp); //1
+                                voiceUserList.add(fileName2);
+                            }
+
+
                             break;
                     }
 
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_love;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_2;
-                            voiceList.add(gameCall2);
-                            break;
                         case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_love;
+                            gameCall = getPointByNumStart(gameUp); //1
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_2;
+
+                            if (gameDown == 1)  //1:1
+                                gameCall2 = getPointByNumEnd((byte)100); //all
+                            else
+                                gameCall2 = getPointByNumEnd(gameDown);
+
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
-                            fileName0 = "user_love.m4a";
+                            fileName0 = getPointByNumString(gameUp); //1
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_game_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_2.m4a";
-                            voiceUserList.add(fileName2);
+
+                            if (gameDown == 1) { //1:1
+                                fileName1 = "user_all.m4a"; //all
+                                voiceUserList.add(fileName1);
+                            } else {
+                                fileName1 = "user_to.m4a";
+                                voiceUserList.add(fileName1);
+
+                                fileName2 = getPointByNumString(gameDown);
+                                voiceUserList.add(fileName2);
+                            }
+
                             break;
                     }
 
+
                 }
-            } else if (gameUp == 0 && gameDown == 3) { //0:3
-                if (down_serve) { //down serve
+            } else if (gameUp == 2 && gameDown <= 6) { //2:1,2,3,4,5,6
+                if (down_serve) { //you serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_3;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_love;
-                            voiceList.add(gameCall2);
-                            break;
                         case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_3;
+                            gameCall = getPointByNumStart(gameDown);
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_love;
+
+                            if (gameDown == 2)
+                                gameCall2 = getPointByNumEnd((byte)100); //all
+                            else
+                                gameCall2 = getPointByNumEnd(gameUp); //2
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
-                            fileName0 = "user_3.m4a";
+                            fileName0 = getPointByNumString(gameDown);
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_love.m4a";
-                            voiceUserList.add(fileName2);
+
+                            if (gameDown == 2) {
+                                fileName1 = "user_all.m4a"; //all
+                                voiceUserList.add(fileName1);
+                            } else {
+                                fileName1 = "user_to.m4a";
+                                voiceUserList.add(fileName1);
+
+                                fileName2 = getPointByNumString(gameUp); //2
+                                voiceUserList.add(fileName2);
+                            }
+
                             break;
                     }
 
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_love;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_3;
-                            voiceList.add(gameCall2);
-                            break;
                         case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_love;
+                            gameCall = getPointByNumStart(gameUp); //2
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_3;
+
+                            if (gameDown == 2)  //2:2
+                                gameCall2 = getPointByNumEnd((byte)100); //all
+                            else
+                                gameCall2 = getPointByNumEnd(gameDown);
+
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
-                            fileName0 = "user_love.m4a";
+                            fileName0 = getPointByNumString(gameUp); //2
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_game_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_3.m4a";
-                            voiceUserList.add(fileName2);
+
+                            if (gameDown == 2) {  //2:2
+                                fileName1 = "user_all.m4a"; //all
+                                voiceUserList.add(fileName1);
+                            } else {
+                                fileName1 = "user_to.m4a";
+                                voiceUserList.add(fileName1);
+
+                                fileName2 = getPointByNumString(gameDown);
+                                voiceUserList.add(fileName2);
+                            }
+
                             break;
                     }
 
                 }
-            } else if (gameUp == 0 && gameDown == 4) { //0:4
-                if (down_serve) { //down serve
+            } else if (gameUp == 3 && gameDown <= 6) { //3:1,2,3,4,5,6
+                if (down_serve) { //you serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_4;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_love;
-                            voiceList.add(gameCall2);
-                            break;
                         case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_4;
+                            gameCall = getPointByNumStart(gameDown);
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_love;
+
+                            if (gameDown == 3)
+                                gameCall2 = getPointByNumEnd((byte)100); //all
+                            else
+                                gameCall2 = getPointByNumEnd(gameUp); //3
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
-                            fileName0 = "user_4.m4a";
+                            fileName0 = getPointByNumString(gameDown);
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_love.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
 
-                    }
+                            if (gameDown == 3) {
+                                fileName1 = "user_all.m4a"; //all
+                                voiceUserList.add(fileName1);
+                            } else {
+                                fileName1 = "user_to.m4a";
+                                voiceUserList.add(fileName1);
 
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_love;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_4;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_love;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_4;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_love.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_game_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_4.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
+                                fileName2 = getPointByNumString(gameUp); //3
+                                voiceUserList.add(fileName2);
+                            }
 
-                }
-            } else if (gameUp == 0 && gameDown == 5) { //0:5
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_5;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_love;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_5;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_love;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_5.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_love.m4a";
-                            voiceUserList.add(fileName2);
                             break;
                     }
 
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_love;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_5;
-                            voiceList.add(gameCall2);
-                            break;
                         case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_love;
+                            gameCall = getPointByNumStart(gameUp); //3
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_5;
+
+                            if (gameDown == 3) { //3:3
+                                gameCall2 = getPointByNumEnd((byte)100); //all
+                            } else {
+                                gameCall2 = getPointByNumEnd(gameDown);
+                            }
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
-                            fileName0 = "user_love.m4a";
+                            fileName0 = getPointByNumString(gameUp); //3
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_game_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_5.m4a";
-                            voiceUserList.add(fileName2);
+
+                            if (gameDown == 3) { //3:3
+                                fileName1 = "user_all.m4a"; //all
+                                voiceUserList.add(fileName1);
+                            } else {
+                                fileName1 = "user_to.m4a";
+                                voiceUserList.add(fileName1);
+
+                                fileName2 = getPointByNumString(gameDown);
+                                voiceUserList.add(fileName2);
+                            }
+
                             break;
                     }
 
                 }
-            } else if (gameUp == 0 && gameDown == 6) { //0:6
-                if (down_serve) { //down serve
+            } else if (gameUp == 4 && gameDown <= 6) { //4:1,2,3,4,5,6
+                if (down_serve) { //you serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_6;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_love;
-                            voiceList.add(gameCall2);
-                            break;
                         case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_6;
+                            gameCall = getPointByNumStart(gameDown);
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_love;
+
+                            if (gameDown == 4)
+                                gameCall2 = getPointByNumEnd((byte)100); //all
+                            else
+                                gameCall2 = getPointByNumEnd(gameUp); //4
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
-                            fileName0 = "user_6.m4a";
+                            fileName0 = getPointByNumString(gameDown);
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_love.m4a";
-                            voiceUserList.add(fileName2);
+
+                            if (gameDown == 4) {
+                                fileName1 = "user_all.m4a"; //all
+                                voiceUserList.add(fileName1);
+                            } else {
+                                fileName1 = "user_to.m4a";
+                                voiceUserList.add(fileName1);
+
+                                fileName2 = getPointByNumString(gameUp); //4
+                                voiceUserList.add(fileName2);
+                            }
+
                             break;
                     }
 
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_love;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_6;
-                            voiceList.add(gameCall2);
-                            break;
                         case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_love;
+                            gameCall = getPointByNumStart(gameUp); //4
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_6;
+
+                            if (gameDown == 4) { //4:4
+                                gameCall2 = getPointByNumEnd((byte)100); //all
+                            } else {
+                                gameCall2 = getPointByNumEnd(gameDown);
+                            }
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
-                            fileName0 = "user_love.m4a";
+                            fileName0 = getPointByNumString(gameUp); //4
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_game_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_6.m4a";
-                            voiceUserList.add(fileName2);
+
+                            if (gameDown == 4) { //4:4
+                                fileName1 = "user_all.m4a"; //all
+                                voiceUserList.add(fileName1);
+                            } else {
+                                fileName1 = "user_to.m4a";
+                                voiceUserList.add(fileName1);
+
+                                fileName2 = getPointByNumString(gameDown);
+                                voiceUserList.add(fileName2);
+                            }
+
                             break;
                     }
 
                 }
-            } else if (gameUp == 1 && gameDown == 0) { //1:0
-                if (down_serve) { //down serve
+            } else if (gameUp == 5 && gameDown <= 6) { //5:1,2,3,4,5,6
+                if (down_serve) { //you serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_love;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_1;
-                            voiceList.add(gameCall2);
-                            break;
                         case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_love;
+                            gameCall = getPointByNumStart(gameDown);
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_1;
+
+                            if (gameDown == 5)
+                                gameCall2 = getPointByNumEnd((byte)100); //all
+                            else
+                                gameCall2 = getPointByNumEnd(gameUp); //5
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
-                            fileName0 = "user_love.m4a";
+                            fileName0 = getPointByNumString(gameDown);
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_game_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_1.m4a";
-                            voiceUserList.add(fileName2);
+
+                            if (gameDown == 5) {
+                                fileName1 = "user_all.m4a"; //all
+                                voiceUserList.add(fileName1);
+                            } else {
+                                fileName1 = "user_to.m4a";
+                                voiceUserList.add(fileName1);
+
+                                fileName2 = getPointByNumString(gameUp); //5
+                                voiceUserList.add(fileName2);
+                            }
+
                             break;
                     }
 
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_1;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_love;
-                            voiceList.add(gameCall2);
-                            break;
                         case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_1;
+                            gameCall = getPointByNumStart(gameUp); //5
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_love;
+
+                            if (gameDown == 5) { //5:5
+                                gameCall2 = getPointByNumEnd((byte)100); //all
+                            } else {
+                                gameCall2 = getPointByNumEnd(gameDown);
+                            }
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
-                            fileName0 = "user_1.m4a";
+                            fileName0 = getPointByNumString(gameUp); //5
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_game_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_love.m4a";
-                            voiceUserList.add(fileName2);
+
+                            if (gameDown == 5) { //5:5
+                                fileName1 = "user_all.m4a"; //all
+                                voiceUserList.add(fileName1);
+                            } else {
+                                fileName1 = "user_to.m4a";
+                                voiceUserList.add(fileName1);
+
+                                fileName2 = getPointByNumString(gameDown);
+                                voiceUserList.add(fileName2);
+                            }
+
                             break;
                     }
 
                 }
-            } else if (gameUp == 1 && gameDown == 1) { //1:1
-                switch (current_voice_type) {
-                    case GBR_MAN:
-                        gameCall = R.raw.gbr_man_start_1;
-                        voiceList.add(gameCall);
-                        gameCall2 = R.raw.gbr_man_all;
-                        voiceList.add(gameCall2);
-                        break;
-                    case GBR_WOMAN:
-                        gameCall = R.raw.gbr_woman_start_1;
-                        voiceList.add(gameCall);
-                        gameCall2 = R.raw.gbr_woman_all;
-                        voiceList.add(gameCall2);
-                        break;
-                    case USER_RECORD:
-                        fileName0 = "user_1.m4a";
-                        voiceUserList.add(fileName0);
-                        fileName1 = "user_game_all.m4a";
-                        voiceUserList.add(fileName1);
-                        fileName2 = "user_all.m4a";
-                        voiceUserList.add(fileName2);
-                        break;
-                }
-            } else if (gameUp == 1 && gameDown == 2) { //1:2
-                if (down_serve) { //down serve
+            } else if (gameUp == 6 && gameDown <= 6) { //6:1,2,3,4,5,6
+                if (down_serve) { //you serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_2;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_1;
-                            voiceList.add(gameCall2);
-                            break;
                         case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_2;
+                            gameCall = getPointByNumStart(gameDown);
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_1;
+
+                            if (gameDown == 6)
+                                gameCall2 = getPointByNumEnd((byte)100); //all
+                            else
+                                gameCall2 = getPointByNumEnd(gameUp); //6
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
-                            fileName0 = "user_2.m4a";
+                            fileName0 = getPointByNumString(gameDown);
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_1.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
 
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_1;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_2;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_1;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_2;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_1.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_game_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_2.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
+                            if (gameDown == 6) {
+                                fileName1 = "user_all.m4a"; //all
+                                voiceUserList.add(fileName1);
+                            } else {
+                                fileName1 = "user_to.m4a";
+                                voiceUserList.add(fileName1);
 
-                }
-            } else if (gameUp == 1 && gameDown == 3) { //1:3
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_3;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_1;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_3;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_1;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_3.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_1.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
+                                fileName2 = getPointByNumString(gameUp); //6
+                                voiceUserList.add(fileName2);
+                            }
 
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_1;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_3;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_1;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_3;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_1.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_game_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_3.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 1 && gameDown == 4) { //1:4
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_4;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_1;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_4;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_1;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_4.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_1.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_1;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_4;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_1;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_4;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_1.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_game_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_4.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 1 && gameDown == 5) { //1:5
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_5;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_1;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_5;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_1;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_5.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_1.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_1;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_5;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_1;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_5;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_1.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_game_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_5.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 1 && gameDown == 6) { //1:6
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_6;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_1;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_6;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_1;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_6.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_1.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_1;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_6;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_1;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_6;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_1.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_game_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_6.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 2 && gameDown == 0) { //2:0
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_love;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_2;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_love;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_2;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_love.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_game_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_2.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_2;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_love;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_2;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_love;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_2.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_love.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 2 && gameDown == 1) { //2:1
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_1;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_2;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_1;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_2;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_1.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_game_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_2.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_2;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_1;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_2;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_1;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_2.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_1.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 2 && gameDown == 2) { //2:2
-                switch (current_voice_type) {
-                    case GBR_MAN:
-                        gameCall = R.raw.gbr_man_start_2;
-                        voiceList.add(gameCall);
-                        gameCall2 = R.raw.gbr_man_all;
-                        voiceList.add(gameCall2);
-                        break;
-                    case GBR_WOMAN:
-                        gameCall = R.raw.gbr_woman_start_2;
-                        voiceList.add(gameCall);
-                        gameCall2 = R.raw.gbr_woman_all;
-                        voiceList.add(gameCall2);
-                        break;
-                    case USER_RECORD:
-                        fileName0 = "user_2.m4a";
-                        voiceUserList.add(fileName0);
-                        fileName1 = "user_games_all.m4a";
-                        voiceUserList.add(fileName1);
-                        break;
-                }
-            } else if (gameUp == 2 && gameDown == 3) { //2:3
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_3;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_2;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_3;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_2;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_3.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_2.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_2;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_3;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_2;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_3;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_2.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_3.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 2 && gameDown == 4) { //2:4
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_4;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_2;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_4;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_2;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_4.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_2.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_2;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_4;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_2;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_4;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_2.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_4.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 2 && gameDown == 5) { //2:5
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_5;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_2;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_5;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_2;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_5.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_2.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_2;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_5;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_2;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_5;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_2.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_5.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 2 && gameDown == 6) { //2:6
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_6;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_2;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_6;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_2;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_6.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_2.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_2;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_6;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_2;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_6;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_2.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_6.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 3 && gameDown == 0) { //3:0
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_love;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_3;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_love;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_3;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_love.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_game_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_3.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_3;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_love;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_3;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_love;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_3.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_love.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 3 && gameDown == 1) { //3:1
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_1;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_3;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_1;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_3;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_1.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_game_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_3.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_3;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_1;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_3;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_1;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_3.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_1.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 3 && gameDown == 2) { //3:2
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_2;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_3;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_2;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_3;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_2.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_3.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_3;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_2;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_3;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_2;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_3.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_2.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 3 && gameDown == 3) { //3:3
-                switch (current_voice_type) {
-                    case GBR_MAN:
-                        gameCall = R.raw.gbr_man_start_3;
-                        voiceList.add(gameCall);
-                        gameCall2 = R.raw.gbr_man_all;
-                        voiceList.add(gameCall2);
-                        break;
-                    case GBR_WOMAN:
-                        gameCall = R.raw.gbr_woman_start_3;
-                        voiceList.add(gameCall);
-                        gameCall2 = R.raw.gbr_woman_all;
-                        voiceList.add(gameCall2);
-                        break;
-                    case USER_RECORD:
-                        fileName0 = "user_3.m4a";
-                        voiceUserList.add(fileName0);
-                        fileName1 = "user_games_all.m4a";
-                        voiceUserList.add(fileName1);
-                        break;
-                }
-            } else if (gameUp == 3 && gameDown == 4) { //3:4
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_4;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_3;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_4;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_3;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_4.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_3.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_3;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_4;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_3;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_4;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_3.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_4.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 3 && gameDown == 5) { //3:5
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_5;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_3;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_5;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_3;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_5.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_3.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_3;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_5;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_3;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_5;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_3.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_5.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 3 && gameDown == 6) { //3:6
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_6;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_3;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_6;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_3;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_6.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_3.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_3;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_6;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_3;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_6;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_3.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_6.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 4 && gameDown == 0) { //4:0
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_love;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_4;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_love;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_4;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_love.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_game_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_4.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_4;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_love;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_4;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_love;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_4.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_love.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 4 && gameDown == 1) { //4:1
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_1;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_4;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_1;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_4;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_1.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_game_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_4.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_4;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_1;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_4;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_1;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_4.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_1.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-
-                    }
-
-                }
-            } else if (gameUp == 4 && gameDown == 2) { //4:2
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_2;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_4;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_2;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_4;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_2.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_4.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_4;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_2;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_4;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_2;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_4.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_2.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 4 && gameDown == 3) { //4:3
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_3;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_4;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_3;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_4;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_3.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_4.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_4;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_3;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_4;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_3;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_4.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_3.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 4 && gameDown == 4) { //4:4
-                switch (current_voice_type) {
-                    case GBR_MAN:
-                        gameCall = R.raw.gbr_man_start_4;
-                        voiceList.add(gameCall);
-                        gameCall2 = R.raw.gbr_man_all;
-                        voiceList.add(gameCall2);
-                        break;
-                    case GBR_WOMAN:
-                        gameCall = R.raw.gbr_woman_start_4;
-                        voiceList.add(gameCall);
-                        gameCall2 = R.raw.gbr_woman_all;
-                        voiceList.add(gameCall2);
-                        break;
-                    case USER_RECORD:
-                        fileName0 = "user_4.m4a";
-                        voiceUserList.add(fileName0);
-                        fileName1 = "user_games_all.m4a";
-                        voiceUserList.add(fileName1);
-                        break;
-
-                }
-            } else if (gameUp == 4 && gameDown == 5) { //4:5
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_5;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_4;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_5;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_4;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_5.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_4.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_4;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_5;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_4;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_5;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_4.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_5.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 4 && gameDown == 6) { //4:6
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_6;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_4;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_6;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_4;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_6.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_4.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_4;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_6;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_4;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_6;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_4.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_6.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 5 && gameDown == 0) { //5:0
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_love;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_5;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_love;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_5;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_love.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_game_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_5.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_5;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_love;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_5;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_love;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_5.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_love.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 5 && gameDown == 1) { //5:1
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_1;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_5;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_1;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_5;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_1.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_game_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_5.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_5;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_1;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_5;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_1;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_5.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_1.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 5 && gameDown == 2) { //5:2
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_2;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_5;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_2;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_5;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_2.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_5.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_5;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_2;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_5;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_2;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_5.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_2.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 5 && gameDown == 3) { //5:3
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_3;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_5;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_3;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_5;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_3.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_5.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_5;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_3;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_5;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_3;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_5.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_3.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 5 && gameDown == 4) { //5:4
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_4;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_5;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_4;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_5;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_4.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_5.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_5;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_4;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_5;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_4;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_5.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_4.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 5 && gameDown == 5) { //5:5
-                switch (current_voice_type) {
-                    case GBR_MAN:
-                        gameCall = R.raw.gbr_man_start_5;
-                        voiceList.add(gameCall);
-                        gameCall2 = R.raw.gbr_man_all;
-                        voiceList.add(gameCall2);
-                        break;
-                    case GBR_WOMAN:
-                        gameCall = R.raw.gbr_woman_start_5;
-                        voiceList.add(gameCall);
-                        gameCall2 = R.raw.gbr_woman_all;
-                        voiceList.add(gameCall2);
-                        break;
-                    case USER_RECORD:
-                        fileName0 = "user_5.m4a";
-                        voiceUserList.add(fileName0);
-                        fileName1 = "user_games_all.m4a";
-                        voiceUserList.add(fileName1);
-                        break;
-                }
-            } else if (gameUp == 5 && gameDown == 6) { //5:6
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_6;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_5;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_6;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_5;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_6.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_5.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_5;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_6;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_5;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_6;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_5.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_6.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 5 && gameDown == 7) { //5:7
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_7;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_5;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_7;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_5;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_7.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_5.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_5;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_start_7;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_5;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_7;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_5.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_7.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 6 && gameDown == 0) { //6:0
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_love;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_6;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_love;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_6;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_love.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_game_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_6.m4a";
-                            voiceUserList.add(fileName2);
                             break;
                     }
 
@@ -9077,448 +7587,220 @@ public class GameActivity extends AppCompatActivity{
                 } else { //oppt serve
                     switch (current_voice_type) {
                         case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_6;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_love;
-                            voiceList.add(gameCall2);
-                            break;
                         case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_6;
+                            gameCall = getPointByNumStart(gameUp); //6
                             voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_love;
+
+                            if (gameDown == 6) { //6:6
+                                gameCall2 = getPointByNumEnd((byte)100); //all
+                            } else {
+                                gameCall2 = getPointByNumEnd(gameDown);
+                            }
                             voiceList.add(gameCall2);
                             break;
                         case USER_RECORD:
-                            fileName0 = "user_6.m4a";
+                            fileName0 = getPointByNumString(gameUp); //6
                             voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_love.m4a";
-                            voiceUserList.add(fileName2);
+
+                            if (gameDown == 6) { //6:6
+                                fileName1 = "user_all.m4a"; //all
+                                voiceUserList.add(fileName1);
+                            } else {
+                                fileName1 = "user_to.m4a";
+                                voiceUserList.add(fileName1);
+
+                                fileName2= getPointByNumString(gameDown);
+                                voiceUserList.add(fileName2);
+                            }
+
                             break;
                     }
+
 
                 }
-            } else if (gameUp == 6 && gameDown == 1) { //6:1
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_1;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_6;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_1;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_6;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_1.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_game_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_6.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
+            } else { //game more than 6
+                Log.e(TAG, "gameUp = "+gameUp+ ", gameDown = "+gameDown);
 
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_6;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_1;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_6;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_1;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_6.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_1.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
+                if (gameUp == gameDown) { // x all
 
+                    if (gameUp <= 20) {
+                        switch (current_voice_type) {
+                            case GBR_MAN:
+                            case GBR_WOMAN:
+                                gameCall = getPointByNumStart(gameUp);
+                                voiceList.add(gameCall);
+                                gameCall2 = getPointByNumEnd((byte)100);
+                                voiceList.add(gameCall2);
+                                break;
+                            case USER_RECORD:
+                                fileName0 = getPointByNumString(gameUp);
+                                voiceUserList.add(fileName0);
+                                fileName1 = "user_all.m4a";
+                                voiceUserList.add(fileName1);
+                                break;
+                        }
+
+
+                    } else { //up_point > 20
+                        switch (current_voice_type) {
+                            case GBR_MAN:
+                            case GBR_WOMAN:
+                                if (gameUp % 10 == 0) { //30, 40, 50, 60, 70, 80, 90
+                                    gameCall = getPointByNumStart(gameUp);
+                                    voiceList.add(gameCall);
+                                } else {
+                                    gameCall = getPointByNumStart((byte)(gameUp/10*10));
+                                    voiceList.add(gameCall);
+                                    gameCall2 = getPointByNumStart((byte)(gameUp%10));
+                                    voiceList.add(gameCall2);
+                                }
+                                gameCall3 = getPointByNumEnd((byte)100);
+                                voiceList.add(gameCall3);
+                                break;
+                            case USER_RECORD:
+                                if (gameUp % 10 == 0) { //30, 40, 50, 60, 70, 80, 90
+                                    fileName0 = getPointByNumString(gameUp);
+                                    voiceUserList.add(fileName0);
+                                } else {
+                                    fileName1 = getPointByNumString((byte)(gameUp/10*10));
+                                    voiceUserList.add(fileName1);
+                                    fileName2 = getPointByNumString((byte)(gameUp%10));
+                                    voiceUserList.add(fileName2);
+                                }
+                                fileName3 = "user_all.m4a";
+                                voiceUserList.add(fileName3);
+                                break;
+                        }
+                    }
+                } else {
+                    if (gameUp <= 20 && gameDown <= 20) {
+                        if (down_serve) { //you serve
+                            switch (current_voice_type) {
+                                case GBR_MAN:
+                                case GBR_WOMAN:
+                                    gameCall = getPointByNumStart(gameDown);
+                                    voiceList.add(gameCall);
+                                    gameCall2 = getPointByNumEnd(gameUp);
+                                    voiceList.add(gameCall2);
+                                    break;
+                                case USER_RECORD:
+                                    fileName0 = getPointByNumString(gameDown);
+                                    voiceUserList.add(fileName0);
+                                    fileName1 = "user_to.m4a";
+                                    voiceUserList.add(fileName1);
+                                    fileName2 = getPointByNumString(gameUp);
+                                    voiceUserList.add(fileName2);
+                                    break;
+                            }
+
+                        } else { //oppt serve
+                            switch (current_voice_type) {
+                                case GBR_MAN:
+                                case GBR_WOMAN:
+                                    gameCall = getPointByNumStart(gameUp);
+                                    voiceList.add(gameCall);
+                                    gameCall2 = getPointByNumEnd(gameDown);
+                                    voiceList.add(gameCall2);
+                                    break;
+                                case USER_RECORD:
+                                    fileName0 = getPointByNumString(gameUp);
+                                    voiceUserList.add(fileName0);
+                                    fileName1 = "user_to.m4a";
+                                    voiceUserList.add(fileName1);
+                                    fileName2 = getPointByNumString(gameDown);
+                                    voiceUserList.add(fileName2);
+                                    break;
+                            }
+
+                        }
+                    } else { //up_point > 20
+                        if (down_serve) { //you serve
+                            switch (current_voice_type) {
+                                case GBR_MAN:
+                                case GBR_WOMAN:
+                                    gameCall = getPointByNumStart((byte)(gameDown/10*10));
+                                    voiceList.add(gameCall);
+                                    if (gameDown%10 > 0) {
+                                        gameCall = getPointByNumStart((byte) (gameDown % 10));
+                                        voiceList.add(gameCall);
+                                    }
+
+
+                                    if (gameUp%10 > 0) {
+                                        gameCall3 = getPointByNumStart((byte)(gameUp/10*10));
+                                        voiceList.add(gameCall3);
+                                        gameCall4 = getPointByNumEnd((byte) (gameUp % 10));
+                                        voiceList.add(gameCall4);
+                                    } else {
+                                        gameCall3 = getPointByNumEnd((byte)(gameUp/10*10));
+                                        voiceList.add(gameCall3);
+                                    }
+                                    break;
+                                case USER_RECORD:
+                                    fileName0 = getPointByNumString((byte)(gameDown/10*10));
+                                    voiceUserList.add(fileName0);
+                                    if (gameDown%10 > 0) {
+                                        fileName1 = getPointByNumString((byte) (gameDown % 10));
+                                        voiceUserList.add(fileName1);
+                                    }
+                                    //to
+                                    fileName4 = "user_to.m4a";
+                                    voiceUserList.add(fileName4);
+
+                                    fileName2 = getPointByNumString((byte)(gameUp/10*10));
+                                    voiceUserList.add(fileName2);
+                                    if (gameUp%10 > 0) {
+                                        fileName3 = getPointByNumString((byte) (gameUp % 10));
+                                        voiceUserList.add(fileName3);
+                                    }
+                                    break;
+                            }
+
+                        } else { //oppt serve
+                            switch (current_voice_type) {
+                                case GBR_MAN:
+                                case GBR_WOMAN:
+                                    gameCall = getPointByNumStart((byte)(gameUp/10*10));
+                                    voiceList.add(gameCall);
+                                    if (gameUp%10 > 0) {
+                                        gameCall2 = getPointByNumStart((byte) (gameUp % 10));
+                                        voiceList.add(gameCall2);
+                                    }
+
+                                    if (gameDown%10 > 0) {
+                                        gameCall3 = getPointByNumStart((byte)(gameDown/10*10));
+                                        voiceList.add(gameCall3);
+                                        gameCall4 = getPointByNumEnd((byte) (gameDown % 10));
+                                        voiceList.add(gameCall4);
+                                    } else {
+                                        gameCall3 = getPointByNumEnd((byte)(gameDown/10*10));
+                                        voiceList.add(gameCall3);
+                                    }
+                                    break;
+                                case USER_RECORD:
+                                    fileName0 = getPointByNumString((byte)(gameUp/10*10));
+                                    voiceUserList.add(fileName0);
+                                    if (gameUp%10 > 0) {
+                                        fileName1 = getPointByNumString((byte) (gameUp % 10));
+                                        voiceUserList.add(fileName1);
+                                    }
+
+                                    //to
+                                    fileName4 = "user_to.m4a";
+                                    voiceUserList.add(fileName4);
+
+                                    fileName2 = getPointByNumString((byte)(gameDown/10*10));
+                                    voiceUserList.add(fileName2);
+                                    if (gameDown%10 > 0) {
+                                        fileName3 = getPointByNumString((byte) (gameDown % 10));
+                                        voiceUserList.add(fileName3);
+                                    }
+                                    break;
+                            }
+
+                        }
+                    }
                 }
-            } else if (gameUp == 6 && gameDown == 2) { //6:2
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_2;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_6;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_2;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_6;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_2.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_6.m4a";
-                            voiceUserList.add(fileName2);
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_6;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_2;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_6;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_2;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_6.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_2.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 6 && gameDown == 3) { //6:3
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_3;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_6;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_3;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_6;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_3.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_6.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_6;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_3;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_6;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_3;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_6.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_3.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 6 && gameDown == 4) { //6:4
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_4;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_6;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_4;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_6;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_4.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_6.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_6;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_4;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_6;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_4;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_6.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_4.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 6 && gameDown == 5) { //6:5
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_5;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_6;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_5;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_6;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_5.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_6.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_6;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_5;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_6;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_5;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_6.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_5.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 6 && gameDown == 6) { //6:6
-                switch (current_voice_type) {
-                    case GBR_MAN:
-                        gameCall = R.raw.gbr_man_start_6;
-                        voiceList.add(gameCall);
-                        gameCall2 = R.raw.gbr_man_all;
-                        voiceList.add(gameCall2);
-                        break;
-                    case GBR_WOMAN:
-                        gameCall = R.raw.gbr_woman_start_6;
-                        voiceList.add(gameCall);
-                        gameCall2 = R.raw.gbr_woman_all;
-                        voiceList.add(gameCall2);
-                        break;
-                    case USER_RECORD:
-                        fileName0 = "user_6.m4a";
-                        voiceUserList.add(fileName0);
-                        fileName1 = "user_games_all.m4a";
-                        voiceUserList.add(fileName1);
-                        break;
-                }
-            } else if (gameUp == 6 && gameDown == 7) { //6:7
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_7;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_6;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_7;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_6;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_7.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_6.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_6;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_7;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_6;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_7;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_7.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_6.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 7 && gameDown == 5) { //7:5
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_5;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_7;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_5;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_7;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_5.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_7.m4a";
-                            voiceUserList.add(fileName2);
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_7;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_5;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_7;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_5;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_7.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_5.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                }
-            } else if (gameUp == 7 && gameDown == 6) { //7:6
-                if (down_serve) { //down serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_6;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_7;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_6;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_7;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_6.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_7.m4a";
-                            voiceUserList.add(fileName2);
-                            break;
-                    }
-
-                } else { //oppt serve
-                    switch (current_voice_type) {
-                        case GBR_MAN:
-                            gameCall = R.raw.gbr_man_start_7;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_man_end_6;
-                            voiceList.add(gameCall2);
-                            break;
-                        case GBR_WOMAN:
-                            gameCall = R.raw.gbr_woman_start_7;
-                            voiceList.add(gameCall);
-                            gameCall2 = R.raw.gbr_woman_end_6;
-                            voiceList.add(gameCall2);
-                            break;
-                        case USER_RECORD:
-                            fileName0 = "user_7.m4a";
-                            voiceUserList.add(fileName0);
-                            fileName1 = "user_games_to.m4a";
-                            voiceUserList.add(fileName1);
-                            fileName2 = "user_6.m4a";
-                            voiceUserList.add(fileName2);
-                    }
-
-                }
-            } else {
-                Log.e(TAG, "unknown to choose voice");
             }
         }
 
@@ -9527,10 +7809,338 @@ public class GameActivity extends AppCompatActivity{
         Log.d(TAG, "[chooseGameVoice end]");
     }
 
+
+
     private void chooseSetVoice(byte gameServe,  byte gameRecv) {
-        Integer gameCall, gameCall2;
-        String fileName0, fileName1;
-        if (gameServe == 0 && gameRecv == 1) {
+        Integer gameCall, gameCall2, gameCall3, gameCall4;
+        String fileName0, fileName1, fileName2, fileName3;
+
+        if (gameServe == 0 && gameRecv <= 6) { //0:1,2,3,4,5,6
+            switch (current_voice_type) {
+                case GBR_MAN:
+                case GBR_WOMAN:
+                    gameCall = getPointByNumStart((byte)0); //0
+                    voiceList.add(gameCall);
+
+                    gameCall2 = getPointByNumEnd(gameRecv);
+                    voiceList.add(gameCall2);
+                    break;
+                case USER_RECORD:
+                    fileName0 = getPointByNumString((byte)0); //0
+                    voiceUserList.add(fileName0);
+
+                    fileName1 = "user_to.m4a";
+                    voiceUserList.add(fileName1);
+
+                    fileName2 = getPointByNumString(gameRecv);
+                    voiceUserList.add(fileName2);
+                    break;
+            }
+        } else if (gameServe == 1 && gameRecv <= 6) { //1:1,2,3,4,5,6
+            switch (current_voice_type) {
+                case GBR_MAN:
+                case GBR_WOMAN:
+                    gameCall = getPointByNumStart(gameServe); //1
+                    voiceList.add(gameCall);
+
+                    if (gameRecv == 1)  //1:1
+                        gameCall2 = getPointByNumEnd((byte)100); //all
+                    else
+                        gameCall2 = getPointByNumEnd(gameRecv);
+
+                    voiceList.add(gameCall2);
+                    break;
+                case USER_RECORD:
+                    fileName0 = getPointByNumString(gameServe); //1
+                    voiceUserList.add(fileName0);
+
+                    if (gameServe == 1) { //1:1
+                        fileName1 = "user_all.m4a"; //all
+                        voiceUserList.add(fileName1);
+                    } else {
+                        fileName1 = "user_to.m4a";
+                        voiceUserList.add(fileName1);
+
+                        fileName2 = getPointByNumString(gameServe);
+                        voiceUserList.add(fileName2);
+                    }
+
+                    break;
+            }
+        } else if (gameServe == 2 && gameRecv <= 6) { //2:1,2,3,4,5,6
+            switch (current_voice_type) {
+                case GBR_MAN:
+                case GBR_WOMAN:
+                    gameCall = getPointByNumStart(gameServe); //2
+                    voiceList.add(gameCall);
+
+                    if (gameRecv == 2)  //2:2
+                        gameCall2 = getPointByNumEnd((byte)100); //all
+                    else
+                        gameCall2 = getPointByNumEnd(gameRecv);
+
+                    voiceList.add(gameCall2);
+                    break;
+                case USER_RECORD:
+                    fileName0 = getPointByNumString(gameServe); //2
+                    voiceUserList.add(fileName0);
+
+                    if (gameRecv == 2) {  //2:2
+                        fileName1 = "user_all.m4a"; //all
+                        voiceUserList.add(fileName1);
+                    } else {
+                        fileName1 = "user_to.m4a";
+                        voiceUserList.add(fileName1);
+
+                        fileName2 = getPointByNumString(gameRecv);
+                        voiceUserList.add(fileName2);
+                    }
+
+                    break;
+            }
+        } else if (gameServe == 3 && gameRecv <= 6) { //3:1,2,3,4,5,6
+            switch (current_voice_type) {
+                case GBR_MAN:
+                case GBR_WOMAN:
+                    gameCall = getPointByNumStart(gameServe); //3
+                    voiceList.add(gameCall);
+
+                    if (gameRecv == 3) { //3:3
+                        gameCall2 = getPointByNumEnd((byte)100); //all
+                    } else {
+                        gameCall2 = getPointByNumEnd(gameRecv);
+                    }
+                    voiceList.add(gameCall2);
+                    break;
+                case USER_RECORD:
+                    fileName0 = getPointByNumString(gameServe); //3
+                    voiceUserList.add(fileName0);
+
+                    if (gameRecv == 3) { //3:3
+                        fileName1 = "user_all.m4a"; //all
+                        voiceUserList.add(fileName1);
+                    } else {
+                        fileName1 = "user_to.m4a";
+                        voiceUserList.add(fileName1);
+
+                        fileName2 = getPointByNumString(gameRecv);
+                        voiceUserList.add(fileName2);
+                    }
+
+                    break;
+            }
+        } else if (gameServe == 4 && gameRecv <= 6) { //4:1,2,3,4,5,6
+            switch (current_voice_type) {
+                case GBR_MAN:
+                case GBR_WOMAN:
+                    gameCall = getPointByNumStart(gameServe); //4
+                    voiceList.add(gameCall);
+
+                    if (gameRecv == 4) { //4:4
+                        gameCall2 = getPointByNumEnd((byte)100); //all
+                    } else {
+                        gameCall2 = getPointByNumEnd(gameRecv);
+                    }
+                    voiceList.add(gameCall2);
+                    break;
+                case USER_RECORD:
+                    fileName0 = getPointByNumString(gameServe); //4
+                    voiceUserList.add(fileName0);
+
+                    if (gameRecv == 4) { //4:4
+                        fileName1 = "user_all.m4a"; //all
+                        voiceUserList.add(fileName1);
+                    } else {
+                        fileName1 = "user_to.m4a";
+                        voiceUserList.add(fileName1);
+
+                        fileName2 = getPointByNumString(gameRecv);
+                        voiceUserList.add(fileName2);
+                    }
+
+                    break;
+            }
+        } else if (gameServe == 5 && gameRecv <= 6) { //5:1,2,3,4,5,6
+            switch (current_voice_type) {
+                case GBR_MAN:
+                case GBR_WOMAN:
+                    gameCall = getPointByNumStart(gameServe); //5
+                    voiceList.add(gameCall);
+
+                    if (gameRecv == 5) { //5:5
+                        gameCall2 = getPointByNumEnd((byte)100); //all
+                    } else {
+                        gameCall2 = getPointByNumEnd(gameRecv);
+                    }
+                    voiceList.add(gameCall2);
+                    break;
+                case USER_RECORD:
+                    fileName0 = getPointByNumString(gameServe); //5
+                    voiceUserList.add(fileName0);
+
+                    if (gameRecv == 5) { //5:5
+                        fileName1 = "user_all.m4a"; //all
+                        voiceUserList.add(fileName1);
+                    } else {
+                        fileName1 = "user_to.m4a";
+                        voiceUserList.add(fileName1);
+
+                        fileName2 = getPointByNumString(gameRecv);
+                        voiceUserList.add(fileName2);
+                    }
+
+                    break;
+            }
+        } else if (gameServe == 6 && gameRecv <= 6) { //6:1,2,3,4,5,6
+            switch (current_voice_type) {
+                case GBR_MAN:
+                case GBR_WOMAN:
+                    gameCall = getPointByNumStart(gameServe); //6
+                    voiceList.add(gameCall);
+
+                    if (gameRecv == 6) { //6:6
+                        gameCall2 = getPointByNumEnd((byte)100); //all
+                    } else {
+                        gameCall2 = getPointByNumEnd(gameRecv);
+                    }
+                    voiceList.add(gameCall2);
+                    break;
+                case USER_RECORD:
+                    fileName0 = getPointByNumString(gameServe); //6
+                    voiceUserList.add(fileName0);
+
+                    if (gameRecv == 6) { //6:6
+                        fileName1 = "user_all.m4a"; //all
+                        voiceUserList.add(fileName1);
+                    } else {
+                        fileName1 = "user_to.m4a";
+                        voiceUserList.add(fileName1);
+
+                        fileName2= getPointByNumString(gameRecv);
+                        voiceUserList.add(fileName2);
+                    }
+
+                    break;
+            }
+        } else { //game more than 6
+            Log.e(TAG, "gameServe = "+gameServe+ ", gameRecv = "+gameRecv);
+
+            if (gameServe == gameRecv) { // x all
+
+                if (gameServe <= 20) {
+                    switch (current_voice_type) {
+                        case GBR_MAN:
+                        case GBR_WOMAN:
+                            gameCall = getPointByNumStart(gameServe);
+                            voiceList.add(gameCall);
+                            gameCall2 = getPointByNumEnd((byte)100);
+                            voiceList.add(gameCall2);
+                            break;
+                        case USER_RECORD:
+                            fileName0 = getPointByNumString(gameServe);
+                            voiceUserList.add(fileName0);
+                            fileName1 = "user_all.m4a";
+                            voiceUserList.add(fileName1);
+                            break;
+                    }
+
+
+                } else { //up_point > 20
+                    switch (current_voice_type) {
+                        case GBR_MAN:
+                        case GBR_WOMAN:
+                            if (gameServe % 10 == 0) { //30, 40, 50, 60, 70, 80, 90
+                                gameCall = getPointByNumStart(gameServe);
+                                voiceList.add(gameCall);
+                            } else {
+                                gameCall = getPointByNumStart((byte)(gameServe/10*10));
+                                voiceList.add(gameCall);
+                                gameCall2 = getPointByNumStart((byte)(gameServe%10));
+                                voiceList.add(gameCall2);
+                            }
+                            gameCall3 = getPointByNumEnd((byte)100);
+                            voiceList.add(gameCall3);
+                            break;
+                        case USER_RECORD:
+                            if (gameServe % 10 == 0) { //30, 40, 50, 60, 70, 80, 90
+                                fileName0 = getPointByNumString(gameServe);
+                                voiceUserList.add(fileName0);
+                            } else {
+                                fileName1 = getPointByNumString((byte)(gameServe/10*10));
+                                voiceUserList.add(fileName1);
+                                fileName2 = getPointByNumString((byte)(gameServe%10));
+                                voiceUserList.add(fileName2);
+                            }
+                            fileName3 = "user_all.m4a";
+                            voiceUserList.add(fileName3);
+                            break;
+                    }
+                }
+            } else {
+                if (gameServe <= 20 && gameRecv <= 20) {
+                    switch (current_voice_type) {
+                        case GBR_MAN:
+                        case GBR_WOMAN:
+                            gameCall = getPointByNumStart(gameServe);
+                            voiceList.add(gameCall);
+                            gameCall2 = getPointByNumEnd(gameRecv);
+                            voiceList.add(gameCall2);
+                            break;
+                        case USER_RECORD:
+                            fileName0 = getPointByNumString(gameServe);
+                            voiceUserList.add(fileName0);
+                            fileName1 = "user_to.m4a";
+                            voiceUserList.add(fileName1);
+                            fileName2 = getPointByNumString(gameRecv);
+                            voiceUserList.add(fileName2);
+                            break;
+                    }
+                } else { //up_point > 20
+                    switch (current_voice_type) {
+                        case GBR_MAN:
+                        case GBR_WOMAN:
+                            gameCall = getPointByNumStart((byte)(gameServe/10*10));
+                            voiceList.add(gameCall);
+                            if (gameServe%10 > 0) {
+                                gameCall2 = getPointByNumStart((byte) (gameServe % 10));
+                                voiceList.add(gameCall2);
+                            }
+
+                            if (gameRecv%10 > 0) {
+                                gameCall3 = getPointByNumStart((byte)(gameRecv/10*10));
+                                voiceList.add(gameCall3);
+                                gameCall4 = getPointByNumEnd((byte) (gameRecv % 10));
+                                voiceList.add(gameCall4);
+                            } else {
+                                gameCall3 = getPointByNumEnd((byte)(gameRecv/10*10));
+                                voiceList.add(gameCall3);
+                            }
+                            break;
+                        case USER_RECORD:
+                            fileName0 = getPointByNumString((byte)(gameServe/10*10));
+                            voiceUserList.add(fileName0);
+                            if (gameServe%10 > 0) {
+                                fileName1 = getPointByNumString((byte) (gameServe % 10));
+                                voiceUserList.add(fileName1);
+                            }
+
+                            //to
+                            fileName1 = "user_to.m4a";
+                            voiceUserList.add(fileName1);
+
+                            fileName2 = getPointByNumString((byte)(gameRecv/10*10));
+                            voiceUserList.add(fileName2);
+                            if (gameRecv%10 > 0) {
+                                fileName3 = getPointByNumString((byte) (gameRecv % 10));
+                                voiceUserList.add(fileName3);
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+
+        /*if (gameServe == 0 && gameRecv == 1) {
 
             switch (current_voice_type) {
                 case GBR_MAN:
@@ -10674,7 +9284,7 @@ public class GameActivity extends AppCompatActivity{
                     break;
             }
 
-        }
+        }*/
     }
 
     private Runnable updateTimer = new Runnable() {
@@ -10786,7 +9396,7 @@ public class GameActivity extends AppCompatActivity{
                         }
 
 
-                        String msg = playerUp + ";" + playerDown + ";" + tiebreak + ";" + is_deuce + ";" +is_firstServe+ ";" +set+ ";" +is_retire+ ";" +games+ "|";
+                        String msg = playerUp + ";" + playerDown + ";" + tiebreak + ";" + is_deuce + ";" +is_firstServe+ ";" +set+ ";" +is_retire+ ";" +games+ ";" +is_In_SuperTiebreak+ ";" + is_In_LongGame + "|";
                         append_record(msg, filename);
 
                         com.seventhmoon.tennisscoreboard.Data.State top = stack.peek();
