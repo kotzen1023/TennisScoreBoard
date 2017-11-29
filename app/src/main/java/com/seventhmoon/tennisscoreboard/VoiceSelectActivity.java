@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.seventhmoon.tennisscoreboard.Data.GridViewVoiceAdapter;
 import com.seventhmoon.tennisscoreboard.Data.ImageBuyItem;
@@ -558,26 +560,25 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
         switch (position)
         {
             case 1: //gbr woman
-                if (mHelper != null)
-                    mHelper.launchPurchaseFlow(VoiceSelectActivity.this, "sku_voice_support_gbr_woman", 10001, mPurchaseFinishedListener, null);
-                    //mHelper.consumeAsync(imageBuyItems.get(0).getPurchase(), mConsumeFinishedListener);
-                    /*if (purchase != null) {
-                        Log.d(TAG, "purchase != null");
-                    } else {
-                        Log.d(TAG, "purchase == null");
-                    }*/
+                if (mHelper != null) {
+                    try {
+                        mHelper.launchPurchaseFlow(VoiceSelectActivity.this, "sku_voice_support_gbr_woman", 10001, mPurchaseFinishedListener, null);
+                    } catch (IllegalStateException e) {
+                        toast(getResources().getString(R.string.inapp_buy_wait));
+                        e.printStackTrace();
 
+                    }
+                }
                 break;
             case 2: //user record
-                if (mHelper != null)
-                    mHelper.launchPurchaseFlow(VoiceSelectActivity.this, "sku_voice_support_user_record", 10001, mPurchaseFinishedListener, null);
-                //mHelper.consumeAsync(imageBuyItems.get(0).getPurchase(), mConsumeFinishedListener);
-                    /*if (purchase != null) {
-                        Log.d(TAG, "purchase != null");
-                    } else {
-                        Log.d(TAG, "purchase == null");
-                    }*/
-
+                if (mHelper != null) {
+                    try {
+                        mHelper.launchPurchaseFlow(VoiceSelectActivity.this, "sku_voice_support_user_record", 10001, mPurchaseFinishedListener, null);
+                    } catch (IllegalStateException e) {
+                        toast(getResources().getString(R.string.inapp_buy_wait));
+                        e.printStackTrace();
+                    }
+                }
                 break;
             default:
                 break;
@@ -682,5 +683,11 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
         }
 
         return ret;
+    }
+
+    public void toast(String message) {
+        Toast toast = Toast.makeText(VoiceSelectActivity.this, message, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+        toast.show();
     }
 }

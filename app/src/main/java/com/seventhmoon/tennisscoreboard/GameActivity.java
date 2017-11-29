@@ -164,7 +164,7 @@ public class GameActivity extends AppCompatActivity{
     private static ArrayList<Integer> voiceList = new ArrayList<>();
     private static ArrayList<String> voiceUserList = new ArrayList<>();
     private static boolean voiceOn = false;
-    private MenuItem voice_item, voice_support_item;
+    private MenuItem voice_item;
 
     //private static int current_voice_select = 0;
     private static boolean is_current_game_over = false;
@@ -375,7 +375,7 @@ public class GameActivity extends AppCompatActivity{
                 Log.d(TAG, "load file success!");
                 loadDialog = new ProgressDialog(this);
                 loadDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                loadDialog.setTitle("Loading...");
+                loadDialog.setTitle(getResources().getString(R.string.loading));
                 loadDialog.setIndeterminate(false);
                 loadDialog.setCancelable(false);
 
@@ -9496,8 +9496,8 @@ public class GameActivity extends AppCompatActivity{
                             }
                         }
 
-                        Intent intent = new Intent(Constants.ACTION.SAVE_CURRENT_STATE_COMPLETE);
-                        sendBroadcast(intent);
+                        //Intent intent = new Intent(Constants.ACTION.SAVE_CURRENT_STATE_COMPLETE);
+                        //sendBroadcast(intent);
                     }
                 }.start();
 
@@ -9525,7 +9525,7 @@ public class GameActivity extends AppCompatActivity{
 
         //item_edit = menu.findItem(R.id.action_edit_group);
         voice_item = menu.findItem(R.id.action_voice_onOff);
-        voice_support_item = menu.findItem(R.id.action_voice_support);
+        MenuItem voice_support_item = menu.findItem(R.id.action_voice_support);
 
         voice_support_item.setVisible(true);
 
@@ -9689,7 +9689,7 @@ public class GameActivity extends AppCompatActivity{
             if (loadDialog == null) {
                 loadDialog = new ProgressDialog(GameActivity.this);
                 loadDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                loadDialog.setTitle("Saving..");
+                loadDialog.setTitle(getResources().getString(R.string.saving));
                 loadDialog.setProgress(0);
                 loadDialog.setMax(100);
                 loadDialog.setIndeterminate(false);
@@ -9722,7 +9722,8 @@ public class GameActivity extends AppCompatActivity{
                 loadDialog.dismiss();
             }
 
-
+            Intent intent = new Intent(Constants.ACTION.SAVE_CURRENT_STATE_COMPLETE);
+            sendBroadcast(intent);
         }
 
         @Override

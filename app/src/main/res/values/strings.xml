@@ -160,5 +160,7 @@
     <string name="setup_help_msg_deciding_point">Deciding Point: When a game comes to 40:40, who win next point will win this game.</string>
     <string name="setup_long_game">Long Game</string>
     <string name="setup_help_msg_long_game">Long Game: Long Game is the deciding set that games comes to 5:5. Who take two straight games will win this match.</string>
+    <string name="inapp_buy_wait">In-App buying progress is busy. Please retry in a few seconds.</string>
+    <string name="saving">Saving...</string>
 </resources>
 

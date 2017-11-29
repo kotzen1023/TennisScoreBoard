@@ -161,4 +161,6 @@
     <string name="setup_help_msg_deciding_point">決勝分: 比數來到40:40時, 先贏下一分者將贏得這局.</string>
     <string name="setup_long_game">Long Game</string>
     <string name="setup_help_msg_long_game">Long Game: 指比賽到決勝盤5:5時, 先連贏2局者將贏得這場比賽.</string>
+    <string name="inapp_buy_wait">App內購程序忙碌中. 請稍待幾秒再重新嘗試</string>
+    <string name="saving">儲存中...</string>
 </resources>
