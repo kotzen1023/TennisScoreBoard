@@ -40,7 +40,7 @@ public class FileImportActivity extends AppCompatActivity {
 
     public static FileImportArrayAdapter fileImportArrayAdapter;
     public ListView listView;
-    public Button confirm;
+    public static Button confirm;
     private File currentDir;
     //private Menu actionmenu;
 
