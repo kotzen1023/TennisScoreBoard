@@ -150,8 +150,8 @@ public class CurrentStatActivity extends AppCompatActivity{
             actionBar.setHomeAsUpIndicator(R.drawable.ball_icon);
         }
 
-        Spinner setSpinner = (Spinner) findViewById(R.id.spinnerSets);
-        listView = (ListView) findViewById(R.id.listViewStat);
+        Spinner setSpinner = findViewById(R.id.spinnerSets);
+        listView = findViewById(R.id.listViewStat);
 
         String[] setList = {getResources().getString(R.string.stat_all_set),
                 getResources().getString(R.string.stat_first_set),

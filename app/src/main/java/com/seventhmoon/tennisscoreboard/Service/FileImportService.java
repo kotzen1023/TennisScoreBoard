@@ -1,25 +1,22 @@
 package com.seventhmoon.tennisscoreboard.Service;
 
 import android.app.IntentService;
-import android.app.NotificationManager;
-import android.content.Context;
+
 import android.content.Intent;
 import android.media.MediaExtractor;
 import android.media.MediaFormat;
-import android.os.AsyncTask;
-import android.support.v7.app.NotificationCompat;
+
 import android.util.Log;
 
 import com.seventhmoon.tennisscoreboard.Data.Constants;
-import com.seventhmoon.tennisscoreboard.R;
+
 
 import java.io.File;
 import java.io.IOException;
 
-import static com.seventhmoon.tennisscoreboard.Data.FileOperation.copy_file;
+
 import static com.seventhmoon.tennisscoreboard.Data.FileOperation.importFileToSelect;
-import static com.seventhmoon.tennisscoreboard.Data.FileOperation.read_out_file;
-import static com.seventhmoon.tennisscoreboard.FileImportActivity.searchList;
+
 
 
 public class FileImportService extends IntentService {

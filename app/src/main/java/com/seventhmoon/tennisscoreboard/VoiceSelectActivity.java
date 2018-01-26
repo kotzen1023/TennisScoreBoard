@@ -26,7 +26,7 @@ import android.widget.Toast;
 
 import com.seventhmoon.tennisscoreboard.Data.GridViewVoiceAdapter;
 import com.seventhmoon.tennisscoreboard.Data.ImageBuyItem;
-import com.seventhmoon.tennisscoreboard.Data.RandomString;
+//import com.seventhmoon.tennisscoreboard.Data.RandomString;
 import com.seventhmoon.tennisscoreboard.util.IabBroadcastReceiver;
 
 import com.seventhmoon.tennisscoreboard.util.IabHelper;
@@ -41,7 +41,7 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
     private static final String TAG = VoiceSelectActivity.class.getName();
 
     public ArrayList<ImageBuyItem> imageBuyItems = new ArrayList<>();
-    private LinearLayout linearLayout;
+    //private LinearLayout linearLayout;
 
     private GridViewVoiceAdapter gridViewVoiceAdapter;
     private GridView gridView;
@@ -57,7 +57,7 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
     IabBroadcastReceiver mBroadcastReceiver;
 
     private static boolean debug = false;
-    private Window window;
+    //private Window window;
     ArrayList<String> additionalSkuList = new ArrayList<>();
     private int previous_select = 0;
     private int current_voice;
@@ -170,9 +170,9 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
         //btnBack = (Button) findViewById(R.id.btnThemeBack);
         //btnConfirm = (Button) findViewById(R.id.btnThemeConfirm);
 
-        linearLayout = (LinearLayout) findViewById(R.id.voice_select_layout);
+        //LinearLayout linearLayout = findViewById(R.id.voice_select_layout);
 
-        window = getWindow();
+        Window window = getWindow();
 
         // clear FLAG_TRANSLUCENT_STATUS flag:
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -187,7 +187,7 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
 
         gridViewVoiceAdapter = new GridViewVoiceAdapter(this, R.layout.grid_item_voice_layout, getData());
 
-        gridView = (GridView) findViewById(R.id.gridViewVoice);
+        gridView = findViewById(R.id.gridViewVoice);
         gridView.setAdapter(gridViewVoiceAdapter);
         gridView.setChoiceMode(GridView.CHOICE_MODE_SINGLE);
 
@@ -539,7 +539,7 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
 
 
 
-    IabHelper.QueryInventoryFinishedListener mReceivedInventoryBuyGBRManListener
+    /*IabHelper.QueryInventoryFinishedListener mReceivedInventoryBuyGBRManListener
             = new IabHelper.QueryInventoryFinishedListener() {
         public void onQueryInventoryFinished(IabResult result,
                                              Inventory inventory) {
@@ -551,11 +551,11 @@ public class VoiceSelectActivity extends AppCompatActivity implements IabBroadca
                         mConsumeFinishedListener);
             }
         }
-    };
+    };*/
 
     protected void do_buy_theme(int position)
     {
-        RandomString randomString = new RandomString(36);
+        //RandomString randomString = new RandomString(36);
         //Purchase purchase = imageBuyItems.get(0).getPurchase();
         switch (position)
         {

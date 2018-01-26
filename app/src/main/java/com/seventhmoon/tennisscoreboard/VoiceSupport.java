@@ -1,16 +1,11 @@
 package com.seventhmoon.tennisscoreboard;
 
-
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
@@ -27,7 +22,7 @@ import com.seventhmoon.tennisscoreboard.util.IabResult;
 import com.seventhmoon.tennisscoreboard.util.Inventory;
 import com.seventhmoon.tennisscoreboard.util.Purchase;
 
-import java.io.File;
+
 import java.util.ArrayList;
 
 public class VoiceSupport extends AppCompatActivity implements IabBroadcastReceiver.IabBroadcastListener {
@@ -36,30 +31,32 @@ public class VoiceSupport extends AppCompatActivity implements IabBroadcastRecei
     public ArrayList<ImageBuyItem> imageBuyItems = new ArrayList<>();
 
     private GridViewVoiceAdapter gridViewVoiceAdapter;
-    private GridView gridView;
+    //private GridView gridView;
 
-    private boolean [] selected;
+    //private boolean [] selected;
 
     static SharedPreferences pref ;
     static SharedPreferences.Editor editor;
     private static final String FILE_NAME = "Preference";
-    private static int CurrentVoiceSupport = 0; //default
+    //private static int CurrentVoiceSupport = 0; //default
 
     //in-app billing
     IabHelper mHelper;
     IabBroadcastReceiver mBroadcastReceiver;
-    private static boolean debug = true;
+    //private static boolean debug = true;
 
     private static int previous_voice = 0;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //boolean [] selected;
+
         pref = getSharedPreferences(FILE_NAME, MODE_PRIVATE);
         editor = pref.edit();
-        CurrentVoiceSupport = pref.getInt("CurrentVoice", 0);
+        previous_voice = pref.getInt("CurrentVoice", 0);
 
-        previous_voice = CurrentVoiceSupport;
+        //previous_voice = CurrentVoiceSupport;
 
         setContentView(R.layout.voice_support);
 
@@ -126,7 +123,7 @@ public class VoiceSupport extends AppCompatActivity implements IabBroadcastRecei
 
         gridViewVoiceAdapter = new GridViewVoiceAdapter(this, R.layout.grid_item_voice_layout, getData());
 
-        gridView = (GridView) findViewById(R.id.gridViewVoice);
+        GridView gridView = findViewById(R.id.gridViewVoice);
         gridView.setAdapter(gridViewVoiceAdapter);
         gridView.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE);
 
@@ -294,7 +291,7 @@ public class VoiceSupport extends AppCompatActivity implements IabBroadcastRecei
             }
         });
 
-        selected = new boolean[gridView.getCount()];
+        //selected = new boolean[gridView.getCount()];
     }
 
     @Override

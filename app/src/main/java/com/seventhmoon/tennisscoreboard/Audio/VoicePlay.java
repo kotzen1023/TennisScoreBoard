@@ -2,10 +2,9 @@ package com.seventhmoon.tennisscoreboard.Audio;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetFileDescriptor;
+
 import android.media.MediaPlayer;
-import android.os.AsyncTask;
-import android.os.Build;
+
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
@@ -23,7 +22,7 @@ import static com.seventhmoon.tennisscoreboard.Data.FileOperation.check_user_voi
 public class VoicePlay {
     private static final String TAG = VoicePlay.class.getName();
 
-    private static Context context;
+    private Context context;
     private static File RootDirectory = new File("/");
 
     private static MediaPlayer mediaPlayer;
@@ -31,8 +30,8 @@ public class VoicePlay {
     //public static boolean is_playing = false;
 
     private static STATE current_state = STATE.Created;
-    private static float speed = 1;
-    private static float current_volume = 0.5f;
+    //private static float speed = 1;
+    //private static float current_volume = 0.5f;
     //private static int current_position = 0;
     //private final static int MAX_VOLUME = 100;
     private static Thread myThread = null;
@@ -58,42 +57,8 @@ public class VoicePlay {
         }
     }
 
-    public static void audioPlayer(Context context, int res_id) {
-        //String fileName){
-        //Log.e(TAG, "audioPlayer start");
-        /*if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-            //Log.d(TAG, "playing!");
+    /*public static void audioPlayer(Context context, int res_id) {
 
-
-        } else {
-            //set up MediaPlayer
-            if (mediaPlayer == null)
-                mediaPlayer = new MediaPlayer();
-            else {
-                mediaPlayer.stop();
-                mediaPlayer.release();
-                mediaPlayer = null;
-                mediaPlayer = new MediaPlayer();
-            }
-
-            try {
-
-                //mediaPlayer.setDataSource(RootDirectory.getAbsolutePath() + "/.tennisVoice/"+fileName);
-                mediaPlayer = MediaPlayer.create(context, res_id);
-
-                //mediaPlayer.prepare();
-
-                mediaPlayer.start();
-
-
-                //mediaPlayer = null;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            //is_playing = false;
-
-        }*/
         //Log.e(TAG, "audioPlayer end");
         if (mediaPlayer == null || !mediaPlayer.isPlaying()) {
             if (mediaPlayer == null)
@@ -120,9 +85,9 @@ public class VoicePlay {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 
-    public void doStop() {
+    /*public void doStop() {
         Log.d(TAG, "<doStop>");
         if (mediaPlayer != null) {
 
@@ -137,21 +102,10 @@ public class VoicePlay {
             }
         }
 
-        /*if (goodTask != null) {
-            Log.e(TAG, "cancel task");
-            if (!goodTask.isCancelled()) {
-                goodTask.cancel(true);
-                goodTask = null;
-            }
-        }*/
 
-        //taskDone = true;
-
-        //Intent newNotifyIntent = new Intent(Constants.ACTION.MEDIAPLAYER_STATE_PAUSED);
-        //context.sendBroadcast(newNotifyIntent);
 
         Log.d(TAG, "</doStop>");
-    }
+    }*/
 
     private Handler mIncomingHandler = new Handler(new Handler.Callback() {
         @Override
@@ -213,7 +167,7 @@ public class VoicePlay {
         Log.d(TAG, "doStopAudioPlayMulti end");
     }
 
-    public void doRawPlay(ArrayList<Integer> res_id) {
+    private void doRawPlay(ArrayList<Integer> res_id) {
         for (int i = 0; i < res_id.size(); i++) {
 
             while (checkPlay()) ; //wait for play end
@@ -357,7 +311,7 @@ public class VoicePlay {
         Log.d(TAG, "</singleplaying>");
     }
 
-    public void doFilePlay(ArrayList<String> nameList) {
+    private void doFilePlay(ArrayList<String> nameList) {
         Log.d(TAG, "doFilePlay start");
 
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {

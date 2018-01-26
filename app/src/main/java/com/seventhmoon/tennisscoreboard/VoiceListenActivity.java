@@ -22,9 +22,9 @@ public class VoiceListenActivity extends AppCompatActivity {
     private static final String TAG = VoiceListenActivity.class.getName();
 
     public ArrayList<ListenChooseItem> listenList = new ArrayList<>();
-    private ListenChooseArrayAdapter listenChooseArrayAdapter;
-    private ListView listView;
-    private Context context;
+    //private ListenChooseArrayAdapter listenChooseArrayAdapter;
+    //private ListView listView;
+    //private Context context;
     private VoicePlay listenPlay;
     private static ArrayList<Integer> myPlayList = new ArrayList<>();
     private ArrayList<Integer> gbr_man_list = new ArrayList<>();
@@ -34,7 +34,7 @@ public class VoiceListenActivity extends AppCompatActivity {
 
         setContentView(R.layout.voice_listen);
 
-        context = getBaseContext();
+        Context context = getBaseContext();
 
         if (voicePlay == null) {
             listenPlay = new VoicePlay(context);
@@ -46,7 +46,7 @@ public class VoiceListenActivity extends AppCompatActivity {
 
         initVoiceArray();
 
-        listView = (ListView) findViewById(R.id.listViewListen);
+        ListView listView = findViewById(R.id.listViewListen);
 
         listenList.clear();
 
@@ -59,7 +59,7 @@ public class VoiceListenActivity extends AppCompatActivity {
         //ListenChooseItem item2 = new ListenChooseItem(getResources().getString(R.string.voice_user_record));
         //listenList.add(item2);
 
-        listenChooseArrayAdapter = new ListenChooseArrayAdapter(VoiceListenActivity.this, R.layout.voice_listen_choose_item, listenList);
+        ListenChooseArrayAdapter listenChooseArrayAdapter = new ListenChooseArrayAdapter(VoiceListenActivity.this, R.layout.voice_listen_choose_item, listenList);
         listView.setAdapter(listenChooseArrayAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

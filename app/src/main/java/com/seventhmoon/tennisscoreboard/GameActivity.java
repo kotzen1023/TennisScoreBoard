@@ -291,26 +291,26 @@ public class GameActivity extends AppCompatActivity{
 
         //mContainerView = (BoxInsetLayout) findViewById(R.id.container);
 
-        gameUp = (TextView) findViewById(R.id.textViewGameUp);
-        gameDown = (TextView) findViewById(R.id.textViewGameDown);
-        pointUp = (TextView) findViewById(R.id.textViewPointUp);
-        pointDown = (TextView) findViewById(R.id.textViewPointDown);
+        gameUp = findViewById(R.id.textViewGameUp);
+        gameDown = findViewById(R.id.textViewGameDown);
+        pointUp = findViewById(R.id.textViewPointUp);
+        pointDown = findViewById(R.id.textViewPointDown);
 
-        imgServeUp = (ImageView) findViewById(R.id.imageViewServeUp);
-        imgServeDown = (ImageView) findViewById(R.id.imageViewServeDown);
+        imgServeUp = findViewById(R.id.imageViewServeUp);
+        imgServeDown = findViewById(R.id.imageViewServeDown);
 
-        textCurrentTime = (TextView) findViewById(R.id.currentTime);
-        textGameTime = (TextView) findViewById(R.id.gameTime);
+        textCurrentTime = findViewById(R.id.currentTime);
+        textGameTime = findViewById(R.id.gameTime);
 
-        setLayout = (LinearLayout) findViewById(R.id.setLayout);
-        nameLayout = (LinearLayout) findViewById(R.id.nameLayout);
-        setUp = (TextView) findViewById(R.id.textViewSetUp);
-        setDown = (TextView) findViewById(R.id.textViewSetDown);
+        setLayout = findViewById(R.id.setLayout);
+        nameLayout = findViewById(R.id.nameLayout);
+        setUp = findViewById(R.id.textViewSetUp);
+        setDown = findViewById(R.id.textViewSetDown);
 
-        imgWinCheckUp = (ImageView) findViewById(R.id.imageWincheckUp);
-        imgWinCheckDown = (ImageView) findViewById(R.id.imageWincheckDown);
+        imgWinCheckUp = findViewById(R.id.imageWincheckUp);
+        imgWinCheckDown = findViewById(R.id.imageWincheckDown);
 
-        imgPlayOrPause = (ImageView) findViewById(R.id.imageViewPlayOrPause);
+        imgPlayOrPause = findViewById(R.id.imageViewPlayOrPause);
 
         //init score board
         gameUp.setText("0");
@@ -9605,33 +9605,33 @@ public class GameActivity extends AppCompatActivity{
      * @param uri The Uri to check.
      * @return Whether the Uri authority is ExternalStorageProvider.
      */
-    public static boolean isExternalStorageDocument(Uri uri) {
-        return "com.android.externalstorage.documents".equals(uri.getAuthority());
-    }
+    //public static boolean isExternalStorageDocument(Uri uri) {
+    //    return "com.android.externalstorage.documents".equals(uri.getAuthority());
+    //}
 
     /**
      * @param uri The Uri to check.
      * @return Whether the Uri authority is DownloadsProvider.
      */
-    public static boolean isDownloadsDocument(Uri uri) {
-        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
-    }
+    //public static boolean isDownloadsDocument(Uri uri) {
+    //    return "com.android.providers.downloads.documents".equals(uri.getAuthority());
+    //}
 
     /**
      * @param uri The Uri to check.
      * @return Whether the Uri authority is MediaProvider.
      */
-    public static boolean isMediaDocument(Uri uri) {
-        return "com.android.providers.media.documents".equals(uri.getAuthority());
-    }
+    //public static boolean isMediaDocument(Uri uri) {
+    //    return "com.android.providers.media.documents".equals(uri.getAuthority());
+    //}
 
     /**
      * @param uri The Uri to check.
      * @return Whether the Uri authority is Google Photos.
      */
-    public static boolean isGooglePhotosUri(Uri uri) {
-        return "com.google.android.apps.photos.content".equals(uri.getAuthority());
-    }
+    //public static boolean isGooglePhotosUri(Uri uri) {
+    //    return "com.google.android.apps.photos.content".equals(uri.getAuthority());
+    //}
 
     public static String getDataColumn(Context context, Uri uri, String selection,
                                        String[] selectionArgs) {

@@ -98,32 +98,32 @@ public class ResultActivity extends AppCompatActivity{
         playerUp = intent.getStringExtra("PLAYER_UP");
         playerDown = intent.getStringExtra("PLAYER_DOWN");
 
-        textViewSet1Up = (TextView) findViewById(R.id.set1_up);
-        textViewSet1Down = (TextView) findViewById(R.id.set1_down);
-        textViewSet2Up = (TextView) findViewById(R.id.set2_up);
-        textViewSet2Down = (TextView) findViewById(R.id.set2_down);
-        textViewSet3Up = (TextView) findViewById(R.id.set3_up);
-        textViewSet3Down = (TextView) findViewById(R.id.set3_down);
-        textViewSet4Up = (TextView) findViewById(R.id.set4_up);
-        textViewSet4Down = (TextView) findViewById(R.id.set4_down);
-        textViewSet5Up = (TextView) findViewById(R.id.set5_up);
-        textViewSet5Down = (TextView) findViewById(R.id.set5_down);
+        textViewSet1Up = findViewById(R.id.set1_up);
+        textViewSet1Down = findViewById(R.id.set1_down);
+        textViewSet2Up = findViewById(R.id.set2_up);
+        textViewSet2Down = findViewById(R.id.set2_down);
+        textViewSet3Up = findViewById(R.id.set3_up);
+        textViewSet3Down = findViewById(R.id.set3_down);
+        textViewSet4Up = findViewById(R.id.set4_up);
+        textViewSet4Down = findViewById(R.id.set4_down);
+        textViewSet5Up = findViewById(R.id.set5_up);
+        textViewSet5Down = findViewById(R.id.set5_down);
 
-        textViewSet1TieBreakUp = (TextView) findViewById(R.id.set1_tibreak_up);
-        textViewSet1TieBreakDown = (TextView) findViewById(R.id.set1_tibreak_down);
-        textViewSet2TieBreakUp = (TextView) findViewById(R.id.set2_tibreak_up);
-        textViewSet2TieBreakDown = (TextView) findViewById(R.id.set2_tibreak_down);
-        textViewSet3TieBreakUp = (TextView) findViewById(R.id.set3_tibreak_up);
-        textViewSet3TieBreakDown = (TextView) findViewById(R.id.set3_tibreak_down);
-        textViewSet4TieBreakUp = (TextView) findViewById(R.id.set4_tibreak_up);
-        textViewSet4TieBreakDown = (TextView) findViewById(R.id.set4_tibreak_down);
-        textViewSet5TieBreakUp = (TextView) findViewById(R.id.set5_tibreak_up);
-        textViewSet5TieBreakDown = (TextView) findViewById(R.id.set5_tibreak_down);
+        textViewSet1TieBreakUp = findViewById(R.id.set1_tibreak_up);
+        textViewSet1TieBreakDown = findViewById(R.id.set1_tibreak_down);
+        textViewSet2TieBreakUp = findViewById(R.id.set2_tibreak_up);
+        textViewSet2TieBreakDown = findViewById(R.id.set2_tibreak_down);
+        textViewSet3TieBreakUp = findViewById(R.id.set3_tibreak_up);
+        textViewSet3TieBreakDown = findViewById(R.id.set3_tibreak_down);
+        textViewSet4TieBreakUp = findViewById(R.id.set4_tibreak_up);
+        textViewSet4TieBreakDown = findViewById(R.id.set4_tibreak_down);
+        textViewSet5TieBreakUp = findViewById(R.id.set5_tibreak_up);
+        textViewSet5TieBreakDown = findViewById(R.id.set5_tibreak_down);
 
-        textViewDuration = (TextView) findViewById(R.id.duration);
+        textViewDuration = findViewById(R.id.duration);
 
-        textWinText = (TextView) findViewById(R.id.textWinPlayer);
-        textLoseText = (TextView) findViewById(R.id.textLosePlayer);
+        textWinText = findViewById(R.id.textWinPlayer);
+        textLoseText = findViewById(R.id.textLosePlayer);
 
         if (set1_up.equals("0") && set1_down.equals("0"))
             Log.d(TAG, "1 Don't care");
@@ -206,12 +206,13 @@ public class ResultActivity extends AppCompatActivity{
         Long min = (Long.valueOf(duration))%3600/60;
         Long sec = (Long.valueOf(duration))%60;
 
-        textViewDuration.setText(f.format(hour)+":"+f.format(min)+":"+f.format(sec));
+        String time_string = f.format(hour)+":"+f.format(min)+":"+f.format(sec);
+        textViewDuration.setText(time_string);
 
         textWinText.setText(win_player);
         textLoseText.setText(lose_player);
 
-        btnOK = (Button) findViewById(R.id.btnResultOk);
+        btnOK = findViewById(R.id.btnResultOk);
 
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override

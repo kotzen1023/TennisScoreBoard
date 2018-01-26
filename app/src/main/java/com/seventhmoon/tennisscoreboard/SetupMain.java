@@ -49,8 +49,8 @@ public class SetupMain extends AppCompatActivity{
     private static ArrayList<String> serveList = new ArrayList<>();
     private static ArrayList<String> tiebreakList = new ArrayList<>();
 
-    private int set_choose = 0;
-    private int game_choose = 0;
+    //private int set_choose = 0;
+    //private int game_choose = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,14 +77,14 @@ public class SetupMain extends AppCompatActivity{
 
         Button confirm;
 
-        textUpPlayer = (TextView) findViewById(R.id.textViewUpPlayer);
-        textDownPlayer = (TextView) findViewById(R.id.textViewDownPlayer);
-        setSpinner = (Spinner) findViewById(R.id.spinnerSets);
-        gameSpinner = (Spinner) findViewById(R.id.spinnerGames);
-        tiebreakSpinner = (Spinner) findViewById(R.id.spinnerTieBreak);
-        deuceSpinner = (Spinner) findViewById(R.id.spinnerDeuce);
-        serveSpinner = (Spinner) findViewById(R.id.spinnerServe);
-        confirm = (Button) findViewById(R.id.btnConfirm);
+        textUpPlayer = findViewById(R.id.textViewUpPlayer);
+        textDownPlayer = findViewById(R.id.textViewDownPlayer);
+        setSpinner = findViewById(R.id.spinnerSets);
+        gameSpinner = findViewById(R.id.spinnerGames);
+        tiebreakSpinner = findViewById(R.id.spinnerTieBreak);
+        deuceSpinner = findViewById(R.id.spinnerDeuce);
+        serveSpinner = findViewById(R.id.spinnerServe);
+        confirm = findViewById(R.id.btnConfirm);
 
         String[] setList = {getResources().getString(R.string.setup_one_set),
                 getResources().getString(R.string.setup_three_sets),
@@ -356,8 +356,8 @@ public class SetupMain extends AppCompatActivity{
         alertDialogBuilder.setView(promptView);
 
         //final EditText editFileName = (EditText) promptView.findViewById(R.id.editFileName);
-        final EditText editPlayerUp = (EditText) promptView.findViewById(R.id.editResetPlayerUp);
-        final EditText editPlayerDown = (EditText) promptView.findViewById(R.id.editResetPlayerDown);
+        final EditText editPlayerUp = promptView.findViewById(R.id.editResetPlayerUp);
+        final EditText editPlayerDown = promptView.findViewById(R.id.editResetPlayerDown);
         if (playerUp != null)
             editPlayerUp.setText(playerUp);
         if (playerDown != null)

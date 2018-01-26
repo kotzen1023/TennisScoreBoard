@@ -6,19 +6,19 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.Uri;
+
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Gravity;
+//import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 
 import com.seventhmoon.tennisscoreboard.Data.Constants;
@@ -31,14 +31,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 
-import static com.seventhmoon.tennisscoreboard.Data.FileOperation.get_absolute_path;
+
 import static com.seventhmoon.tennisscoreboard.Data.FileOperation.remove_file;
 
 
 public class LoadGame extends AppCompatActivity {
     private static final String TAG = LoadGame.class.getName();
 
-    private Context context;
+    //private Context context;
 
     private ListView listView;
 
@@ -54,12 +54,12 @@ public class LoadGame extends AppCompatActivity {
     private static ArrayList<FileChooseItem> dir = new ArrayList<>();
     private static ArrayList<FileChooseItem> fls = new ArrayList<>();
 
-    private MenuItem import_menu;
+    //private MenuItem import_menu;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        context = getBaseContext();
+        //Context context = getBaseContext();
 
         //for action bar
         ActionBar actionBar = getSupportActionBar();
@@ -83,7 +83,7 @@ public class LoadGame extends AppCompatActivity {
 
         setContentView(R.layout.load_game);
 
-        listView = (ListView) findViewById(R.id.listViewFileChoose);
+        listView = findViewById(R.id.listViewFileChoose);
 
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             //path = Environment.getExternalStorageDirectory();
@@ -170,87 +170,90 @@ public class LoadGame extends AppCompatActivity {
         mReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equalsIgnoreCase(Constants.ACTION.GAME_DELETE_COMPLETE)) {
-                    Log.d(TAG, "receive brocast !");
+                if (intent.getAction() != null) {
+                    if (intent.getAction().equalsIgnoreCase(Constants.ACTION.GAME_DELETE_COMPLETE)) {
+                        Log.d(TAG, "receive brocast !");
 
-                    String file_name = intent.getStringExtra("REMOVE_FILE");
+                        String file_name = intent.getStringExtra("REMOVE_FILE");
 
-                    dir.clear();
-                    fls.clear();
+                        dir.clear();
+                        fls.clear();
 
-                    File[] dirs = folder.listFiles();
+                        File[] dirs = folder.listFiles();
 
-                    try{
-                        for(File ff: dirs)
-                        {
-                            Date lastModDate = new Date(ff.lastModified());
-                            DateFormat formater = DateFormat.getDateTimeInstance();
-                            String date_modify = formater.format(lastModDate);
-                            //CheckBox checkBox = new CheckBox(getApplicationContext());
-                            if(!ff.isDirectory()){
+                        try{
+                            for(File ff: dirs)
+                            {
+                                Date lastModDate = new Date(ff.lastModified());
+                                DateFormat formater = DateFormat.getDateTimeInstance();
+                                String date_modify = formater.format(lastModDate);
+                                //CheckBox checkBox = new CheckBox(getApplicationContext());
+                                if(!ff.isDirectory()){
 
 
-                                char first = ff.getName().charAt(0);
-                                if (first != '.')
-                                    fls.add(new FileChooseItem(ff.getName(), date_modify));
+                                    char first = ff.getName().charAt(0);
+                                    if (first != '.')
+                                        fls.add(new FileChooseItem(ff.getName(), date_modify));
+                                }
                             }
+                        } catch(Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch(Exception e) {
-                        e.printStackTrace();
-                    }
-                    //Collections.sort(dir);
-                    Collections.sort(fls);
-                    dir.addAll(fls);
+                        //Collections.sort(dir);
+                        Collections.sort(fls);
+                        dir.addAll(fls);
 
 
-                    fileChooseArrayAdapter = new FileChooseArrayAdapter(LoadGame.this,R.layout.file_choose_item,dir);
-                    listView.setAdapter(fileChooseArrayAdapter);
-
-                    if (dir.size() == 0) {
-                        call_activity = "Main";
-                    } else {
-                        if (file_name.equals(previous_filename)) {
-                            call_activity = "Main";
-                        }
-                    }
-                } else if (intent.getAction().equalsIgnoreCase(Constants.ACTION.ADD_FILE_LIST_COMPLETE)) {
-                    Log.d(TAG, "receive brocast ADD_FILE_LIST_COMPLETE!");
-
-                    dir.clear();
-                    fls.clear();
-
-                    File[] dirs = folder.listFiles();
-
-                    try{
-                        for(File ff: dirs)
-                        {
-                            Date lastModDate = new Date(ff.lastModified());
-                            DateFormat formater = DateFormat.getDateTimeInstance();
-                            String date_modify = formater.format(lastModDate);
-                            //CheckBox checkBox = new CheckBox(getApplicationContext());
-                            if(!ff.isDirectory()){
-
-
-                                char first = ff.getName().charAt(0);
-                                if (first != '.')
-                                    fls.add(new FileChooseItem(ff.getName(), date_modify));
-                            }
-                        }
-                    } catch(Exception e) {
-                        e.printStackTrace();
-                    }
-                    //Collections.sort(dir);
-                    Collections.sort(fls);
-                    dir.addAll(fls);
-
-                    if (fileChooseArrayAdapter == null) {
-                        fileChooseArrayAdapter = new FileChooseArrayAdapter(context, R.layout.file_choose_item, dir);
+                        fileChooseArrayAdapter = new FileChooseArrayAdapter(LoadGame.this,R.layout.file_choose_item,dir);
                         listView.setAdapter(fileChooseArrayAdapter);
-                    } else {
-                        Log.e(TAG, "notifyDataSetChanged");
-                        fileChooseArrayAdapter.notifyDataSetChanged();
+
+                        if (dir.size() == 0) {
+                            call_activity = "Main";
+                        } else {
+                            if (file_name.equals(previous_filename)) {
+                                call_activity = "Main";
+                            }
+                        }
+                    } else if (intent.getAction().equalsIgnoreCase(Constants.ACTION.ADD_FILE_LIST_COMPLETE)) {
+                        Log.d(TAG, "receive brocast ADD_FILE_LIST_COMPLETE!");
+
+                        dir.clear();
+                        fls.clear();
+
+                        File[] dirs = folder.listFiles();
+
+                        try{
+                            for(File ff: dirs)
+                            {
+                                Date lastModDate = new Date(ff.lastModified());
+                                DateFormat formater = DateFormat.getDateTimeInstance();
+                                String date_modify = formater.format(lastModDate);
+                                //CheckBox checkBox = new CheckBox(getApplicationContext());
+                                if(!ff.isDirectory()){
+
+
+                                    char first = ff.getName().charAt(0);
+                                    if (first != '.')
+                                        fls.add(new FileChooseItem(ff.getName(), date_modify));
+                                }
+                            }
+                        } catch(Exception e) {
+                            e.printStackTrace();
+                        }
+                        //Collections.sort(dir);
+                        Collections.sort(fls);
+                        dir.addAll(fls);
+
+                        if (fileChooseArrayAdapter == null) {
+                            fileChooseArrayAdapter = new FileChooseArrayAdapter(context, R.layout.file_choose_item, dir);
+                            listView.setAdapter(fileChooseArrayAdapter);
+                        } else {
+                            Log.e(TAG, "notifyDataSetChanged");
+                            fileChooseArrayAdapter.notifyDataSetChanged();
+                        }
                     }
                 }
+
             }
         };
 
@@ -307,7 +310,7 @@ public class LoadGame extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.load_menu, menu);
 
         //item_edit = menu.findItem(R.id.action_edit_group);
-        import_menu = menu.findItem(R.id.action_import);
+        //MenuItem import_menu = menu.findItem(R.id.action_import);
 
         return true;
     }
@@ -346,9 +349,9 @@ public class LoadGame extends AppCompatActivity {
         return true;
     }
 
-    public void toast(String message) {
+    /*public void toast(String message) {
         Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
         toast.show();
-    }
+    }*/
 }

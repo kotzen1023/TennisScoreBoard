@@ -2,7 +2,7 @@ package com.seventhmoon.tennisscoreboard;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,24 +10,25 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
-import android.net.Uri;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
+
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
+
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -42,19 +43,17 @@ import com.seventhmoon.tennisscoreboard.Data.RecordItem;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
+
 import java.util.Map;
 
 import static com.seventhmoon.tennisscoreboard.Data.FileOperation.check_user_voice_exist;
 import static com.seventhmoon.tennisscoreboard.Data.FileOperation.clear_all_voice;
-import static com.seventhmoon.tennisscoreboard.Data.FileOperation.get_absolute_path;
+
 import static com.seventhmoon.tennisscoreboard.GameActivity.voicePlay;
 
 
@@ -62,12 +61,12 @@ public class VoiceRecordActivity extends AppCompatActivity {
     private static final String TAG = VoiceRecordActivity.class.getName();
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
 
-    private Context context;
+    //private Context context;
     public ArrayList<RecordItem> recordList = new ArrayList<>();
     private RecordArrayAdapter recordArrayAdapter;
     private LinearLayout layoutRecord;
-    private LinearLayout lauoutPlayStop;
-    private LinearLayout layoutRecordRecord;
+    //private LinearLayout lauoutPlayStop;
+    //private LinearLayout layoutRecordRecord;
     private ListView listView;
 
     private ImageView btnImport;
@@ -78,7 +77,7 @@ public class VoiceRecordActivity extends AppCompatActivity {
     private boolean is_recording = false;
     private boolean is_playing = false;
 
-    private ArrayList<String> saveNameList = new ArrayList<>();
+    //private ArrayList<String> saveNameList = new ArrayList<>();
 
     private MediaRecorder mRecorder;
     private long mStartTime = 0;
@@ -104,7 +103,7 @@ public class VoiceRecordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.voice_record_activity);
-        context = getBaseContext();
+        Context context = getBaseContext();
 
         ActionBar actionBar = getSupportActionBar();
 
@@ -122,14 +121,14 @@ public class VoiceRecordActivity extends AppCompatActivity {
             Log.e(TAG, "voicePlay is running");
         }
 
-        listView = (ListView) findViewById(R.id.listViewVoiceRecord);
-        layoutRecord = (LinearLayout) findViewById(R.id.layoutRecord);
-        lauoutPlayStop = (LinearLayout) findViewById(R.id.layoutRecordPlayStop);
-        layoutRecordRecord = (LinearLayout) findViewById(R.id.layoutRecordRecord);
-        btnImport = (ImageView) findViewById(R.id.imgRecordImport);
-        imgPlayStop = (ImageView) findViewById(R.id.imgRecordPlayStop);
-        imgRecord = (ImageView) findViewById(R.id.imgRecordRecord);
-        textViewTime = (TextView) findViewById(R.id.textViewTime);
+        listView = findViewById(R.id.listViewVoiceRecord);
+        layoutRecord = findViewById(R.id.layoutRecord);
+        //lauoutPlayStop = findViewById(R.id.layoutRecordPlayStop);
+        //layoutRecordRecord = findViewById(R.id.layoutRecordRecord);
+        btnImport = findViewById(R.id.imgRecordImport);
+        imgPlayStop = findViewById(R.id.imgRecordPlayStop);
+        imgRecord = findViewById(R.id.imgRecordRecord);
+        textViewTime = findViewById(R.id.textViewTime);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if(checkAndRequestPermissions()) {
@@ -563,7 +562,7 @@ public class VoiceRecordActivity extends AppCompatActivity {
 
                     } else { //recording ->
                         if (mRecorder != null) {
-                            stopRecording(true);
+                            stopRecording();
                             recordPlayList.clear();
                             if (check_user_voice_exist(currentSelectedName)) { //if file exist, add
                                 recordPlayList.add(currentSelectedName);
@@ -695,19 +694,24 @@ public class VoiceRecordActivity extends AppCompatActivity {
         mReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equalsIgnoreCase(Constants.ACTION.PLAY_MULTIFILES_COMPLETE)) {
-                    Log.e(TAG, "receive PLAY_MULTIFILES_COMPLETE");
-                    imgPlayStop.setImageResource(R.drawable.ic_play_arrow_white_48dp);
-                    is_playing = false;
-                    stopVoicePlaying();
-                } else if (intent.getAction().equalsIgnoreCase(Constants.ACTION.IMPORT_FILE_COMPLETE)) {
-                    if (check_user_voice_exist(currentSelectedName)) { //if file exist, add
-                        recordPlayList.clear();
-                        recordPlayList.add(currentSelectedName);
-                        recordList.get(record_select).setFileExist(true);
-                        recordArrayAdapter.notifyDataSetChanged();
+
+                if (intent.getAction() != null) {
+                    if (intent.getAction().equalsIgnoreCase(Constants.ACTION.PLAY_MULTIFILES_COMPLETE)) {
+                        Log.e(TAG, "receive PLAY_MULTIFILES_COMPLETE");
+                        imgPlayStop.setImageResource(R.drawable.ic_play_arrow_white_48dp);
+                        is_playing = false;
+                        stopVoicePlaying();
+                    } else if (intent.getAction().equalsIgnoreCase(Constants.ACTION.IMPORT_FILE_COMPLETE)) {
+                        if (check_user_voice_exist(currentSelectedName)) { //if file exist, add
+                            recordPlayList.clear();
+                            recordPlayList.add(currentSelectedName);
+                            recordList.get(record_select).setFileExist(true);
+                            recordArrayAdapter.notifyDataSetChanged();
+                        }
                     }
                 }
+
+
             }
         };
 
@@ -777,20 +781,20 @@ public class VoiceRecordActivity extends AppCompatActivity {
         }
     }
 
-    protected  void stopRecording(boolean saveFile) {
+    protected  void stopRecording() {
         mRecorder.stop();
         mRecorder.release();
         mRecorder = null;
         mStartTime = 0;
         mHandler.removeCallbacks(mTickExecutor);
-        if (!saveFile && mOutputFile != null) {
+        if (mOutputFile != null) {
             mOutputFile.delete();
         }
     }
 
     private File getOutputFile() {
         //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.TAIWAN);
-        return new File(Environment.getExternalStorageDirectory().getAbsolutePath().toString()
+        return new File(Environment.getExternalStorageDirectory().getAbsolutePath()
                 + "/.tennisScoredBoard/user/"
                 + currentSelectedName);
     }
@@ -800,7 +804,8 @@ public class VoiceRecordActivity extends AppCompatActivity {
         int minutes = (int) (time / 60000);
         int seconds = (int) (time / 1000) % 60;
         int milliseconds = (int) (time / 100) % 10;
-        textViewTime.setText(minutes+":"+(seconds < 10 ? "0"+seconds : seconds)+"."+milliseconds);
+        String time_string = minutes+":"+(seconds < 10 ? "0"+seconds : seconds)+"."+milliseconds;
+        textViewTime.setText(time_string);
         if (mRecorder != null) {
             amplitudes[i] = mRecorder.getMaxAmplitude();
             //Log.d("Voice Recorder","amplitude: "+(amplitudes[i] * 100 / 32767));
@@ -840,7 +845,7 @@ public class VoiceRecordActivity extends AppCompatActivity {
 
 
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
         //Log.e(TAG, "result size = "+grantResults.length+ "result[0] = "+grantResults[0]+", result[1] = "+grantResults[1]);
 
 

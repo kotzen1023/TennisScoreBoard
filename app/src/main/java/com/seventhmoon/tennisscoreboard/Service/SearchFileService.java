@@ -4,8 +4,7 @@ import android.app.IntentService;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.media.MediaExtractor;
-import android.media.MediaFormat;
+
 import android.os.AsyncTask;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
@@ -14,12 +13,10 @@ import com.seventhmoon.tennisscoreboard.Data.Constants;
 import com.seventhmoon.tennisscoreboard.R;
 
 import java.io.File;
-import java.io.IOException;
 
-import static com.seventhmoon.tennisscoreboard.Data.FileOperation.check_file_exist;
 import static com.seventhmoon.tennisscoreboard.Data.FileOperation.copy_file;
 import static com.seventhmoon.tennisscoreboard.Data.FileOperation.read_out_file;
-import static com.seventhmoon.tennisscoreboard.Data.FileOperation.read_record;
+
 import static com.seventhmoon.tennisscoreboard.FileImportActivity.searchList;
 
 
@@ -55,28 +52,31 @@ public class SearchFileService extends IntentService {
 
         //String filename = intent.getStringExtra("FILENAME");
 
+        if (intent.getAction() != null) {
+            if (intent.getAction().equals(Constants.ACTION.GET_SEARCHLIST_ACTION)) {
+                Log.i(TAG, "GET_SEARCHLIST_ACTION");
 
-        if (intent.getAction().equals(Constants.ACTION.GET_SEARCHLIST_ACTION)) {
-            Log.i(TAG, "GET_SEARCHLIST_ACTION");
+                mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                mBuilder = new NotificationCompat.Builder(this);
+                mBuilder.setContentTitle("Searching");
+                mBuilder.setSmallIcon(R.mipmap.ic_launcher);
+                //mBuilder.setContentIntent(pendingIntent);
+                mBuilder.setOngoing(true);
+            }
 
-            mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            mBuilder = new NotificationCompat.Builder(this);
-            mBuilder.setContentTitle("Searching");
-            mBuilder.setSmallIcon(R.mipmap.ic_launcher);
-            //mBuilder.setContentIntent(pendingIntent);
-            mBuilder.setOngoing(true);
+            is_searching = true;
+            new Thread() {
+                public void run() {
+                    searchServicetask task = new searchServicetask();
+                    task.execute(10);
+                }
+            }.start();
+
+            searchFiles();
+            is_searching = false;
         }
 
-        is_searching = true;
-        new Thread() {
-            public void run() {
-                searchServicetask task = new searchServicetask();
-                task.execute(10);
-            }
-        }.start();
 
-        searchFiles();
-        is_searching = false;
     }
 
     @Override
@@ -109,12 +109,12 @@ public class SearchFileService extends IntentService {
             String info[] = msg[0].split(";");
             Log.d(TAG, "info.length = "+info.length);
             if (info.length == 8) {
-                if ((info[2].toString().equals("true") || info[2].toString().equals("false")) &&
-                        (info[3].toString().equals("true") || info[3].toString().equals("false")) &&
-                        (info[4].toString().equals("true") || info[4].toString().equals("false")) &&
-                        (info[5].toString().equals("0") || info[5].toString().equals("1") || info[5].toString().equals("2")) &&
-                        (info[6].toString().equals("0") || info[6].toString().equals("1")) &&
-                        (info[7].toString().equals("0") || info[7].toString().equals("1"))) {
+                if ((info[2].equals("true") || info[2].equals("false")) &&
+                        (info[3].equals("true") || info[3].equals("false")) &&
+                        (info[4].equals("true") || info[4].equals("false")) &&
+                        (info[5].equals("0") || info[5].equals("1") || info[5].equals("2")) &&
+                        (info[6].equals("0") || info[6].equals("1")) &&
+                        (info[7].equals("0") || info[7].equals("1"))) {
                     Log.e(TAG, "===>match header");
                     if (msg.length == 1) {
                         Log.e(TAG, "length = 1");

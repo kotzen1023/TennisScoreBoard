@@ -40,9 +40,9 @@ public class FileImportActivity extends AppCompatActivity {
 
     public static FileImportArrayAdapter fileImportArrayAdapter;
     public ListView listView;
-    public static Button confirm;
+    public Button confirm;
     private File currentDir;
-    private Menu actionmenu;
+    //private Menu actionmenu;
 
     public static ArrayList<String> searchList = new ArrayList<>();
 
@@ -68,8 +68,8 @@ public class FileImportActivity extends AppCompatActivity {
 
         //audioOperation = new AudioOperation(context);
 
-        listView = (ListView) findViewById(R.id.listViewFileImport);
-        confirm = (Button) findViewById(R.id.btnFileImportConfirm);
+        listView = findViewById(R.id.listViewFileImport);
+        confirm = findViewById(R.id.btnFileImportConfirm);
 
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,13 +198,13 @@ public class FileImportActivity extends AppCompatActivity {
 
         getMenuInflater().inflate(R.menu.file_import_menu, menu);
 
-        MenuItem item_all;
+        //MenuItem item_all;
 
         //item_all = menu.findItem(R.id.action_selectall);
 
         //item_all.setVisible(true);
 
-        actionmenu = menu;
+        //actionmenu = menu;
         return true;
     }
 

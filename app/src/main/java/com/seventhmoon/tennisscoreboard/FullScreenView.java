@@ -73,12 +73,12 @@ public class FullScreenView extends AppCompatActivity {
 
         setContentView(R.layout.fullscreen_view);
 
-        Intent intent = getIntent();
+        //Intent intent = getIntent();
 
-        String longitude = intent.getStringExtra("longitude");
-        String latitude = intent.getStringExtra("latitude");
+        //String longitude = intent.getStringExtra("longitude");
+        //String latitude = intent.getStringExtra("latitude");
 
-        imageView = (ImageView) findViewById(R.id.imageViewFullScreenView);
+        imageView = findViewById(R.id.imageViewFullScreenView);
 
         imageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -184,26 +184,31 @@ public class FullScreenView extends AppCompatActivity {
         mReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equalsIgnoreCase(Constants.ACTION.GET_COURT_IMAGE_COMPLETE)) {
-                    Log.d(TAG, "receive brocast !");
 
-                    if (pageItem != null) {
+                if (intent.getAction() != null) {
+                    if (intent.getAction().equalsIgnoreCase(Constants.ACTION.GET_COURT_IMAGE_COMPLETE)) {
+                        Log.d(TAG, "receive brocast !");
 
-                        Bitmap bitmap = pageItem.getPic();
-                        bitmap_width = bitmap.getWidth();
-                        bitmap_height = bitmap.getHeight();
-                        Log.e(TAG, "bitmap_width = "+bitmap_width+", bitmap_height = "+bitmap_height);
-                        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                        imageView.setImageBitmap(bitmap);
+                        if (pageItem != null) {
 
-                        //imageView.setImageBitmap(pageItem.getPic());
+                            Bitmap bitmap = pageItem.getPic();
+                            bitmap_width = bitmap.getWidth();
+                            bitmap_height = bitmap.getHeight();
+                            Log.e(TAG, "bitmap_width = "+bitmap_width+", bitmap_height = "+bitmap_height);
+                            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                            imageView.setImageBitmap(bitmap);
+
+                            //imageView.setImageBitmap(pageItem.getPic());
 
 
-                    } else {
-                        toast("Can't read Image!");
+                        } else {
+                            toast("Can't read Image!");
+                        }
+                        loadDialog.dismiss();
                     }
-                    loadDialog.dismiss();
                 }
+
+
             }
         };
 
@@ -215,14 +220,14 @@ public class FullScreenView extends AppCompatActivity {
             Log.d(TAG, "registerReceiver mReceiver");
         }
 
-        if (Double.valueOf(longitude) != 0.0 && Double.valueOf(latitude) != 0.0) {
+        //if (Double.valueOf(longitude) != 0.0 && Double.valueOf(latitude) != 0.0) {
             //initData.jdbc.queryCourtTable(context, longitude, latitude);
 
             /*Intent checkIntent = new Intent(FullScreenView.this, GetCourtImageService.class);
             checkIntent.putExtra("longitude", longitude);
             checkIntent.putExtra("latitude", latitude);
             startService(checkIntent);*/
-        }
+        //}
 
         loadDialog = new ProgressDialog(FullScreenView.this);
         loadDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);

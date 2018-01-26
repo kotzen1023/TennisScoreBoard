@@ -13,7 +13,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -72,11 +72,11 @@ public class PlayMainActivity extends AppCompatActivity {
         //Button btnNewGame = (Button) findViewById(R.id.btnNewGame);
         //Button btnContinue = (Button) findViewById(R.id.btnContinue);
 
-        ImageView imgNewGame = (ImageView) findViewById(R.id.imgNewGame);
-        ImageView imgContinue = (ImageView) findViewById(R.id.imgContinue);
+        ImageView imgNewGame = findViewById(R.id.imgNewGame);
+        ImageView imgContinue = findViewById(R.id.imgContinue);
 
-        TextView textNewGame = (TextView) findViewById(R.id.textNewGame);
-        TextView textContinue = (TextView) findViewById(R.id.textContinue);
+        TextView textNewGame = findViewById(R.id.textNewGame);
+        TextView textContinue = findViewById(R.id.textContinue);
 
         imgNewGame.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,9 +171,9 @@ public class PlayMainActivity extends AppCompatActivity {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(PlayMainActivity.this);
         alertDialogBuilder.setView(promptView);
 
-        final EditText editFileName = (EditText) promptView.findViewById(R.id.editFileName);
-        final EditText editPlayerUp = (EditText) promptView.findViewById(R.id.editPlayerUp);
-        final EditText editPlayerDown = (EditText) promptView.findViewById(R.id.editPlayerDown);
+        final EditText editFileName = promptView.findViewById(R.id.editFileName);
+        final EditText editPlayerUp = promptView.findViewById(R.id.editPlayerUp);
+        final EditText editPlayerDown = promptView.findViewById(R.id.editPlayerDown);
         // setup a dialog window
         alertDialogBuilder.setCancelable(false);
         alertDialogBuilder.setPositiveButton(getResources().getString(R.string.dialog_confirm), new DialogInterface.OnClickListener() {
