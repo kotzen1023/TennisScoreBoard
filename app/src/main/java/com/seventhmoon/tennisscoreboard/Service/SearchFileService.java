@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import android.os.AsyncTask;
-import android.support.v7.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.seventhmoon.tennisscoreboard.Data.Constants;
@@ -56,8 +56,10 @@ public class SearchFileService extends IntentService {
             if (intent.getAction().equals(Constants.ACTION.GET_SEARCHLIST_ACTION)) {
                 Log.i(TAG, "GET_SEARCHLIST_ACTION");
 
+
+                String NOTIFICATION_CHANNEL_ID = "Tennis Score Board";
                 mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                mBuilder = new NotificationCompat.Builder(this);
+                mBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
                 mBuilder.setContentTitle("Searching");
                 mBuilder.setSmallIcon(R.mipmap.ic_launcher);
                 //mBuilder.setContentIntent(pendingIntent);

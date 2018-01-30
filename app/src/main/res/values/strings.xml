@@ -162,5 +162,8 @@
     <string name="setup_help_msg_long_game">Long Game: Long Game is the deciding set that games comes to 5:5. Who take two straight games will win this match.</string>
     <string name="inapp_buy_wait">In-App buying progress is busy. Please retry in a few seconds.</string>
     <string name="saving">Saving...</string>
+    <string name="game_forehand_lob">Forehand Lob Shot</string>
+    <string name="game_backhand_lob">Backhand Lob Shot</string>
+    <string name="game_lob_shot">Lob Shot</string>
 </resources>
 

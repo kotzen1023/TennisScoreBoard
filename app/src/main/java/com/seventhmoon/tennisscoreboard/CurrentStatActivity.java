@@ -283,6 +283,17 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         first_set_stat.getBackhandVolleyDown()));
                         currentArray.add(item10);
 
+                        CurrentStatItem item16 = new CurrentStatItem(getResources().getString(R.string.game_lob_shot),
+                                String.valueOf(first_set_stat.getForehandLobUp() +
+                                        first_set_stat.getBackhandLobUp()),
+                                String.valueOf(first_set_stat.getForehandLobDown() +
+                                        first_set_stat.getBackhandLobDown()),
+                                (first_set_stat.getForehandLobUp() +
+                                        first_set_stat.getBackhandLobUp()),
+                                (first_set_stat.getForehandLobDown() +
+                                        first_set_stat.getBackhandLobDown()));
+                        currentArray.add(item16);
+
                         CurrentStatItem item11 = new CurrentStatItem(getResources().getString(R.string.stat_break_point_won),
                                 first_set_stat.getBreakPointUp() == 0 ? "0%" : "("+
                                         String.valueOf(first_set_stat.getBreakPointUp() - first_set_stat.getBreakPointMissUp()) +"/"+String.valueOf(first_set_stat.getBreakPointUp())+") "+
@@ -299,6 +310,8 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         first_set_stat.getBackhandWinnerUp() +
                                         first_set_stat.getForehandVolleyUp() +
                                         first_set_stat.getBackhandVolleyUp() +
+                                        first_set_stat.getForehandLobUp() +
+                                        first_set_stat.getBackhandLobUp() +
                                         first_set_stat.getDoubleFaultDown() +
                                         first_set_stat.getUnforceErrorDown() +
                                         first_set_stat.getFoulToLoseDown()),
@@ -306,6 +319,8 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         first_set_stat.getBackhandWinnerDown() +
                                         first_set_stat.getForehandVolleyDown() +
                                         first_set_stat.getBackhandVolleyDown() +
+                                        first_set_stat.getForehandLobDown() +
+                                        first_set_stat.getBackhandLobDown() +
                                         first_set_stat.getDoubleFaultUp() +
                                         first_set_stat.getUnforceErrorUp() +
                                         first_set_stat.getFoulToLoseUp()),
@@ -313,6 +328,8 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         first_set_stat.getBackhandWinnerUp() +
                                         first_set_stat.getForehandVolleyUp() +
                                         first_set_stat.getBackhandVolleyUp() +
+                                        first_set_stat.getForehandLobUp() +
+                                        first_set_stat.getBackhandLobUp() +
                                         first_set_stat.getDoubleFaultDown() +
                                         first_set_stat.getUnforceErrorDown() +
                                         first_set_stat.getFoulToLoseDown()),
@@ -320,6 +337,8 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         first_set_stat.getBackhandWinnerDown() +
                                         first_set_stat.getForehandVolleyDown() +
                                         first_set_stat.getBackhandVolleyDown() +
+                                        first_set_stat.getForehandLobDown() +
+                                        first_set_stat.getBackhandLobDown() +
                                         first_set_stat.getDoubleFaultUp() +
                                         first_set_stat.getUnforceErrorUp() +
                                         first_set_stat.getFoulToLoseUp()));
@@ -367,6 +386,9 @@ public class CurrentStatActivity extends AppCompatActivity{
 
                         CurrentStatItem item10 = new CurrentStatItem(getResources().getString(R.string.stat_net_point_won), "0", "0", 0, 0);
                         currentArray.add(item10);
+
+                        CurrentStatItem item16 = new CurrentStatItem(getResources().getString(R.string.game_lob_shot), "0", "0", 0, 0);
+                        currentArray.add(item16);
 
                         CurrentStatItem item11 = new CurrentStatItem(getResources().getString(R.string.stat_break_point_won), "0%", "0%", 0, 0);
                         currentArray.add(item11);
@@ -495,6 +517,17 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         (second_set_stat.getBackhandVolleyDown() - prev_first_set_stat.getBackhandVolleyDown())));
                         currentArray.add(item10);
 
+                        CurrentStatItem item16 = new CurrentStatItem(getResources().getString(R.string.game_lob_shot),
+                                String.valueOf(second_set_stat.getForehandLobUp() +
+                                        second_set_stat.getBackhandLobUp()),
+                                String.valueOf(second_set_stat.getForehandLobDown() +
+                                        second_set_stat.getBackhandLobDown()),
+                                (second_set_stat.getForehandLobUp() +
+                                        second_set_stat.getBackhandLobUp()),
+                                (second_set_stat.getForehandLobDown() +
+                                        second_set_stat.getBackhandLobDown()));
+                        currentArray.add(item16);
+
                         CurrentStatItem item11 = new CurrentStatItem(getResources().getString(R.string.stat_break_point_won),
                                 (second_set_stat.getBreakPointUp() - prev_first_set_stat.getBreakPointUp()) == 0 ? "0%" : "("+
                                         String.valueOf((second_set_stat.getBreakPointUp() - prev_first_set_stat.getBreakPointUp()) - (second_set_stat.getBreakPointMissUp() - prev_first_set_stat.getBreakPointMissUp())) +"/"+String.valueOf((second_set_stat.getBreakPointUp() - prev_first_set_stat.getBreakPointUp()))+") "+
@@ -511,6 +544,8 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         (second_set_stat.getBackhandWinnerUp() - prev_first_set_stat.getBackhandWinnerUp()) +
                                         (second_set_stat.getForehandVolleyUp() - prev_first_set_stat.getForehandVolleyUp()) +
                                         (second_set_stat.getBackhandVolleyUp() - prev_first_set_stat.getBackhandVolleyUp()) +
+                                        (second_set_stat.getForehandLobUp() - prev_first_set_stat.getForehandLobUp()) +
+                                        (second_set_stat.getBackhandLobUp() - prev_first_set_stat.getBackhandLobUp()) +
                                         (second_set_stat.getDoubleFaultDown() - prev_first_set_stat.getDoubleFaultDown()) +
                                         (second_set_stat.getUnforceErrorDown() - prev_first_set_stat.getUnforceErrorDown()) +
                                         (second_set_stat.getFoulToLoseDown() - prev_first_set_stat.getFoulToLoseDown())),
@@ -518,6 +553,8 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         (second_set_stat.getBackhandWinnerDown() - prev_first_set_stat.getBackhandWinnerDown()) +
                                         (second_set_stat.getForehandVolleyDown() - prev_first_set_stat.getForehandVolleyDown()) +
                                         (second_set_stat.getBackhandVolleyDown() - prev_first_set_stat.getBackhandVolleyDown()) +
+                                        (second_set_stat.getForehandLobDown() - prev_first_set_stat.getForehandLobDown()) +
+                                        (second_set_stat.getBackhandLobDown() - prev_first_set_stat.getBackhandLobDown()) +
                                         (second_set_stat.getDoubleFaultUp() - prev_first_set_stat.getDoubleFaultUp()) +
                                         (second_set_stat.getUnforceErrorUp() - prev_first_set_stat.getUnforceErrorUp()) +
                                         (second_set_stat.getFoulToLoseUp() - prev_first_set_stat.getFoulToLoseUp())),
@@ -525,6 +562,8 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         (second_set_stat.getBackhandWinnerUp() - prev_first_set_stat.getBackhandWinnerUp()) +
                                         (second_set_stat.getForehandVolleyUp() - prev_first_set_stat.getForehandVolleyUp()) +
                                         (second_set_stat.getBackhandVolleyUp() - prev_first_set_stat.getBackhandVolleyUp()) +
+                                        (second_set_stat.getForehandLobUp() - prev_first_set_stat.getForehandLobUp()) +
+                                        (second_set_stat.getBackhandLobUp() - prev_first_set_stat.getBackhandLobUp()) +
                                         (second_set_stat.getDoubleFaultDown() - prev_first_set_stat.getDoubleFaultDown()) +
                                         (second_set_stat.getUnforceErrorDown() - prev_first_set_stat.getUnforceErrorDown()) +
                                         (second_set_stat.getFoulToLoseDown() - prev_first_set_stat.getFoulToLoseDown())),
@@ -532,6 +571,8 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         (second_set_stat.getBackhandWinnerDown() - prev_first_set_stat.getBackhandWinnerDown()) +
                                         (second_set_stat.getForehandVolleyDown() - prev_first_set_stat.getForehandVolleyDown()) +
                                         (second_set_stat.getBackhandVolleyDown() - prev_first_set_stat.getBackhandVolleyDown()) +
+                                        (second_set_stat.getForehandLobDown() - prev_first_set_stat.getForehandLobDown()) +
+                                        (second_set_stat.getBackhandLobDown() - prev_first_set_stat.getBackhandLobDown()) +
                                         (second_set_stat.getDoubleFaultUp() - prev_first_set_stat.getDoubleFaultUp()) +
                                         (second_set_stat.getUnforceErrorUp() - prev_first_set_stat.getUnforceErrorUp()) +
                                         (second_set_stat.getFoulToLoseUp() - prev_first_set_stat.getFoulToLoseUp())));
@@ -579,6 +620,9 @@ public class CurrentStatActivity extends AppCompatActivity{
 
                         CurrentStatItem item10 = new CurrentStatItem(getResources().getString(R.string.stat_net_point_won), "0", "0", 0, 0);
                         currentArray.add(item10);
+
+                        CurrentStatItem item16 = new CurrentStatItem(getResources().getString(R.string.game_lob_shot), "0", "0", 0, 0);
+                        currentArray.add(item16);
 
                         CurrentStatItem item11 = new CurrentStatItem(getResources().getString(R.string.stat_break_point_won), "0%", "0%", 0, 0);
                         currentArray.add(item11);
@@ -707,6 +751,17 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         (third_set_stat.getBackhandVolleyDown() - prev_second_set_stat.getBackhandVolleyDown())));
                         currentArray.add(item10);
 
+                        CurrentStatItem item16 = new CurrentStatItem(getResources().getString(R.string.game_lob_shot),
+                                String.valueOf(third_set_stat.getForehandLobUp() +
+                                        third_set_stat.getBackhandLobUp()),
+                                String.valueOf(third_set_stat.getForehandLobDown() +
+                                        third_set_stat.getBackhandLobDown()),
+                                (third_set_stat.getForehandLobUp() +
+                                        third_set_stat.getBackhandLobUp()),
+                                (third_set_stat.getForehandLobDown() +
+                                        third_set_stat.getBackhandLobDown()));
+                        currentArray.add(item16);
+
                         CurrentStatItem item11 = new CurrentStatItem(getResources().getString(R.string.stat_break_point_won),
                                 (third_set_stat.getBreakPointUp() - prev_second_set_stat.getBreakPointUp()) == 0 ? "0%" : "("+
                                         String.valueOf((third_set_stat.getBreakPointUp() - prev_second_set_stat.getBreakPointUp()) - (third_set_stat.getBreakPointMissUp() - prev_second_set_stat.getBreakPointMissUp())) +"/"+String.valueOf((third_set_stat.getBreakPointUp() - prev_second_set_stat.getBreakPointUp()))+") "+
@@ -723,6 +778,8 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         (third_set_stat.getBackhandWinnerUp() - prev_second_set_stat.getBackhandWinnerUp()) +
                                         (third_set_stat.getForehandVolleyUp() - prev_second_set_stat.getForehandVolleyUp()) +
                                         (third_set_stat.getBackhandVolleyUp() - prev_second_set_stat.getBackhandVolleyUp()) +
+                                        (third_set_stat.getForehandLobUp() - prev_second_set_stat.getForehandLobUp()) +
+                                        (third_set_stat.getBackhandLobUp() - prev_second_set_stat.getBackhandLobUp()) +
                                         (third_set_stat.getDoubleFaultDown() - prev_second_set_stat.getDoubleFaultDown()) +
                                         (third_set_stat.getUnforceErrorDown() - prev_second_set_stat.getUnforceErrorDown()) +
                                         (third_set_stat.getFoulToLoseDown() - prev_second_set_stat.getFoulToLoseDown())),
@@ -730,6 +787,8 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         (third_set_stat.getBackhandWinnerDown() - prev_second_set_stat.getBackhandWinnerDown()) +
                                         (third_set_stat.getForehandVolleyDown() - prev_second_set_stat.getForehandVolleyDown()) +
                                         (third_set_stat.getBackhandVolleyDown() - prev_second_set_stat.getBackhandVolleyDown()) +
+                                        (third_set_stat.getForehandLobDown() - prev_second_set_stat.getForehandLobDown()) +
+                                        (third_set_stat.getBackhandLobDown() - prev_second_set_stat.getBackhandLobDown()) +
                                         (third_set_stat.getDoubleFaultUp() - prev_second_set_stat.getDoubleFaultUp()) +
                                         (third_set_stat.getUnforceErrorUp() - prev_second_set_stat.getUnforceErrorUp()) +
                                         (third_set_stat.getFoulToLoseUp() - prev_second_set_stat.getFoulToLoseUp())),
@@ -737,6 +796,8 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         (third_set_stat.getBackhandWinnerUp() - prev_second_set_stat.getBackhandWinnerUp()) +
                                         (third_set_stat.getForehandVolleyUp() - prev_second_set_stat.getForehandVolleyUp()) +
                                         (third_set_stat.getBackhandVolleyUp() - prev_second_set_stat.getBackhandVolleyUp()) +
+                                        (third_set_stat.getForehandLobUp() - prev_second_set_stat.getForehandLobUp()) +
+                                        (third_set_stat.getBackhandLobUp() - prev_second_set_stat.getBackhandLobUp()) +
                                         (third_set_stat.getDoubleFaultDown() - prev_second_set_stat.getDoubleFaultDown()) +
                                         (third_set_stat.getUnforceErrorDown() - prev_second_set_stat.getUnforceErrorDown()) +
                                         (third_set_stat.getFoulToLoseDown() - prev_second_set_stat.getFoulToLoseDown())),
@@ -744,6 +805,8 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         (third_set_stat.getBackhandWinnerDown() - prev_second_set_stat.getBackhandWinnerDown()) +
                                         (third_set_stat.getForehandVolleyDown() - prev_second_set_stat.getForehandVolleyDown()) +
                                         (third_set_stat.getBackhandVolleyDown() - prev_second_set_stat.getBackhandVolleyDown()) +
+                                        (third_set_stat.getForehandLobDown() - prev_second_set_stat.getForehandLobDown()) +
+                                        (third_set_stat.getBackhandLobDown() - prev_second_set_stat.getBackhandLobDown()) +
                                         (third_set_stat.getDoubleFaultUp() - prev_second_set_stat.getDoubleFaultUp()) +
                                         (third_set_stat.getUnforceErrorUp() - prev_second_set_stat.getUnforceErrorUp()) +
                                         (third_set_stat.getFoulToLoseUp() - prev_second_set_stat.getFoulToLoseUp())));
@@ -791,6 +854,9 @@ public class CurrentStatActivity extends AppCompatActivity{
 
                         CurrentStatItem item10 = new CurrentStatItem(getResources().getString(R.string.stat_net_point_won), "0", "0", 0, 0);
                         currentArray.add(item10);
+
+                        CurrentStatItem item16 = new CurrentStatItem(getResources().getString(R.string.game_lob_shot), "0", "0", 0, 0);
+                        currentArray.add(item16);
 
                         CurrentStatItem item11 = new CurrentStatItem(getResources().getString(R.string.stat_break_point_won), "0%", "0%", 0, 0);
                         currentArray.add(item11);
@@ -919,6 +985,17 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         (forth_set_stat.getBackhandVolleyDown() - prev_third_set_stat.getBackhandVolleyDown())));
                         currentArray.add(item10);
 
+                        CurrentStatItem item16 = new CurrentStatItem(getResources().getString(R.string.game_lob_shot),
+                                String.valueOf(forth_set_stat.getForehandLobUp() +
+                                        forth_set_stat.getBackhandLobUp()),
+                                String.valueOf(forth_set_stat.getForehandLobDown() +
+                                        forth_set_stat.getBackhandLobDown()),
+                                (forth_set_stat.getForehandLobUp() +
+                                        forth_set_stat.getBackhandLobUp()),
+                                (forth_set_stat.getForehandLobDown() +
+                                        forth_set_stat.getBackhandLobDown()));
+                        currentArray.add(item16);
+
                         CurrentStatItem item11 = new CurrentStatItem(getResources().getString(R.string.stat_break_point_won),
                                 (forth_set_stat.getBreakPointUp() - prev_third_set_stat.getBreakPointUp()) == 0 ? "0%" : "("+
                                         String.valueOf((forth_set_stat.getBreakPointUp() - prev_third_set_stat.getBreakPointUp()) - (forth_set_stat.getBreakPointMissUp() - prev_third_set_stat.getBreakPointMissUp())) +"/"+String.valueOf((forth_set_stat.getBreakPointUp() - prev_third_set_stat.getBreakPointUp()))+") "+
@@ -935,6 +1012,8 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         (forth_set_stat.getBackhandWinnerUp() - prev_third_set_stat.getBackhandWinnerUp()) +
                                         (forth_set_stat.getForehandVolleyUp() - prev_third_set_stat.getForehandVolleyUp()) +
                                         (forth_set_stat.getBackhandVolleyUp() - prev_third_set_stat.getBackhandVolleyUp()) +
+                                        (forth_set_stat.getForehandLobUp() - prev_third_set_stat.getForehandLobUp()) +
+                                        (forth_set_stat.getBackhandLobUp() - prev_third_set_stat.getBackhandLobUp()) +
                                         (forth_set_stat.getDoubleFaultDown() - prev_third_set_stat.getDoubleFaultDown()) +
                                         (forth_set_stat.getUnforceErrorDown() - prev_third_set_stat.getUnforceErrorDown()) +
                                         (forth_set_stat.getFoulToLoseDown() - prev_third_set_stat.getFoulToLoseDown())),
@@ -942,6 +1021,8 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         (forth_set_stat.getBackhandWinnerDown() - prev_third_set_stat.getBackhandWinnerDown()) +
                                         (forth_set_stat.getForehandVolleyDown() - prev_third_set_stat.getForehandVolleyDown()) +
                                         (forth_set_stat.getBackhandVolleyDown() - prev_third_set_stat.getBackhandVolleyDown()) +
+                                        (forth_set_stat.getForehandLobDown() - prev_third_set_stat.getForehandLobDown()) +
+                                        (forth_set_stat.getBackhandLobDown() - prev_third_set_stat.getBackhandLobDown()) +
                                         (forth_set_stat.getDoubleFaultUp() - prev_third_set_stat.getDoubleFaultUp()) +
                                         (forth_set_stat.getUnforceErrorUp() - prev_third_set_stat.getUnforceErrorUp()) +
                                         (forth_set_stat.getFoulToLoseUp() - prev_third_set_stat.getFoulToLoseUp())),
@@ -949,6 +1030,8 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         (forth_set_stat.getBackhandWinnerUp() - prev_third_set_stat.getBackhandWinnerUp()) +
                                         (forth_set_stat.getForehandVolleyUp() - prev_third_set_stat.getForehandVolleyUp()) +
                                         (forth_set_stat.getBackhandVolleyUp() - prev_third_set_stat.getBackhandVolleyUp()) +
+                                        (forth_set_stat.getForehandLobUp() - prev_third_set_stat.getForehandLobUp()) +
+                                        (forth_set_stat.getBackhandLobUp() - prev_third_set_stat.getBackhandLobUp()) +
                                         (forth_set_stat.getDoubleFaultDown() - prev_third_set_stat.getDoubleFaultDown()) +
                                         (forth_set_stat.getUnforceErrorDown() - prev_third_set_stat.getUnforceErrorDown()) +
                                         (forth_set_stat.getFoulToLoseDown() - prev_third_set_stat.getFoulToLoseDown())),
@@ -956,6 +1039,8 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         (forth_set_stat.getBackhandWinnerDown() - prev_third_set_stat.getBackhandWinnerDown()) +
                                         (forth_set_stat.getForehandVolleyDown() - prev_third_set_stat.getForehandVolleyDown()) +
                                         (forth_set_stat.getBackhandVolleyDown() - prev_third_set_stat.getBackhandVolleyDown()) +
+                                        (forth_set_stat.getForehandLobDown() - prev_third_set_stat.getForehandLobDown()) +
+                                        (forth_set_stat.getBackhandLobDown() - prev_third_set_stat.getBackhandLobDown()) +
                                         (forth_set_stat.getDoubleFaultUp() - prev_third_set_stat.getDoubleFaultUp()) +
                                         (forth_set_stat.getUnforceErrorUp() - prev_third_set_stat.getUnforceErrorUp()) +
                                         (forth_set_stat.getFoulToLoseUp() - prev_third_set_stat.getFoulToLoseUp())));
@@ -1003,6 +1088,9 @@ public class CurrentStatActivity extends AppCompatActivity{
 
                         CurrentStatItem item10 = new CurrentStatItem(getResources().getString(R.string.stat_net_point_won), "0", "0", 0, 0);
                         currentArray.add(item10);
+
+                        CurrentStatItem item16 = new CurrentStatItem(getResources().getString(R.string.game_lob_shot), "0", "0", 0, 0);
+                        currentArray.add(item16);
 
                         CurrentStatItem item11 = new CurrentStatItem(getResources().getString(R.string.stat_break_point_won), "0%", "0%", 0, 0);
                         currentArray.add(item11);
@@ -1131,6 +1219,17 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         (fifth_set_stat.getBackhandVolleyDown() - prev_forth_set_stat.getBackhandVolleyDown())));
                         currentArray.add(item10);
 
+                        CurrentStatItem item16 = new CurrentStatItem(getResources().getString(R.string.game_lob_shot),
+                                String.valueOf(fifth_set_stat.getForehandLobUp() +
+                                        fifth_set_stat.getBackhandLobUp()),
+                                String.valueOf(fifth_set_stat.getForehandLobDown() +
+                                        fifth_set_stat.getBackhandLobDown()),
+                                (fifth_set_stat.getForehandLobUp() +
+                                        fifth_set_stat.getBackhandLobUp()),
+                                (fifth_set_stat.getForehandLobDown() +
+                                        fifth_set_stat.getBackhandLobDown()));
+                        currentArray.add(item16);
+
                         CurrentStatItem item11 = new CurrentStatItem(getResources().getString(R.string.stat_break_point_won),
                                 (fifth_set_stat.getBreakPointUp() - prev_forth_set_stat.getBreakPointUp()) == 0 ? "0%" : "("+
                                         String.valueOf((fifth_set_stat.getBreakPointUp() - prev_forth_set_stat.getBreakPointUp()) - (fifth_set_stat.getBreakPointMissUp() - prev_forth_set_stat.getBreakPointMissUp())) +"/"+String.valueOf((fifth_set_stat.getBreakPointUp() - prev_forth_set_stat.getBreakPointUp()))+") "+
@@ -1147,6 +1246,8 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         (fifth_set_stat.getBackhandWinnerUp() - prev_forth_set_stat.getBackhandWinnerUp()) +
                                         (fifth_set_stat.getForehandVolleyUp() - prev_forth_set_stat.getForehandVolleyUp()) +
                                         (fifth_set_stat.getBackhandVolleyUp() - prev_forth_set_stat.getBackhandVolleyUp()) +
+                                        (fifth_set_stat.getForehandLobUp() - prev_forth_set_stat.getForehandLobUp()) +
+                                        (fifth_set_stat.getBackhandLobUp() - prev_forth_set_stat.getBackhandLobUp()) +
                                         (fifth_set_stat.getDoubleFaultDown() - prev_forth_set_stat.getDoubleFaultDown()) +
                                         (fifth_set_stat.getUnforceErrorDown() - prev_forth_set_stat.getUnforceErrorDown()) +
                                         (fifth_set_stat.getFoulToLoseDown() - prev_forth_set_stat.getFoulToLoseDown())),
@@ -1154,6 +1255,8 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         (fifth_set_stat.getBackhandWinnerDown() - prev_forth_set_stat.getBackhandWinnerDown()) +
                                         (fifth_set_stat.getForehandVolleyDown() - prev_forth_set_stat.getForehandVolleyDown()) +
                                         (fifth_set_stat.getBackhandVolleyDown() - prev_forth_set_stat.getBackhandVolleyDown()) +
+                                        (fifth_set_stat.getForehandLobDown() - prev_forth_set_stat.getForehandLobDown()) +
+                                        (fifth_set_stat.getBackhandLobDown() - prev_forth_set_stat.getBackhandLobDown()) +
                                         (fifth_set_stat.getDoubleFaultUp() - prev_forth_set_stat.getDoubleFaultUp()) +
                                         (fifth_set_stat.getUnforceErrorUp() - prev_forth_set_stat.getUnforceErrorUp()) +
                                         (fifth_set_stat.getFoulToLoseUp() - prev_forth_set_stat.getFoulToLoseUp())),
@@ -1161,6 +1264,8 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         (fifth_set_stat.getBackhandWinnerUp() - prev_forth_set_stat.getBackhandWinnerUp()) +
                                         (fifth_set_stat.getForehandVolleyUp() - prev_forth_set_stat.getForehandVolleyUp()) +
                                         (fifth_set_stat.getBackhandVolleyUp() - prev_forth_set_stat.getBackhandVolleyUp()) +
+                                        (fifth_set_stat.getForehandLobUp() - prev_forth_set_stat.getForehandLobUp()) +
+                                        (fifth_set_stat.getBackhandLobUp() - prev_forth_set_stat.getBackhandLobUp()) +
                                         (fifth_set_stat.getDoubleFaultDown() - prev_forth_set_stat.getDoubleFaultDown()) +
                                         (fifth_set_stat.getUnforceErrorDown() - prev_forth_set_stat.getUnforceErrorDown()) +
                                         (fifth_set_stat.getFoulToLoseDown() - prev_forth_set_stat.getFoulToLoseDown())),
@@ -1168,6 +1273,8 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         (fifth_set_stat.getBackhandWinnerDown() - prev_forth_set_stat.getBackhandWinnerDown()) +
                                         (fifth_set_stat.getForehandVolleyDown() - prev_forth_set_stat.getForehandVolleyDown()) +
                                         (fifth_set_stat.getBackhandVolleyDown() - prev_forth_set_stat.getBackhandVolleyDown()) +
+                                        (fifth_set_stat.getForehandLobDown() - prev_forth_set_stat.getForehandLobDown()) +
+                                        (fifth_set_stat.getBackhandLobDown() - prev_forth_set_stat.getBackhandLobDown()) +
                                         (fifth_set_stat.getDoubleFaultUp() - prev_forth_set_stat.getDoubleFaultUp()) +
                                         (fifth_set_stat.getUnforceErrorUp() - prev_forth_set_stat.getUnforceErrorUp()) +
                                         (fifth_set_stat.getFoulToLoseUp() - prev_forth_set_stat.getFoulToLoseUp())));
@@ -1215,6 +1322,9 @@ public class CurrentStatActivity extends AppCompatActivity{
 
                         CurrentStatItem item10 = new CurrentStatItem(getResources().getString(R.string.stat_net_point_won), "0", "0", 0, 0);
                         currentArray.add(item10);
+
+                        CurrentStatItem item16 = new CurrentStatItem(getResources().getString(R.string.game_lob_shot), "0", "0", 0, 0);
+                        currentArray.add(item16);
 
                         CurrentStatItem item11 = new CurrentStatItem(getResources().getString(R.string.stat_break_point_won), "0%", "0%", 0, 0);
                         currentArray.add(item11);
@@ -1340,6 +1450,17 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         current_state.getBackhandVolleyDown()));
                         currentArray.add(item10);
 
+                        CurrentStatItem item16 = new CurrentStatItem(getResources().getString(R.string.game_lob_shot),
+                                String.valueOf(current_state.getForehandLobUp() +
+                                        current_state.getBackhandLobUp()),
+                                String.valueOf(current_state.getForehandLobDown() +
+                                        current_state.getBackhandLobDown()),
+                                (current_state.getForehandLobUp() +
+                                        current_state.getBackhandLobUp()),
+                                (current_state.getForehandLobDown() +
+                                        current_state.getBackhandLobDown()));
+                        currentArray.add(item16);
+
                         CurrentStatItem item11 = new CurrentStatItem(getResources().getString(R.string.stat_break_point_won),
                                 current_state.getBreakPointUp() == 0 ? "0%" : "("+
                                         String.valueOf(current_state.getBreakPointUp() - current_state.getBreakPointMissUp()) +"/"+String.valueOf(current_state.getBreakPointUp())+") "+
@@ -1356,6 +1477,8 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         current_state.getBackhandWinnerUp() +
                                         current_state.getForehandVolleyUp() +
                                         current_state.getBackhandVolleyUp() +
+                                        current_state.getForehandLobUp() +
+                                        current_state.getBackhandLobUp() +
                                         current_state.getDoubleFaultDown() +
                                         current_state.getUnforceErrorDown() +
                                         current_state.getFoulToLoseDown()),
@@ -1363,6 +1486,8 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         current_state.getBackhandWinnerDown() +
                                         current_state.getForehandVolleyDown() +
                                         current_state.getBackhandVolleyDown() +
+                                        current_state.getForehandLobDown() +
+                                        current_state.getBackhandLobDown() +
                                         current_state.getDoubleFaultUp() +
                                         current_state.getUnforceErrorUp() +
                                         current_state.getFoulToLoseUp()),
@@ -1370,6 +1495,8 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         current_state.getBackhandWinnerUp() +
                                         current_state.getForehandVolleyUp() +
                                         current_state.getBackhandVolleyUp() +
+                                        current_state.getForehandLobUp() +
+                                        current_state.getBackhandLobUp() +
                                         current_state.getDoubleFaultDown() +
                                         current_state.getUnforceErrorDown() +
                                         current_state.getFoulToLoseDown()),
@@ -1377,6 +1504,8 @@ public class CurrentStatActivity extends AppCompatActivity{
                                         current_state.getBackhandWinnerDown() +
                                         current_state.getForehandVolleyDown() +
                                         current_state.getBackhandVolleyDown() +
+                                        current_state.getForehandLobDown() +
+                                        current_state.getBackhandLobDown() +
                                         current_state.getDoubleFaultUp() +
                                         current_state.getUnforceErrorUp() +
                                         current_state.getFoulToLoseUp()));
@@ -1424,6 +1553,9 @@ public class CurrentStatActivity extends AppCompatActivity{
 
                         CurrentStatItem item10 = new CurrentStatItem(getResources().getString(R.string.stat_net_point_won), "0", "0", 0, 0);
                         currentArray.add(item10);
+
+                        CurrentStatItem item16 = new CurrentStatItem(getResources().getString(R.string.game_lob_shot), "0", "0", 0, 0);
+                        currentArray.add(item16);
 
                         CurrentStatItem item11 = new CurrentStatItem(getResources().getString(R.string.stat_break_point_won), "0%", "0%", 0, 0);
                         currentArray.add(item11);
@@ -1563,6 +1695,17 @@ public class CurrentStatActivity extends AppCompatActivity{
                             current_state.getBackhandVolleyDown()));
             currentArray.add(item10);
 
+            CurrentStatItem item16 = new CurrentStatItem(getResources().getString(R.string.game_lob_shot),
+                    String.valueOf(current_state.getForehandLobUp() +
+                            current_state.getBackhandLobUp()),
+                    String.valueOf(current_state.getForehandLobDown() +
+                            current_state.getBackhandLobDown()),
+                    (current_state.getForehandLobUp() +
+                            current_state.getBackhandLobUp()),
+                    (current_state.getForehandLobDown() +
+                            current_state.getBackhandLobDown()));
+            currentArray.add(item16);
+
             CurrentStatItem item11 = new CurrentStatItem(getResources().getString(R.string.stat_break_point_won),
                     current_state.getBreakPointUp() == 0 ? "0%" : "("+
                             String.valueOf(current_state.getBreakPointUp() - current_state.getBreakPointMissUp()) +"/"+String.valueOf(current_state.getBreakPointUp())+") "+
@@ -1579,6 +1722,8 @@ public class CurrentStatActivity extends AppCompatActivity{
                             current_state.getBackhandWinnerUp() +
                             current_state.getForehandVolleyUp() +
                             current_state.getBackhandVolleyUp() +
+                            current_state.getForehandLobUp() +
+                            current_state.getBackhandLobUp() +
                             current_state.getDoubleFaultDown() +
                             current_state.getUnforceErrorDown() +
                             current_state.getFoulToLoseDown()),
@@ -1586,6 +1731,8 @@ public class CurrentStatActivity extends AppCompatActivity{
                             current_state.getBackhandWinnerDown() +
                             current_state.getForehandVolleyDown() +
                             current_state.getBackhandVolleyDown() +
+                            current_state.getForehandLobDown() +
+                            current_state.getBackhandLobDown() +
                             current_state.getDoubleFaultUp() +
                             current_state.getUnforceErrorUp() +
                             current_state.getFoulToLoseUp()),
@@ -1593,6 +1740,8 @@ public class CurrentStatActivity extends AppCompatActivity{
                             current_state.getBackhandWinnerUp() +
                             current_state.getForehandVolleyUp() +
                             current_state.getBackhandVolleyUp() +
+                            current_state.getForehandLobUp() +
+                            current_state.getBackhandLobUp() +
                             current_state.getDoubleFaultDown() +
                             current_state.getUnforceErrorDown() +
                             current_state.getFoulToLoseDown()),
@@ -1600,6 +1749,8 @@ public class CurrentStatActivity extends AppCompatActivity{
                             current_state.getBackhandWinnerDown() +
                             current_state.getForehandVolleyDown() +
                             current_state.getBackhandVolleyDown() +
+                            current_state.getForehandLobDown() +
+                            current_state.getBackhandLobDown() +
                             current_state.getDoubleFaultUp() +
                             current_state.getUnforceErrorUp() +
                             current_state.getFoulToLoseUp()));
@@ -1647,6 +1798,9 @@ public class CurrentStatActivity extends AppCompatActivity{
 
             CurrentStatItem item10 = new CurrentStatItem(getResources().getString(R.string.stat_net_point_won), "0", "0", 0, 0);
             currentArray.add(item10);
+
+            CurrentStatItem item16 = new CurrentStatItem(getResources().getString(R.string.game_lob_shot), "0", "0", 0, 0);
+            currentArray.add(item16);
 
             CurrentStatItem item11 = new CurrentStatItem(getResources().getString(R.string.stat_break_point_won), "0%", "0%", 0, 0);
             currentArray.add(item11);

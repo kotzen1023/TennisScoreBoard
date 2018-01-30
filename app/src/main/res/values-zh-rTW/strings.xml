@@ -163,4 +163,7 @@
     <string name="setup_help_msg_long_game">Long Game: 指比賽到決勝盤5:5時, 先連贏2局者將贏得這場比賽.</string>
     <string name="inapp_buy_wait">App內購程序忙碌中. 請稍待幾秒再重新嘗試</string>
     <string name="saving">儲存中...</string>
+    <string name="game_forehand_lob">正拍後場吊球</string>
+    <string name="game_backhand_lob">反拍後場吊球</string>
+    <string name="game_lob_shot">後場吊球</string>
 </resources>
