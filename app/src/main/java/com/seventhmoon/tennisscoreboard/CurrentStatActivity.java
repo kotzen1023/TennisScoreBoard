@@ -174,26 +174,26 @@ public class CurrentStatActivity extends AppCompatActivity{
 
                         CurrentStatItem item2 = new CurrentStatItem(getResources().getString(R.string.game_ace),
                                 String.valueOf(first_set_stat.getAceCountUp()), String.valueOf(first_set_stat.getAceCountDown()),
-                                Integer.valueOf(first_set_stat.getAceCountUp()), Integer.valueOf(first_set_stat.getAceCountDown()));
+                                first_set_stat.getAceCountUp(), first_set_stat.getAceCountDown());
                         currentArray.add(item2);
 
                         CurrentStatItem item3 = new CurrentStatItem(getResources().getString(R.string.game_double_faults),
                                 String.valueOf(first_set_stat.getDoubleFaultUp()), String.valueOf(first_set_stat.getDoubleFaultDown()),
-                                Integer.valueOf(first_set_stat.getDoubleFaultUp()), Integer.valueOf(first_set_stat.getDoubleFaultDown()));
+                                first_set_stat.getDoubleFaultUp(), first_set_stat.getDoubleFaultDown());
                         currentArray.add(item3);
 
                         CurrentStatItem item4 = new CurrentStatItem(getResources().getString(R.string.stat_unforced_error),
                                 String.valueOf(first_set_stat.getUnforceErrorUp()),
                                 String.valueOf(first_set_stat.getUnforceErrorDown()),
-                                Integer.valueOf(first_set_stat.getUnforceErrorUp()),
-                                Integer.valueOf(first_set_stat.getUnforceErrorDown()));
+                                first_set_stat.getUnforceErrorUp(),
+                                first_set_stat.getUnforceErrorDown());
                         currentArray.add(item4);
 
                         CurrentStatItem item13 = new CurrentStatItem(getResources().getString(R.string.game_forced_error),
                                 String.valueOf(first_set_stat.getForceErrorUp()),
                                 String.valueOf(first_set_stat.getForceErrorDown()),
-                                Integer.valueOf(first_set_stat.getForceErrorUp()),
-                                Integer.valueOf(first_set_stat.getForceErrorDown()));
+                                first_set_stat.getForceErrorUp(),
+                                first_set_stat.getForceErrorDown());
                         currentArray.add(item13);
 
                         CurrentStatItem item5 = new CurrentStatItem(getResources().getString(R.string.stat_first_serve), first_set_stat.getFirstServeUp() == 0 ? "0%" :

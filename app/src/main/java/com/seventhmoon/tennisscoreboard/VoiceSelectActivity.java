@@ -21,12 +21,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.LinearLayout;
+
 import android.widget.Toast;
 
 import com.seventhmoon.tennisscoreboard.Data.GridViewVoiceAdapter;
 import com.seventhmoon.tennisscoreboard.Data.ImageBuyItem;
-//import com.seventhmoon.tennisscoreboard.Data.RandomString;
+
 import com.seventhmoon.tennisscoreboard.util.IabBroadcastReceiver;
 
 import com.seventhmoon.tennisscoreboard.util.IabHelper;

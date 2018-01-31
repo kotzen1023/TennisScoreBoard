@@ -4,6 +4,7 @@ package com.seventhmoon.tennisscoreboard.Data;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,7 @@ public class FileChooseArrayAdapter extends ArrayAdapter<FileChooseItem> {
         return items.get(position);
     }
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
         //Log.e(TAG, "getView = "+ position);
         View view;
@@ -116,7 +117,7 @@ public class FileChooseArrayAdapter extends ArrayAdapter<FileChooseItem> {
             Bitmap bitmap, bm;
             bitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.file);
             bm = Bitmap.createScaledBitmap(bitmap, 50, 50, true);
-            ImageView imageCity = (ImageView) view.findViewById(R.id.fd_Icon1);
+            ImageView imageCity = view.findViewById(R.id.fd_Icon1);
             //String uri = "drawable/" + o.getImage();
             //int imageResource = c.getResources().getIdentifier(uri, null, c.getPackageName());
             //Drawable image = c.getResources().getDrawable(imageResource);
@@ -161,8 +162,8 @@ public class FileChooseArrayAdapter extends ArrayAdapter<FileChooseItem> {
 
 
         public ViewHolder(View view) {
-            this.fileicon = (ImageView) view.findViewById(R.id.fd_Icon1);
-            this.filename = (TextView) view.findViewById(R.id.fileChooseFileName);
+            this.fileicon = view.findViewById(R.id.fd_Icon1);
+            this.filename = view.findViewById(R.id.fileChooseFileName);
             //this.checkbox = (CheckBox) view.findViewById(R.id.checkBoxInRow);
         }
     }

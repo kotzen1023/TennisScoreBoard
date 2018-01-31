@@ -49,14 +49,18 @@ public class FileImportService extends IntentService {
 
         Log.e(TAG, "filePath = "+filePath+" dest = "+dest_file_name);
 
-        if (intent.getAction().equals(Constants.ACTION.IMPORT_FILE_ACTION)) {
-            Log.i(TAG, "GET_SEARCHLIST_ACTION");
+        if (intent.getAction() != null) {
+            if (intent.getAction().equals(Constants.ACTION.IMPORT_FILE_ACTION)) {
+                Log.i(TAG, "GET_SEARCHLIST_ACTION");
+            }
+
+            //clear add list
+            //addSongList.clear();
+
+            check(filePath);
         }
 
-        //clear add list
-        //addSongList.clear();
 
-        check(filePath);
     }
 
     @Override
@@ -71,7 +75,7 @@ public class FileImportService extends IntentService {
     public String getAudioInfo(String filePath) {
         Log.e(TAG, "<getAudioInfo>");
         String infoMsg = null;
-        boolean hasFrameRate = false;
+        //boolean hasFrameRate = false;
 
         MediaExtractor mex = new MediaExtractor();
         try {

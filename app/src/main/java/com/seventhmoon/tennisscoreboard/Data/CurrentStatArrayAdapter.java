@@ -4,18 +4,16 @@ package com.seventhmoon.tennisscoreboard.Data;
 import android.content.Context;
 
 import android.graphics.Color;
-import android.util.Log;
+import android.support.annotation.NonNull;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
+
 import android.widget.TextView;
 
 import com.seventhmoon.tennisscoreboard.R;
@@ -54,7 +52,7 @@ public class CurrentStatArrayAdapter extends ArrayAdapter<CurrentStatItem> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
         //Log.e(TAG, "getView = "+ position);
         View view;
@@ -154,12 +152,12 @@ public class CurrentStatArrayAdapter extends ArrayAdapter<CurrentStatItem> {
         ProgressBar barDown;
 
 
-        public ViewHolder(View view) {
-            this.title = (TextView) view.findViewById(R.id.textViewStatTitle);
-            this.statUp = (TextView) view.findViewById(R.id.textViewStatUp);
-            this.statDown = (TextView) view.findViewById(R.id.textViewStatDown);
-            this.barUp = (ProgressBar) view.findViewById(R.id.textViewStatUpBar);
-            this.barDown = (ProgressBar) view.findViewById(R.id.textViewStatDownBar);
+        private ViewHolder(View view) {
+            this.title = view.findViewById(R.id.textViewStatTitle);
+            this.statUp = view.findViewById(R.id.textViewStatUp);
+            this.statDown = view.findViewById(R.id.textViewStatDown);
+            this.barUp = view.findViewById(R.id.textViewStatUpBar);
+            this.barDown = view.findViewById(R.id.textViewStatDownBar);
 
         }
     }

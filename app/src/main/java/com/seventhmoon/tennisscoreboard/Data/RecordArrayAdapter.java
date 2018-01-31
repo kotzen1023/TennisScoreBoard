@@ -2,6 +2,7 @@ package com.seventhmoon.tennisscoreboard.Data;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +45,7 @@ public class RecordArrayAdapter extends ArrayAdapter<RecordItem> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
         //Log.e(TAG, "getView = "+ position);
         View view;
@@ -140,9 +141,9 @@ public class RecordArrayAdapter extends ArrayAdapter<RecordItem> {
 
 
         private ViewHolder(View view) {
-            this.imgRecord = (ImageView) view.findViewById(R.id.imgRecord);
-            this.title = (TextView) view.findViewById(R.id.recordFileName);
-            this.imgCheck = (ImageView) view.findViewById(R.id.imgCheck);
+            this.imgRecord = view.findViewById(R.id.imgRecord);
+            this.title = view.findViewById(R.id.recordFileName);
+            this.imgCheck = view.findViewById(R.id.imgCheck);
             //this.play = (ImageView) view.findViewById(R.id.imgPlay);
             //this.stop = (ImageView) view.findViewById(R.id.imgStop);
             //this.record = (ImageView) view.findViewById(R.id.imgRecord);

@@ -2,6 +2,7 @@ package com.seventhmoon.tennisscoreboard.Data;
 
 import android.content.Context;
 
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +45,7 @@ public class ShowItemAdapter extends ArrayAdapter<ShowItem> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
         //Log.e(TAG, "getView = "+ position);
         View view;
@@ -130,9 +131,9 @@ public class ShowItemAdapter extends ArrayAdapter<ShowItem> {
 
 
         private ViewHolder(View view) {
-            this.header = (TextView) view.findViewById(R.id.court_show_header);
-            this.content = (TextView) view.findViewById(R.id.court_show_msg);
-            this.rating = (RatingBar) view.findViewById(R.id.court_show_rating);
+            this.header = view.findViewById(R.id.court_show_header);
+            this.content = view.findViewById(R.id.court_show_msg);
+            this.rating = view.findViewById(R.id.court_show_rating);
         }
     }
 }

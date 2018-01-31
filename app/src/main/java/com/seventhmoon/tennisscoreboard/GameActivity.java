@@ -839,16 +839,16 @@ public class GameActivity extends AppCompatActivity{
 
         //mClockView = (TextView) findViewById(R.id.clock);
 
-        btnYouScore = (TextView) findViewById(R.id.textYouScore);
+        btnYouScore = findViewById(R.id.textYouScore);
         //btnOpptScore = (Button) findViewById(R.id.btnOpptScore);
-        btnOpptScore = (TextView) findViewById(R.id.textOpptScore);
-        btnBack = (Button) findViewById(R.id.btnBack);
-        btnReset = (Button) findViewById(R.id.btnReset);
-        btnSave = (Button) findViewById(R.id.btnSave);
-        btnLoad = (Button) findViewById(R.id.btnLoad);
+        btnOpptScore = findViewById(R.id.textOpptScore);
+        btnBack = findViewById(R.id.btnBack);
+        btnReset = findViewById(R.id.btnReset);
+        btnSave = findViewById(R.id.btnSave);
+        btnLoad = findViewById(R.id.btnLoad);
 
-        TextView textViewPlayerUp = (TextView) findViewById(R.id.textViewPlayerUp);
-        final TextView textViewPlayerDown = (TextView) findViewById(R.id.textViewPlayerDown);
+        TextView textViewPlayerUp = findViewById(R.id.textViewPlayerUp);
+        final TextView textViewPlayerDown = findViewById(R.id.textViewPlayerDown);
 
         textViewPlayerUp.setText(playerUp);
         textViewPlayerDown.setText(playerDown);
@@ -1834,18 +1834,21 @@ public class GameActivity extends AppCompatActivity{
         mReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equalsIgnoreCase(Constants.ACTION.GAME_SAVE_COMPLETE)) {
-                    Log.d(TAG, "receive GAME_SAVE_COMPLETE !");
+                if (intent.getAction() != null) {
+                    if (intent.getAction().equalsIgnoreCase(Constants.ACTION.GAME_SAVE_COMPLETE)) {
+                        Log.d(TAG, "receive GAME_SAVE_COMPLETE !");
 
-                    loadDialog.dismiss();
+                        loadDialog.dismiss();
 
-                } else if (intent.getAction().equalsIgnoreCase(Constants.ACTION.SAVE_CURRENT_STATE_COMPLETE)) {
-                    Log.d(TAG, "receive SAVE_CURRENT_STATE_COMPLETE !");
+                    } else if (intent.getAction().equalsIgnoreCase(Constants.ACTION.SAVE_CURRENT_STATE_COMPLETE)) {
+                        Log.d(TAG, "receive SAVE_CURRENT_STATE_COMPLETE !");
 
-                    loadDialog.dismiss();
-                    finish();
+                        loadDialog.dismiss();
+                        finish();
 
+                    }
                 }
+
             }
         };
 
@@ -1925,7 +1928,7 @@ public class GameActivity extends AppCompatActivity{
 
     private void calculateScore(StateAction action) {
         byte current_set;
-        State new_state=null;
+        State new_state;
         //load top state first
         final State current_state = stack.peek();
 
@@ -9468,7 +9471,8 @@ public class GameActivity extends AppCompatActivity{
             Long min = (time_use)%3600/60;
             Long sec = (time_use)%60;
             textCurrentTime.setText(sdf.format(netDate));
-            textGameTime.setText(f.format(hour)+":"+f.format(min)+":"+f.format(sec));
+            String msg = f.format(hour)+":"+f.format(min)+":"+f.format(sec);
+            textGameTime.setText(msg);
 
             //textGameTime.setText(sdf.format(gameDate));
         }
@@ -9495,7 +9499,7 @@ public class GameActivity extends AppCompatActivity{
                         //clear
                         clear_record(filename);
 
-                        boolean is_tiebreak;
+                        //boolean is_tiebreak;
                         boolean is_deuce;
                         boolean is_firstServe;
 

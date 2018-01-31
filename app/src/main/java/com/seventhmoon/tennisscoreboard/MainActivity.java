@@ -131,15 +131,20 @@ public class MainActivity extends AppCompatActivity {
         if (macAddress.equals("")) {
             boolean mobileDataEnabled = false; // Assume disabled
             ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            try {
-                Class cmClass = Class.forName(cm.getClass().getName());
-                Method method = cmClass.getDeclaredMethod("getMobileDataEnabled");
-                method.setAccessible(true); // Make the method callable
-                // get the setting for "mobile data"
-                mobileDataEnabled = (Boolean) method.invoke(cm);
-            } catch (Exception e) {
-                e.printStackTrace();
+
+            if (cm != null) {
+                try {
+                    Class<?> cmClass = Class.forName(cm.getClass().getName());
+                    Method method = cmClass.getDeclaredMethod("getMobileDataEnabled");
+                    method.setAccessible(true); // Make the method callable
+                    // get the setting for "mobile data"
+                    mobileDataEnabled = (Boolean) method.invoke(cm);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+
+
 
             WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
             //WifiInfo wInfo = wifiManager.getConnectionInfo();

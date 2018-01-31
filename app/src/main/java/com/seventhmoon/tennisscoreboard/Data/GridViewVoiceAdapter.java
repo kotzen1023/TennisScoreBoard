@@ -1,8 +1,9 @@
 package com.seventhmoon.tennisscoreboard.Data;
 
-import android.app.Activity;
+
 import android.content.Context;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +58,7 @@ public class GridViewVoiceAdapter extends ArrayAdapter<ImageBuyItem> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         //View row = convertView;
         View view;
         ViewHolder holder;
