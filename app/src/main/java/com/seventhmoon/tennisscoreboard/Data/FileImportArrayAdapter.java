@@ -3,6 +3,7 @@ package com.seventhmoon.tennisscoreboard.Data;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -19,7 +20,7 @@ import com.seventhmoon.tennisscoreboard.R;
 import java.io.File;
 import java.util.ArrayList;
 
-import static com.seventhmoon.tennisscoreboard.FileImportActivity.FileChooseLongClick;
+
 import static com.seventhmoon.tennisscoreboard.FileImportActivity.confirm;
 
 
@@ -64,7 +65,7 @@ public class FileImportArrayAdapter extends ArrayAdapter<FileImportItem> {
     }
     @Override
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public @NonNull View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
         //Log.e(TAG, "getView = "+ position);
         View view;
@@ -96,8 +97,8 @@ public class FileImportArrayAdapter extends ArrayAdapter<FileImportItem> {
             holder.filename.setText(fileChooseItem.getName());
             holder.checkbox.setTag(position);
 
-            TextView t1 = (TextView) view.findViewById(R.id.fileChooseFileName);
-            CheckBox ck = (CheckBox) view.findViewById(R.id.checkBoxInRow);
+            TextView t1 = view.findViewById(R.id.fileChooseFileName);
+            CheckBox ck = view.findViewById(R.id.checkBoxInRow);
             //TextView t2 = (TextView) v.findViewById(R.id.TextView02);
             //TextView t3 = (TextView) v.findViewById(R.id.TextViewDate);
                        /* Take the ImageView from layout and set the city's image */
@@ -157,7 +158,7 @@ public class FileImportArrayAdapter extends ArrayAdapter<FileImportItem> {
                     ck.setVisibility(View.INVISIBLE);
                 }
                 bm = Bitmap.createScaledBitmap(bitmap, 50, 50, true);
-                ImageView imageCity = (ImageView) view.findViewById(R.id.fd_Icon1);
+                ImageView imageCity = view.findViewById(R.id.fd_Icon1);
                 //String uri = "drawable/" + o.getImage();
                 //int imageResource = c.getResources().getIdentifier(uri, null, c.getPackageName());
                 //Drawable image = c.getResources().getDrawable(imageResource);
@@ -287,9 +288,9 @@ public class FileImportArrayAdapter extends ArrayAdapter<FileImportItem> {
 
 
         private ViewHolder(View view) {
-            this.fileicon = (ImageView) view.findViewById(R.id.fd_Icon1);
-            this.filename = (TextView) view.findViewById(R.id.fileChooseFileName);
-            this.checkbox = (CheckBox) view.findViewById(R.id.checkBoxInRow);
+            this.fileicon = view.findViewById(R.id.fd_Icon1);
+            this.filename = view.findViewById(R.id.fileChooseFileName);
+            this.checkbox = view.findViewById(R.id.checkBoxInRow);
         }
     }
 }

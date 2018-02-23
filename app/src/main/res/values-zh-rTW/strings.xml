@@ -166,4 +166,7 @@
     <string name="game_forehand_lob">正拍後場吊球</string>
     <string name="game_backhand_lob">反拍後場吊球</string>
     <string name="game_lob_shot">後場吊球</string>
+    <string name="game_forehand_drop">正拍放小球</string>
+    <string name="game_backhand_drop">反拍放小球</string>
+    <string name="game_drop_shot">前場放小球</string>
 </resources>

@@ -55,6 +55,11 @@ public class State {
     private short backhandLobUp;
     private short backhandLobDown;
 
+    private short forehandDropUp;
+    private short forehandDropDown;
+    private short backhandDropUp;
+    private short backhandDropDown;
+
     private byte foulToLoseUp;
     private byte foulToLoseDown;
 
@@ -473,6 +478,38 @@ public class State {
 
     public void setBackhandLobDown(short backhandLobDown) {
         this.backhandLobDown = backhandLobDown;
+    }
+
+    public short getForehandDropUp() {
+        return forehandDropUp;
+    }
+
+    public void setForehandDropUp(short forehandDropUp) {
+        this.forehandDropUp = forehandDropUp;
+    }
+
+    public short getForehandDropDown() {
+        return forehandDropDown;
+    }
+
+    public void setForehandDropDown(short forehandDropDown) {
+        this.forehandDropDown = forehandDropDown;
+    }
+
+    public short getBackhandDropUp() {
+        return backhandDropUp;
+    }
+
+    public void setBackhandDropUp(short backhandDropUp) {
+        this.backhandDropUp = backhandDropUp;
+    }
+
+    public short getBackhandDropDown() {
+        return backhandDropDown;
+    }
+
+    public void setBackhandDropDown(short backhandDropDown) {
+        this.backhandDropDown = backhandDropDown;
     }
 
     public byte getFoulToLoseUp() {

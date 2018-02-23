@@ -7,8 +7,8 @@ android {
         applicationId "com.seventhmoon.tennisscoreboard"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 32
-        versionName "1.31"
+        versionCode 34
+        versionName "1.33"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

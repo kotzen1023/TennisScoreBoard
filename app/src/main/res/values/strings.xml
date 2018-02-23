@@ -165,5 +165,8 @@
     <string name="game_forehand_lob">Forehand Lob Shot</string>
     <string name="game_backhand_lob">Backhand Lob Shot</string>
     <string name="game_lob_shot">Lob Shot</string>
+    <string name="game_forehand_drop">Forehand Drop</string>
+    <string name="game_backhand_drop">Backhand Drop</string>
+    <string name="game_drop_shot">Drop Shot</string>
 </resources>
 
