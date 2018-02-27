@@ -235,41 +235,73 @@ public class CurrentStatActivity extends AppCompatActivity{
                                 String.valueOf(first_set_stat.getForehandWinnerUp() +
                                         first_set_stat.getBackhandWinnerUp() +
                                         first_set_stat.getForehandVolleyUp() +
-                                        first_set_stat.getBackhandVolleyUp()),
+                                        first_set_stat.getBackhandVolleyUp() +
+                                        first_set_stat.getForehandLobUp() +
+                                        first_set_stat.getBackhandLobUp() +
+                                        first_set_stat.getForehandDropUp() +
+                                        first_set_stat.getBackhandDropUp()),
                                 String.valueOf(first_set_stat.getForehandWinnerDown() +
                                         first_set_stat.getBackhandWinnerDown() +
                                         first_set_stat.getForehandVolleyDown() +
-                                        first_set_stat.getBackhandVolleyDown()),
+                                        first_set_stat.getBackhandVolleyDown() +
+                                        first_set_stat.getForehandLobDown() +
+                                        first_set_stat.getBackhandLobDown() +
+                                        first_set_stat.getForehandDropDown() +
+                                        first_set_stat.getBackhandDropDown()),
                                 (first_set_stat.getForehandWinnerUp() +
                                         first_set_stat.getBackhandWinnerUp() +
                                         first_set_stat.getForehandVolleyUp() +
-                                        first_set_stat.getBackhandVolleyUp()),
+                                        first_set_stat.getBackhandVolleyUp() +
+                                        first_set_stat.getForehandLobUp() +
+                                        first_set_stat.getBackhandLobUp() +
+                                        first_set_stat.getForehandDropUp() +
+                                        first_set_stat.getBackhandDropUp()),
                                 (first_set_stat.getForehandWinnerDown() +
                                         first_set_stat.getBackhandWinnerDown() +
                                         first_set_stat.getForehandVolleyDown() +
-                                        first_set_stat.getBackhandVolleyDown()));
+                                        first_set_stat.getBackhandVolleyDown() +
+                                        first_set_stat.getForehandLobDown() +
+                                        first_set_stat.getBackhandLobDown() +
+                                        first_set_stat.getForehandDropDown() +
+                                        first_set_stat.getBackhandDropDown()));
                         currentArray.add(item9);
 
                         CurrentStatItem item14 = new CurrentStatItem(getResources().getString(R.string.game_forehand_winner),
                                 String.valueOf(first_set_stat.getForehandWinnerUp() +
-                                        first_set_stat.getForehandVolleyUp()),
+                                        first_set_stat.getForehandVolleyUp() +
+                                        first_set_stat.getForehandLobUp() +
+                                        first_set_stat.getForehandDropUp()),
                                 String.valueOf(first_set_stat.getForehandWinnerDown() +
-                                        first_set_stat.getForehandVolleyDown()),
+                                        first_set_stat.getForehandVolleyDown() +
+                                        first_set_stat.getForehandLobDown() +
+                                        first_set_stat.getForehandDropDown()),
                                 (first_set_stat.getForehandWinnerUp() +
-                                        first_set_stat.getForehandVolleyUp()),
+                                        first_set_stat.getForehandVolleyUp() +
+                                        first_set_stat.getForehandLobUp() +
+                                        first_set_stat.getForehandDropUp()),
                                 (first_set_stat.getForehandWinnerDown() +
-                                        first_set_stat.getForehandVolleyDown()));
+                                        first_set_stat.getForehandVolleyDown() +
+                                        first_set_stat.getForehandLobDown() +
+                                        first_set_stat.getForehandDropDown()));
                         currentArray.add(item14);
 
                         CurrentStatItem item15 = new CurrentStatItem(getResources().getString(R.string.game_backhand_winner),
                                 String.valueOf(first_set_stat.getBackhandWinnerUp() +
-                                        first_set_stat.getBackhandVolleyUp()),
+                                        first_set_stat.getBackhandVolleyUp() +
+                                        first_set_stat.getBackhandLobUp() +
+                                        first_set_stat.getBackhandDropUp()),
                                 String.valueOf(first_set_stat.getBackhandWinnerDown() +
-                                        first_set_stat.getBackhandVolleyDown()),
+                                        first_set_stat.getBackhandVolleyDown() +
+                                        first_set_stat.getBackhandLobDown() +
+                                        first_set_stat.getBackhandDropDown()),
                                 (first_set_stat.getBackhandWinnerUp() +
-                                        first_set_stat.getBackhandVolleyUp()),
+                                        first_set_stat.getBackhandVolleyUp() +
+                                        first_set_stat.getBackhandLobUp() +
+                                        first_set_stat.getBackhandDropUp()),
                                 (first_set_stat.getBackhandWinnerDown() +
-                                        first_set_stat.getBackhandVolleyDown()));
+                                        first_set_stat.getBackhandVolleyDown() +
+                                        first_set_stat.getBackhandLobDown() +
+                                        first_set_stat.getBackhandDropDown()));
                         currentArray.add(item15);
 
                         CurrentStatItem item10 = new CurrentStatItem(getResources().getString(R.string.stat_net_point_won),
@@ -491,52 +523,107 @@ public class CurrentStatActivity extends AppCompatActivity{
                                 String.valueOf((second_set_stat.getForehandWinnerUp() - prev_first_set_stat.getForehandWinnerUp())+
                                         (second_set_stat.getBackhandWinnerUp() - prev_first_set_stat.getBackhandWinnerUp()) +
                                         (second_set_stat.getForehandVolleyUp() - prev_first_set_stat.getForehandVolleyUp()) +
-                                        (second_set_stat.getBackhandVolleyUp() - prev_first_set_stat.getBackhandVolleyUp())),
+                                        (second_set_stat.getBackhandVolleyUp() - prev_first_set_stat.getBackhandVolleyUp()) +
+                                        (second_set_stat.getForehandLobUp() - prev_first_set_stat.getForehandLobUp()) +
+                                        (second_set_stat.getBackhandLobUp() - prev_first_set_stat.getBackhandLobUp()) +
+                                        (second_set_stat.getForehandDropUp() - prev_first_set_stat.getForehandDropUp()) +
+                                        (second_set_stat.getBackhandDropUp() - prev_first_set_stat.getBackhandDropUp())),
                                 String.valueOf((second_set_stat.getForehandWinnerDown() - prev_first_set_stat.getForehandWinnerDown()) +
-                                        (second_set_stat.getBackhandWinnerDown() - prev_first_set_stat.getBackhandWinnerDown())+
-                                        (second_set_stat.getForehandVolleyDown() - prev_first_set_stat.getForehandVolleyDown())+
-                                        (second_set_stat.getBackhandVolleyDown() - prev_first_set_stat.getBackhandVolleyDown())),
+                                        (second_set_stat.getBackhandWinnerDown() - prev_first_set_stat.getBackhandWinnerDown()) +
+                                        (second_set_stat.getForehandVolleyDown() - prev_first_set_stat.getForehandVolleyDown()) +
+                                        (second_set_stat.getBackhandVolleyDown() - prev_first_set_stat.getBackhandVolleyDown()) +
+                                        (second_set_stat.getForehandLobDown() - prev_first_set_stat.getForehandLobDown()) +
+                                        (second_set_stat.getBackhandLobDown() - prev_first_set_stat.getBackhandLobDown()) +
+                                        (second_set_stat.getForehandDropDown() - prev_first_set_stat.getForehandDropDown()) +
+                                        (second_set_stat.getBackhandDropDown() - prev_first_set_stat.getBackhandDropDown())),
                                 ((second_set_stat.getForehandWinnerUp() - prev_first_set_stat.getForehandWinnerUp())+
                                         (second_set_stat.getBackhandWinnerUp() - prev_first_set_stat.getBackhandWinnerUp()) +
                                         (second_set_stat.getForehandVolleyUp() - prev_first_set_stat.getForehandVolleyUp()) +
-                                        (second_set_stat.getBackhandVolleyUp() - prev_first_set_stat.getBackhandVolleyUp())),
+                                        (second_set_stat.getBackhandVolleyUp() - prev_first_set_stat.getBackhandVolleyUp()) +
+                                        (second_set_stat.getForehandLobUp() - prev_first_set_stat.getForehandLobUp()) +
+                                        (second_set_stat.getBackhandLobUp() - prev_first_set_stat.getBackhandLobUp()) +
+                                        (second_set_stat.getForehandDropUp() - prev_first_set_stat.getForehandDropUp()) +
+                                        (second_set_stat.getBackhandDropUp() - prev_first_set_stat.getBackhandDropUp())),
                                 ((second_set_stat.getForehandWinnerDown() - prev_first_set_stat.getForehandWinnerDown()) +
-                                        (second_set_stat.getBackhandWinnerDown() - prev_first_set_stat.getBackhandWinnerDown())+
-                                        (second_set_stat.getForehandVolleyDown() - prev_first_set_stat.getForehandVolleyDown())+
-                                        (second_set_stat.getBackhandVolleyDown() - prev_first_set_stat.getBackhandVolleyDown())));
+                                        (second_set_stat.getBackhandWinnerDown() - prev_first_set_stat.getBackhandWinnerDown()) +
+                                        (second_set_stat.getForehandVolleyDown() - prev_first_set_stat.getForehandVolleyDown()) +
+                                        (second_set_stat.getBackhandVolleyDown() - prev_first_set_stat.getBackhandVolleyDown()) +
+                                        (second_set_stat.getForehandLobDown() - prev_first_set_stat.getForehandLobDown()) +
+                                        (second_set_stat.getBackhandLobDown() - prev_first_set_stat.getBackhandLobDown()) +
+                                        (second_set_stat.getForehandDropDown() - prev_first_set_stat.getForehandDropDown()) +
+                                        (second_set_stat.getBackhandDropDown() - prev_first_set_stat.getBackhandDropDown())));
                         currentArray.add(item9);
 
                         CurrentStatItem item14 = new CurrentStatItem(getResources().getString(R.string.game_forehand_winner),
                                 String.valueOf((second_set_stat.getForehandWinnerUp() - prev_first_set_stat.getForehandWinnerUp())+
-                                        (second_set_stat.getForehandVolleyUp() - prev_first_set_stat.getForehandVolleyUp())),
+                                        (second_set_stat.getForehandVolleyUp() - prev_first_set_stat.getForehandVolleyUp()) +
+                                        (second_set_stat.getForehandLobUp() - prev_first_set_stat.getForehandLobUp()) +
+                                        (second_set_stat.getForehandDropUp() - prev_first_set_stat.getForehandDropUp())
+                                ),
                                 String.valueOf((second_set_stat.getForehandWinnerDown() - prev_first_set_stat.getForehandWinnerDown()) +
-                                        (second_set_stat.getForehandVolleyDown() - prev_first_set_stat.getForehandVolleyDown())),
+                                        (second_set_stat.getForehandVolleyDown() - prev_first_set_stat.getForehandVolleyDown()) +
+                                        (second_set_stat.getForehandLobDown() - prev_first_set_stat.getForehandLobDown()) +
+                                        (second_set_stat.getForehandDropDown() - prev_first_set_stat.getForehandDropDown())
+                                ),
                                 ((second_set_stat.getForehandWinnerUp() - prev_first_set_stat.getForehandWinnerUp())+
-                                        (second_set_stat.getForehandVolleyUp() - prev_first_set_stat.getForehandVolleyUp())),
+                                        (second_set_stat.getForehandVolleyUp() - prev_first_set_stat.getForehandVolleyUp()) +
+                                        (second_set_stat.getForehandLobUp() - prev_first_set_stat.getForehandLobUp()) +
+                                        (second_set_stat.getForehandDropUp() - prev_first_set_stat.getForehandDropUp())
+                                ),
                                 ((second_set_stat.getForehandWinnerDown() - prev_first_set_stat.getForehandWinnerDown()) +
-                                        (second_set_stat.getForehandVolleyDown() - prev_first_set_stat.getForehandVolleyDown())));
+                                        (second_set_stat.getForehandVolleyDown() - prev_first_set_stat.getForehandVolleyDown()) +
+                                        (second_set_stat.getForehandLobDown() - prev_first_set_stat.getForehandLobDown()) +
+                                        (second_set_stat.getForehandDropDown() - prev_first_set_stat.getForehandDropDown())
+                                )
+                        );
                         currentArray.add(item14);
 
                         CurrentStatItem item15 = new CurrentStatItem(getResources().getString(R.string.game_backhand_winner),
                                 String.valueOf((second_set_stat.getBackhandWinnerUp() - prev_first_set_stat.getBackhandWinnerUp()) +
-                                        (second_set_stat.getBackhandVolleyUp() - prev_first_set_stat.getBackhandVolleyUp())),
+                                        (second_set_stat.getBackhandVolleyUp() - prev_first_set_stat.getBackhandVolleyUp()) +
+                                        (second_set_stat.getBackhandLobUp() - prev_first_set_stat.getBackhandLobUp()) +
+                                        (second_set_stat.getBackhandDropUp() - prev_first_set_stat.getBackhandDropUp())
+                                ),
                                 String.valueOf((second_set_stat.getBackhandWinnerDown() - prev_first_set_stat.getBackhandWinnerDown())+
-                                        (second_set_stat.getBackhandVolleyDown() - prev_first_set_stat.getBackhandVolleyDown())),
+                                        (second_set_stat.getBackhandVolleyDown() - prev_first_set_stat.getBackhandVolleyDown()) +
+                                        (second_set_stat.getBackhandLobDown() - prev_first_set_stat.getBackhandLobDown()) +
+                                        (second_set_stat.getBackhandDropDown() - prev_first_set_stat.getBackhandDropDown())
+                                ),
                                 ((second_set_stat.getBackhandWinnerUp() - prev_first_set_stat.getBackhandWinnerUp()) +
-                                        (second_set_stat.getBackhandVolleyUp() - prev_first_set_stat.getBackhandVolleyUp())),
+                                        (second_set_stat.getBackhandVolleyUp() - prev_first_set_stat.getBackhandVolleyUp()) +
+                                        (second_set_stat.getBackhandLobUp() - prev_first_set_stat.getBackhandLobUp()) +
+                                        (second_set_stat.getBackhandDropUp() - prev_first_set_stat.getBackhandDropUp())
+                                ),
                                 ((second_set_stat.getBackhandWinnerDown() - prev_first_set_stat.getBackhandWinnerDown())+
-                                        (second_set_stat.getBackhandVolleyDown() - prev_first_set_stat.getBackhandVolleyDown())));
+                                        (second_set_stat.getBackhandVolleyDown() - prev_first_set_stat.getBackhandVolleyDown()) +
+                                        (second_set_stat.getBackhandLobDown() - prev_first_set_stat.getBackhandLobDown()) +
+                                        (second_set_stat.getBackhandDropDown() - prev_first_set_stat.getBackhandDropDown())
+                                )
+                        );
                         currentArray.add(item15);
 
                         CurrentStatItem item10 = new CurrentStatItem(getResources().getString(R.string.stat_net_point_won),
                                 String.valueOf((second_set_stat.getForehandVolleyUp() - prev_first_set_stat.getForehandVolleyUp())+
-                                        (second_set_stat.getBackhandVolleyUp() - prev_first_set_stat.getBackhandVolleyUp())),
+                                        (second_set_stat.getBackhandVolleyUp() - prev_first_set_stat.getBackhandVolleyUp()) +
+                                        (second_set_stat.getBackhandLobUp() - prev_first_set_stat.getBackhandLobUp()) +
+                                        (second_set_stat.getBackhandDropUp() - prev_first_set_stat.getBackhandDropUp())
+                                ),
                                 String.valueOf((second_set_stat.getForehandVolleyDown() - prev_first_set_stat.getForehandVolleyDown()) +
-                                        (second_set_stat.getBackhandVolleyDown() - prev_first_set_stat.getBackhandVolleyDown())),
+                                        (second_set_stat.getBackhandVolleyDown() - prev_first_set_stat.getBackhandVolleyDown()) +
+                                        (second_set_stat.getBackhandLobDown() - prev_first_set_stat.getBackhandLobDown()) +
+                                        (second_set_stat.getBackhandDropDown() - prev_first_set_stat.getBackhandDropDown())
+                                ),
                                 ((second_set_stat.getForehandVolleyUp() - prev_first_set_stat.getForehandVolleyUp())+
-                                        (second_set_stat.getBackhandVolleyUp() - prev_first_set_stat.getBackhandVolleyUp())),
+                                        (second_set_stat.getBackhandVolleyUp() - prev_first_set_stat.getBackhandVolleyUp()) +
+                                        (second_set_stat.getBackhandLobUp() - prev_first_set_stat.getBackhandLobUp()) +
+                                        (second_set_stat.getBackhandDropUp() - prev_first_set_stat.getBackhandDropUp())
+                                ),
                                 ((second_set_stat.getForehandVolleyDown() - prev_first_set_stat.getForehandVolleyDown()) +
-                                        (second_set_stat.getBackhandVolleyDown() - prev_first_set_stat.getBackhandVolleyDown())));
+                                        (second_set_stat.getBackhandVolleyDown() - prev_first_set_stat.getBackhandVolleyDown()) +
+                                        (second_set_stat.getBackhandLobDown() - prev_first_set_stat.getBackhandLobDown()) +
+                                        (second_set_stat.getBackhandDropDown() - prev_first_set_stat.getBackhandDropDown())
+                                )
+                        );
                         currentArray.add(item10);
 
                         CurrentStatItem item16 = new CurrentStatItem(getResources().getString(R.string.game_lob_shot),
@@ -744,41 +831,88 @@ public class CurrentStatActivity extends AppCompatActivity{
                                 String.valueOf((third_set_stat.getForehandWinnerUp() - prev_second_set_stat.getForehandWinnerUp())+
                                         (third_set_stat.getBackhandWinnerUp() - prev_second_set_stat.getBackhandWinnerUp()) +
                                         (third_set_stat.getForehandVolleyUp() - prev_second_set_stat.getForehandVolleyUp()) +
-                                        (third_set_stat.getBackhandVolleyUp() - prev_second_set_stat.getBackhandVolleyUp())),
+                                        (third_set_stat.getBackhandVolleyUp() - prev_second_set_stat.getBackhandVolleyUp()) +
+                                        (third_set_stat.getForehandLobUp() - prev_second_set_stat.getForehandLobUp()) +
+                                        (third_set_stat.getBackhandLobUp() - prev_second_set_stat.getBackhandLobUp()) +
+                                        (third_set_stat.getForehandDropUp() - prev_second_set_stat.getForehandDropUp()) +
+                                        (third_set_stat.getBackhandDropUp() - prev_second_set_stat.getBackhandDropUp())
+                                ),
                                 String.valueOf((third_set_stat.getForehandWinnerDown() - prev_second_set_stat.getForehandWinnerDown()) +
-                                        (third_set_stat.getBackhandWinnerDown() - prev_second_set_stat.getBackhandWinnerDown())+
-                                        (third_set_stat.getForehandVolleyDown() - prev_second_set_stat.getForehandVolleyDown())+
-                                        (third_set_stat.getBackhandVolleyDown() - prev_second_set_stat.getBackhandVolleyDown())),
+                                        (third_set_stat.getBackhandWinnerDown() - prev_second_set_stat.getBackhandWinnerDown()) +
+                                        (third_set_stat.getForehandVolleyDown() - prev_second_set_stat.getForehandVolleyDown()) +
+                                        (third_set_stat.getBackhandVolleyDown() - prev_second_set_stat.getBackhandVolleyDown()) +
+                                        (third_set_stat.getForehandLobDown() - prev_second_set_stat.getForehandLobDown())+
+                                        (third_set_stat.getBackhandLobDown() - prev_second_set_stat.getBackhandLobDown()) +
+                                        (third_set_stat.getForehandDropDown() - prev_second_set_stat.getForehandDropDown())+
+                                        (third_set_stat.getBackhandDropDown() - prev_second_set_stat.getBackhandDropDown())
+                                ),
                                 ((third_set_stat.getForehandWinnerUp() - prev_second_set_stat.getForehandWinnerUp())+
                                         (third_set_stat.getBackhandWinnerUp() - prev_second_set_stat.getBackhandWinnerUp()) +
                                         (third_set_stat.getForehandVolleyUp() - prev_second_set_stat.getForehandVolleyUp()) +
-                                        (third_set_stat.getBackhandVolleyUp() - prev_second_set_stat.getBackhandVolleyUp())),
+                                        (third_set_stat.getBackhandVolleyUp() - prev_second_set_stat.getBackhandVolleyUp()) +
+                                        (third_set_stat.getForehandLobUp() - prev_second_set_stat.getForehandLobUp()) +
+                                        (third_set_stat.getBackhandLobUp() - prev_second_set_stat.getBackhandLobUp()) +
+                                        (third_set_stat.getForehandDropUp() - prev_second_set_stat.getForehandDropUp()) +
+                                        (third_set_stat.getBackhandDropUp() - prev_second_set_stat.getBackhandDropUp())
+                                ),
                                 ((third_set_stat.getForehandWinnerDown() - prev_second_set_stat.getForehandWinnerDown()) +
-                                        (third_set_stat.getBackhandWinnerDown() - prev_second_set_stat.getBackhandWinnerDown())+
-                                        (third_set_stat.getForehandVolleyDown() - prev_second_set_stat.getForehandVolleyDown())+
-                                        (third_set_stat.getBackhandVolleyDown() - prev_second_set_stat.getBackhandVolleyDown())));
+                                        (third_set_stat.getBackhandWinnerDown() - prev_second_set_stat.getBackhandWinnerDown()) +
+                                        (third_set_stat.getForehandVolleyDown() - prev_second_set_stat.getForehandVolleyDown()) +
+                                        (third_set_stat.getBackhandVolleyDown() - prev_second_set_stat.getBackhandVolleyDown()) +
+                                        (third_set_stat.getForehandLobDown() - prev_second_set_stat.getForehandLobDown())+
+                                        (third_set_stat.getBackhandLobDown() - prev_second_set_stat.getBackhandLobDown()) +
+                                        (third_set_stat.getForehandDropDown() - prev_second_set_stat.getForehandDropDown())+
+                                        (third_set_stat.getBackhandDropDown() - prev_second_set_stat.getBackhandDropDown())
+                                )
+                        );
                         currentArray.add(item9);
 
                         CurrentStatItem item14 = new CurrentStatItem(getResources().getString(R.string.game_forehand_winner),
                                 String.valueOf((third_set_stat.getForehandWinnerUp() - prev_second_set_stat.getForehandWinnerUp())+
-                                        (third_set_stat.getForehandVolleyUp() - prev_second_set_stat.getForehandVolleyUp())),
+                                        (third_set_stat.getForehandVolleyUp() - prev_second_set_stat.getForehandVolleyUp()) +
+                                        (third_set_stat.getForehandLobUp() - prev_second_set_stat.getForehandLobUp()) +
+                                        (third_set_stat.getForehandDropUp() - prev_second_set_stat.getForehandDropUp())
+                                ),
                                 String.valueOf((third_set_stat.getForehandWinnerDown() - prev_second_set_stat.getForehandWinnerDown()) +
-                                        (third_set_stat.getForehandVolleyDown() - prev_second_set_stat.getForehandVolleyDown())),
+                                        (third_set_stat.getForehandVolleyDown() - prev_second_set_stat.getForehandVolleyDown()) +
+                                        (third_set_stat.getForehandLobDown() - prev_second_set_stat.getForehandLobDown()) +
+                                        (third_set_stat.getForehandLobDown() - prev_second_set_stat.getForehandLobDown())
+                                ),
                                 ((third_set_stat.getForehandWinnerUp() - prev_second_set_stat.getForehandWinnerUp())+
-                                        (third_set_stat.getForehandVolleyUp() - prev_second_set_stat.getForehandVolleyUp())),
+                                        (third_set_stat.getForehandVolleyUp() - prev_second_set_stat.getForehandVolleyUp()) +
+                                        (third_set_stat.getForehandLobUp() - prev_second_set_stat.getForehandLobUp()) +
+                                        (third_set_stat.getForehandDropUp() - prev_second_set_stat.getForehandDropUp())
+                                ),
                                 ((third_set_stat.getForehandWinnerDown() - prev_second_set_stat.getForehandWinnerDown()) +
-                                        (third_set_stat.getForehandVolleyDown() - prev_second_set_stat.getForehandVolleyDown())));
+                                        (third_set_stat.getForehandVolleyDown() - prev_second_set_stat.getForehandVolleyDown()) +
+                                        (third_set_stat.getForehandLobDown() - prev_second_set_stat.getForehandLobDown()) +
+                                        (third_set_stat.getForehandDropDown() - prev_second_set_stat.getForehandDropDown())
+                                )
+                        );
                         currentArray.add(item14);
 
                         CurrentStatItem item15 = new CurrentStatItem(getResources().getString(R.string.game_backhand_winner),
                                 String.valueOf((third_set_stat.getBackhandWinnerUp() - prev_second_set_stat.getBackhandWinnerUp()) +
-                                        (third_set_stat.getBackhandVolleyUp() - prev_second_set_stat.getBackhandVolleyUp())),
+                                        (third_set_stat.getBackhandVolleyUp() - prev_second_set_stat.getBackhandVolleyUp()) +
+                                        (third_set_stat.getBackhandLobUp() - prev_second_set_stat.getBackhandLobUp()) +
+                                        (third_set_stat.getBackhandDropUp() - prev_second_set_stat.getBackhandDropUp())
+                                ),
                                 String.valueOf((third_set_stat.getBackhandWinnerDown() - prev_second_set_stat.getBackhandWinnerDown())+
-                                        (third_set_stat.getBackhandVolleyDown() - prev_second_set_stat.getBackhandVolleyDown())),
+                                        (third_set_stat.getBackhandVolleyDown() - prev_second_set_stat.getBackhandVolleyDown()) +
+                                        (third_set_stat.getBackhandLobDown() - prev_second_set_stat.getBackhandLobDown()) +
+                                        (third_set_stat.getBackhandDropDown() - prev_second_set_stat.getBackhandDropDown())
+                                ),
                                 ((third_set_stat.getBackhandWinnerUp() - prev_second_set_stat.getBackhandWinnerUp()) +
-                                        (third_set_stat.getBackhandVolleyUp() - prev_second_set_stat.getBackhandVolleyUp())),
-                                ((third_set_stat.getBackhandWinnerDown() - prev_second_set_stat.getBackhandWinnerDown())+
-                                        (third_set_stat.getBackhandVolleyDown() - prev_second_set_stat.getBackhandVolleyDown())));
+                                        (third_set_stat.getBackhandVolleyUp() - prev_second_set_stat.getBackhandVolleyUp()) +
+                                        (third_set_stat.getBackhandLobUp() - prev_second_set_stat.getBackhandLobUp()) +
+                                        (third_set_stat.getBackhandDropUp() - prev_second_set_stat.getBackhandDropUp())
+                                ),
+                                ((third_set_stat.getBackhandWinnerDown() - prev_second_set_stat.getBackhandWinnerDown()) +
+                                        (third_set_stat.getBackhandVolleyDown() - prev_second_set_stat.getBackhandVolleyDown()) +
+                                        (third_set_stat.getBackhandLobDown() - prev_second_set_stat.getBackhandLobDown()) +
+                                        (third_set_stat.getBackhandDropDown() - prev_second_set_stat.getBackhandDropDown())
+                                )
+                        );
                         currentArray.add(item15);
 
                         CurrentStatItem item10 = new CurrentStatItem(getResources().getString(R.string.stat_net_point_won),
@@ -997,41 +1131,88 @@ public class CurrentStatActivity extends AppCompatActivity{
                                 String.valueOf((forth_set_stat.getForehandWinnerUp() - prev_third_set_stat.getForehandWinnerUp())+
                                         (forth_set_stat.getBackhandWinnerUp() - prev_third_set_stat.getBackhandWinnerUp()) +
                                         (forth_set_stat.getForehandVolleyUp() - prev_third_set_stat.getForehandVolleyUp()) +
-                                        (forth_set_stat.getBackhandVolleyUp() - prev_third_set_stat.getBackhandVolleyUp())),
+                                        (forth_set_stat.getBackhandVolleyUp() - prev_third_set_stat.getBackhandVolleyUp()) +
+                                        (forth_set_stat.getForehandLobUp() - prev_third_set_stat.getForehandLobUp()) +
+                                        (forth_set_stat.getBackhandLobUp() - prev_third_set_stat.getBackhandLobUp()) +
+                                        (forth_set_stat.getForehandDropUp() - prev_third_set_stat.getForehandDropUp()) +
+                                        (forth_set_stat.getBackhandDropUp() - prev_third_set_stat.getBackhandDropUp())
+                                ),
                                 String.valueOf((forth_set_stat.getForehandWinnerDown() - prev_third_set_stat.getForehandWinnerDown()) +
-                                        (forth_set_stat.getBackhandWinnerDown() - prev_third_set_stat.getBackhandWinnerDown())+
-                                        (forth_set_stat.getForehandVolleyDown() - prev_third_set_stat.getForehandVolleyDown())+
-                                        (forth_set_stat.getBackhandVolleyDown() - prev_third_set_stat.getBackhandVolleyDown())),
+                                        (forth_set_stat.getBackhandWinnerDown() - prev_third_set_stat.getBackhandWinnerDown()) +
+                                        (forth_set_stat.getForehandVolleyDown() - prev_third_set_stat.getForehandVolleyDown()) +
+                                        (forth_set_stat.getBackhandVolleyDown() - prev_third_set_stat.getBackhandVolleyDown()) +
+                                        (forth_set_stat.getForehandLobDown() - prev_third_set_stat.getForehandLobDown()) +
+                                        (forth_set_stat.getBackhandLobDown() - prev_third_set_stat.getBackhandLobDown()) +
+                                        (forth_set_stat.getForehandDropDown() - prev_third_set_stat.getForehandDropDown()) +
+                                        (forth_set_stat.getBackhandDropDown() - prev_third_set_stat.getBackhandDropDown())
+                                ),
                                 ((forth_set_stat.getForehandWinnerUp() - prev_third_set_stat.getForehandWinnerUp())+
                                         (forth_set_stat.getBackhandWinnerUp() - prev_third_set_stat.getBackhandWinnerUp()) +
                                         (forth_set_stat.getForehandVolleyUp() - prev_third_set_stat.getForehandVolleyUp()) +
-                                        (forth_set_stat.getBackhandVolleyUp() - prev_third_set_stat.getBackhandVolleyUp())),
+                                        (forth_set_stat.getBackhandVolleyUp() - prev_third_set_stat.getBackhandVolleyUp()) +
+                                        (forth_set_stat.getForehandLobUp() - prev_third_set_stat.getForehandLobUp()) +
+                                        (forth_set_stat.getBackhandLobUp() - prev_third_set_stat.getBackhandLobUp()) +
+                                        (forth_set_stat.getForehandDropUp() - prev_third_set_stat.getForehandDropUp()) +
+                                        (forth_set_stat.getBackhandDropUp() - prev_third_set_stat.getBackhandDropUp())
+                                ),
                                 ((forth_set_stat.getForehandWinnerDown() - prev_third_set_stat.getForehandWinnerDown()) +
-                                        (forth_set_stat.getBackhandWinnerDown() - prev_third_set_stat.getBackhandWinnerDown())+
-                                        (forth_set_stat.getForehandVolleyDown() - prev_third_set_stat.getForehandVolleyDown())+
-                                        (forth_set_stat.getBackhandVolleyDown() - prev_third_set_stat.getBackhandVolleyDown())));
+                                        (forth_set_stat.getBackhandWinnerDown() - prev_third_set_stat.getBackhandWinnerDown()) +
+                                        (forth_set_stat.getForehandVolleyDown() - prev_third_set_stat.getForehandVolleyDown()) +
+                                        (forth_set_stat.getBackhandVolleyDown() - prev_third_set_stat.getBackhandVolleyDown()) +
+                                        (forth_set_stat.getForehandLobDown() - prev_third_set_stat.getForehandLobDown()) +
+                                        (forth_set_stat.getBackhandLobDown() - prev_third_set_stat.getBackhandLobDown()) +
+                                        (forth_set_stat.getForehandDropDown() - prev_third_set_stat.getForehandDropDown()) +
+                                        (forth_set_stat.getBackhandDropDown() - prev_third_set_stat.getBackhandDropDown())
+                                )
+                        );
                         currentArray.add(item9);
 
                         CurrentStatItem item14 = new CurrentStatItem(getResources().getString(R.string.game_forehand_winner),
                                 String.valueOf((forth_set_stat.getForehandWinnerUp() - prev_third_set_stat.getForehandWinnerUp())+
-                                        (forth_set_stat.getForehandVolleyUp() - prev_third_set_stat.getForehandVolleyUp())),
+                                        (forth_set_stat.getForehandVolleyUp() - prev_third_set_stat.getForehandVolleyUp()) +
+                                        (forth_set_stat.getForehandLobUp() - prev_third_set_stat.getForehandLobUp()) +
+                                        (forth_set_stat.getForehandDropUp() - prev_third_set_stat.getForehandDropUp())
+                                ),
                                 String.valueOf((forth_set_stat.getForehandWinnerDown() - prev_third_set_stat.getForehandWinnerDown()) +
-                                        (forth_set_stat.getForehandVolleyDown() - prev_third_set_stat.getForehandVolleyDown())),
-                                ((forth_set_stat.getForehandWinnerUp() - prev_third_set_stat.getForehandWinnerUp())+
-                                        (forth_set_stat.getForehandVolleyUp() - prev_third_set_stat.getForehandVolleyUp())),
+                                        (forth_set_stat.getForehandVolleyDown() - prev_third_set_stat.getForehandVolleyDown()) +
+                                        (forth_set_stat.getForehandLobDown() - prev_third_set_stat.getForehandLobDown()) +
+                                        (forth_set_stat.getForehandDropDown() - prev_third_set_stat.getForehandDropDown())
+                                ),
+                                ((forth_set_stat.getForehandWinnerUp() - prev_third_set_stat.getForehandWinnerUp()) +
+                                        (forth_set_stat.getForehandVolleyUp() - prev_third_set_stat.getForehandVolleyUp()) +
+                                        (forth_set_stat.getForehandLobUp() - prev_third_set_stat.getForehandLobUp()) +
+                                        (forth_set_stat.getForehandDropUp() - prev_third_set_stat.getForehandDropUp())
+                                ),
                                 ((forth_set_stat.getForehandWinnerDown() - prev_third_set_stat.getForehandWinnerDown()) +
-                                        (forth_set_stat.getForehandVolleyDown() - prev_third_set_stat.getForehandVolleyDown())));
+                                        (forth_set_stat.getForehandVolleyDown() - prev_third_set_stat.getForehandVolleyDown()) +
+                                        (forth_set_stat.getForehandLobDown() - prev_third_set_stat.getForehandLobDown()) +
+                                        (forth_set_stat.getForehandDropDown() - prev_third_set_stat.getForehandDropDown())
+                                )
+                        );
                         currentArray.add(item14);
 
                         CurrentStatItem item15 = new CurrentStatItem(getResources().getString(R.string.game_backhand_winner),
                                 String.valueOf((forth_set_stat.getBackhandWinnerUp() - prev_third_set_stat.getBackhandWinnerUp()) +
-                                        (forth_set_stat.getBackhandVolleyUp() - prev_third_set_stat.getBackhandVolleyUp())),
+                                        (forth_set_stat.getBackhandVolleyUp() - prev_third_set_stat.getBackhandVolleyUp()) +
+                                        (forth_set_stat.getBackhandLobUp() - prev_third_set_stat.getBackhandLobUp()) +
+                                        (forth_set_stat.getBackhandDropUp() - prev_third_set_stat.getBackhandDropUp())
+                                ),
                                 String.valueOf((forth_set_stat.getBackhandWinnerDown() - prev_third_set_stat.getBackhandWinnerDown())+
-                                        (forth_set_stat.getBackhandVolleyDown() - prev_third_set_stat.getBackhandVolleyDown())),
+                                        (forth_set_stat.getBackhandVolleyDown() - prev_third_set_stat.getBackhandVolleyDown()) +
+                                        (forth_set_stat.getBackhandLobDown() - prev_third_set_stat.getBackhandLobDown()) +
+                                        (forth_set_stat.getBackhandDropDown() - prev_third_set_stat.getBackhandDropDown())
+                                ),
                                 ((forth_set_stat.getBackhandWinnerUp() - prev_third_set_stat.getBackhandWinnerUp()) +
-                                        (forth_set_stat.getBackhandVolleyUp() - prev_third_set_stat.getBackhandVolleyUp())),
+                                        (forth_set_stat.getBackhandVolleyUp() - prev_third_set_stat.getBackhandVolleyUp()) +
+                                        (forth_set_stat.getBackhandLobUp() - prev_third_set_stat.getBackhandLobUp()) +
+                                        (forth_set_stat.getBackhandDropUp() - prev_third_set_stat.getBackhandDropUp())
+                                ),
                                 ((forth_set_stat.getBackhandWinnerDown() - prev_third_set_stat.getBackhandWinnerDown())+
-                                        (forth_set_stat.getBackhandVolleyDown() - prev_third_set_stat.getBackhandVolleyDown())));
+                                        (forth_set_stat.getBackhandVolleyDown() - prev_third_set_stat.getBackhandVolleyDown()) +
+                                        (forth_set_stat.getBackhandLobDown() - prev_third_set_stat.getBackhandLobDown()) +
+                                        (forth_set_stat.getBackhandDropDown() - prev_third_set_stat.getBackhandDropDown())
+                                )
+                        );
                         currentArray.add(item15);
 
                         CurrentStatItem item10 = new CurrentStatItem(getResources().getString(R.string.stat_net_point_won),
@@ -1250,41 +1431,89 @@ public class CurrentStatActivity extends AppCompatActivity{
                                 String.valueOf((fifth_set_stat.getForehandWinnerUp() - prev_forth_set_stat.getForehandWinnerUp())+
                                         (fifth_set_stat.getBackhandWinnerUp() - prev_forth_set_stat.getBackhandWinnerUp()) +
                                         (fifth_set_stat.getForehandVolleyUp() - prev_forth_set_stat.getForehandVolleyUp()) +
-                                        (fifth_set_stat.getBackhandVolleyUp() - prev_forth_set_stat.getBackhandVolleyUp())),
+                                        (fifth_set_stat.getBackhandVolleyUp() - prev_forth_set_stat.getBackhandVolleyUp()) +
+                                        (fifth_set_stat.getForehandLobUp() - prev_forth_set_stat.getForehandLobUp()) +
+                                        (fifth_set_stat.getBackhandLobUp() - prev_forth_set_stat.getBackhandLobUp()) +
+                                        (fifth_set_stat.getForehandDropUp() - prev_forth_set_stat.getForehandDropUp()) +
+                                        (fifth_set_stat.getBackhandDropUp() - prev_forth_set_stat.getBackhandDropUp())
+                                ),
                                 String.valueOf((fifth_set_stat.getForehandWinnerDown() - prev_forth_set_stat.getForehandWinnerDown()) +
                                         (fifth_set_stat.getBackhandWinnerDown() - prev_forth_set_stat.getBackhandWinnerDown())+
                                         (fifth_set_stat.getForehandVolleyDown() - prev_forth_set_stat.getForehandVolleyDown())+
-                                        (fifth_set_stat.getBackhandVolleyDown() - prev_forth_set_stat.getBackhandVolleyDown())),
+                                        (fifth_set_stat.getBackhandVolleyDown() - prev_forth_set_stat.getBackhandVolleyDown())+
+                                        (fifth_set_stat.getForehandLobDown() - prev_forth_set_stat.getForehandLobDown())+
+                                        (fifth_set_stat.getBackhandLobDown() - prev_forth_set_stat.getBackhandLobDown())+
+                                        (fifth_set_stat.getForehandDropDown() - prev_forth_set_stat.getForehandDropDown())+
+                                        (fifth_set_stat.getBackhandDropDown() - prev_forth_set_stat.getBackhandDropDown())
+                                ),
                                 ((fifth_set_stat.getForehandWinnerUp() - prev_forth_set_stat.getForehandWinnerUp())+
                                         (fifth_set_stat.getBackhandWinnerUp() - prev_forth_set_stat.getBackhandWinnerUp()) +
                                         (fifth_set_stat.getForehandVolleyUp() - prev_forth_set_stat.getForehandVolleyUp()) +
-                                        (fifth_set_stat.getBackhandVolleyUp() - prev_forth_set_stat.getBackhandVolleyUp())),
+                                        (fifth_set_stat.getBackhandVolleyUp() - prev_forth_set_stat.getBackhandVolleyUp()) +
+                                        (fifth_set_stat.getForehandLobUp() - prev_forth_set_stat.getForehandLobUp()) +
+                                        (fifth_set_stat.getBackhandLobUp() - prev_forth_set_stat.getBackhandLobUp()) +
+                                        (fifth_set_stat.getForehandDropUp() - prev_forth_set_stat.getForehandDropUp()) +
+                                        (fifth_set_stat.getBackhandDropUp() - prev_forth_set_stat.getBackhandDropUp())
+                                ),
                                 ((fifth_set_stat.getForehandWinnerDown() - prev_forth_set_stat.getForehandWinnerDown()) +
                                         (fifth_set_stat.getBackhandWinnerDown() - prev_forth_set_stat.getBackhandWinnerDown())+
                                         (fifth_set_stat.getForehandVolleyDown() - prev_forth_set_stat.getForehandVolleyDown())+
-                                        (fifth_set_stat.getBackhandVolleyDown() - prev_forth_set_stat.getBackhandVolleyDown())));
+                                        (fifth_set_stat.getBackhandVolleyDown() - prev_forth_set_stat.getBackhandVolleyDown()) +
+                                        (fifth_set_stat.getForehandLobDown() - prev_forth_set_stat.getForehandLobDown())+
+                                        (fifth_set_stat.getBackhandLobDown() - prev_forth_set_stat.getBackhandLobDown()) +
+                                        (fifth_set_stat.getForehandDropDown() - prev_forth_set_stat.getForehandDropDown())+
+                                        (fifth_set_stat.getBackhandDropDown() - prev_forth_set_stat.getBackhandDropDown())
+
+                                )
+                        );
                         currentArray.add(item9);
 
                         CurrentStatItem item14 = new CurrentStatItem(getResources().getString(R.string.game_forehand_winner),
                                 String.valueOf((fifth_set_stat.getForehandWinnerUp() - prev_forth_set_stat.getForehandWinnerUp())+
-                                        (fifth_set_stat.getForehandVolleyUp() - prev_forth_set_stat.getForehandVolleyUp())),
+                                        (fifth_set_stat.getForehandVolleyUp() - prev_forth_set_stat.getForehandVolleyUp()) +
+                                        (fifth_set_stat.getForehandLobUp() - prev_forth_set_stat.getForehandLobUp()) +
+                                        (fifth_set_stat.getForehandDropUp() - prev_forth_set_stat.getForehandDropUp())
+                                ),
                                 String.valueOf((fifth_set_stat.getForehandWinnerDown() - prev_forth_set_stat.getForehandWinnerDown()) +
-                                        (fifth_set_stat.getForehandVolleyDown() - prev_forth_set_stat.getForehandVolleyDown())),
+                                        (fifth_set_stat.getForehandVolleyDown() - prev_forth_set_stat.getForehandVolleyDown()) +
+                                        (fifth_set_stat.getForehandLobDown() - prev_forth_set_stat.getForehandLobDown()) +
+                                        (fifth_set_stat.getForehandDropDown() - prev_forth_set_stat.getForehandDropDown())
+                                ),
                                 ((fifth_set_stat.getForehandWinnerUp() - prev_forth_set_stat.getForehandWinnerUp())+
-                                        (fifth_set_stat.getForehandVolleyUp() - prev_forth_set_stat.getForehandVolleyUp())),
+                                        (fifth_set_stat.getForehandVolleyUp() - prev_forth_set_stat.getForehandVolleyUp()) +
+                                        (fifth_set_stat.getForehandLobUp() - prev_forth_set_stat.getForehandLobUp()) +
+                                        (fifth_set_stat.getForehandDropUp() - prev_forth_set_stat.getForehandDropUp())
+                                ),
                                 ((fifth_set_stat.getForehandWinnerDown() - prev_forth_set_stat.getForehandWinnerDown()) +
-                                        (fifth_set_stat.getForehandVolleyDown() - prev_forth_set_stat.getForehandVolleyDown())));
+                                        (fifth_set_stat.getForehandVolleyDown() - prev_forth_set_stat.getForehandVolleyDown()) +
+                                        (fifth_set_stat.getForehandLobDown() - prev_forth_set_stat.getForehandLobDown()) +
+                                        (fifth_set_stat.getForehandDropDown() - prev_forth_set_stat.getForehandDropDown())
+                                )
+                        );
                         currentArray.add(item14);
 
                         CurrentStatItem item15 = new CurrentStatItem(getResources().getString(R.string.game_backhand_winner),
                                 String.valueOf((fifth_set_stat.getBackhandWinnerUp() - prev_forth_set_stat.getBackhandWinnerUp()) +
-                                        (fifth_set_stat.getBackhandVolleyUp() - prev_forth_set_stat.getBackhandVolleyUp())),
+                                        (fifth_set_stat.getBackhandVolleyUp() - prev_forth_set_stat.getBackhandVolleyUp()) +
+                                        (fifth_set_stat.getBackhandLobUp() - prev_forth_set_stat.getBackhandLobUp()) +
+                                        (fifth_set_stat.getBackhandDropUp() - prev_forth_set_stat.getBackhandDropUp())
+                                ),
                                 String.valueOf((fifth_set_stat.getBackhandWinnerDown() - prev_forth_set_stat.getBackhandWinnerDown())+
-                                        (fifth_set_stat.getBackhandVolleyDown() - prev_forth_set_stat.getBackhandVolleyDown())),
+                                        (fifth_set_stat.getBackhandVolleyDown() - prev_forth_set_stat.getBackhandVolleyDown()) +
+                                        (fifth_set_stat.getBackhandLobDown() - prev_forth_set_stat.getBackhandLobDown()) +
+                                        (fifth_set_stat.getBackhandDropDown() - prev_forth_set_stat.getBackhandDropDown())
+                                ),
                                 ((fifth_set_stat.getBackhandWinnerUp() - prev_forth_set_stat.getBackhandWinnerUp()) +
-                                        (fifth_set_stat.getBackhandVolleyUp() - prev_forth_set_stat.getBackhandVolleyUp())),
+                                        (fifth_set_stat.getBackhandVolleyUp() - prev_forth_set_stat.getBackhandVolleyUp()) +
+                                        (fifth_set_stat.getBackhandLobUp() - prev_forth_set_stat.getBackhandLobUp()) +
+                                        (fifth_set_stat.getBackhandDropUp() - prev_forth_set_stat.getBackhandDropUp())
+                                ),
                                 ((fifth_set_stat.getBackhandWinnerDown() - prev_forth_set_stat.getBackhandWinnerDown())+
-                                        (fifth_set_stat.getBackhandVolleyDown() - prev_forth_set_stat.getBackhandVolleyDown())));
+                                        (fifth_set_stat.getBackhandVolleyDown() - prev_forth_set_stat.getBackhandVolleyDown()) +
+                                        (fifth_set_stat.getBackhandLobDown() - prev_forth_set_stat.getBackhandLobDown()) +
+                                        (fifth_set_stat.getBackhandDropDown() - prev_forth_set_stat.getBackhandDropDown())
+                                )
+                        );
                         currentArray.add(item15);
 
                         CurrentStatItem item10 = new CurrentStatItem(getResources().getString(R.string.stat_net_point_won),
@@ -1500,41 +1729,88 @@ public class CurrentStatActivity extends AppCompatActivity{
                                 String.valueOf(current_state.getForehandWinnerUp() +
                                         current_state.getBackhandWinnerUp() +
                                         current_state.getForehandVolleyUp() +
-                                        current_state.getBackhandVolleyUp()),
+                                        current_state.getBackhandVolleyUp() +
+                                        current_state.getForehandLobUp() +
+                                        current_state.getBackhandLobUp() +
+                                        current_state.getForehandDropUp() +
+                                        current_state.getBackhandDropUp()
+                                ),
                                 String.valueOf(current_state.getForehandWinnerDown() +
                                         current_state.getBackhandWinnerDown() +
                                         current_state.getForehandVolleyDown() +
-                                        current_state.getBackhandVolleyDown()),
+                                        current_state.getBackhandVolleyDown() +
+                                        current_state.getForehandLobDown() +
+                                        current_state.getBackhandLobDown() +
+                                        current_state.getForehandDropDown() +
+                                        current_state.getBackhandDropDown()
+                                ),
                                 (current_state.getForehandWinnerUp() +
                                         current_state.getBackhandWinnerUp() +
                                         current_state.getForehandVolleyUp() +
-                                        current_state.getBackhandVolleyUp()),
+                                        current_state.getBackhandVolleyUp() +
+                                        current_state.getForehandLobUp() +
+                                        current_state.getBackhandLobUp() +
+                                        current_state.getForehandDropUp() +
+                                        current_state.getBackhandDropUp()
+                                ),
                                 (current_state.getForehandWinnerDown() +
                                         current_state.getBackhandWinnerDown() +
                                         current_state.getForehandVolleyDown() +
-                                        current_state.getBackhandVolleyDown()));
+                                        current_state.getBackhandVolleyDown() +
+                                        current_state.getForehandLobDown() +
+                                        current_state.getBackhandLobDown() +
+                                        current_state.getForehandDropDown() +
+                                        current_state.getBackhandDropDown()
+                                )
+                        );
                         currentArray.add(item9);
 
                         CurrentStatItem item14 = new CurrentStatItem(getResources().getString(R.string.game_forehand_winner),
                                 String.valueOf(current_state.getForehandWinnerUp() +
-                                        current_state.getForehandVolleyUp()),
+                                        current_state.getForehandVolleyUp() +
+                                        current_state.getForehandLobUp() +
+                                        current_state.getForehandDropUp()
+                                ),
                                 String.valueOf(current_state.getForehandWinnerDown() +
-                                        current_state.getForehandVolleyDown()),
+                                        current_state.getForehandVolleyDown() +
+                                        current_state.getForehandLobDown() +
+                                        current_state.getForehandDropDown()
+                                ),
                                 (current_state.getForehandWinnerUp() +
-                                        current_state.getForehandVolleyUp()),
+                                        current_state.getForehandVolleyUp() +
+                                        current_state.getForehandLobUp() +
+                                        current_state.getForehandDropUp()
+                                ),
                                 (current_state.getForehandWinnerDown() +
-                                        current_state.getForehandVolleyDown()));
+                                        current_state.getForehandVolleyDown() +
+                                        current_state.getForehandLobDown() +
+                                        current_state.getForehandDropDown()
+                                )
+                        );
                         currentArray.add(item14);
 
                         CurrentStatItem item15 = new CurrentStatItem(getResources().getString(R.string.game_backhand_winner),
                                 String.valueOf(current_state.getBackhandWinnerUp() +
-                                        current_state.getBackhandVolleyUp()),
+                                        current_state.getBackhandVolleyUp() +
+                                        current_state.getBackhandLobUp() +
+                                        current_state.getBackhandDropUp()
+                                ),
                                 String.valueOf(current_state.getBackhandWinnerDown() +
-                                        current_state.getBackhandVolleyDown()),
+                                        current_state.getBackhandVolleyDown() +
+                                        current_state.getBackhandLobDown() +
+                                        current_state.getBackhandDropDown()
+                                ),
                                 (current_state.getBackhandWinnerUp() +
-                                        current_state.getBackhandVolleyUp()),
+                                        current_state.getBackhandVolleyUp() +
+                                        current_state.getBackhandLobUp() +
+                                        current_state.getBackhandDropUp()
+                                ),
                                 (current_state.getBackhandWinnerDown() +
-                                        current_state.getBackhandVolleyDown()));
+                                        current_state.getBackhandVolleyDown() +
+                                        current_state.getBackhandLobDown() +
+                                        current_state.getBackhandDropDown()
+                                )
+                        );
                         currentArray.add(item15);
 
                         CurrentStatItem item10 = new CurrentStatItem(getResources().getString(R.string.stat_net_point_won),
@@ -1764,41 +2040,89 @@ public class CurrentStatActivity extends AppCompatActivity{
                     String.valueOf(current_state.getForehandWinnerUp() +
                             current_state.getBackhandWinnerUp() +
                             current_state.getForehandVolleyUp() +
-                            current_state.getBackhandVolleyUp()),
+                            current_state.getBackhandVolleyUp() +
+                            current_state.getForehandLobUp() +
+                            current_state.getBackhandLobUp() +
+                            current_state.getForehandDropUp() +
+                            current_state.getBackhandDropUp()
+                    ),
                     String.valueOf(current_state.getForehandWinnerDown() +
                             current_state.getBackhandWinnerDown() +
                             current_state.getForehandVolleyDown() +
-                            current_state.getBackhandVolleyDown()),
+                            current_state.getBackhandVolleyDown() +
+                            current_state.getForehandLobDown() +
+                            current_state.getBackhandLobDown() +
+                            current_state.getForehandDropDown() +
+                            current_state.getBackhandDropDown()
+                    ),
                     (current_state.getForehandWinnerUp() +
                             current_state.getBackhandWinnerUp() +
                             current_state.getForehandVolleyUp() +
-                            current_state.getBackhandVolleyUp()),
+                            current_state.getBackhandVolleyUp() +
+                            current_state.getForehandLobUp() +
+                            current_state.getBackhandLobUp() +
+                            current_state.getForehandDropUp() +
+                            current_state.getBackhandDropUp()
+                    ),
                     (current_state.getForehandWinnerDown() +
                             current_state.getBackhandWinnerDown() +
                             current_state.getForehandVolleyDown() +
-                            current_state.getBackhandVolleyDown()));
+                            current_state.getBackhandVolleyDown() +
+                            current_state.getForehandLobDown() +
+                            current_state.getBackhandLobDown() +
+                            current_state.getForehandDropDown() +
+                            current_state.getBackhandDropDown()
+                    )
+
+            );
             currentArray.add(item9);
 
             CurrentStatItem item14 = new CurrentStatItem(getResources().getString(R.string.game_forehand_winner),
                     String.valueOf(current_state.getForehandWinnerUp() +
-                            current_state.getForehandVolleyUp()),
+                            current_state.getForehandVolleyUp() +
+                            current_state.getForehandLobUp() +
+                            current_state.getForehandDropUp()
+                    ),
                     String.valueOf(current_state.getForehandWinnerDown() +
-                            current_state.getForehandVolleyDown()),
+                            current_state.getForehandVolleyDown() +
+                            current_state.getForehandLobDown() +
+                            current_state.getForehandDropDown()
+                    ),
                     (current_state.getForehandWinnerUp() +
-                            current_state.getForehandVolleyUp()),
+                            current_state.getForehandVolleyUp() +
+                            current_state.getForehandLobUp() +
+                            current_state.getForehandDropUp()
+                    ),
                     (current_state.getForehandWinnerDown() +
-                            current_state.getForehandVolleyDown()));
+                            current_state.getForehandVolleyDown() +
+                            current_state.getForehandLobDown() +
+                            current_state.getForehandDropDown()
+                    )
+            );
             currentArray.add(item14);
 
             CurrentStatItem item15 = new CurrentStatItem(getResources().getString(R.string.game_backhand_winner),
                     String.valueOf(current_state.getBackhandWinnerUp() +
-                            current_state.getBackhandVolleyUp()),
+                            current_state.getBackhandVolleyUp() +
+                            current_state.getBackhandLobUp() +
+                            current_state.getBackhandDropUp()
+                    ),
                     String.valueOf(current_state.getBackhandWinnerDown() +
-                            current_state.getBackhandVolleyDown()),
+                            current_state.getBackhandVolleyDown() +
+                            current_state.getBackhandLobDown() +
+                            current_state.getBackhandDropDown()
+                    ),
                     (current_state.getBackhandWinnerUp() +
-                            current_state.getBackhandVolleyUp()),
+                            current_state.getBackhandVolleyUp() +
+                            current_state.getBackhandLobUp() +
+                            current_state.getBackhandDropUp()
+                    ),
                     (current_state.getBackhandWinnerDown() +
-                            current_state.getBackhandVolleyDown()));
+                            current_state.getBackhandVolleyDown() +
+                            current_state.getBackhandLobDown() +
+                            current_state.getBackhandDropDown()
+                    )
+            );
             currentArray.add(item15);
 
             CurrentStatItem item10 = new CurrentStatItem(getResources().getString(R.string.stat_net_point_won),
