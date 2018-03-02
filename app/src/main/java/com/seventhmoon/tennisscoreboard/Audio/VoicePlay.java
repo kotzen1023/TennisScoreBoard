@@ -156,7 +156,7 @@ public class VoicePlay {
                 Log.e(TAG, "mediaPlayer.reset()");
                 mediaPlayer.reset();
                 current_state = STATE.Idle;
-            } catch (NullPointerException e) {
+            } catch (NullPointerException | IllegalStateException e) {
                 e.printStackTrace();
             }
             //Log.e(TAG, "mediaPlayer.release()");

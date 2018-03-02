@@ -9723,7 +9723,11 @@ public class GameActivity extends AppCompatActivity{
                             //load stack
                             total_state = stack.size();
                             state_num_saved = 0;
-                            for (com.seventhmoon.tennisscoreboard.Data.State s : stack) {
+
+                            //copy stack
+                            Deque<com.seventhmoon.tennisscoreboard.Data.State> temp_stack = new ArrayDeque<>(stack);
+
+                            for (com.seventhmoon.tennisscoreboard.Data.State s : temp_stack) {
 
                                 if (i >= 1) {
                                     append_record("&", filename);
