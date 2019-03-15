@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion "26.0.2"
+    compileSdkVersion 28
+
     defaultConfig {
         applicationId "com.seventhmoon.tennisscoreboard"
         minSdkVersion 16
-        targetSdkVersion 27
-        versionCode 37
-        versionName "1.36"
+        targetSdkVersion 28
+        versionCode 38
+        versionName "1.37"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -22,14 +22,14 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    implementation 'com.android.support:appcompat-v7:27.0.2'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
     //compile 'com.google.android.gms:play-services-maps:11.0.4'
     //compile 'com.google.android.gms:play-services-location:11.0.4'
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
 
     dependencies {
-        compile 'com.yahoo.mobile.client.android.util.rangeseekbar:rangeseekbar-library:0.1.0'
+        implementation 'com.yahoo.mobile.client.android.util.rangeseekbar:rangeseekbar-library:0.1.0'
     }
 }

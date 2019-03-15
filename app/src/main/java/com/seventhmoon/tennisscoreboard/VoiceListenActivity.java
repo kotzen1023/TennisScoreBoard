@@ -28,6 +28,7 @@ public class VoiceListenActivity extends AppCompatActivity {
     private VoicePlay listenPlay;
     private static ArrayList<Integer> myPlayList = new ArrayList<>();
     private ArrayList<Integer> gbr_man_list = new ArrayList<>();
+    private ArrayList<Integer> gbr_woman_list = new ArrayList<>();
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,64 +95,45 @@ public class VoiceListenActivity extends AppCompatActivity {
 
     private void initVoiceArray() {
         gbr_man_list.clear();
+        gbr_woman_list.clear();
+
         gbr_man_list.add(R.raw.gbr_man_0_15);
         gbr_man_list.add(R.raw.gbr_man_0_30);
         gbr_man_list.add(R.raw.gbr_man_0_40);
-        gbr_man_list.add(R.raw.gbr_man_1);
-        gbr_man_list.add(R.raw.gbr_man_10);
-        gbr_man_list.add(R.raw.gbr_man_11);
-        gbr_man_list.add(R.raw.gbr_man_12);
-        gbr_man_list.add(R.raw.gbr_man_13);
-        gbr_man_list.add(R.raw.gbr_man_14);
-        gbr_man_list.add(R.raw.gbr_man_15);
         gbr_man_list.add(R.raw.gbr_man_15_0);
         gbr_man_list.add(R.raw.gbr_man_15_15);
         gbr_man_list.add(R.raw.gbr_man_15_30);
         gbr_man_list.add(R.raw.gbr_man_15_40);
-        gbr_man_list.add(R.raw.gbr_man_16);
-        gbr_man_list.add(R.raw.gbr_man_17);
-        gbr_man_list.add(R.raw.gbr_man_18);
-        gbr_man_list.add(R.raw.gbr_man_19);
-        gbr_man_list.add(R.raw.gbr_man_2);
-        gbr_man_list.add(R.raw.gbr_man_20);
-        gbr_man_list.add(R.raw.gbr_man_3);
-        gbr_man_list.add(R.raw.gbr_man_30);
         gbr_man_list.add(R.raw.gbr_man_30_0);
         gbr_man_list.add(R.raw.gbr_man_30_30);
         gbr_man_list.add(R.raw.gbr_man_30_40);
-        gbr_man_list.add(R.raw.gbr_man_4);
-        gbr_man_list.add(R.raw.gbr_man_40);
         gbr_man_list.add(R.raw.gbr_man_40_0);
         gbr_man_list.add(R.raw.gbr_man_40_15);
         gbr_man_list.add(R.raw.gbr_man_40_30);
         gbr_man_list.add(R.raw.gbr_man_40_40);
-        gbr_man_list.add(R.raw.gbr_man_5);
-        gbr_man_list.add(R.raw.gbr_man_50);
-        gbr_man_list.add(R.raw.gbr_man_6);
-        gbr_man_list.add(R.raw.gbr_man_60);
-        gbr_man_list.add(R.raw.gbr_man_7);
-        gbr_man_list.add(R.raw.gbr_man_70);
-        gbr_man_list.add(R.raw.gbr_man_8);
-        gbr_man_list.add(R.raw.gbr_man_80);
-        gbr_man_list.add(R.raw.gbr_man_9);
-        gbr_man_list.add(R.raw.gbr_man_90);
-        gbr_man_list.add(R.raw.gbr_man_ad_recv);
-        gbr_man_list.add(R.raw.gbr_man_ad_serve);
-        gbr_man_list.add(R.raw.gbr_man_all);
-        gbr_man_list.add(R.raw.gbr_man_deciding_point);
-        gbr_man_list.add(R.raw.gbr_man_first_set);
-        gbr_man_list.add(R.raw.gbr_man_forth_set);
         gbr_man_list.add(R.raw.gbr_man_game);
-        gbr_man_list.add(R.raw.gbr_man_love);
-        gbr_man_list.add(R.raw.gbr_man_match);
-        gbr_man_list.add(R.raw.gbr_man_second_set);
-        gbr_man_list.add(R.raw.gbr_man_set);
-        gbr_man_list.add(R.raw.gbr_man_third_set);
-        gbr_man_list.add(R.raw.gbr_man_tiebreak);
+
+        //gbr_woman
+        gbr_woman_list.add(R.raw.gbr_woman_0_15);
+        gbr_woman_list.add(R.raw.gbr_woman_0_30);
+        gbr_woman_list.add(R.raw.gbr_woman_0_40);
+        gbr_woman_list.add(R.raw.gbr_woman_15_0);
+        gbr_woman_list.add(R.raw.gbr_woman_15_15);
+        gbr_woman_list.add(R.raw.gbr_woman_15_30);
+        gbr_woman_list.add(R.raw.gbr_woman_15_40);
+        gbr_woman_list.add(R.raw.gbr_woman_30_0);
+        gbr_woman_list.add(R.raw.gbr_woman_30_30);
+        gbr_woman_list.add(R.raw.gbr_woman_30_40);
+        gbr_woman_list.add(R.raw.gbr_woman_40_0);
+        gbr_woman_list.add(R.raw.gbr_woman_40_15);
+        gbr_woman_list.add(R.raw.gbr_woman_40_30);
+        gbr_woman_list.add(R.raw.gbr_woman_40_40);
+        gbr_woman_list.add(R.raw.gbr_woman_game);
     }
 
     private void doRandomPlay(int listenChoose) {
         Log.d(TAG, "doRandomPlay");
+
         Random r = new Random();
         int call = r.nextInt(gbr_man_list.size());
         Log.d(TAG, "call = "+call);
@@ -166,7 +148,15 @@ public class VoiceListenActivity extends AppCompatActivity {
                     voicePlay.doStopAudioPlayMulti();
                     voicePlay.audioPlayMulti(myPlayList);
                 }
-
+            case 1://gbr_woman
+                myPlayList.add(gbr_woman_list.get(call));
+                if (voicePlay == null) {
+                    listenPlay.doStopAudioPlayMulti();
+                    listenPlay.audioPlayMulti(myPlayList);
+                } else {
+                    voicePlay.doStopAudioPlayMulti();
+                    voicePlay.audioPlayMulti(myPlayList);
+                }
                 break;
         }
         Log.d(TAG, "doRandomPlay");
